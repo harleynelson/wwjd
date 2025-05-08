@@ -228,4 +228,38 @@ class DatabaseHelper {
     // An alternative is separate queries, filtering in Dart, but JOIN is often better.
     return await db.rawQuery(query, [flagId]);
   }
+
+  /// Searches for verses containing the given query text.
+  /// Returns a list of maps, each representing a verse.
+  /// Uses basic LIKE search (case-insensitive for ASCII).
+  /// Consider SQLite FTS5 for better performance on large datasets later.
+  Future<List<Map<String, dynamic>>> searchVerses(String query) async {
+    if (query.trim().isEmpty) {
+      return []; // Return empty list if query is empty or whitespace
+    }
+    final db = await database;
+    // Use '%' wildcards for contains search
+    final String searchQuery = '%${query.trim()}%';
+
+    // Query the bible table where verseText contains the query
+    // Fetch all necessary columns to display the result context
+    // Order by canon_order to show results in Bible order
+    final List<Map<String, dynamic>> maps = await db.query(
+      bibleTableName,
+      columns: [
+        bibleColVerseID,
+        bibleColBook,
+        bibleColChapter,
+        bibleColStartVerse,
+        bibleColVerseText,
+        bibleColCanonOrder // Include for reliable sorting
+      ],
+      where: '$bibleColVerseText LIKE ?',
+      whereArgs: [searchQuery],
+      orderBy: '$bibleColCanonOrder ASC, CAST($bibleColChapter AS INTEGER) ASC, CAST($bibleColStartVerse AS INTEGER) ASC',
+      limit: 100 // Limit results for performance initially, can add pagination later
+    );
+    print("Search for '$query' found ${maps.length} results.");
+    return maps;
+  }
 }

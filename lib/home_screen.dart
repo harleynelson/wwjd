@@ -7,7 +7,8 @@ import 'book_names.dart'; // For getFullBookName
 import 'full_bible_reader_screen.dart'; // To navigate to the Bible reader
 import 'favorites_screen.dart'; // To navigate to Favorites screen
 import 'prefs_helper.dart'; // Import PrefsHelper for hidden flags
-import 'dialogs/flag_selection_dialog.dart'; // Import the refactored dialog
+import 'dialogs/flag_selection_dialog.dart';
+import 'search_screen.dart'; // Import the refactored dialog
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -299,13 +300,17 @@ Widget build(BuildContext context) {
             ),
             const SizedBox(height: 16.0),
             _buildNavigationButton(
-              context,
-              icon: Icons.search,
-              label: "Search (Coming Soon)",
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Search functionality coming soon!")));
-              },
-            ),
+                context,
+                icon: Icons.search,
+                label: "Search", // Removed "(Coming Soon)"
+                onTap: () {
+                  // Navigate to the SearchScreen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SearchScreen()),
+                  );
+                },
+              ),
             // Add more navigation options here later...
           ],
         ),
