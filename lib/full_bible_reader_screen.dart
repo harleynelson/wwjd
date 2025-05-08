@@ -1,9 +1,10 @@
 // lib/full_bible_reader_screen.dart
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
-import 'models.dart'; // Brings in Flag class and prebuiltFlags list
+import 'models.dart'; // Includes Flag, Verse, Book, prebuiltFlags
 import 'book_names.dart';
-import 'prefs_helper.dart'; // Import PrefsHelper
+import 'prefs_helper.dart'; // Needed for hiding flags
+import 'dialogs/flag_selection_dialog.dart'; // Import the refactored dialog
 
 enum BibleReaderView { books, chapters, verses }
 
@@ -16,19 +17,23 @@ class FullBibleReaderScreen extends StatefulWidget {
 class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
+  // View State
   BibleReaderView _currentView = BibleReaderView.books;
+  bool _isLoading = true;
+  String _appBarTitle = "Select a Book";
+
+  // Data Holders
   List<Book> _books = [];
   List<String> _chapters = [];
   List<Verse> _verses = []; // Includes verseID, bookAbbr, chapter
   Book? _selectedBook;
   String? _selectedChapter;
-  bool _isLoading = true;
-  String _appBarTitle = "Select a Book";
 
+  // Flags and Favorites State (relevant for current view)
   List<Flag> _allAvailableFlags = []; // Combined list (filtered pre-built + user)
-  // State for favorites/flags within the currently viewed chapter
-  Set<String> _favoritedVerseIdsInChapter = {};
-  Map<String, List<int>> _flagAssignmentsForChapter = {}; // verseID -> List<flagId>
+  Set<String> _favoritedVerseIdsInChapter = {}; // Stores verseIDs of favorites in the current chapter view
+  Map<String, List<int>> _flagAssignmentsForChapter = {}; // verseID -> List<flagId> for current chapter view
+
 
   @override
   void initState() {
@@ -37,8 +42,8 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   }
 
   Future<void> _loadInitialData() async {
-    await _loadAvailableFlags();
-    _loadBooks(); // Start by loading book list
+    await _loadAvailableFlags(); // Load flags first
+    _loadBooks(); // Then load book list
   }
 
   // Load flags (Combine pre-built from models.dart and user from DB, filtering hidden)
@@ -46,16 +51,18 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
      if (!mounted) return;
      try {
         final Set<int> hiddenIds = PrefsHelper.getHiddenFlagIds();
-        final List<Flag> visiblePrebuiltFlags = prebuiltFlags.where((flag) => !hiddenIds.contains(flag.id)).toList();
+        final List<Flag> visiblePrebuiltFlags = prebuiltFlags
+            .where((flag) => !hiddenIds.contains(flag.id))
+            .toList();
         final userFlagMaps = await _dbHelper.getUserFlags();
         final userFlags = userFlagMaps.map((map) => Flag.fromUserDbMap(map)).toList();
         // Update the state list used by dialogs
-        // No need for setState if only used by dialogs triggered later
+        // No need for setState here if only used by dialogs triggered later
         _allAvailableFlags = [...visiblePrebuiltFlags, ...userFlags];
         _allAvailableFlags.sort((a, b) => a.name.compareTo(b.name));
      } catch (e) {
-         print("Error loading available flags: $e");
-         if(mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error loading flags: ${e.toString()}")));
+        print("Error loading available flags in reader: $e");
+        if(mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error loading flags: ${e.toString()}")));
      }
   }
 
@@ -65,18 +72,22 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
     setState(() { _isLoading = true; });
 
     try {
-      if (book == null) { // Load books
+      if (book == null) { // Load books view
         final List<Map<String, dynamic>> bookMaps = await _dbHelper.getBookAbbreviations();
-        _books = bookMaps.map((map) => Book(abbreviation: map[DatabaseHelper.bibleColBook] as String, fullName: getFullBookName(map[DatabaseHelper.bibleColBook] as String))).toList();
+        _books = bookMaps.map((map) {
+            String abbr = map[DatabaseHelper.bibleColBook] as String;
+            String order = map['c_order'] as String? ?? 'zzz'; // Get canon order for Book model
+            return Book(abbreviation: abbr, fullName: getFullBookName(abbr), canonOrder: order);
+          }).toList();
         _currentView = BibleReaderView.books; _appBarTitle = "Select a Book"; _selectedBook = null; _selectedChapter = null; _chapters = []; _verses = []; _favoritedVerseIdsInChapter = {}; _flagAssignmentsForChapter = {};
-      } else if (chapter == null) { // Load chapters
+      } else if (chapter == null) { // Load chapters view
         _chapters = await _dbHelper.getChaptersForBook(book.abbreviation);
         _selectedBook = book; _currentView = BibleReaderView.chapters; _appBarTitle = book.fullName; _selectedChapter = null; _verses = []; _favoritedVerseIdsInChapter = {}; _flagAssignmentsForChapter = {};
-      } else { // Load verses and their favorite/flag status
+      } else { // Load verses view and their favorite/flag status
         final List<Map<String, dynamic>> verseMaps = await _dbHelper.getVersesForChapter(book.abbreviation, chapter);
         _verses = verseMaps.map((map) => Verse( verseID: map[DatabaseHelper.bibleColVerseID] as String?, bookAbbr: map[DatabaseHelper.bibleColBook] as String?, chapter: map[DatabaseHelper.bibleColChapter]?.toString(), verseNumber: map[DatabaseHelper.bibleColStartVerse].toString(), text: map[DatabaseHelper.bibleColVerseText] as String,)).toList();
 
-        // Load favorite status and flags for these specific verses
+        // Load favorite status and flags for only these verses
         _favoritedVerseIdsInChapter = {};
         _flagAssignmentsForChapter = {};
         for (Verse verse in _verses) {
@@ -88,13 +99,13 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
                 }
             }
         }
-
         _selectedBook = book; _selectedChapter = chapter; _currentView = BibleReaderView.verses; _appBarTitle = "${book.fullName} $chapter";
       }
     } catch (e) {
       print("Error loading Bible reader data: $e");
        if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error loading data: ${e.toString()}")));
+         // Attempt to recover gracefully
          if (_currentView != BibleReaderView.books) { _goBackToBooks(); } else { setState(() { _isLoading = false; }); }
       }
     }
@@ -111,7 +122,6 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
     if (!mounted) return;
     setState(() {
       if (_currentView == BibleReaderView.verses) {
-        // From Verses -> Chapters
         _currentView = BibleReaderView.chapters;
         _appBarTitle = _selectedBook!.fullName;
         _selectedChapter = null;
@@ -119,7 +129,6 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         _favoritedVerseIdsInChapter = {}; // Clear favorite status cache
         _flagAssignmentsForChapter = {};
       } else if (_currentView == BibleReaderView.chapters) {
-        // From Chapters -> Books
         _goBackToBooks();
       }
     });
@@ -135,7 +144,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
     });
   }
 
-  // --- Toggle Favorite Logic for Reader Screen ---
+  // Toggle favorite status ONLY for a verse in the reader
   Future<void> _toggleFavorite(Verse verse) async {
     if (verse.verseID == null || verse.bookAbbr == null || verse.chapter == null) {
         print("Error: Verse data incomplete, cannot toggle favorite.");
@@ -161,16 +170,15 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         if (mounted) {
           setState(() {
             _favoritedVerseIdsInChapter.add(verseID);
-            _flagAssignmentsForChapter[verseID] = currentFlagIds;
+            _flagAssignmentsForChapter[verseID] = currentFlagIds; // Store assigned flags
           });
-          // DON'T show dialog automatically per user request
         }
       } else {
         await _dbHelper.removeFavorite(verseID);
         if (mounted) {
           setState(() {
             _favoritedVerseIdsInChapter.remove(verseID);
-            _flagAssignmentsForChapter.remove(verseID);
+            _flagAssignmentsForChapter.remove(verseID); // Remove flag assignments too
           });
         }
       }
@@ -182,75 +190,63 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
     }
   }
 
-  // --- Flag Selection Dialog (includes delete/hide logic) ---
- // NOTE: Duplicated logic from HomeScreen. Consider refactoring later.
- Future<void> _showFlagSelectionDialog(Verse verse) async {
-   if (verse.verseID == null) return;
-   String verseID = verse.verseID!;
+  // Method to call the refactored flag dialog for a verse
+  // NOTE: Duplicated callback implementation logic. Refactor Recommended!
+  void _openFlagManagerForVerse(Verse verse) {
+     if (verse.verseID == null) return;
+     final String verseID = verse.verseID!;
+     final String verseRef = "${verse.bookAbbr ?? '?'} ${verse.chapter ?? '?'}:${verse.verseNumber}";
+     final List<int> currentSelection = _flagAssignmentsForChapter[verseID] ?? [];
 
-    // Get current flag assignments for THIS specific verse
-    List<int> currentFlagIds = _flagAssignmentsForChapter[verseID] ?? [];
-
-    // Prepare flags for the dialog using the latest _allAvailableFlags
-    List<Flag> dialogFlags = _allAvailableFlags.map((f) {
-      bool isSelected = currentFlagIds.contains(f.id);
-      return Flag(id: f.id, name: f.name, isSelected: isSelected); // isPrebuilt check comes from f.id < 0
-    }).toList();
-
-    if(!mounted) return;
-
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            // Function to handle hiding/deleting flag
-            Future<void> handleDeleteOrHideFlag(Flag flagToDelete) async {
-               bool? confirm = await showDialog<bool>( context: context, builder: (BuildContext confirmContext) { /* ... Confirmation Dialog ... */ return AlertDialog( title: Text(flagToDelete.isPrebuilt ? "Confirm Hide" : "Confirm Delete"), content: Text(flagToDelete.isPrebuilt ? "Hide the default flag '${flagToDelete.name}'?" : "Delete the flag '${flagToDelete.name}'?\nThis removes it permanently."), actions: <Widget>[ TextButton(onPressed: () => Navigator.of(confirmContext).pop(false), child: const Text("Cancel")), TextButton( onPressed: () => Navigator.of(confirmContext).pop(true), child: Text(flagToDelete.isPrebuilt ? "Hide" : "Delete", style: TextStyle(color: flagToDelete.isPrebuilt ? Colors.orange.shade800 : Colors.red)), ), ], ); });
-               if (confirm == true) {
-                  try {
-                      if (flagToDelete.isPrebuilt) {
-                          await PrefsHelper.hideFlagId(flagToDelete.id);
-                      } else {
-                          await _dbHelper.deleteUserFlag(flagToDelete.id);
-                      }
-                      await _loadAvailableFlags(); // Refresh combined list
-                      setDialogState(() { dialogFlags.removeWhere((f) => f.id == flagToDelete.id); });
-                      if (mounted) { // Update reader screen state
-                           setState(() { _flagAssignmentsForChapter[verseID]?.remove(flagToDelete.id); });
-                      }
-                  } catch (e) { print("Error hiding/deleting flag: $e"); if(mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error updating flags: $e"))); }
-              }
-            }
-
-            // Build actual dialog
-            return AlertDialog(
-              title: Text('Manage Flags for ${verse.bookAbbr} ${verse.chapter}:${verse.verseNumber}'),
-              content: SizedBox( /* ... Dialog Content Structure ... */
-                  width: double.maxFinite, child: Column( mainAxisSize: MainAxisSize.min, children: [ Expanded( child: ListView( shrinkWrap: true, children: <Widget>[ if (dialogFlags.isEmpty) const Padding( padding: EdgeInsets.all(8.0), child: Text("No flags. Add one below."),), ...dialogFlags.map((flag) { return CheckboxListTile( title: Text(flag.name), value: flag.isSelected, controlAffinity: ListTileControlAffinity.leading, secondary: IconButton( // Hide/Delete Button
-                                       icon: Icon( flag.isPrebuilt ? Icons.visibility_off_outlined : Icons.delete_outline, color: flag.isPrebuilt ? Colors.grey : Colors.red.shade300), tooltip: flag.isPrebuilt ? "Hide default flag" : "Delete custom flag", onPressed: () => handleDeleteOrHideFlag(flag), ), onChanged: (bool? value) { setDialogState(() { flag.isSelected = value ?? false; }); }, ); }).toList(), ], ), ), TextButton.icon( /* ... Add new flag button ... */ icon: const Icon(Icons.add), label: const Text("Add New Flag"), onPressed: () async { final newFlagName = await _showAddNewFlagDialog(); if (newFlagName != null && newFlagName.trim().isNotEmpty) { try { int newId = await _dbHelper.addUserFlag(newFlagName.trim()); await _loadAvailableFlags(); final currentSelectedIds = dialogFlags.where((df) => df.isSelected).map((df) => df.id).toSet(); dialogFlags = _allAvailableFlags.map((f) { bool shouldBeSelected = currentSelectedIds.contains(f.id) || (newId > 0 && f.id == newId); return Flag(id: f.id, name: f.name, isSelected: shouldBeSelected); }).toList(); setDialogState((){}); } catch (e) { print("Error adding new flag: $e"); if(mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error adding flag: $e"))); } } }, ), ], ),
-              ),
-              actions: <Widget>[ /* ... Cancel and Save Buttons ... */
-                  TextButton( child: const Text('Cancel'), onPressed: () { Navigator.of(context).pop(); }, ), TextButton( child: const Text('Save Flags'), onPressed: () async { try { List<int> newlySelectedIds = []; List<int> previouslySelectedIds = List.from(_flagAssignmentsForChapter[verseID] ?? []); for (var flag in dialogFlags) { bool wasSelected = previouslySelectedIds.contains(flag.id); if (flag.isSelected) { newlySelectedIds.add(flag.id); if (!wasSelected) { await _dbHelper.assignFlagToFavorite(verseID, flag.id); } } else { if (wasSelected) { await _dbHelper.removeFlagFromFavorite(verseID, flag.id); } } } if (mounted) { setState(() { _flagAssignmentsForChapter[verseID] = newlySelectedIds; }); } Navigator.of(context).pop(); } catch (e) { print("Error saving flags: $e"); if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error saving flags: $e"))); } }, ),
-              ],
-            );
-          }
-        );
-      },
-    );
+     showDialog(
+         context: context,
+         builder: (_) => FlagSelectionDialog(
+             verseRef: verseRef,
+             initialSelectedFlagIds: currentSelection,
+             allAvailableFlags: List<Flag>.from(_allAvailableFlags),
+             // Implement callbacks:
+             onHideFlag: (flagId) async {
+                 await PrefsHelper.hideFlagId(flagId);
+                 await _loadAvailableFlags(); // Refresh available flags list
+                 if(mounted) setState(() { _flagAssignmentsForChapter[verseID]?.remove(flagId); }); // Update local state map
+             },
+             onDeleteFlag: (flagId) async {
+                 await _dbHelper.deleteUserFlag(flagId);
+                 await _loadAvailableFlags(); // Refresh available flags list
+                 if(mounted) setState(() { _flagAssignmentsForChapter[verseID]?.remove(flagId); }); // Update local state map
+             },
+             // --- CORRECTED onAddNewFlag Callback ---
+             onAddNewFlag: (newName) async {
+                 int newId = await _dbHelper.addUserFlag(newName);
+                 await _loadAvailableFlags();
+                 // Try to find the newly added flag
+                 try {
+                    final newFlag = _allAvailableFlags.firstWhere((f) => f.id == newId);
+                    return newFlag;
+                 } catch (e) {
+                    print("Error finding newly added flag $newId after loading: $e");
+                    return null;
+                 }
+             },
+             // --- End Correction ---
+             onSave: (finalSelectedIds) async {
+                // --- Save logic (unchanged) ---
+                 List<int> initialIds = List<int>.from(currentSelection); Set<int> initialSet = initialIds.toSet(); Set<int> finalSet = finalSelectedIds.toSet();
+                 for (int id in finalSet) { if (!initialSet.contains(id)) { await _dbHelper.assignFlagToFavorite(verseID, id); } }
+                 for (int id in initialSet) { if (!finalSet.contains(id)) { await _dbHelper.removeFlagFromFavorite(verseID, id); } }
+                 if (mounted) { setState(() { _flagAssignmentsForChapter[verseID] = finalSelectedIds; }); }
+             },
+         ),
+     );
   }
 
-  // Add New Flag Dialog (same as HomeScreen)
-  Future<String?> _showAddNewFlagDialog() async {
-     TextEditingController flagController = TextEditingController();
-     return showDialog<String>( context: context, builder: (context) { return AlertDialog( title: const Text("Add New Flag"), content: TextField(controller: flagController, autofocus: true, decoration: const InputDecoration(hintText: "Flag name"), textCapitalization: TextCapitalization.sentences,), actions: [ TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")), TextButton(onPressed: () { if (flagController.text.trim().isNotEmpty) { Navigator.pop(context, flagController.text.trim()); } }, child: const Text("Add")), ],); });
-   }
 
-  // Helper to get flag names for display (uses combined list)
+  // Helper to get flag names for display for a specific verse ID
   List<String> _getFlagNamesForVerse(String verseID) {
       List<int> flagIds = _flagAssignmentsForChapter[verseID] ?? [];
       List<String> names = [];
       for (int id in flagIds) {
+          // Find in the combined list (_allAvailableFlags)
           final flag = _allAvailableFlags.firstWhere((f) => f.id == id, orElse: () => Flag(id: 0, name: "Unknown"));
           if (flag.id != 0) { names.add(flag.name); }
       }
@@ -264,28 +260,53 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
 
     switch (_currentView) {
       case BibleReaderView.books:
-        // --- Book List (Unchanged) ---
         if (_books.isEmpty) return const Center(child: Text("No books found."));
-        return ListView.builder(itemCount: _books.length, itemBuilder: (context, index) { final book = _books[index]; return ListTile(title: Text(book.fullName), onTap: () => _loadChapters(book),); },);
+        return ListView.builder(
+          itemCount: _books.length,
+          itemBuilder: (context, index) {
+            final book = _books[index];
+            return ListTile(
+              title: Text(book.fullName),
+              onTap: () => _loadChapters(book),
+            );
+          },
+        );
 
       case BibleReaderView.chapters:
-        // --- Chapter Grid (Unchanged) ---
         if (_chapters.isEmpty) return Center(child: Text("No chapters found for ${_selectedBook?.fullName ?? 'this book'}."));
-        return GridView.builder(padding: const EdgeInsets.all(8.0), gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0,), itemCount: _chapters.length, itemBuilder: (context, index) { final chapterNum = _chapters[index]; return InkWell(onTap: () => _loadVerses(chapterNum), child: Card(child: Center(child: Text(chapterNum, style: Theme.of(context).textTheme.titleMedium),),),); },);
+        return GridView.builder(
+          padding: const EdgeInsets.all(8.0),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 5, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0,
+          ),
+          itemCount: _chapters.length,
+          itemBuilder: (context, index) {
+            final chapterNum = _chapters[index];
+            return InkWell(
+              onTap: () => _loadVerses(chapterNum),
+              child: Card(
+                elevation: 1.5,
+                child: Center(
+                  child: Text(chapterNum, style: Theme.of(context).textTheme.titleMedium),
+                ),
+              ),
+            );
+          },
+        );
 
       case BibleReaderView.verses:
-        // --- Verse List Builder with Favorites/Flags ---
         if (_verses.isEmpty) return const Center(child: Text("No verses found for this chapter."));
         return ListView.builder(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0), // Add bottom padding
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0), // Padding for readability
           itemCount: _verses.length,
           itemBuilder: (context, index) {
             final verse = _verses[index];
+            // Determine favorite status and flags from state maps
             final bool isFavorite = _favoritedVerseIdsInChapter.contains(verse.verseID);
             final List<String> flagNames = _getFlagNamesForVerse(verse.verseID ?? "");
 
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0), // Increased spacing between verses
+              padding: const EdgeInsets.symmetric(vertical: 8.0), // Spacing between verses
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -309,7 +330,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
                       Expanded(
                         child: SelectableText(
                           verse.text,
-                          style: const TextStyle(fontSize: 17, height: 1.5, color: Colors.black87), // Slightly larger text
+                          style: const TextStyle(fontSize: 17, height: 1.5, color: Colors.black87),
                         ),
                       ),
                       // Favorite Button
@@ -317,12 +338,12 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
                         Padding( // Add padding around button
                           padding: const EdgeInsets.only(left: 8.0, top: 0),
                           child: IconButton(
-                            icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border, color: isFavorite ? Colors.redAccent : Colors.grey.shade400,), // Slightly lighter grey
+                            icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border, color: isFavorite ? Colors.redAccent : Colors.grey.shade400,),
                             iconSize: 22,
                             padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(), // Use minimum constraints
+                            constraints: const BoxConstraints(),
                             tooltip: isFavorite ? "Remove from Favorites" : "Add to Favorites",
-                            onPressed: () => _toggleFavorite(verse),
+                            onPressed: () => _toggleFavorite(verse), // Uses updated toggle function
                           ),
                         ),
                     ],
@@ -336,23 +357,25 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
                          children: [
                             Expanded(
                               child: flagNames.isEmpty
-                                ? const SizedBox(height: 10) // Ensure space even if no flags, before button
+                                ? const SizedBox(height: 30) // Placeholder height to align button
                                 : Wrap( // Display chips if flags exist
-                                  spacing: 6.0, runSpacing: 4.0,
-                                  children: flagNames.map((name) => Chip(
-                                    label: Text(name, style: const TextStyle(fontSize: 11)), // Slightly larger chip text
-                                    visualDensity: VisualDensity.compact,
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0), // More padding
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    backgroundColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
-                                  )).toList(),
-                                ),
+                                    spacing: 6.0,
+                                    runSpacing: 4.0,
+                                    children: flagNames.map((name) => Chip(
+                                      label: Text(name, style: const TextStyle(fontSize: 10)),
+                                      visualDensity: VisualDensity.compact,
+                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      backgroundColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
+                                    )).toList(),
+                                  ),
                             ),
                            // Add/Manage Flags Button
                            TextButton.icon(
                              icon: Icon(flagNames.isNotEmpty ? Icons.edit_note_outlined : Icons.label_outline, size: 18),
-                             label: Text(flagNames.isNotEmpty ? "Manage Flags" : "Add Flags", style: const TextStyle(fontSize: 12)),
-                             onPressed: () => _showFlagSelectionDialog(verse),
+                             label: Text(flagNames.isNotEmpty ? "Manage Flags" : "Add Flags", style: const TextStyle(fontSize: 11)),
+                             // Call the method to open the refactored dialog
+                             onPressed: () => _openFlagManagerForVerse(verse),
                              style: TextButton.styleFrom(padding: const EdgeInsets.only(left: 8.0), minimumSize: const Size(50, 20), visualDensity: VisualDensity.compact ),
                            ),
                          ],
@@ -361,29 +384,38 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
                     // Add a subtle divider between verses
                     if (index < _verses.length - 1)
                        Padding(
-                         padding: const EdgeInsets.only(left: 40.0, top: 8.0),
+                         padding: const EdgeInsets.only(left: 40.0, top: 10.0), // Indent divider too
                          child: Divider(height: 1, thickness: 0.5, color: Colors.grey.shade300),
                        ),
                 ],
               ),
             );
-          },
-        );
-        // --- END MODIFIED Verse List Builder ---
-    }
-  }
+          }, // End itemBuilder
+        ); // End ListView.builder
+    } // End switch
+  } // End _buildBody
 
   @override
   Widget build(BuildContext context) {
-    // --- Scaffold and AppBar structure remains the same ---
+    // Scaffold structure
      return Scaffold(
        appBar: AppBar(
          title: Text(_appBarTitle),
          leading: _currentView != BibleReaderView.books || Navigator.canPop(context)
-           ? IconButton( icon: const Icon(Icons.arrow_back), onPressed: () { if (_currentView != BibleReaderView.books) { _goBack(); } else if (Navigator.canPop(context)){ Navigator.of(context).pop(); } }, )
-           : null,
+           ? IconButton(
+               icon: const Icon(Icons.arrow_back),
+               onPressed: () {
+                 // Handle back navigation: either internal state or pop screen
+                 if (_currentView != BibleReaderView.books) {
+                   _goBack(); // Navigate up within the reader (verses->chapters, chapters->books)
+                 } else if (Navigator.canPop(context)){
+                   Navigator.of(context).pop(); // Pop the whole screen if at book level
+                 }
+               },
+             )
+           : null, // No back button if it's the root view and can't pop
        ),
-       body: _buildBody(),
+       body: _buildBody(), // Build the body based on the current view state
      );
   }
-}
+} // End _FullBibleReaderScreenState

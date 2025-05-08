@@ -194,4 +194,38 @@ class DatabaseHelper {
     final List<Map<String, dynamic>> maps = await db.query(favFlagsTableName, columns: [favFlagsColFlagID], where: '$favFlagsColFavVerseID = ?', whereArgs: [verseID]);
     return maps.map((map) => map[favFlagsColFlagID] as int).toList();
   }
+
+
+  // MODIFIED: Return a Map<BookAbbr, CanonOrder> for easy lookup
+  Future<Map<String, String>> getBookAbbrToOrderMap() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+        'SELECT DISTINCT $bibleColBook, MIN($bibleColCanonOrder) as c_order FROM $bibleTableName GROUP BY $bibleColBook');
+    Map<String, String> bookOrderMap = {};
+    for (var map in maps) {
+      // Use null-aware operator for safety, though DB columns are NOT NULL
+      String? bookAbbr = map[bibleColBook] as String?;
+      String? canonOrder = map['c_order'] as String?;
+      if (bookAbbr != null && canonOrder != null) {
+          bookOrderMap[bookAbbr] = canonOrder;
+      }
+    }
+    return bookOrderMap;
+  }
+
+  // NEW: GET FAVORITES FILTERED BY FLAG
+  Future<List<Map<String, dynamic>>> getFavoritedVersesFilteredByFlag(int flagId) async {
+    final db = await database;
+    // Join favorites with the junction table, filter by flagId
+    final String query = '''
+      SELECT T1.*
+      FROM $favTableName T1
+      INNER JOIN $favFlagsTableName T2 ON T1.$favColVerseID = T2.$favFlagsColFavVerseID
+      WHERE T2.$favFlagsColFlagID = ?
+      ORDER BY T1.$favColCreatedAt DESC
+    ''';
+    // Note: JOIN might affect performance on very large tables if not indexed correctly.
+    // An alternative is separate queries, filtering in Dart, but JOIN is often better.
+    return await db.rawQuery(query, [flagId]);
+  }
 }

@@ -2,11 +2,15 @@
 import 'database_helper.dart'; // Needed for Flag.fromUserDbMap
 
 class Book {
-  final String abbreviation;
-  final String fullName;
-  // Make constructor const
-  const Book({required this.abbreviation, required this.fullName});
-}
+  final String abbreviation; // e.g., "GEN"
+  final String fullName;     // e.g., "Genesis"
+  final String canonOrder;
+  Book({
+    required this.abbreviation,
+    required this.fullName,
+    required this.canonOrder,
+    });
+  }
 
 class Verse {
   final String verseNumber;
@@ -64,3 +68,47 @@ final List<Flag> prebuiltFlags = [
   Flag(id: -9, name: "Hope"),
   Flag(id: -10, name: "Prayer"),
 ];
+
+class FavoriteVerse {
+  final String verseID;
+  final String bookAbbr;
+  final String chapter;
+  final String verseNumber;
+  final String verseText;
+  final DateTime createdAt;
+  final String bookCanonOrder; // Added for sorting
+  List<Flag> assignedFlags;
+
+  FavoriteVerse({
+    required this.verseID,
+    required this.bookAbbr,
+    required this.chapter,
+    required this.verseNumber,
+    required this.verseText,
+    required this.createdAt,
+    required this.bookCanonOrder, // Added
+    this.assignedFlags = const [],
+  });
+
+  // Update factory method
+  factory FavoriteVerse.fromMapAndFlags({
+    required Map<String, dynamic> favMap,
+    required List<Flag> flags,
+    required String canonOrder, // Require canonOrder
+  }) {
+    return FavoriteVerse(
+      verseID: favMap[DatabaseHelper.favColVerseID] as String,
+      bookAbbr: favMap[DatabaseHelper.favColBookAbbr] as String,
+      chapter: favMap[DatabaseHelper.favColChapter].toString(),
+      verseNumber: favMap[DatabaseHelper.favColVerseNumber].toString(),
+      verseText: favMap[DatabaseHelper.favColVerseText] as String,
+      createdAt: DateTime.tryParse(favMap[DatabaseHelper.favColCreatedAt] as String? ?? '') ?? DateTime.now(),
+      assignedFlags: flags,
+      bookCanonOrder: canonOrder, // Assign it
+    );
+  }
+
+  String getReference(String Function(String) getFullName) {
+      return "${getFullName(bookAbbr)} $chapter:$verseNumber";
+  }
+}
