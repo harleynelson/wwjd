@@ -1,0 +1,29 @@
+name: wwjd_app
+description: Wake up With Jesus Daily app.
+publish_to: 'none' # Remove this line if you intend to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0' # Adjust SDK constraint as per your Flutter version
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: ^2.3.2      # For SQLite database interaction
+  path_provider: ^2.1.3 # To find the correct file system paths
+  path: ^1.9.0         # For path manipulation
+  shared_preferences: ^2.2.3 # Add this line (use latest version)
+
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0 # Or your preferred linter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/database/wwjd_bible_free.sqlite # Correct path to your database
