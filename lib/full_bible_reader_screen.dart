@@ -4,7 +4,8 @@ import 'database_helper.dart';
 import 'models.dart'; // Includes Flag, Verse, Book, prebuiltFlags
 import 'book_names.dart';
 import 'prefs_helper.dart'; // Needed for hiding flags
-import 'dialogs/flag_selection_dialog.dart'; // Import the refactored dialog
+import 'dialogs/flag_selection_dialog.dart';
+import 'widgets/verse_list_item.dart'; // Import the refactored dialog
 
 enum BibleReaderView { books, chapters, verses }
 
@@ -296,8 +297,9 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
 
       case BibleReaderView.verses:
         if (_verses.isEmpty) return const Center(child: Text("No verses found for this chapter."));
-        return ListView.builder(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0), // Padding for readability
+        // --- Use ListView.separated for automatic dividers ---
+        return ListView.separated(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0), // Padding for list
           itemCount: _verses.length,
           itemBuilder: (context, index) {
             final verse = _verses[index];
@@ -305,93 +307,21 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
             final bool isFavorite = _favoritedVerseIdsInChapter.contains(verse.verseID);
             final List<String> flagNames = _getFlagNamesForVerse(verse.verseID ?? "");
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0), // Spacing between verses
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row( // Main row for verse number, text, favorite button
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Verse Number
-                      SizedBox(
-                        width: 35, // Space for verse number
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 2.0), // Align number better
-                          child: Text(
-                            '${verse.verseNumber}',
-                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.deepPurple, fontSize: 14, height: 1.5),
-                            textAlign: TextAlign.right,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 5), // Space between number and text
-                      // Verse Text (selectable)
-                      Expanded(
-                        child: SelectableText(
-                          verse.text,
-                          style: const TextStyle(fontSize: 17, height: 1.5, color: Colors.black87),
-                        ),
-                      ),
-                      // Favorite Button
-                      if (verse.verseID != null)
-                        Padding( // Add padding around button
-                          padding: const EdgeInsets.only(left: 8.0, top: 0),
-                          child: IconButton(
-                            icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border, color: isFavorite ? Colors.redAccent : Colors.grey.shade400,),
-                            iconSize: 22,
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            tooltip: isFavorite ? "Remove from Favorites" : "Add to Favorites",
-                            onPressed: () => _toggleFavorite(verse), // Uses updated toggle function
-                          ),
-                        ),
-                    ],
-                  ),
-                  // Display Flags and Add/Manage Button if favorited
-                  if (isFavorite && verse.verseID != null)
-                     Padding(
-                       padding: const EdgeInsets.only(left: 40.0, top: 6.0), // Indent under verse text
-                       child: Row(
-                         crossAxisAlignment: CrossAxisAlignment.center,
-                         children: [
-                            Expanded(
-                              child: flagNames.isEmpty
-                                ? const SizedBox(height: 30) // Placeholder height to align button
-                                : Wrap( // Display chips if flags exist
-                                    spacing: 6.0,
-                                    runSpacing: 4.0,
-                                    children: flagNames.map((name) => Chip(
-                                      label: Text(name, style: const TextStyle(fontSize: 10)),
-                                      visualDensity: VisualDensity.compact,
-                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
-                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                      backgroundColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
-                                    )).toList(),
-                                  ),
-                            ),
-                           // Add/Manage Flags Button
-                           TextButton.icon(
-                             icon: Icon(flagNames.isNotEmpty ? Icons.edit_note_outlined : Icons.label_outline, size: 18),
-                             label: Text(flagNames.isNotEmpty ? "Manage Flags" : "Add Flags", style: const TextStyle(fontSize: 11)),
-                             // Call the method to open the refactored dialog
-                             onPressed: () => _openFlagManagerForVerse(verse),
-                             style: TextButton.styleFrom(padding: const EdgeInsets.only(left: 8.0), minimumSize: const Size(50, 20), visualDensity: VisualDensity.compact ),
-                           ),
-                         ],
-                       ),
-                    ),
-                    // Add a subtle divider between verses
-                    if (index < _verses.length - 1)
-                       Padding(
-                         padding: const EdgeInsets.only(left: 40.0, top: 10.0), // Indent divider too
-                         child: Divider(height: 1, thickness: 0.5, color: Colors.grey.shade300),
-                       ),
-                ],
-              ),
+            // --- USE THE NEW WIDGET ---
+            return VerseListItem(
+              verse: verse,
+              isFavorite: isFavorite,
+              assignedFlagNames: flagNames,
+              // Pass the toggle favorite callback, bound to this verse
+              onToggleFavorite: () => _toggleFavorite(verse),
+              // Pass the manage flags callback, bound to this verse
+              onManageFlags: () => _openFlagManagerForVerse(verse),
             );
-          }, // End itemBuilder
-        ); // End ListView.builder
+            // --- END USING THE NEW WIDGET ---
+          },
+          // Add a separator between items (instead of putting Divider inside VerseListItem)
+          separatorBuilder: (context, index) => const SizedBox(height: 4), // Or return Divider();
+        ); // End ListView.separated
     } // End switch
   } // End _buildBody
 
