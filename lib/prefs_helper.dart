@@ -1,5 +1,7 @@
 // lib/prefs_helper.dart
 import 'package:shared_preferences/shared_preferences.dart';
+import 'models/reader_settings_enums.dart';
+
 
 class PrefsHelper {
   static SharedPreferences? _prefs;
@@ -7,6 +9,11 @@ class PrefsHelper {
 
   static const String _lastDevotionalDateKey = 'last_devotional_date'; // Stores YYYY-MM-DD
   static const String _lastDevotionalIndexKey = 'last_devotional_index';
+
+  // --- Reader Settings Keys ---
+  static const String _readerFontSizeDeltaKey = 'reader_font_size_delta';
+  static const String _readerFontFamilyKey = 'reader_font_family';
+  static const String _readerThemeModeKey = 'reader_theme_mode';
 
   // Call this method in main.dart before runApp
   static Future<void> init() async {
@@ -72,6 +79,49 @@ class PrefsHelper {
   static Future<void> setLastDevotionalIndex(int index) async {
     if (_prefs == null) return;
     await _prefs!.setInt(_lastDevotionalIndexKey, index);
+  }
+
+  // --- Reader Settings Methods ---
+
+  // Font Size Delta (how much to add/subtract from base size)
+  static double getReaderFontSizeDelta() {
+    if (_prefs == null) return 0.0;
+    return _prefs!.getDouble(_readerFontSizeDeltaKey) ?? 0.0; // Default to 0.0 (no change)
+  }
+
+  static Future<void> setReaderFontSizeDelta(double delta) async {
+    if (_prefs == null) return;
+    await _prefs!.setDouble(_readerFontSizeDeltaKey, delta);
+  }
+
+  // Font Family
+  static ReaderFontFamily getReaderFontFamily() {
+    if (_prefs == null) return ReaderFontFamily.systemDefault;
+    String? fontFamilyName = _prefs!.getString(_readerFontFamilyKey);
+    return ReaderFontFamily.values.firstWhere(
+      (e) => e.name == fontFamilyName,
+      orElse: () => ReaderFontFamily.systemDefault, // Default if not found or null
+    );
+  }
+
+  static Future<void> setReaderFontFamily(ReaderFontFamily fontFamily) async {
+    if (_prefs == null) return;
+    await _prefs!.setString(_readerFontFamilyKey, fontFamily.name);
+  }
+
+  // Reader Theme Mode
+  static ReaderThemeMode getReaderThemeMode() {
+    if (_prefs == null) return ReaderThemeMode.light;
+    String? themeModeName = _prefs!.getString(_readerThemeModeKey);
+    return ReaderThemeMode.values.firstWhere(
+      (e) => e.name == themeModeName,
+      orElse: () => ReaderThemeMode.light, // Default to light if not found or null
+    );
+  }
+
+  static Future<void> setReaderThemeMode(ReaderThemeMode themeMode) async {
+    if (_prefs == null) return;
+    await _prefs!.setString(_readerThemeModeKey, themeMode.name);
   }
 
 }
