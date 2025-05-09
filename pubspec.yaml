@@ -16,6 +16,7 @@ dependencies:
   shared_preferences: ^2.2.3 # Add this line (use latest version)
   scrollable_positioned_list: ^0.3.8 # For scrollable list view
   cupertino_icons: ^1.0.6
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

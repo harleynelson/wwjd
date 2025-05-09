@@ -11,6 +11,7 @@ import 'full_bible_reader_screen.dart';
 import 'favorites_screen.dart';
 import 'prefs_helper.dart';
 import 'dialogs/flag_selection_dialog.dart';
+import 'screens/settings_screen.dart';
 import 'search_screen.dart';
 import 'screens/reading_plans_list_screen.dart';
 import 'theme/app_colors.dart';
@@ -87,8 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<Devotional?> _fetchDevotionalOfTheDay() async {
-    if (allDevotionals.isNotEmpty) return allDevotionals[Random().nextInt(allDevotionals.length)];
-    return const Devotional(title: "N/A", coreMessage: "N/A", scriptureFocus: "", scriptureReference: "", reflection: "N/A", prayerDeclaration: "");
+    print("HomeScreen _fetchDevotionalOfTheDay: Calling new daily logic");
+    // Now calls the updated getDevotionalOfTheDay from daily_devotionals.dart
+    return await getDevotionalOfTheDay(); 
   }
 
   Future<VotDDataBundle> _fetchNewRandomVotDBundle() async {
@@ -412,7 +414,26 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
 Widget build(BuildContext context) {
   return Scaffold(
-    appBar: AppBar( title: const Text('Wake up with Jesus'), centerTitle: true,),
+    appBar: AppBar(
+        title: const Text('Wake up With Jesus Daily'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: "Settings",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              ).then((value) {
+                // When returning from settings, refresh home screen data
+                // as dev options might have changed things.
+                _refreshAllData();
+              });
+            },
+          ),
+        ],
+      ),
     body: Container(
       decoration: BoxDecoration( gradient: LinearGradient( colors: [Colors.deepPurple.shade100.withOpacity(0.6), Colors.purple.shade50.withOpacity(0.8), Colors.white, ], begin: Alignment.topLeft, end: Alignment.bottomRight, stops: const [0.0, 0.3, 1.0],),),
       child: RefreshIndicator( onRefresh: _refreshAllData,

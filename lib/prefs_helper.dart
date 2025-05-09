@@ -5,6 +5,9 @@ class PrefsHelper {
   static SharedPreferences? _prefs;
   static const String _hiddenFlagsKey = 'hidden_default_flag_ids';
 
+  static const String _lastDevotionalDateKey = 'last_devotional_date'; // Stores YYYY-MM-DD
+  static const String _lastDevotionalIndexKey = 'last_devotional_index';
+
   // Call this method in main.dart before runApp
   static Future<void> init() async {
     _prefs ??= await SharedPreferences.getInstance();
@@ -49,4 +52,26 @@ class PrefsHelper {
      await _prefs!.remove(_hiddenFlagsKey);
       print("Cleared all hidden flags.");
   }
+
+  // --- Methods for Daily Devotional Tracking ---
+  static String? getLastDevotionalDate() {
+    if (_prefs == null) return null;
+    return _prefs!.getString(_lastDevotionalDateKey);
+  }
+
+  static Future<void> setLastDevotionalDate(String date) async {
+    if (_prefs == null) return;
+    await _prefs!.setString(_lastDevotionalDateKey, date);
+  }
+
+  static int getLastDevotionalIndex() {
+    if (_prefs == null) return -1; // Return -1 if not found, so next is 0
+    return _prefs!.getInt(_lastDevotionalIndexKey) ?? -1;
+  }
+
+  static Future<void> setLastDevotionalIndex(int index) async {
+    if (_prefs == null) return;
+    await _prefs!.setInt(_lastDevotionalIndexKey, index);
+  }
+
 }
