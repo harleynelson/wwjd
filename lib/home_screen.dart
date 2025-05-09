@@ -314,7 +314,7 @@ Widget build(BuildContext context) {
             _buildNavigationButton(
               context,
               icon: Icons.checklist_rtl_outlined, // Example Icon
-              label: "Reading Plans",
+              label: "Guided Reading Plans",
               onTap: () {
                 Navigator.push( context, MaterialPageRoute(builder: (context) => const ReadingPlansListScreen()),);
               },
