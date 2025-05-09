@@ -1,4 +1,7 @@
-// lib/widgets/verse_list_item.dart
+// File: lib/widgets/verse_list_item.dart
+// Approximate line: 12 (add new parameter and update constructor)
+// Approximate line: 36 (update build method)
+
 import 'package:flutter/material.dart';
 import '../models.dart'; // Access to Verse model
 
@@ -7,8 +10,10 @@ class VerseListItem extends StatelessWidget {
   final Verse verse;
   final bool isFavorite;
   final List<String> assignedFlagNames;
-  final VoidCallback onToggleFavorite; // Callback when heart is tapped
-  final VoidCallback onManageFlags; // Callback when manage/add flags is tapped
+  final VoidCallback onToggleFavorite;
+  final VoidCallback onManageFlags;
+  final VoidCallback? onVerseTap;
+  final bool isHighlighted; // New parameter
 
   const VerseListItem({
     super.key,
@@ -17,92 +22,137 @@ class VerseListItem extends StatelessWidget {
     required this.assignedFlagNames,
     required this.onToggleFavorite,
     required this.onManageFlags,
+    this.onVerseTap,
+    this.isHighlighted = false, // Default to false
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0), // Spacing between verses
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row( // Main row for verse number, text, favorite button
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Verse Number
-              SizedBox(
-                width: 35, // Space for verse number
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 2.0), // Align number better
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final TextTheme textTheme = theme.textTheme;
+
+    // Define styles for better readability and modern look
+    final TextStyle verseNumberStyle = textTheme.bodySmall!.copyWith(
+      fontWeight: FontWeight.bold,
+      color: colorScheme.primary.withOpacity(0.8),
+      fontSize: 12,
+    );
+
+    final TextStyle verseTextStyle = textTheme.bodyLarge!.copyWith(
+      height: 1.6,
+      fontSize: 18,
+      color: colorScheme.onBackground.withOpacity(0.85),
+    );
+
+    final TextStyle flagChipStyle = textTheme.labelSmall!.copyWith(
+      color: colorScheme.onSecondaryContainer,
+    );
+
+    // Define highlight color
+    final Color? highlightColor = isHighlighted
+        ? colorScheme.primaryContainer.withOpacity(0.4) // Or a distinct highlight color like Colors.yellow.withOpacity(0.3)
+        : null;
+
+    return InkWell(
+      onTap: onVerseTap,
+      splashColor: colorScheme.primaryContainer.withOpacity(0.3),
+      highlightColor: colorScheme.primaryContainer.withOpacity(0.15),
+      child: AnimatedContainer( // Wrap with AnimatedContainer for smooth highlight transition
+        duration: const Duration(milliseconds: 300),
+        decoration: BoxDecoration(
+          color: highlightColor,
+          borderRadius: BorderRadius.circular(isHighlighted ? 8.0 : 0.0), // Optional: round corners when highlighted
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 38,
+                  padding: const EdgeInsets.only(top: 3.0),
                   child: Text(
-                    verse.verseNumber, // Use verse number from Verse object
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.deepPurple, fontSize: 14, height: 1.5),
+                    verse.verseNumber,
+                    style: verseNumberStyle,
                     textAlign: TextAlign.right,
                   ),
                 ),
-              ),
-              const SizedBox(width: 5), // Space between number and text
-              // Verse Text (selectable)
-              Expanded(
-                child: SelectableText(
-                  verse.text, // Use verse text from Verse object
-                  style: const TextStyle(fontSize: 17, height: 1.5, color: Colors.black87),
-                ),
-              ),
-              // Favorite Button
-              if (verse.verseID != null) // Only show if ID is available
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, top: 0),
-                  child: IconButton(
-                    icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border, color: isFavorite ? Colors.redAccent : Colors.grey.shade400,),
-                    iconSize: 22,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    tooltip: isFavorite ? "Remove from Favorites" : "Add to Favorites",
-                    onPressed: onToggleFavorite, // Use passed callback
+                const SizedBox(width: 8),
+                Expanded(
+                  child: SelectableText(
+                    verse.text,
+                    style: verseTextStyle,
                   ),
                 ),
-            ],
-          ),
-          // Display Flags and Add/Manage Button if favorited
-          if (isFavorite && verse.verseID != null)
-             Padding(
-               padding: const EdgeInsets.only(left: 40.0, top: 6.0), // Indent under verse text
-               child: Row(
-                 crossAxisAlignment: CrossAxisAlignment.center,
-                 children: [
+                if (verse.verseID != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0, top: 0),
+                    child: IconButton(
+                      icon: Icon(
+                        isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                        color: isFavorite ? Colors.red.shade400 : colorScheme.outline,
+                      ),
+                      iconSize: 24,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      tooltip: isFavorite ? "Remove from Favorites" : "Add to Favorites",
+                      onPressed: onToggleFavorite,
+                    ),
+                  ),
+              ],
+            ),
+            if (isFavorite && verse.verseID != null)
+              Padding(
+                padding: const EdgeInsets.only(left: 46.0, top: 8.0, right: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
                     Expanded(
                       child: assignedFlagNames.isEmpty
-                        ? const SizedBox(height: 30) // Placeholder height
-                        : Wrap( // Display assigned flags as Chips
-                            spacing: 6.0,
-                            runSpacing: 4.0,
-                            children: assignedFlagNames.map((name) => Chip(
-                              label: Text(name, style: const TextStyle(fontSize: 10)),
-                              visualDensity: VisualDensity.compact,
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
-                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              backgroundColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
-                            )).toList(),
-                          ),
+                          ? const SizedBox(height: 30)
+                          : Wrap(
+                              spacing: 6.0,
+                              runSpacing: 4.0,
+                              children: assignedFlagNames.map((name) => Chip(
+                                label: Text(name, style: flagChipStyle),
+                                visualDensity: VisualDensity.compact,
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                backgroundColor: colorScheme.secondaryContainer.withOpacity(0.6),
+                                side: BorderSide(color: colorScheme.secondaryContainer),
+                              )).toList(),
+                            ),
                     ),
-                   // Add/Manage Flags Button
-                   TextButton.icon(
-                     icon: Icon(assignedFlagNames.isNotEmpty ? Icons.edit_note_outlined : Icons.label_outline, size: 18),
-                     label: Text(assignedFlagNames.isNotEmpty ? "Manage Flags" : "Add Flags", style: const TextStyle(fontSize: 11)),
-                     onPressed: onManageFlags, // Use passed callback
-                     style: TextButton.styleFrom(padding: const EdgeInsets.only(left: 8.0), minimumSize: const Size(50, 20), visualDensity: VisualDensity.compact ),
-                   ),
-                 ],
-               ),
+                    TextButton.icon(
+                      icon: Icon(
+                        assignedFlagNames.isNotEmpty ? Icons.edit_note_outlined : Icons.add_circle_outline_rounded,
+                        size: 18,
+                        color: colorScheme.primary,
+                      ),
+                      label: Text(
+                        assignedFlagNames.isNotEmpty ? "Manage" : "Add Flags",
+                        style: textTheme.labelMedium?.copyWith(color: colorScheme.primary),
+                      ),
+                      onPressed: onManageFlags,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        minimumSize: const Size(50, 30),
+                        visualDensity: VisualDensity.compact,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.only(left: 46.0, top: 10.0, right: 8.0),
+              child: Divider(height: 1, thickness: 0.5, color: colorScheme.outlineVariant.withOpacity(0.5)),
             ),
-            // Add a subtle divider between verses (could be optional or handled by ListView separator)
-            // Included here for self-contained item styling consistency
-             Padding(
-                 padding: const EdgeInsets.only(left: 40.0, top: 8.0), // Indent divider too
-                 child: Divider(height: 1, thickness: 0.5, color: Colors.grey.shade300),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

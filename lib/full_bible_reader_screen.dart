@@ -1,4 +1,5 @@
 // lib/full_bible_reader_screen.dart
+import 'dart:async'; // Import for Timer
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart'; // Import
 import 'database_helper.dart';
@@ -7,6 +8,7 @@ import 'book_names.dart';
 import 'prefs_helper.dart'; // Needed for hiding flags
 import 'dialogs/flag_selection_dialog.dart'; // Import the refactored dialog
 import 'widgets/verse_list_item.dart'; // Import the refactored list item
+import 'widgets/verse_actions_bottom_sheet.dart'; // Import the bottom sheet
 
 enum BibleReaderView { books, chapters, verses }
 
@@ -52,12 +54,20 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   Map<String, List<int>> _flagAssignmentsForChapter = {}; // verseID -> List<flagId> for current chapter view
 
   bool _initialScrollDone = false; // Track if initial scroll (if any) has been attempted
+  String? _verseToHighlight; // State variable to hold the verse number to highlight
+  Timer? _highlightTimer;   // Timer to clear the highlight
 
 
   @override
   void initState() {
     super.initState();
     _loadInitialData();
+  }
+
+  @override
+  void dispose() {
+    _highlightTimer?.cancel(); // Important to cancel timer to prevent memory leaks
+    super.dispose();
   }
 
   // Determines initial loading based on whether a target verse was provided
@@ -99,7 +109,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
       final List<Map<String, dynamic>> bookMaps = await _dbHelper.getBookAbbreviations();
        _books = bookMaps.map((map) {
             String bAbbr = map[DatabaseHelper.bibleColBook] as String;
-            String order = map['c_order'] as String? ?? 'zzz';
+            String order = map['c_order'] as String? ?? 'zzz'; // Default order if null
             return Book(abbreviation: bAbbr, fullName: getFullBookName(bAbbr), canonOrder: order);
           }).toList();
     }
@@ -139,7 +149,11 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
     bool enteringVerseView = (chapter != null && _currentView != BibleReaderView.verses);
     setState(() {
        _isLoading = true;
-       if(enteringVerseView) _initialScrollDone = false;
+       if(enteringVerseView) {
+         _initialScrollDone = false;
+         _verseToHighlight = null; // Clear previous highlight when view changes
+         _highlightTimer?.cancel();
+       }
     });
 
     try {
@@ -179,17 +193,17 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         _appBarTitle = "${book.fullName} $chapter";
 
         // Trigger scroll AFTER verses are loaded and state is set, IF target was specified for THIS view
-        bool shouldScroll = widget.targetBookAbbr == book.abbreviation &&
+        bool shouldScrollAndHighlight = widget.targetBookAbbr == book.abbreviation &&
                             widget.targetChapter == chapter &&
                             widget.targetVerseNumber != null &&
                             !_initialScrollDone;
 
-        if (shouldScroll) {
+        if (shouldScrollAndHighlight) {
            // Use addPostFrameCallback to ensure the list has been built before scrolling
            WidgetsBinding.instance.addPostFrameCallback((_) {
              // Check mount status again inside callback
              if (mounted) {
-               _scrollToTargetVerse();
+               _scrollToTargetVerse(widget.targetVerseNumber); // Pass target verse number
              }
            });
         }
@@ -207,19 +221,31 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   }
 
   // Scroll to the target verse if specified in widget parameters
-  void _scrollToTargetVerse() {
-    if (widget.targetVerseNumber == null || _verses.isEmpty || !_itemScrollController.isAttached) {
-      print("Scroll condition not met: targetVerse=${widget.targetVerseNumber}, versesEmpty=${_verses.isEmpty}, controllerAttached=${_itemScrollController.isAttached}");
+  void _scrollToTargetVerse(String? targetVerseNumToScroll) { // Modified to accept targetVerseNum
+    if (targetVerseNumToScroll == null || _verses.isEmpty || !_itemScrollController.isAttached) {
+      print("Scroll condition not met: targetVerse=$targetVerseNumToScroll, versesEmpty=${_verses.isEmpty}, controllerAttached=${_itemScrollController.isAttached}");
+      if (targetVerseNumToScroll != null) { // If we intended to scroll, mark it as "done" attempt
+          setState(() { _initialScrollDone = true; });
+      }
       return;
     }
-    final targetVerse = widget.targetVerseNumber!;
-    // Find the index in the _verses list (0-based)
-    final index = _verses.indexWhere((v) => v.verseNumber == targetVerse);
+
+    final index = _verses.indexWhere((v) => v.verseNumber == targetVerseNumToScroll);
 
     if (index != -1) {
-      print("Scrolling to index: $index (Verse: $targetVerse)");
-      // Prevent multiple scroll attempts
-      setState(() { _initialScrollDone = true; });
+      print("Scrolling to index: $index (Verse: $targetVerseNumToScroll)");
+      setState(() {
+        _initialScrollDone = true;
+        _verseToHighlight = targetVerseNumToScroll; // Set the verse to highlight
+        _highlightTimer?.cancel(); // Cancel any existing timer
+        _highlightTimer = Timer(const Duration(seconds: 2), () { // Highlight for 2 seconds
+          if (mounted) {
+            setState(() {
+              _verseToHighlight = null; // Clear highlight
+            });
+          }
+        });
+      });
       _itemScrollController.scrollTo(
         index: index,
         duration: const Duration(milliseconds: 600), // Slightly longer duration
@@ -227,7 +253,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         alignment: 0.1, // Scroll so the item is near the top (10% from top)
       );
     } else {
-        print("Target verse $targetVerse not found in loaded chapter for scrolling.");
+        print("Target verse $targetVerseNumToScroll not found in loaded chapter for scrolling.");
          setState(() { _initialScrollDone = true; }); // Mark as done even if not found
     }
   }
@@ -245,7 +271,6 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   void _loadVerses(String chapter) { if (_selectedBook != null) { _loadData(book: _selectedBook!, chapter: chapter); } }
 
   // Back navigation within the reader screen state
-  // Back navigation within the reader screen state
   void _goBack() {
     if (!mounted) return;
     // No need for setState around the whole block, let the load methods handle it
@@ -254,11 +279,8 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
       // Need to reload chapters for the current _selectedBook
       if (_selectedBook != null) {
          print("Going back from Verses to Chapters for: ${_selectedBook!.fullName}");
-         // Set loading true BEFORE calling async load function inside setState if needed
-         // Or just call the load function which handles its own state updates
-         _loadChapters(_selectedBook!); // This method sets loading state and updates UI
+         _loadChapters(_selectedBook!);
       } else {
-         // Should not happen if we are in verse view, but handle defensively
          _goBackToBooks();
       }
     } else if (_currentView == BibleReaderView.chapters) {
@@ -272,13 +294,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
    void _goBackToBooks() {
      if (!mounted) return;
      print("Going back to Books view, reloading books...");
-     // Call _loadBooks which handles setting state and loading data
      _loadBooks();
-     // The _loadData method called by _loadBooks will reset the state correctly:
-     // _currentView = BibleReaderView.books;
-     // _appBarTitle = "Select a Book";
-     // _selectedBook = null;
-     // etc.
    }
 
   // Toggle favorite status for a verse
@@ -330,7 +346,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   void _openFlagManagerForVerse(Verse verse) {
      if (verse.verseID == null || !mounted) return;
      final String verseID = verse.verseID!;
-     final String verseRef = "${verse.bookAbbr ?? '?'} ${verse.chapter ?? '?'}:${verse.verseNumber}";
+     final String verseRef = "${getFullBookName(verse.bookAbbr ?? '?')} ${verse.chapter ?? '?'}:${verse.verseNumber}";
      // Get current selection for this verse from the state map
      final List<int> currentSelection = _flagAssignmentsForChapter[verseID] ?? [];
 
@@ -340,41 +356,33 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
              verseRef: verseRef,
              initialSelectedFlagIds: currentSelection,
              allAvailableFlags: List<Flag>.from(_allAvailableFlags), // Pass available flags
-             // Implement callbacks:
              onHideFlag: (flagId) async {
                  await PrefsHelper.hideFlagId(flagId);
                  await _loadAvailableFlags(); // Refresh available flags list
-                 if(mounted) setState(() { _flagAssignmentsForChapter[verseID]?.remove(flagId); }); // Update local state map
+                 if(mounted) setState(() { _flagAssignmentsForChapter[verseID]?.remove(flagId); });
              },
              onDeleteFlag: (flagId) async {
                  await _dbHelper.deleteUserFlag(flagId);
-                 await _loadAvailableFlags(); // Refresh available flags list
-                 if(mounted) setState(() { _flagAssignmentsForChapter[verseID]?.remove(flagId); }); // Update local state map
+                 await _loadAvailableFlags();
+                 if(mounted) setState(() { _flagAssignmentsForChapter[verseID]?.remove(flagId); });
              },
              onAddNewFlag: (newName) async {
                  int newId = await _dbHelper.addUserFlag(newName);
-                 // Ensure flags are reloaded AFTER adding the new one
-                 await _loadAvailableFlags(); // Or _loadAvailableFlagsAndBookOrder if using that
-
-                 // Try to find the newly added flag in the refreshed list
+                 await _loadAvailableFlags();
                  try {
-                    // Use firstWhere - will throw if not found
                     final newFlag = _allAvailableFlags.firstWhere((f) => f.id == newId);
-                    return newFlag; // Return the found Flag object
+                    return newFlag;
                  } catch (e) {
-                    // Catch the error if firstWhere fails to find it
                     print("Error finding newly added flag ID $newId after loading: $e");
-                    return null; // Explicitly return null if not found
+                    return null;
                  }
              },
              onSave: (finalSelectedIds) async {
-                 // Logic to update DB based on final selection vs initial
                  List<int> initialIds = List<int>.from(currentSelection);
                  Set<int> initialSet = initialIds.toSet();
                  Set<int> finalSet = finalSelectedIds.toSet();
                  for (int id in finalSet) { if (!initialSet.contains(id)) { await _dbHelper.assignFlagToFavorite(verseID, id); } }
                  for (int id in initialSet) { if (!finalSet.contains(id)) { await _dbHelper.removeFlagFromFavorite(verseID, id); } }
-                 // Update the main screen state map
                  if (mounted) { setState(() { _flagAssignmentsForChapter[verseID] = finalSelectedIds; }); }
              },
          ),
@@ -386,7 +394,6 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
       List<int> flagIds = _flagAssignmentsForChapter[verseID] ?? [];
       List<String> names = [];
       for (int id in flagIds) {
-          // Find in the combined list (_allAvailableFlags should be up-to-date)
           final flag = _allAvailableFlags.firstWhere((f) => f.id == id, orElse: () => Flag(id: 0, name: "Unknown"));
           if (flag.id != 0) { names.add(flag.name); }
       }
@@ -402,7 +409,6 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
     switch (_currentView) {
       case BibleReaderView.books:
         if (_books.isEmpty) return const Center(child: Text("No books found."));
-        // Use standard ListView for books
         return ListView.builder(
           itemCount: _books.length,
           itemBuilder: (context, index) {
@@ -416,11 +422,10 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
 
       case BibleReaderView.chapters:
         if (_chapters.isEmpty) return Center(child: Text("No chapters found for ${_selectedBook?.fullName ?? 'this book'}."));
-        // Use GridView for chapters
         return GridView.builder(
           padding: const EdgeInsets.all(8.0),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 5, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0, childAspectRatio: 1.5 // Adjust aspect ratio if needed
+            crossAxisCount: 5, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0, childAspectRatio: 1.5
           ),
           itemCount: _chapters.length,
           itemBuilder: (context, index) {
@@ -439,57 +444,71 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
 
       case BibleReaderView.verses:
         if (_verses.isEmpty) return const Center(child: Text("No verses found for this chapter."));
-        // --- USE ScrollablePositionedList.builder ---
         return ScrollablePositionedList.builder(
-          itemScrollController: _itemScrollController, // Controller for scrolling
-          itemPositionsListener: _itemPositionsListener, // Listener (optional)
+          itemScrollController: _itemScrollController,
+          itemPositionsListener: _itemPositionsListener,
           itemCount: _verses.length,
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0), // Padding for list
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0),
           itemBuilder: (context, index) {
             final verse = _verses[index];
-            // Determine favorite status and flags from state maps
             final bool isFavorite = _favoritedVerseIdsInChapter.contains(verse.verseID);
             final List<String> flagNames = _getFlagNamesForVerse(verse.verseID ?? "");
+            final bool shouldHighlight = verse.verseNumber == _verseToHighlight;
 
-            // Use the extracted VerseListItem widget
             return VerseListItem(
               verse: verse,
               isFavorite: isFavorite,
               assignedFlagNames: flagNames,
-              // Pass the toggle favorite callback, bound to this verse
+              isHighlighted: shouldHighlight, // Pass highlight status
               onToggleFavorite: () => _toggleFavorite(verse),
-              // Pass the manage flags callback, bound to this verse
               onManageFlags: () => _openFlagManagerForVerse(verse),
+              onVerseTap: () {
+                final String bookName = getFullBookName(verse.bookAbbr ?? "Unknown Book");
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (BuildContext bContext) { // Use a different context name
+                    return VerseActionsBottomSheet(
+                      verse: verse,
+                      isFavorite: isFavorite,
+                      assignedFlagNames: flagNames,
+                      onToggleFavorite: () {
+                        _toggleFavorite(verse);
+                      },
+                      onManageFlags: () {
+                        _openFlagManagerForVerse(verse);
+                      },
+                      fullBookName: bookName,
+                    );
+                  },
+                );
+              },
             );
           },
-          // Use padding in VerseListItem or here instead of separatorBuilder if preferred
         );
-        // --- END ScrollablePositionedList.builder ---
-    } // End switch
-  } // End _buildBody
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
      return Scaffold(
        appBar: AppBar(
          title: Text(_appBarTitle),
-         // Conditionally show back button
          leading: _currentView != BibleReaderView.books || Navigator.canPop(context) || (widget.targetBookAbbr != null)
            ? IconButton(
                icon: const Icon(Icons.arrow_back),
                onPressed: () {
-                 // Handle back navigation: either internal state or pop screen
                  if (_currentView != BibleReaderView.books) {
-                   _goBack(); // Navigate up within the reader (verses->chapters, chapters->books)
+                   _goBack();
                  } else if (Navigator.canPop(context)){
-                   Navigator.of(context).pop(); // Pop the whole screen if possible
+                   Navigator.of(context).pop();
                  }
-                 // If launched directly into verses/chapters, might need custom back behavior
                },
              )
-           : null, // No back button if it's the root view and can't pop and wasn't targeted
+           : null,
        ),
-       body: _buildBody(), // Build the body based on the current view state
+       body: _buildBody(),
      );
   }
-} // End _FullBibleReaderScreenState
+}
