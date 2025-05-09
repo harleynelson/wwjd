@@ -112,3 +112,138 @@ class FavoriteVerse {
       return "${getFullName(bookAbbr)} $chapter:$verseNumber";
   }
 }
+
+
+class BiblePassagePointer {
+  final String bookAbbr;
+  final int startChapter;
+  final int startVerse;
+  final int endChapter;
+  final int endVerse;
+  final String displayText; // e.g., "Matthew 5:1-16" or "Genesis 1"
+
+  const BiblePassagePointer({
+    required this.bookAbbr,
+    required this.startChapter,
+    required this.startVerse,
+    required this.endChapter,
+    required this.endVerse,
+    required this.displayText,
+  });
+
+  // For JSON serialization if storing progress with passage details
+  Map<String, dynamic> toJson() => {
+        'bookAbbr': bookAbbr,
+        'startChapter': startChapter,
+        'startVerse': startVerse,
+        'endChapter': endChapter,
+        'endVerse': endVerse,
+        'displayText': displayText,
+      };
+
+  factory BiblePassagePointer.fromJson(Map<String, dynamic> json) => BiblePassagePointer(
+        bookAbbr: json['bookAbbr'],
+        startChapter: json['startChapter'],
+        startVerse: json['startVerse'],
+        endChapter: json['endChapter'],
+        endVerse: json['endVerse'],
+        displayText: json['displayText'],
+      );
+}
+
+class ReadingPlanDay {
+  final int dayNumber;
+  final String title; // Optional title for the day's reading
+  final List<BiblePassagePointer> passages;
+  final String? reflectionPrompt; // Optional prompt for journaling
+  // final String? devotionalId; // Optional: Link to a specific devotional from your list
+
+  const ReadingPlanDay({
+    required this.dayNumber,
+    this.title = '',
+    required this.passages,
+    this.reflectionPrompt,
+    // this.devotionalId,
+  });
+}
+
+class ReadingPlan {
+  final String id;
+  final String title;
+  final String description;
+  final int durationDays; // Calculated or stored
+  final String category; // e.g., "Gospels", "Topical", "Old Testament"
+  // final String? coverImageUrl; // REMOVED
+  final bool isPremium;
+  final List<ReadingPlanDay> dailyReadings;
+
+  const ReadingPlan({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.category,
+    // this.coverImageUrl, // REMOVED
+    required this.isPremium,
+    required this.dailyReadings,
+  }) : durationDays = dailyReadings.length;
+}
+
+// Model for user's progress in a reading plan
+class UserReadingProgress {
+  final String planId;
+  int currentDayNumber; // Next day to read (starts at 1)
+  Map<int, DateTime> completedDays; // Map of dayNumber to completion DateTime
+  DateTime startDate;
+  DateTime? lastCompletionDate; // Tracks the date of the last completed reading
+  int streakCount;
+  bool isActive; // If the user is currently active on this plan
+
+  UserReadingProgress({
+    required this.planId,
+    this.currentDayNumber = 1,
+    Map<int, DateTime>? completedDays,
+    required this.startDate,
+    this.lastCompletionDate,
+    this.streakCount = 0,
+    this.isActive = true,
+  }) : completedDays = completedDays ?? {};
+
+  factory UserReadingProgress.fromMap(Map<String, dynamic> map) {
+    Map<int, DateTime> completed = {};
+    if (map['completed_days_json'] != null) {
+      Map<String, String> storedMap = Map<String, String>.from(DatabaseHelper.decodeJson(map['completed_days_json']));
+      storedMap.forEach((key, value) {
+        completed[int.parse(key)] = DateTime.parse(value);
+      });
+    }
+
+    return UserReadingProgress(
+      planId: map[DatabaseHelper.progressColPlanId],
+      currentDayNumber: map[DatabaseHelper.progressColCurrentDay],
+      completedDays: completed,
+      startDate: DateTime.parse(map[DatabaseHelper.progressColStartDate]),
+      lastCompletionDate: map[DatabaseHelper.progressColLastCompletionDate] != null
+          ? DateTime.parse(map[DatabaseHelper.progressColLastCompletionDate])
+          : null,
+      streakCount: map[DatabaseHelper.progressColStreakCount],
+      isActive: map[DatabaseHelper.progressColIsActive] == 1,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    Map<String, String> completedJson = {};
+    completedDays.forEach((key, value) {
+      completedJson[key.toString()] = value.toIso8601String();
+    });
+
+    return {
+      DatabaseHelper.progressColPlanId: planId,
+      DatabaseHelper.progressColCurrentDay: currentDayNumber,
+      DatabaseHelper.progressColCompletedDaysJson: DatabaseHelper.encodeJson(completedJson),
+      DatabaseHelper.progressColStartDate: startDate.toIso8601String(),
+      DatabaseHelper.progressColLastCompletionDate: lastCompletionDate?.toIso8601String(),
+      DatabaseHelper.progressColStreakCount: streakCount,
+      DatabaseHelper.progressColIsActive: isActive ? 1 : 0,
+    };
+  }
+}

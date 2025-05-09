@@ -11,6 +11,7 @@ import 'full_bible_reader_screen.dart'; // To navigate to the Bible reader
 import 'favorites_screen.dart'; // To navigate to Favorites screen
 import 'prefs_helper.dart'; // Import PrefsHelper for hidden flags
 import 'dialogs/flag_selection_dialog.dart';
+import 'screens/reading_plans_list_screen.dart';
 import 'search_screen.dart'; // Import the refactored dialog
 
 class HomeScreen extends StatefulWidget {
@@ -308,6 +309,15 @@ Widget build(BuildContext context) {
               onManageFlags: _isVotDFavorite && currentVerseIdForVotD.isNotEmpty
                   ? () => _openFlagManagerForVotD()
                   : null,
+            ),
+            const SizedBox(height: 16.0),
+            _buildNavigationButton(
+              context,
+              icon: Icons.checklist_rtl_outlined, // Example Icon
+              label: "Reading Plans",
+              onTap: () {
+                Navigator.push( context, MaterialPageRoute(builder: (context) => const ReadingPlansListScreen()),);
+              },
             ),
             const SizedBox(height: 24.0),
 
