@@ -1,10 +1,11 @@
 // lib/screens/reading_plans_list_screen.dart
 import 'package:flutter/material.dart';
 import '../models.dart';
-import '../reading_plans_data.dart'; // Your hardcoded plans
+import '../reading_plans_data.dart'; 
 import '../database_helper.dart';
 import '../widgets/reading_plan_list_item.dart';
-import 'reading_plan_detail_screen.dart'; // We'll create this next
+import 'reading_plan_detail_screen.dart'; 
+import '../theme/app_colors.dart'; 
 
 class ReadingPlansListScreen extends StatefulWidget {
   const ReadingPlansListScreen({super.key});
@@ -19,6 +20,17 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
   Map<String, UserReadingProgress> _progressMap = {};
   bool _isLoading = true;
 
+  final List<Alignment> _gradientAlignmentsBegin = [
+    Alignment.topLeft, Alignment.topCenter, Alignment.topRight, Alignment.centerLeft,
+    Alignment.bottomLeft, // Added more variety
+    Alignment.center,
+  ];
+  final List<Alignment> _gradientAlignmentsEnd = [
+    Alignment.bottomRight, Alignment.bottomCenter, Alignment.bottomLeft, Alignment.centerRight,
+    Alignment.topRight, // Added more variety
+    Alignment.center,
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -26,13 +38,9 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
   }
 
   Future<void> _loadPlansAndProgress() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    // Load static plan definitions
-    _plans = List<ReadingPlan>.from(allReadingPlans); // Make a mutable copy if needed for sorting/filtering later
-    
+    // ... (no changes to this method from last version)
+    setState(() { _isLoading = true; });
+    _plans = List<ReadingPlan>.from(allReadingPlans); 
     Map<String, UserReadingProgress> tempProgressMap = {};
     try {
       for (var plan in _plans) {
@@ -42,15 +50,12 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
         }
       }
     } catch (e) {
-        print("Error loading reading plan progresses: $e");
         if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("Error loading plan progress: ${e.toString()}"))
             );
         }
     }
-
-
     if (mounted) {
       setState(() {
         _progressMap = tempProgressMap;
@@ -59,21 +64,25 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
     }
   }
 
-  void _navigateToPlanDetail(ReadingPlan plan) async {
-    // Navigate and await result in case detail screen modifies progress
-    // and we want to refresh this list screen.
+  void _navigateToPlanDetail(
+    ReadingPlan plan, 
+    List<Color> gradientColors, 
+    Alignment beginAlignment, 
+    Alignment endAlignment
+  ) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ReadingPlanDetailScreen(
           plan: plan,
-          initialProgress: _progressMap[plan.id], // Pass initial progress
+          initialProgress: _progressMap[plan.id], 
+          headerGradientColors: gradientColors, // Pass gradient colors
+          headerBeginAlignment: beginAlignment, // Pass begin alignment
+          headerEndAlignment: endAlignment,     // Pass end alignment
         ),
       ),
     );
-
-    // If the detail screen indicates a change (e.g., plan started/progressed), refresh.
-    if (result == true && mounted) { // Use a boolean flag or specific result type
+    if (result == true && mounted) { 
       _loadPlansAndProgress();
     }
   }
@@ -87,7 +96,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _plans.isEmpty
-              ? const Center(
+              ? const Center( /* ... empty state text ... */ 
                   child: Text(
                     "No reading plans available at the moment.\nCheck back soon!",
                     textAlign: TextAlign.center,
@@ -101,10 +110,17 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
                     itemCount: _plans.length,
                     itemBuilder: (context, index) {
                       final plan = _plans[index];
+                      final List<Color> gradient = AppColors.getReadingPlanGradient(index);
+                      final Alignment beginAlignment = _gradientAlignmentsBegin[index % _gradientAlignmentsBegin.length];
+                      final Alignment endAlignment = _gradientAlignmentsEnd[index % _gradientAlignmentsEnd.length];
+
                       return ReadingPlanListItem(
                         plan: plan,
                         progress: _progressMap[plan.id],
-                        onTap: () => _navigateToPlanDetail(plan),
+                        onTap: () => _navigateToPlanDetail(plan, gradient, beginAlignment, endAlignment), // Pass them here
+                        backgroundGradientColors: gradient, 
+                        beginGradientAlignment: beginAlignment, 
+                        endGradientAlignment: endAlignment,   
                       );
                     },
                   ),

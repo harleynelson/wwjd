@@ -412,7 +412,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
 Widget build(BuildContext context) {
   return Scaffold(
-    appBar: AppBar( title: const Text('Wake up With Jesus Daily'), centerTitle: true,),
+    appBar: AppBar( title: const Text('Wake up with Jesus'), centerTitle: true,),
     body: Container(
       decoration: BoxDecoration( gradient: LinearGradient( colors: [Colors.deepPurple.shade100.withOpacity(0.6), Colors.purple.shade50.withOpacity(0.8), Colors.white, ], begin: Alignment.topLeft, end: Alignment.bottomRight, stops: const [0.0, 0.3, 1.0],),),
       child: RefreshIndicator( onRefresh: _refreshAllData,
@@ -421,8 +421,8 @@ Widget build(BuildContext context) {
             _buildStreakDisplay(context),
             FutureBuilder<Devotional?>( future: _devotionalFuture,
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) return DevotionalOfTheDayCard(devotional: const Devotional(title: "", coreMessage: "", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""), isLoading: true);
-                if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) return DevotionalOfTheDayCard(devotional: const Devotional(title: "Error", coreMessage: "Could not load devotional.", scriptureFocus: "", scriptureReference: "", reflection: "Please try again later.", prayerDeclaration: ""), isLoading: false);
+                if (snapshot.connectionState == ConnectionState.waiting) return const DevotionalOfTheDayCard(devotional: Devotional(title: "", coreMessage: "", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""), isLoading: true);
+                if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) return const DevotionalOfTheDayCard(devotional: Devotional(title: "Error", coreMessage: "Could not load devotional.", scriptureFocus: "", scriptureReference: "", reflection: "Please try again later.", prayerDeclaration: ""), isLoading: false);
                 return DevotionalOfTheDayCard(devotional: snapshot.data!, isLoading: false, enableCardAnimations: true, speckCount: 15);
               },
             ),

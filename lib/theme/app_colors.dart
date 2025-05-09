@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // --- Single Colors ---
-  static const Color primaryBrand = Colors.amber;
-  static const Color secondaryBrand = Colors.amber;
+  static const Color primaryBrand = Colors.orangeAccent;
+  static const Color secondaryBrand = Colors.orangeAccent;
   static const Color accentBrand = Colors.pinkAccent;
 
   static const Color textPrimary = Color(0xFF212121);
@@ -76,4 +76,22 @@ class AppColors {
     Color(0xFF80CBC4), // Soft Teal (Colors.teal.shade200)
     Color(0xFFA7FFEB), // Pale Mint (Colors.teal.accent[100] or similar)
   ];
+
+  static final List<List<Color>> readingPlanCardGradients = [
+    sereneSkyGradient,
+    gentleDawnGradient,
+    mistyRoseGradient,
+    quietGroveGradient,
+    eveningCalmGradient,
+    tealMintGradient,
+  // Add more gradients as needed
+  ];
+
+  // Helper to get a gradient by index, cycling through the list
+  static List<Color> getReadingPlanGradient(int index) {
+    if (readingPlanCardGradients.isEmpty) {
+      return devotionalCardTwoColorGradient; // Fallback
+    }
+    return readingPlanCardGradients[index % readingPlanCardGradients.length];
+  }
 }

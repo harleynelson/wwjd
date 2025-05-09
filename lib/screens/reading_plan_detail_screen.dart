@@ -2,17 +2,24 @@
 import 'package:flutter/material.dart';
 import '../models.dart';
 import '../database_helper.dart';
-import '../helpers/ui_helpers.dart';
-import 'daily_reading_screen.dart'; // Import the new screen
+// import '../helpers/ui_helpers.dart'; // No longer needed if we pass the gradient
+import '../theme/app_colors.dart'; // For fallback or default if needed
+import 'daily_reading_screen.dart'; 
 
 class ReadingPlanDetailScreen extends StatefulWidget {
   final ReadingPlan plan;
   final UserReadingProgress? initialProgress;
+  final List<Color> headerGradientColors; // New property
+  final Alignment headerBeginAlignment;   // New property
+  final Alignment headerEndAlignment;     // New property
 
   const ReadingPlanDetailScreen({
     super.key,
     required this.plan,
     this.initialProgress,
+    required this.headerGradientColors, // Make it required
+    required this.headerBeginAlignment, // Make it required
+    required this.headerEndAlignment,   // Make it required
   });
 
   @override
@@ -22,17 +29,13 @@ class ReadingPlanDetailScreen extends StatefulWidget {
 class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   UserReadingProgress? _progress;
-  bool _isLoadingProgress = false;
+  bool _isLoadingProgress = false; 
 
   @override
   void initState() {
     super.initState();
     _progress = widget.initialProgress;
-    // If progress was passed, we use it. If not (e.g. deep link scenario), load it.
-    // Also, if the plan was already active, the initialProgress might be stale if user
-    // completed a day and came back. So a refresh on resume might be good eventually.
-    // For now, we load if null.
-    if (_progress == null && widget.initialProgress == null) { // Only load if initialProgress was also null
+    if (_progress == null && widget.initialProgress == null) { 
       _loadProgress();
     }
   }
@@ -40,24 +43,23 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
   Future<void> _loadProgress() async {
     if (mounted) setState(() => _isLoadingProgress = true);
     try {
-      final progressData = await _dbHelper.getReadingPlanProgress(widget.plan.id);
-      if (mounted) {
-        setState(() {
-          _progress = progressData;
-          _isLoadingProgress = false;
-        });
-      }
+        final progressData = await _dbHelper.getReadingPlanProgress(widget.plan.id);
+        if (mounted) {
+            setState(() {
+                _progress = progressData;
+                _isLoadingProgress = false;
+            });
+        }
     } catch (e) {
-      print("Error loading progress for plan ${widget.plan.id}: $e");
-      if (mounted) {
-        setState(() => _isLoadingProgress = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Could not load plan progress: ${e.toString()}")));
-      }
+        if (mounted) {
+            setState(() => _isLoadingProgress = false);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Could not load plan progress: ${e.toString()}")));
+        }
     }
   }
 
   Future<void> _startPlan() async {
-    if (widget.plan.isPremium /* && !userIsPremium() */) { // Placeholder for premium check
+    if (widget.plan.isPremium /* && !currentUser.hasPremiumAccess */) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("This is a premium plan. Unlock premium to start!")),
       );
@@ -68,7 +70,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
     UserReadingProgress newProgress = UserReadingProgress(
       planId: widget.plan.id,
       startDate: DateTime.now(),
-      currentDayNumber: 1,
+      currentDayNumber: 1, 
       isActive: true,
     );
     await _dbHelper.saveReadingPlanProgress(newProgress);
@@ -77,23 +79,45 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
         _progress = newProgress;
         _isLoadingProgress = false;
       });
-      // Inform the list screen that a change was made by popping with 'true'
-      // This ensures the list screen can refresh if it's listening for this result.
-      // However, ReadingPlanListScreen's _navigateToPlanDetail already expects this.
-      // For clarity, this pop should happen after specific actions, not just start.
-      // The list screen will reload on pop if we pass true from here.
+      // No need to pop with true here, _loadProgress will be called on resume if needed
+      // or the list screen can refresh based on other signals if necessary.
+      // However, if an immediate refresh of the list is desired after starting:
+      // Navigator.pop(context, true); 
     }
   }
 
   Future<void> _handleDayTap(ReadingPlanDay day) async {
     if (_progress == null || !_progress!.isActive) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please start the plan to access daily readings.")),
+      // If plan not started, offer to start it, or show a message
+      bool? confirmStart = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text(widget.plan.isPremium ? "Unlock Premium Plan?" : "Start Reading Plan?"),
+          content: Text(widget.plan.isPremium 
+              ? "To access '${widget.plan.title}', please unlock our premium features." 
+              : "Would you like to start the reading plan '${widget.plan.title}' to view Day ${day.dayNumber}?"),
+          actions: [
+            TextButton(child: const Text("Cancel"), onPressed: () => Navigator.of(ctx).pop(false)),
+            TextButton(
+              child: Text(widget.plan.isPremium ? "Unlock (Coming Soon)" : "Start Plan"), 
+              onPressed: widget.plan.isPremium ? null : () => Navigator.of(ctx).pop(true)
+            ),
+          ],
+        )
       );
+      if (confirmStart == true && !widget.plan.isPremium) {
+        await _startPlan(); // Start the plan
+        if (_progress != null && _progress!.isActive) { // If successfully started
+           _navigateToDailyReading(day); // Then navigate
+        }
+      }
       return;
     }
+     _navigateToDailyReading(day);
+  }
 
-    final result = await Navigator.push(
+  Future<void> _navigateToDailyReading(ReadingPlanDay day) async {
+     final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DailyReadingScreen(
@@ -105,18 +129,12 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
     );
 
     if (result == true && mounted) {
-      // A day was marked complete, refresh progress on this screen
       _loadProgress(); 
-      // We also want to signal the ReadingPlansListScreen to refresh,
-      // so when this screen (ReadingPlanDetailScreen) is popped,
-      // it should also return true. We'll handle this on the back button.
-      // Or, the list screen can just always refresh when it resumes.
     }
   }
 
+
   Widget _buildActionButton() {
-    // ... (existing _buildActionButton logic - no changes needed here for Phase 3 navigation)
-    // just ensure that the "Continue: Day X" button correctly calls _handleDayTap for the current day.
     if (_isLoadingProgress) return const Center(child: CircularProgressIndicator());
 
     bool isFullyCompleted = _progress != null && _progress!.completedDays.length >= widget.plan.durationDays;
@@ -124,12 +142,12 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
     if (_progress == null || (!_progress!.isActive && !isFullyCompleted)) {
       return ElevatedButton.icon(
         icon: const Icon(Icons.play_arrow),
-        label: const Text("Start Plan"),
-        onPressed: _startPlan,
+        label: Text(widget.plan.isPremium ? "Unlock Premium" : "Start Plan"),
+        onPressed: _startPlan, // _startPlan handles premium check
         style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary, foregroundColor: Theme.of(context).colorScheme.onPrimary),
       );
     } else if (isFullyCompleted) {
-       return Column(
+       return Column( /* ... Restart plan button ... */ // Unchanged
          children: [
            Text("Plan Completed!", style: TextStyle(color: Colors.green.shade700, fontWeight: FontWeight.bold, fontSize: 18)),
            const SizedBox(height: 8),
@@ -156,39 +174,39 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
             ),
          ],
        );
-    } else { // In progress and active
-      // Ensure currentDayNumber is within bounds before trying to access dailyReadings
+    } else { 
       final currentDayExists = _progress!.currentDayNumber > 0 && _progress!.currentDayNumber <= widget.plan.dailyReadings.length;
       ReadingPlanDay? currentDayReading;
       if(currentDayExists){
-          currentDayReading = widget.plan.dailyReadings.firstWhere((day) => day.dayNumber == _progress!.currentDayNumber);
+          try {
+            currentDayReading = widget.plan.dailyReadings.firstWhere((day) => day.dayNumber == _progress!.currentDayNumber);
+          } catch (e) {
+            // Should not happen if currentDayNumber is within bounds and dailyReadings is well-formed
+            print("Error finding current day reading: $e");
+          }
       }
 
       return ElevatedButton.icon(
         icon: const Icon(Icons.play_circle_outline),
-        label: Text(currentDayExists ? "Continue: Day ${_progress!.currentDayNumber}" : "Review Plan"),
-        onPressed: currentDayExists && currentDayReading != null ? () {
-          _handleDayTap(currentDayReading!);
-        } : null, // Disable if currentDayNumber is out of bounds (plan finished but not marked inactive)
+        label: Text(currentDayReading != null ? "Continue: Day ${_progress!.currentDayNumber}" : "Review Plan"),
+        onPressed: currentDayReading != null ? () {
+          _navigateToDailyReading(currentDayReading!);
+        } : null, 
          style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.secondary, foregroundColor: Theme.of(context).colorScheme.onSecondary),
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    // This WillPopScope helps signal back to the ReadingPlansListScreen if progress might have changed.
     return WillPopScope(
       onWillPop: () async {
-        // If progress might have changed (e.g., a day was completed, or plan started/restarted),
-        // pop with true to signal ReadingPlansListScreen to refresh.
-        // We assume any navigation to DailyReadingScreen and back means potential change.
-        bool progressPotentiallyChanged = true; // Simple assumption for now
-        Navigator.pop(context, progressPotentiallyChanged);
-        return false; // We've handled the pop.
+        Navigator.pop(context, true); // Always signal potential refresh to list screen
+        return false; 
       },
       child: Scaffold(
         body: CustomScrollView(
@@ -197,15 +215,19 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
               expandedHeight: 200.0,
               floating: false,
               pinned: true,
-              // Ensure back button pops with a result if changes were made
               leading: BackButton(onPressed: () {
-                 // Assume any detail view interaction could mean progress needs refresh on list
-                 Navigator.pop(context, true);
+                 Navigator.pop(context, true); // Signal refresh
               }),
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(widget.plan.title, style: const TextStyle(shadows: [Shadow(blurRadius: 1.0, color: Colors.black54, offset: Offset(1,1))])),
-                background: Container(
-                  decoration: BoxDecoration(gradient: UiHelper.generateGradient(widget.plan.id)),
+                background: Container( // Use the passed-in gradient properties
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: widget.headerGradientColors,
+                      begin: widget.headerBeginAlignment,
+                      end: widget.headerEndAlignment,
+                    )
+                  ),
                   child: widget.plan.isPremium ? Align(
                       alignment: Alignment.topRight,
                       child: Padding(
@@ -216,35 +238,20 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
+            SliverToBoxAdapter( /* ... content ... */ // Unchanged
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(widget.plan.category, style: textTheme.titleMedium?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold)),
-                        Text("${widget.plan.durationDays} Days", style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-                      ],
-                    ),
+                    Row( mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [ Text(widget.plan.category, style: textTheme.titleMedium?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold)), Text("${widget.plan.durationDays} Days", style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)), ],),
                     const SizedBox(height: 8.0),
                     Text(widget.plan.description, style: textTheme.bodyLarge),
                     const SizedBox(height: 16.0),
                     if(_progress != null && _progress!.isActive && !(_progress!.completedDays.length >= widget.plan.durationDays)) ...[
-                      LinearProgressIndicator(
-                        value: widget.plan.durationDays > 0 ? _progress!.completedDays.length / widget.plan.durationDays : 0,
-                        minHeight: 8,
-                        borderRadius: BorderRadius.circular(4),
-                        backgroundColor: colorScheme.surfaceVariant.withOpacity(0.5),
-                         valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
-                      ),
+                      LinearProgressIndicator( value: widget.plan.durationDays > 0 ? _progress!.completedDays.length / widget.plan.durationDays : 0, minHeight: 8, borderRadius: BorderRadius.circular(4), backgroundColor: colorScheme.surfaceVariant.withOpacity(0.5), valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),),
                       const SizedBox(height: 4),
-                      Align(
-                          alignment: Alignment.centerRight,
-                          child: Text("${_progress!.completedDays.length} / ${widget.plan.durationDays} complete", style: textTheme.labelSmall)
-                      ),
+                      Align( alignment: Alignment.centerRight, child: Text("${_progress!.completedDays.length} / ${widget.plan.durationDays} complete", style: textTheme.labelSmall) ),
                       const SizedBox(height: 16.0),
                     ],
                     Center(child: _buildActionButton()),
@@ -255,38 +262,25 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
                 ),
               ),
             ),
-            SliverList(
+            SliverList( /* ... list of days ... */ // Unchanged
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final day = widget.plan.dailyReadings[index];
                   bool isDayCompleted = _progress?.completedDays.containsKey(day.dayNumber) ?? false;
                   bool isCurrentActiveDay = _progress != null && _progress!.isActive && !isDayCompleted && _progress!.currentDayNumber == day.dayNumber;
-
                   return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: isDayCompleted
-                          ? Colors.green.shade100
-                          : (isCurrentActiveDay ? colorScheme.primaryContainer : colorScheme.surfaceVariant),
-                      child: isDayCompleted
-                          ? Icon(Icons.check_circle, color: Colors.green.shade700)
-                          : Text(
-                              day.dayNumber.toString(),
-                              style: TextStyle(
-                                  fontWeight: isCurrentActiveDay ? FontWeight.bold : FontWeight.normal,
-                                  color: isCurrentActiveDay ? colorScheme.onPrimaryContainer : null),
-                            ),
-                    ),
+                    leading: CircleAvatar( backgroundColor: isDayCompleted ? Colors.green.shade100 : (isCurrentActiveDay ? colorScheme.primaryContainer : colorScheme.surfaceVariant), child: isDayCompleted ? Icon(Icons.check_circle, color: Colors.green.shade700) : Text( day.dayNumber.toString(), style: TextStyle( fontWeight: isCurrentActiveDay ? FontWeight.bold : FontWeight.normal, color: isCurrentActiveDay ? colorScheme.onPrimaryContainer : null), ),),
                     title: Text(day.title.isNotEmpty ? day.title : "Day ${day.dayNumber}", style: TextStyle(fontWeight: isCurrentActiveDay ? FontWeight.bold : FontWeight.normal)),
                     subtitle: Text(day.passages.map((p) => p.displayText).join('; ')),
                     trailing: isCurrentActiveDay && !isDayCompleted ? const Icon(Icons.arrow_forward_ios, size: 16) : (isDayCompleted ? null : Icon(Icons.circle_outlined, size:16, color: Colors.grey.shade400)),
-                    onTap: () => _handleDayTap(day), // Allow tapping any day to view its content
+                    onTap: () => _handleDayTap(day), 
                     tileColor: isCurrentActiveDay ? colorScheme.primaryContainer.withOpacity(0.3) : null,
                   );
                 },
                 childCount: widget.plan.dailyReadings.length,
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 30)),
+            const SliverToBoxAdapter(child: SizedBox(height: 30)), 
           ],
         ),
       ),

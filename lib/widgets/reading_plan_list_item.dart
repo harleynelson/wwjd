@@ -1,18 +1,24 @@
 // lib/widgets/reading_plan_list_item.dart
 import 'package:flutter/material.dart';
-import '../models.dart'; // For ReadingPlan and UserReadingProgress
-import '../helpers/ui_helpers.dart'; // We'll create this for the gradient
+import '../models.dart'; 
+// import '../helpers/ui_helpers.dart'; // No longer needed for this widget
 
 class ReadingPlanListItem extends StatelessWidget {
   final ReadingPlan plan;
   final UserReadingProgress? progress;
   final VoidCallback onTap;
+  final List<Color> backgroundGradientColors; // New property
+  final Alignment beginGradientAlignment;
+  final Alignment endGradientAlignment;
 
   const ReadingPlanListItem({
     super.key,
     required this.plan,
     this.progress,
     required this.onTap,
+    required this.backgroundGradientColors, // Make it required
+    this.beginGradientAlignment = Alignment.topRight, // Default alignment
+    this.endGradientAlignment = Alignment.bottomLeft, // Default alignment
   });
 
   @override
@@ -33,21 +39,19 @@ class ReadingPlanListItem extends StatelessWidget {
         isCompleted = true;
       } else if (progress!.completedDays.isNotEmpty) {
         progressText = "${progress!.completedDays.length} / ${plan.durationDays} days";
-      } else if (progress!.currentDayNumber > 1) { // Started but no days marked complete yet
+      } else if (progress!.currentDayNumber > 1) { 
          progressText = "In Progress";
       }
     } else if (progress != null && !progress!.isActive && progress!.completedDays.length >= plan.durationDays) {
-      // Plan was completed and then perhaps marked inactive
       progressValue = 1.0;
       progressText = "Completed";
       isCompleted = true;
     }
 
-
     return Card(
       elevation: 3.0,
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-      clipBehavior: Clip.antiAlias, // Ensures gradient corners are rounded
+      clipBehavior: Clip.antiAlias, 
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       child: InkWell(
         onTap: onTap,
@@ -55,9 +59,13 @@ class ReadingPlanListItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 120, // Height for the gradient/image placeholder
+              height: 120, 
               decoration: BoxDecoration(
-                gradient: UiHelper.generateGradient(plan.id), // Use helper
+                gradient: LinearGradient( // Use the passed gradient colors and alignment
+                  colors: backgroundGradientColors,
+                  begin: beginGradientAlignment,
+                  end: endGradientAlignment,
+                ), 
               ),
               child: Stack(
                 children: [
@@ -75,7 +83,7 @@ class ReadingPlanListItem extends StatelessWidget {
                       child: Text(
                         plan.title,
                         style: textTheme.headlineSmall?.copyWith(
-                          color: Colors.white,
+                          color: Colors.white, // Text on gradient needs good contrast
                           fontWeight: FontWeight.bold,
                           shadows: [
                             const Shadow(blurRadius: 2.0, color: Colors.black54, offset: Offset(1,1))
@@ -92,9 +100,9 @@ class ReadingPlanListItem extends StatelessWidget {
                       right: 8,
                       child: Chip(
                         label: const Text("Premium"),
-                        backgroundColor: colorScheme.secondaryContainer,
-                        labelStyle: TextStyle(color: colorScheme.onSecondaryContainer, fontSize: 10, fontWeight: FontWeight.bold),
-                        padding: EdgeInsets.zero,
+                        backgroundColor: Colors.black.withOpacity(0.4), // Contrast on various gradients
+                        labelStyle: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         visualDensity: VisualDensity.compact,
                       ),
                     ),
@@ -136,7 +144,7 @@ class ReadingPlanListItem extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         )
-                      else if (plan.isPremium && progress == null) // Show premium status if not started
+                      else if (plan.isPremium && progress == null) 
                          Text("Premium Plan", style: textTheme.labelLarge?.copyWith(color: colorScheme.secondary, fontWeight: FontWeight.bold))
                       else
                          Text(progressText, style: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
