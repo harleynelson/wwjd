@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:wwjd_app/database_helper.dart';
-import 'package:wwjd_app/prefs_helper.dart';
+import 'package:wwjd_app/helpers/database_helper.dart';
+import 'package:wwjd_app/helpers/prefs_helper.dart';
 import 'package:wwjd_app/models/reader_settings_enums.dart';
-import '../daily_devotions.dart';
+import '../helpers/daily_devotions.dart';
 import '../theme/theme_provider.dart';
 
 // Make sure this class name is spelled exactly "SettingsScreen"

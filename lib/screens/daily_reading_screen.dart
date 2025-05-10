@@ -1,12 +1,12 @@
 // lib/screens/daily_reading_screen.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // For custom fonts
-import '../models.dart';
-import '../database_helper.dart';
-import '../book_names.dart'; // For getFullBookName
+import '../models/models.dart';
+import '../helpers/database_helper.dart';
+import '../helpers/book_names.dart'; // For getFullBookName
 // Assuming reader_settings_enums.dart is in lib/models/
 import '../models/reader_settings_enums.dart'; // Import reader enums
-import '../prefs_helper.dart'; // To load defaults if not passed (though passing is better)
+import '../helpers/prefs_helper.dart'; // To load defaults if not passed (though passing is better)
 
 class DailyReadingScreen extends StatefulWidget {
   final String planId;

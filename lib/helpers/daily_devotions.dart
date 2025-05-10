@@ -3,7 +3,7 @@
 import 'dart:math';
 import 'prefs_helper.dart';
 import 'package:intl/intl.dart'; // For date formatting
-import 'models.dart';
+import '../models/models.dart';
 
 class Devotional {
   final String title;

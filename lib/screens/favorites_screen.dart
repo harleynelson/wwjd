@@ -1,11 +1,11 @@
 // lib/favorites_screen.dart
 import 'package:flutter/material.dart';
 import 'package:wwjd_app/widgets/favorite_list_item_card.dart';
-import 'database_helper.dart';
-import 'models.dart'; // Includes FavoriteVerse, Flag, Book
-import 'book_names.dart'; // For getFullBookName
-import 'prefs_helper.dart'; // Needed for filtering hidden flags
-import 'dialogs/flag_selection_dialog.dart'; // Import the refactored dialog
+import '../helpers/database_helper.dart';
+import '../models/models.dart'; // Includes FavoriteVerse, Flag, Book
+import '../helpers/book_names.dart'; // For getFullBookName
+import '../helpers/prefs_helper.dart'; // Needed for filtering hidden flags
+import '../dialogs/flag_selection_dialog.dart'; // Import the refactored dialog
 
 // Enum for Sort Options
 enum SortOption { recentDesc, recentAsc, bookOrder }

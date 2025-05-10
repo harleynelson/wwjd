@@ -1,6 +1,6 @@
 // lib/widgets/favorite_list_item_card.dart
 import 'package:flutter/material.dart';
-import '../models.dart'; // Includes FavoriteVerse, Flag models
+import '../models/models.dart'; // Includes FavoriteVerse, Flag models
 
 // A stateless widget to display a single favorite verse item.
 class FavoriteListItemCard extends StatelessWidget {

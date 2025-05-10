@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart'; // Import provider
-import 'home_screen.dart';
-import 'prefs_helper.dart';
+import 'screens/home_screen.dart';
+import 'helpers/prefs_helper.dart';
 import 'theme/app_themes.dart'; // Import your AppThemes
 import 'theme/theme_provider.dart'; // Import your ThemeProvider
 

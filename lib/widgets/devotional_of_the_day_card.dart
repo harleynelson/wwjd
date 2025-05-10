@@ -1,7 +1,7 @@
 // lib/widgets/devotional_of_the_day_card.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // For custom fonts
-import '../daily_devotions.dart'; // For Devotional model
+import '../helpers/daily_devotions.dart'; // For Devotional model
 import 'animated_religious_background_card.dart';
 import '../theme/app_colors.dart';
 import '../models/reader_settings_enums.dart'; // For ReaderFontFamily

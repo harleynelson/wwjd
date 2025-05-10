@@ -1,8 +1,8 @@
 // lib/search_screen.dart
 import 'package:flutter/material.dart';
-import 'database_helper.dart';
-import 'models.dart'; // Imports Verse, Book, etc. (Though only Verse properties used directly here)
-import 'book_names.dart'; // Imports getFullBookName
+import '../helpers/database_helper.dart';
+import '../models/models.dart'; // Imports Verse, Book, etc. (Though only Verse properties used directly here)
+import '../helpers/book_names.dart'; // Imports getFullBookName
 import 'full_bible_reader_screen.dart'; // Imports the target screen for navigation
 
 class SearchScreen extends StatefulWidget {

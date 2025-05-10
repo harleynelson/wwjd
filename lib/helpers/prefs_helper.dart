@@ -1,6 +1,6 @@
 // lib/prefs_helper.dart
 import 'package:shared_preferences/shared_preferences.dart';
-import 'models/reader_settings_enums.dart';
+import '../models/reader_settings_enums.dart';
 
 
 class PrefsHelper {

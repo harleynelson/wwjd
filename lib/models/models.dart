@@ -1,5 +1,5 @@
 // lib/models.dart
-import 'database_helper.dart'; // Needed for Flag.fromUserDbMap
+import '../helpers/database_helper.dart'; // Needed for Flag.fromUserDbMap
 
 class Book {
   final String abbreviation; // e.g., "GEN"

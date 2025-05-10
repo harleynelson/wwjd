@@ -1,6 +1,6 @@
 // lib/widgets/reading_plan_list_item.dart
 import 'package:flutter/material.dart';
-import '../models.dart'; 
+import '../models/models.dart'; 
 // import '../helpers/ui_helpers.dart'; // No longer needed for this widget
 
 class ReadingPlanListItem extends StatelessWidget {

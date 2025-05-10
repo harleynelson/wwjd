@@ -1,8 +1,8 @@
 // lib/screens/reading_plans_list_screen.dart
 import 'package:flutter/material.dart';
-import '../models.dart';
-import '../reading_plans_data.dart'; 
-import '../database_helper.dart';
+import '../models/models.dart';
+import '../helpers/reading_plans_data.dart'; 
+import '../helpers/database_helper.dart';
 import '../widgets/reading_plan_list_item.dart';
 import 'reading_plan_detail_screen.dart'; 
 import '../theme/app_colors.dart'; 

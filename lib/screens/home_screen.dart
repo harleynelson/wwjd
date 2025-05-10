@@ -4,20 +4,20 @@ import 'dart:math'; // For Random in _fetchCurrentStreak (if that logic remains)
 import 'package:provider/provider.dart'; // For ThemeProvider
 import 'package:wwjd_app/widgets/verse_of_the_day_card.dart';
 import 'package:wwjd_app/widgets/devotional_of_the_day_card.dart';
-import 'daily_devotions.dart';
-import 'database_helper.dart';
-import 'models.dart';
-import 'book_names.dart';
+import '../helpers/daily_devotions.dart';
+import '../helpers/database_helper.dart';
+import '../models/models.dart';
+import '../helpers/book_names.dart';
 import 'full_bible_reader_screen.dart';
 import 'favorites_screen.dart';
-import 'prefs_helper.dart';
-import 'dialogs/flag_selection_dialog.dart';
-import 'screens/settings_screen.dart';
+import '../helpers/prefs_helper.dart';
+import '../dialogs/flag_selection_dialog.dart';
+import 'settings_screen.dart';
 import 'search_screen.dart';
-import 'screens/reading_plans_list_screen.dart';
-import 'theme/app_colors.dart'; // For gradients if used directly
-import 'theme/theme_provider.dart'; // For theme toggling
-import 'models/reader_settings_enums.dart'; // For ReaderFontFamily
+import 'reading_plans_list_screen.dart';
+import '../theme/app_colors.dart'; // For gradients if used directly
+import '../theme/theme_provider.dart'; // For theme toggling
+import '../models/reader_settings_enums.dart'; // For ReaderFontFamily
 
 class VotDDataBundle {
   final Map<String, dynamic>? verseData;

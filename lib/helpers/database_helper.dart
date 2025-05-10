@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'models.dart'; 
+import '../models/models.dart'; 
 import 'reading_plans_data.dart'; 
 
 class DatabaseHelper {

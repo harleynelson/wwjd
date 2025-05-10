@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For Clipboard
 import 'package:share_plus/share_plus.dart'; // For sharing
-import '../models.dart'; // For Verse
-import '../book_names.dart'; // For getFullBookName
+import '../models/models.dart'; // For Verse
+import '../helpers/book_names.dart'; // For getFullBookName
 
 class VerseActionsBottomSheet extends StatelessWidget {
   final Verse verse;

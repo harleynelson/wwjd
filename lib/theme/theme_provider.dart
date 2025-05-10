@@ -1,6 +1,6 @@
 // lib/theme/theme_provider.dart
 import 'package:flutter/material.dart';
-import 'package:wwjd_app/prefs_helper.dart'; // Your PrefsHelper
+import 'package:wwjd_app/helpers/prefs_helper.dart'; // Your PrefsHelper
 
 enum AppThemeMode { system, light, dark }
 

@@ -1,6 +1,6 @@
 // File: lib/widgets/verse_list_item.dart
 import 'package:flutter/material.dart';
-import '../models.dart'; // Access to Verse model
+import '../models/models.dart'; // Access to Verse model
 
 class VerseListItem extends StatelessWidget {
   final Verse verse;

@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // For custom fonts
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'database_helper.dart';
-import 'models.dart';
-import 'book_names.dart';
-import 'prefs_helper.dart';
-import 'dialogs/flag_selection_dialog.dart';
-import 'widgets/verse_list_item.dart';
-import 'widgets/verse_actions_bottom_sheet.dart';
+import '../helpers/database_helper.dart';
+import '../models/models.dart';
+import '../helpers/book_names.dart';
+import '../helpers/prefs_helper.dart';
+import '../dialogs/flag_selection_dialog.dart';
+import '../widgets/verse_list_item.dart';
+import '../widgets/verse_actions_bottom_sheet.dart';
 // Assuming reader_settings_enums.dart is in lib/models/
-import 'models/reader_settings_enums.dart';
+import '../models/reader_settings_enums.dart';
 
 enum BibleReaderView { books, chapters, verses }
 

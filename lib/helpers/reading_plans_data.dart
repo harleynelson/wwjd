@@ -1,0 +1,535 @@
+// lib/reading_plans_data.dart
+import '../models/models.dart';
+
+final List<ReadingPlan> allReadingPlans = [
+  // --- EXISTING PLANS (from previous response) ---
+  ReadingPlan(
+    id: "rp_genesis_intro",
+    title: "First Steps: Genesis",
+    description: "Explore the book of beginnings, covering creation, the fall, early patriarchs, and God's covenant promises. A 7-day introduction.",
+    category: "Old Testament",
+    isPremium: false,
+    dailyReadings: [
+      ReadingPlanDay(
+        dayNumber: 1,
+        title: "Creation",
+        passages: [BiblePassagePointer(bookAbbr: "GEN", startChapter: 1, startVerse: 1, endChapter: 1, endVerse: 31, displayText: "Genesis 1")],
+        reflectionPrompt: "What aspect of God's creation amazes you the most today?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 2,
+        title: "The First Man and Woman",
+        passages: [BiblePassagePointer(bookAbbr: "GEN", startChapter: 2, startVerse: 1, endChapter: 2, endVerse: 25, displayText: "Genesis 2")],
+        reflectionPrompt: "Reflect on the concept of 'made in God's image'.",
+      ),
+      ReadingPlanDay(
+        dayNumber: 3,
+        title: "The Fall",
+        passages: [BiblePassagePointer(bookAbbr: "GEN", startChapter: 3, startVerse: 1, endChapter: 3, endVerse: 24, displayText: "Genesis 3")],
+        reflectionPrompt: "How does understanding the fall help you appreciate God's grace?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 4,
+        title: "Cain and Abel / Noah's Calling",
+        passages: [
+          BiblePassagePointer(bookAbbr: "GEN", startChapter: 4, startVerse: 1, endChapter: 4, endVerse: 16, displayText: "Genesis 4:1-16"),
+          BiblePassagePointer(bookAbbr: "GEN", startChapter: 6, startVerse: 9, endChapter: 6, endVerse: 22, displayText: "Genesis 6:9-22"),
+        ],
+        reflectionPrompt: "Consider the themes of obedience and consequence.",
+      ),
+      ReadingPlanDay(
+        dayNumber: 5,
+        title: "The Flood and God's Covenant",
+        passages: [
+          BiblePassagePointer(bookAbbr: "GEN", startChapter: 7, startVerse: 1, endChapter: 7, endVerse: 24, displayText: "Genesis 7"),
+          BiblePassagePointer(bookAbbr: "GEN", startChapter: 8, startVerse: 1, endChapter: 8, endVerse: 22, displayText: "Genesis 8"),
+        ],
+        reflectionPrompt: "What does God's covenant with Noah reveal about His character?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 6,
+        title: "The Call of Abram",
+        passages: [BiblePassagePointer(bookAbbr: "GEN", startChapter: 12, startVerse: 1, endChapter: 12, endVerse: 9, displayText: "Genesis 12:1-9")],
+        reflectionPrompt: "What does it mean to step out in faith when God calls?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 7,
+        title: "God's Covenant with Abram",
+        passages: [BiblePassagePointer(bookAbbr: "GEN", startChapter: 15, startVerse: 1, endChapter: 15, endVerse: 21, displayText: "Genesis 15")],
+        reflectionPrompt: "Reflect on the promises God has made to you.",
+      ),
+    ],
+  ),
+  ReadingPlan(
+    id: "rp_john_gospel_7day",
+    title: "Meet Jesus: Gospel of John",
+    description: "A 7-day journey through key passages in the Gospel of John, revealing who Jesus is and what He offers.",
+    category: "Gospels",
+    isPremium: false,
+    dailyReadings: [
+      ReadingPlanDay(
+        dayNumber: 1,
+        title: "The Word Became Flesh",
+        passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 1, startVerse: 1, endChapter: 1, endVerse: 18, displayText: "John 1:1-18")],
+        reflectionPrompt: "What does it mean to you that Jesus is the 'Word'?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 2,
+        title: "The Wedding at Cana & Temple Cleansing",
+        passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 2, startVerse: 1, endChapter: 2, endVerse: 25, displayText: "John 2")],
+        reflectionPrompt: "How do these first signs reveal Jesus's authority and mission?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 3,
+        title: "Born Again: Nicodemus",
+        passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 3, startVerse: 1, endChapter: 3, endVerse: 21, displayText: "John 3:1-21")],
+        reflectionPrompt: "Reflect on the meaning of being 'born again'.",
+      ),
+      ReadingPlanDay(
+        dayNumber: 4,
+        title: "The Woman at the Well",
+        passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 4, startVerse: 1, endChapter: 4, endVerse: 42, displayText: "John 4:1-42")],
+        reflectionPrompt: "How does Jesus break down barriers to offer living water?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 5,
+        title: "I AM the Bread of Life",
+        passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 6, startVerse: 25, endChapter: 6, endVerse: 40, displayText: "John 6:25-40")],
+        reflectionPrompt: "In what ways do you need Jesus to be your spiritual nourishment today?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 6,
+        title: "The Good Shepherd",
+        passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 10, startVerse: 1, endChapter: 10, endVerse: 18, displayText: "John 10:1-18")],
+        reflectionPrompt: "How do you experience Jesus as your Good Shepherd?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 7,
+        title: "The Resurrection and the Life",
+        passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 11, startVerse: 1, endChapter: 11, endVerse: 44, displayText: "John 11:1-44")],
+        reflectionPrompt: "How does the raising of Lazarus build your faith in Jesus's power over death?",
+      ),
+    ],
+  ),
+  ReadingPlan(
+    id: "rp_proverbs_wisdom_5day",
+    title: "Daily Wisdom from Proverbs",
+    description: "A 5-day plan to gain practical wisdom for everyday living from the book of Proverbs.",
+    category: "Wisdom Literature",
+    isPremium: true,
+    dailyReadings: [
+       ReadingPlanDay(
+        dayNumber: 1, title: "The Value of Wisdom",
+        passages: [BiblePassagePointer(bookAbbr: "PRO", startChapter: 1, startVerse: 1, endChapter: 1, endVerse: 33, displayText: "Proverbs 1")],
+        reflectionPrompt: "Where do you need to apply more wisdom in your life this week?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 2, title: "Wisdom in Relationships",
+        passages: [BiblePassagePointer(bookAbbr: "PRO", startChapter: 3, startVerse: 1, endChapter: 3, endVerse: 35, displayText: "Proverbs 3")],
+        reflectionPrompt: "How can you cultivate trust and integrity in your relationships using today's reading?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 3, title: "Wisdom with Words",
+        passages: [BiblePassagePointer(bookAbbr: "PRO", startChapter: 10, startVerse: 1, endChapter: 10, endVerse: 32, displayText: "Proverbs 10 (selections)")],
+        reflectionPrompt: "Reflect on the power of your words. How can you use them more wisely?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 4, title: "Wisdom in Work & Diligence",
+        passages: [BiblePassagePointer(bookAbbr: "PRO", startChapter: 6, startVerse: 6, endChapter: 6, endVerse: 11, displayText: "Proverbs 6:6-11"), BiblePassagePointer(bookAbbr: "PRO", startChapter: 12, startVerse: 24, endChapter: 12, endVerse: 24, displayText: "Proverbs 12:24"), BiblePassagePointer(bookAbbr: "PRO", startChapter: 13, startVerse: 4, endChapter: 13, endVerse: 4, displayText: "Proverbs 13:4")],
+        reflectionPrompt: "What steps can you take to be more diligent and wise in your responsibilities?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 5, title: "The Fear of the Lord",
+        passages: [BiblePassagePointer(bookAbbr: "PRO", startChapter: 9, startVerse: 10, endChapter: 9, endVerse: 12, displayText: "Proverbs 9:10-12"), BiblePassagePointer(bookAbbr: "PRO", startChapter: 14, startVerse: 26, endChapter: 14, endVerse: 27, displayText: "Proverbs 14:26-27")],
+        reflectionPrompt: "What does 'the fear of the Lord' mean to you in a practical sense?",
+      ),
+    ],
+  ),
+  ReadingPlan(
+    id: "rp_love_your_neighbor_7day",
+    title: "Love Your Neighbor: A Call to Compassion",
+    description: "Discover the radical call to love and compassion found in scripture. This 7-day plan explores how to extend empathy and justice to all.",
+    category: "Topical",
+    isPremium: false,
+    dailyReadings: [
+      ReadingPlanDay(
+        dayNumber: 1,
+        title: "The Greatest Commandment",
+        passages: [
+          BiblePassagePointer(bookAbbr: "MAT", startChapter: 22, startVerse: 34, endChapter: 22, endVerse: 40, displayText: "Matthew 22:34-40"),
+          BiblePassagePointer(bookAbbr: "LEV", startChapter: 19, startVerse: 18, endChapter: 19, endVerse: 18, displayText: "Leviticus 19:18"),
+        ],
+        reflectionPrompt: "Who is your 'neighbor' in today's world? How can you show them love actively?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 2,
+        title: "The Good Samaritan",
+        passages: [BiblePassagePointer(bookAbbr: "LUK", startChapter: 10, startVerse: 25, endChapter: 10, endVerse: 37, displayText: "Luke 10:25-37")],
+        reflectionPrompt: "What excuses do we make for not helping others? How can this parable challenge those excuses?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 3,
+        title: "Empathy and Shared Burdens",
+        passages: [
+          BiblePassagePointer(bookAbbr: "GAL", startChapter: 6, startVerse: 2, endChapter: 6, endVerse: 2, displayText: "Galatians 6:2"),
+          BiblePassagePointer(bookAbbr: "ROM", startChapter: 12, startVerse: 15, endChapter: 12, endVerse: 15, displayText: "Romans 12:15"),
+        ],
+        reflectionPrompt: "Reflect on a time someone showed you empathy. How can you practice 'rejoicing with those who rejoice and mourning with those who mourn'?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 4,
+        title: "Love for the 'Other'",
+        passages: [
+          BiblePassagePointer(bookAbbr: "MAT", startChapter: 5, startVerse: 43, endChapter: 5, endVerse: 48, displayText: "Matthew 5:43-48"),
+          BiblePassagePointer(bookAbbr: "LUK", startChapter: 6, startVerse: 27, endChapter: 6, endVerse: 36, displayText: "Luke 6:27-36"),
+        ],
+        reflectionPrompt: "Who are the people or groups you find it hardest to love? What would it mean to extend love even there?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 5,
+        title: "Justice for the Oppressed",
+        passages: [
+          BiblePassagePointer(bookAbbr: "ISA", startChapter: 1, startVerse: 17, endChapter: 1, endVerse: 17, displayText: "Isaiah 1:17"),
+          BiblePassagePointer(bookAbbr: "MIC", startChapter: 6, startVerse: 8, endChapter: 6, endVerse: 8, displayText: "Micah 6:8"),
+        ],
+        reflectionPrompt: "How can loving your neighbor involve working for justice and correcting oppression?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 6,
+        title: "Hospitality and Welcome",
+        passages: [
+          BiblePassagePointer(bookAbbr: "ROM", startChapter: 12, startVerse: 13, endChapter: 12, endVerse: 13, displayText: "Romans 12:13"),
+          BiblePassagePointer(bookAbbr: "HEB", startChapter: 13, startVerse: 2, endChapter: 13, endVerse: 2, displayText: "Hebrews 13:2"),
+        ],
+        reflectionPrompt: "In what practical ways can you show hospitality and welcome to strangers or those in need?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 7,
+        title: "Love in Action",
+        passages: [
+          BiblePassagePointer(bookAbbr: "1JN", startChapter: 3, startVerse: 16, endChapter: 3, endVerse: 18, displayText: "1 John 3:16-18"),
+          BiblePassagePointer(bookAbbr: "JAS", startChapter: 2, startVerse: 14, endChapter: 2, endVerse: 17, displayText: "James 2:14-17"),
+        ],
+        reflectionPrompt: "Commit to one specific action this week to put your love for your neighbor into practice.",
+      ),
+    ],
+  ),
+  ReadingPlan(
+    id: "rp_lament_strength_5day",
+    title: "Finding Strength in Lament",
+    description: "Explore the biblical practice of lament as a path to honesty with God, healing, and renewed strength. A 5-day reflective journey.",
+    category: "Wisdom Literature",
+    isPremium: false,
+    dailyReadings: [
+      ReadingPlanDay(
+        dayNumber: 1,
+        title: "Permission to Grieve",
+        passages: [BiblePassagePointer(bookAbbr: "PSA", startChapter: 13, startVerse: 1, endChapter: 13, endVerse: 6, displayText: "Psalm 13")],
+        reflectionPrompt: "What are you struggling with that you need to honestly bring before God today, even if it's full of questions?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 2,
+        title: "Communal Sorrow",
+        passages: [BiblePassagePointer(bookAbbr: "LAM", startChapter: 1, startVerse: 1, endChapter: 1, endVerse: 5, displayText: "Lamentations 1:1-5"), BiblePassagePointer(bookAbbr: "LAM", startChapter: 1, startVerse: 16, endChapter: 1, endVerse: 16, displayText: "Lamentations 1:16")],
+        reflectionPrompt: "Reflect on a time of shared sorrow or loss. How can acknowledging communal pain be a source of connection?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 3,
+        title: "Wrestling with God",
+        passages: [BiblePassagePointer(bookAbbr: "PSA", startChapter: 44, startVerse: 9, endChapter: 44, endVerse: 26, displayText: "Psalm 44:9-26 (selections)")],
+        reflectionPrompt: "It's okay to ask God 'Why?'. What questions are on your heart that feel difficult to voice?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 4,
+        title: "Hope in the Midst of Despair",
+        passages: [BiblePassagePointer(bookAbbr: "LAM", startChapter: 3, startVerse: 19, endChapter: 3, endVerse: 26, displayText: "Lamentations 3:19-26")],
+        reflectionPrompt: "Even in difficult times, where can you find small glimmers of hope or remembrance of God's faithfulness?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 5,
+        title: "From Lament to Trust",
+        passages: [BiblePassagePointer(bookAbbr: "PSA", startChapter: 22, startVerse: 1, endChapter: 22, endVerse: 5, displayText: "Psalm 22:1-5"), BiblePassagePointer(bookAbbr: "PSA", startChapter: 22, startVerse: 22, endChapter: 22, endVerse: 24, displayText: "Psalm 22:22-24")],
+        reflectionPrompt: "How can voicing your laments honestly actually lead to a deeper sense of trust or peace?",
+      ),
+    ],
+  ),
+  ReadingPlan(
+    id: "rp_women_wisdom_courage_10day",
+    title: "Women of Wisdom & Courage",
+    description: "A 10-day exploration of impactful women in scripture, celebrating their faith, leadership, and resilience. Uncover their often untold stories.",
+    category: "Biblical Women",
+    isPremium: true,
+    dailyReadings: [
+      ReadingPlanDay(
+        dayNumber: 1, title: "Deborah: Prophetess and Judge",
+        passages: [BiblePassagePointer(bookAbbr: "JDG", startChapter: 4, startVerse: 4, endChapter: 4, endVerse: 10, displayText: "Judges 4:4-10"), BiblePassagePointer(bookAbbr: "JDG", startChapter: 5, startVerse: 1, endChapter: 5, endVerse: 7, displayText: "Judges 5:1-7")],
+        reflectionPrompt: "How did Deborah use her God-given authority and wisdom to lead? What can we learn from her courage?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 2, title: "Ruth: Loyalty and Redemption",
+        passages: [BiblePassagePointer(bookAbbr: "RUT", startChapter: 1, startVerse: 16, endChapter: 1, endVerse: 22, displayText: "Ruth 1:16-22"), BiblePassagePointer(bookAbbr: "RUT", startChapter: 2, startVerse: 1, endChapter: 2, endVerse: 13, displayText: "Ruth 2:1-13")],
+        reflectionPrompt: "Reflect on Ruth's loyalty and courage in the face of uncertainty. How does her story speak to the power of kindness?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 3, title: "Hannah: Prayer and Dedication",
+        passages: [BiblePassagePointer(bookAbbr: "1SA", startChapter: 1, startVerse: 9, endChapter: 1, endVerse: 20, displayText: "1 Samuel 1:9-20"), BiblePassagePointer(bookAbbr: "1SA", startChapter: 1, startVerse: 24, endChapter: 1, endVerse: 28, displayText: "1 Samuel 1:24-28")],
+        reflectionPrompt: "Consider Hannah's persistent prayer. What can we learn about faith and fulfilling vows from her life?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 4, title: "Esther: Courage for Such a Time as This",
+        passages: [BiblePassagePointer(bookAbbr: "EST", startChapter: 4, startVerse: 12, endChapter: 4, endVerse: 17, displayText: "Esther 4:12-17"), BiblePassagePointer(bookAbbr: "EST", startChapter: 7, startVerse: 1, endChapter: 7, endVerse: 6, displayText: "Esther 7:1-6")],
+        reflectionPrompt: "Esther risked her life for her people. When might we be called to speak up or act courageously for others?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 5, title: "Mary, Mother of Jesus: Faith and Surrender",
+        passages: [BiblePassagePointer(bookAbbr: "LUK", startChapter: 1, startVerse: 26, endChapter: 1, endVerse: 38, displayText: "Luke 1:26-38"), BiblePassagePointer(bookAbbr: "LUK", startChapter: 1, startVerse: 46, endChapter: 1, endVerse: 55, displayText: "Luke 1:46-55 (The Magnificat)")],
+        reflectionPrompt: "Reflect on Mary's response to God's call. How does her song (The Magnificat) reveal her understanding of God's justice and mercy?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 6, title: "Mary Magdalene: Devotion and Witness",
+        passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 20, startVerse: 1, endChapter: 20, endVerse: 2, displayText: "John 20:1-2"), BiblePassagePointer(bookAbbr: "JHN", startChapter: 20, startVerse: 11, endChapter: 20, endVerse: 18, displayText: "John 20:11-18")],
+        reflectionPrompt: "Mary Magdalene was the first witness to the resurrection. What does her story teach us about devotion and the importance of women's voices?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 7, title: "Lydia: Hospitality and Business",
+        passages: [BiblePassagePointer(bookAbbr: "ACT", startChapter: 16, startVerse: 11, endChapter: 16, endVerse: 15, displayText: "Acts 16:11-15"), BiblePassagePointer(bookAbbr: "ACT", startChapter: 16, startVerse: 40, endChapter: 16, endVerse: 40, displayText: "Acts 16:40")],
+        reflectionPrompt: "Lydia was a successful businesswoman who used her resources to support the early church. How can our work and resources be used for God's purposes?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 8, title: "Priscilla: Teacher and Partner in Ministry",
+        passages: [BiblePassagePointer(bookAbbr: "ACT", startChapter: 18, startVerse: 1, endChapter: 18, endVerse: 3, displayText: "Acts 18:1-3"), BiblePassagePointer(bookAbbr: "ACT", startChapter: 18, startVerse: 24, endChapter: 18, endVerse: 26, displayText: "Acts 18:24-26")],
+        reflectionPrompt: "Priscilla, with her husband Aquila, taught Apollos. What does this show about women as theological teachers and partners in ministry?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 9, title: "The Woman at the Well: Encountering Jesus",
+        passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 4, startVerse: 7, endChapter: 4, endVerse: 26, displayText: "John 4:7-26")],
+        reflectionPrompt: "Jesus crossed social and gender boundaries to speak with this woman. How does this encounter challenge our own assumptions and invite us to share our faith?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 10, title: "Huldah: The Prophetess Consulted by Kings",
+        passages: [BiblePassagePointer(bookAbbr: "2KI", startChapter: 22, startVerse: 14, endChapter: 22, endVerse: 20, displayText: "2 Kings 22:14-20")],
+        reflectionPrompt: "Huldah was a respected prophet whose words guided national reform. How does her story affirm the spiritual authority of women?",
+      ),
+    ],
+  ),
+  ReadingPlan(
+    id: "rp_justice_renewal_14day",
+    title: "Justice & Renewal: Prophetic Voices",
+    description: "A 14-day plan exploring the prophets' calls for social justice, care for the vulnerable, and a renewed relationship with God and creation.",
+    category: "Prophetic Literature",
+    isPremium: true,
+    dailyReadings: [
+      ReadingPlanDay(dayNumber: 1, title: "What God Requires", passages: [BiblePassagePointer(bookAbbr: "MIC", startChapter: 6, startVerse: 6, endChapter: 6, endVerse: 8, displayText: "Micah 6:6-8")], reflectionPrompt: "Reflect on 'acting justly,' 'loving mercy,' and 'walking humbly.' How can you embody these today?"),
+      ReadingPlanDay(dayNumber: 2, title: "True Fasting", passages: [BiblePassagePointer(bookAbbr: "ISA", startChapter: 58, startVerse: 6, endChapter: 58, endVerse: 11, displayText: "Isaiah 58:6-11")], reflectionPrompt: "What does 'true fasting' look like in terms of social action and care for others?"),
+      ReadingPlanDay(dayNumber: 3, title: "Justice for the Poor", passages: [BiblePassagePointer(bookAbbr: "AMO", startChapter: 5, startVerse: 21, endChapter: 5, endVerse: 24, displayText: "Amos 5:21-24")], reflectionPrompt: "How can our worship be connected to our pursuit of justice for the marginalized?"),
+      ReadingPlanDay(dayNumber: 4, title: "A New Heart and Spirit", passages: [BiblePassagePointer(bookAbbr: "EZK", startChapter: 36, startVerse: 24, endChapter: 36, endVerse: 28, displayText: "Ezekiel 36:24-28")], reflectionPrompt: "Consider the idea of inner transformation as a basis for societal renewal."),
+      ReadingPlanDay(dayNumber: 5, title: "The Year of the Lord's Favor", passages: [BiblePassagePointer(bookAbbr: "ISA", startChapter: 61, startVerse: 1, endChapter: 61, endVerse: 4, displayText: "Isaiah 61:1-4"), BiblePassagePointer(bookAbbr: "LUK", startChapter: 4, startVerse: 16, endChapter: 4, endVerse: 21, displayText: "Luke 4:16-21")], reflectionPrompt: "How did Jesus embody this prophetic call? How can we participate in bringing 'good news to the poor' today?"),
+      ReadingPlanDay(dayNumber: 6, title: "Caring for the Foreigner", passages: [BiblePassagePointer(bookAbbr: "LEV", startChapter: 19, startVerse: 33, endChapter: 19, endVerse: 34, displayText: "Leviticus 19:33-34"), BiblePassagePointer(bookAbbr: "DEU", startChapter: 10, startVerse: 17, endChapter: 10, endVerse: 19, displayText: "Deuteronomy 10:17-19")], reflectionPrompt: "How can we show love and justice to immigrants, refugees, or those who are 'strangers' in our communities?"),
+      ReadingPlanDay(dayNumber: 7, title: "Integrity in Business", passages: [BiblePassagePointer(bookAbbr: "PRO", startChapter: 11, startVerse: 1, endChapter: 11, endVerse: 1, displayText: "Proverbs 11:1"), BiblePassagePointer(bookAbbr: "AMO", startChapter: 8, startVerse: 4, endChapter: 8, endVerse: 6, displayText: "Amos 8:4-6")], reflectionPrompt: "In what ways can we ensure fairness and honesty in our economic dealings and advocate for ethical practices?"),
+      ReadingPlanDay(dayNumber: 8, title: "Swords into Plowshares: Peace", passages: [BiblePassagePointer(bookAbbr: "ISA", startChapter: 2, startVerse: 2, endChapter: 2, endVerse: 4, displayText: "Isaiah 2:2-4"), BiblePassagePointer(bookAbbr: "MIC", startChapter: 4, startVerse: 1, endChapter: 4, endVerse: 4, displayText: "Micah 4:1-4")], reflectionPrompt: "What does this vision of peace mean to you? How can we work towards reconciliation and demilitarization?"),
+      ReadingPlanDay(dayNumber: 9, title: "Healing the Land", passages: [BiblePassagePointer(bookAbbr: "HOS", startChapter: 4, startVerse: 1, endChapter: 4, endVerse: 3, displayText: "Hosea 4:1-3"), BiblePassagePointer(bookAbbr: "2CH", startChapter: 7, startVerse: 14, endChapter: 7, endVerse: 14, displayText: "2 Chronicles 7:14")], reflectionPrompt: "How is the well-being of the land connected to our actions and spiritual state? What is our role in environmental stewardship?"),
+      ReadingPlanDay(dayNumber: 10, title: "Speaking Truth to Power", passages: [BiblePassagePointer(bookAbbr: "JER", startChapter: 1, startVerse: 4, endChapter: 1, endVerse: 10, displayText: "Jeremiah 1:4-10"), BiblePassagePointer(bookAbbr: "JER", startChapter: 1, startVerse: 17, endChapter: 1, endVerse: 19, displayText: "Jeremiah 1:17-19")], reflectionPrompt: "When is it necessary to speak uncomfortable truths to those in authority for the sake of justice?"),
+      ReadingPlanDay(dayNumber: 11, title: "The Inclusive Kingdom", passages: [BiblePassagePointer(bookAbbr: "ISA", startChapter: 56, startVerse: 6, endChapter: 56, endVerse: 8, displayText: "Isaiah 56:6-8")], reflectionPrompt: "How does this passage challenge exclusivity and affirm God's welcome to all nations and peoples?"),
+      ReadingPlanDay(dayNumber: 12, title: "Hope for Restoration", passages: [BiblePassagePointer(bookAbbr: "JOL", startChapter: 2, startVerse: 25, endChapter: 2, endVerse: 27, displayText: "Joel 2:25-27")], reflectionPrompt: "Even after periods of hardship or injustice, the prophets speak of hope and restoration. Where do you see this potential today?"),
+      ReadingPlanDay(dayNumber: 13, title: "The Faithful Remnant", passages: [BiblePassagePointer(bookAbbr: "ZEP", startChapter: 3, startVerse: 12, endChapter: 3, endVerse: 13, displayText: "Zephaniah 3:12-13")], reflectionPrompt: "Consider the power of a small group committed to God's ways to bring about change."),
+      ReadingPlanDay(dayNumber: 14, title: "A Vision of New Creation", passages: [BiblePassagePointer(bookAbbr: "ISA", startChapter: 65, startVerse: 17, endChapter: 65, endVerse: 25, displayText: "Isaiah 65:17-25")], reflectionPrompt: "What aspects of this vision for a renewed world inspire you most? How can we live as signs of this future hope?"),
+    ],
+  ),
+  ReadingPlan(
+    id: "rp_parables_inclusion_7day",
+    title: "Parables of Inclusion: Rethinking Boundaries",
+    description: "A 7-day journey through Jesus' parables that challenge social norms and religious exclusivity, revealing a radically inclusive vision of God's kingdom.",
+    category: "Gospels / Parables",
+    isPremium: true,
+    dailyReadings: [
+      ReadingPlanDay(
+        dayNumber: 1,
+        title: "The Lost Sheep & Lost Coin",
+        passages: [BiblePassagePointer(bookAbbr: "LUK", startChapter: 15, startVerse: 1, endChapter: 15, endVerse: 10, displayText: "Luke 15:1-10")],
+        reflectionPrompt: "Who are the 'lost' or marginalized in our society that God actively seeks? How does this challenge our ideas of who 'belongs'?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 2,
+        title: "The Prodigal Son (and the Elder Brother)",
+        passages: [BiblePassagePointer(bookAbbr: "LUK", startChapter: 15, startVerse: 11, endChapter: 15, endVerse: 32, displayText: "Luke 15:11-32")],
+        reflectionPrompt: "This parable highlights unconditional forgiveness but also the resentment of the 'insider'. How can we cultivate a more welcoming and less judgmental heart?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 3,
+        title: "The Workers in the Vineyard",
+        passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 20, startVerse: 1, endChapter: 20, endVerse: 16, displayText: "Matthew 20:1-16")],
+        reflectionPrompt: "God's generosity can seem unfair by human standards. How does this parable disrupt our notions of merit and reward in the Kingdom of God?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 4,
+        title: "The Great Banquet",
+        passages: [BiblePassagePointer(bookAbbr: "LUK", startChapter: 14, startVerse: 15, endChapter: 14, endVerse: 24, displayText: "Luke 14:15-24")],
+        reflectionPrompt: "Those initially invited made excuses, so the invitation extended to the 'poor, crippled, blind, and lame.' Who is being invited into God's community today that the 'establishment' might overlook?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 5,
+        title: "The Unforgiving Servant",
+        passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 18, startVerse: 21, endChapter: 18, endVerse: 35, displayText: "Matthew 18:21-35")],
+        reflectionPrompt: "Having received immense grace, how does our failure to extend grace to others hinder the flow of God's inclusive love in our communities?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 6,
+        title: "The Talents (or Minas)",
+        passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 25, startVerse: 14, endChapter: 25, endVerse: 30, displayText: "Matthew 25:14-30")], // Or Luke 19:11-27
+        reflectionPrompt: "This parable can be seen not just about money, but about using all our diverse gifts for the Kingdom. How can recognizing and empowering diverse gifts build a more inclusive community?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 7,
+        title: "The Sheep and the Goats",
+        passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 25, startVerse: 31, endChapter: 25, endVerse: 46, displayText: "Matthew 25:31-46")],
+        reflectionPrompt: "The standard of judgment is based on how we treat the 'least of these.' How does this radical call to identify with the marginalized define true inclusion in God's eyes?",
+      ),
+    ],
+  ),
+
+  // --- NEW PLANS (Round 2) ---
+
+  // --- FREE PLANS ---
+  ReadingPlan(
+    id: "rp_peace_troubled_times_7day",
+    title: "Peace in Troubled Times",
+    description: "Discover scriptural anchors for peace and hope amidst personal struggles or global uncertainties. A 7-day plan for finding calm.",
+    category: "Topical",
+    isPremium: false,
+    dailyReadings: [
+      ReadingPlanDay(
+        dayNumber: 1, title: "The Peace of God",
+        passages: [BiblePassagePointer(bookAbbr: "PHP", startChapter: 4, startVerse: 6, endChapter: 4, endVerse: 7, displayText: "Philippians 4:6-7")],
+        reflectionPrompt: "What anxieties are you holding today? How can you practice prayer and gratitude to experience God's peace?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 2, title: "He Will Not Forsake You",
+        passages: [BiblePassagePointer(bookAbbr: "DEU", startChapter: 31, startVerse: 6, endChapter: 31, endVerse: 6, displayText: "Deuteronomy 31:6"), BiblePassagePointer(bookAbbr: "HEB", startChapter: 13, startVerse: 5, endChapter: 13, endVerse: 6, displayText: "Hebrews 13:5-6")],
+        reflectionPrompt: "How does the assurance of God's presence bring you peace in times of fear or loneliness?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 3, title: "The Lord is My Shepherd",
+        passages: [BiblePassagePointer(bookAbbr: "PSA", startChapter: 23, startVerse: 1, endChapter: 23, endVerse: 6, displayText: "Psalm 23")],
+        reflectionPrompt: "Which image or promise in Psalm 23 resonates most with your need for peace and guidance today?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 4, title: "Do Not Let Your Hearts Be Troubled",
+        passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 14, startVerse: 1, endChapter: 14, endVerse: 3, displayText: "John 14:1-3"), BiblePassagePointer(bookAbbr: "JHN", startChapter: 14, startVerse: 27, endChapter: 14, endVerse: 27, displayText: "John 14:27")],
+        reflectionPrompt: "Jesus offers a peace different from the world's. What does this divine peace mean to you personally?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 5, title: "God is Our Refuge",
+        passages: [BiblePassagePointer(bookAbbr: "PSA", startChapter: 46, startVerse: 1, endChapter: 46, endVerse: 3, displayText: "Psalm 46:1-3"), BiblePassagePointer(bookAbbr: "PSA", startChapter: 46, startVerse: 10, endChapter: 46, endVerse: 10, displayText: "Psalm 46:10")],
+        reflectionPrompt: "How can being 'still' and knowing God is in control bring peace even when the 'earth gives way'?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 6, title: "Casting All Your Anxieties",
+        passages: [BiblePassagePointer(bookAbbr: "1PE", startChapter: 5, startVerse: 6, endChapter: 5, endVerse: 7, displayText: "1 Peter 5:6-7")],
+        reflectionPrompt: "What specific anxieties can you consciously 'cast' on God today, trusting in His care for you?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 7, title: "The Fruit of the Spirit: Peace",
+        passages: [BiblePassagePointer(bookAbbr: "GAL", startChapter: 5, startVerse: 22, endChapter: 5, endVerse: 23, displayText: "Galatians 5:22-23"), BiblePassagePointer(bookAbbr: "ISA", startChapter: 26, startVerse: 3, endChapter: 26, endVerse: 3, displayText: "Isaiah 26:3")],
+        reflectionPrompt: "How can cultivating other fruits of the Spirit (love, joy, patience) contribute to a deeper experience of peace?",
+      ),
+    ],
+  ),
+  ReadingPlan(
+    id: "rp_creation_care_7day",
+    title: "Creation Care Challenge",
+    description: "Explore our sacred call to be stewards of the Earth. This 7-day plan reflects on biblical mandates for environmental care and action.",
+    category: "Topical / Creation",
+    isPremium: false,
+    dailyReadings: [
+      ReadingPlanDay(
+        dayNumber: 1, title: "The Earth is the Lord's",
+        passages: [BiblePassagePointer(bookAbbr: "PSA", startChapter: 24, startVerse: 1, endChapter: 24, endVerse: 2, displayText: "Psalm 24:1-2"), BiblePassagePointer(bookAbbr: "GEN", startChapter: 1, startVerse: 1, endChapter: 1, endVerse: 1, displayText: "Genesis 1:1")],
+        reflectionPrompt: "If the Earth and everything in it belongs to God, what responsibilities does this imply for us?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 2, title: "Dominion and Stewardship",
+        passages: [BiblePassagePointer(bookAbbr: "GEN", startChapter: 1, startVerse: 26, endChapter: 1, endVerse: 28, displayText: "Genesis 1:26-28"), BiblePassagePointer(bookAbbr: "GEN", startChapter: 2, startVerse: 15, endChapter: 2, endVerse: 15, displayText: "Genesis 2:15")],
+        reflectionPrompt: "What is the difference between 'dominion' as responsible stewardship versus exploitative domination of creation?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 3, title: "Creation Groans",
+        passages: [BiblePassagePointer(bookAbbr: "ROM", startChapter: 8, startVerse: 19, endChapter: 8, endVerse: 23, displayText: "Romans 8:19-23")],
+        reflectionPrompt: "In what ways do you see creation 'groaning' today? How does this motivate a desire for its renewal and our role in it?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 4, title: "Sabbath for the Land",
+        passages: [BiblePassagePointer(bookAbbr: "LEV", startChapter: 25, startVerse: 1, endChapter: 25, endVerse: 7, displayText: "Leviticus 25:1-7")],
+        reflectionPrompt: "The concept of Sabbath extended to the land, allowing it to rest and recover. How can we apply principles of rest and sustainability to our environment today?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 5, title: "Wisdom from Creation",
+        passages: [BiblePassagePointer(bookAbbr: "JOB", startChapter: 12, startVerse: 7, endChapter: 12, endVerse: 10, displayText: "Job 12:7-10"), BiblePassagePointer(bookAbbr: "PRO", startChapter: 6, startVerse: 6, endChapter: 6, endVerse: 8, displayText: "Proverbs 6:6-8")],
+        reflectionPrompt: "What lessons can we learn about diligence, interconnectedness, or God's providence by observing the natural world?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 6, title: "Justice for the Earth and Poor",
+        passages: [BiblePassagePointer(bookAbbr: "ISA", startChapter: 24, startVerse: 4, endChapter: 24, endVerse: 6, displayText: "Isaiah 24:4-6")],
+        reflectionPrompt: "How are environmental degradation and social injustice often linked? Who is most affected by environmental damage?",
+      ),
+      ReadingPlanDay(
+        dayNumber: 7, title: "Hope for a Renewed Creation",
+        passages: [BiblePassagePointer(bookAbbr: "REV", startChapter: 21, startVerse: 1, endChapter: 21, endVerse: 5, displayText: "Revelation 21:1-5"), BiblePassagePointer(bookAbbr: "ISA", startChapter: 11, startVerse: 6, endChapter: 11, endVerse: 9, displayText: "Isaiah 11:6-9")],
+        reflectionPrompt: "Scripture offers a vision of a renewed heaven and earth. What is one practical step you can take this week to contribute to the healing and care of our planet?",
+      ),
+    ],
+  ),
+
+  // --- PREMIUM PLANS ---
+  ReadingPlan(
+    id: "rp_questioning_faith_10day",
+    title: "Questioning Faith: Stories of Doubt & Discovery",
+    description: "Explore biblical narratives of doubt, questioning, and wrestling with faith. This 10-day plan affirms that honest inquiry can lead to deeper understanding.",
+    category: "Topical / Character Study",
+    isPremium: true,
+    dailyReadings: [
+      ReadingPlanDay(dayNumber: 1, title: "Job: The Cry of the Righteous Sufferer", passages: [BiblePassagePointer(bookAbbr: "JOB", startChapter: 3, startVerse: 1, endChapter: 3, endVerse: 11, displayText: "Job 3:1-11"), BiblePassagePointer(bookAbbr: "JOB", startChapter: 3, startVerse: 20, endChapter: 3, endVerse: 26, displayText: "Job 3:20-26")], reflectionPrompt: "Job questions his suffering. Is it okay to voice our deepest pains and questions to God? Why or why not?"),
+      ReadingPlanDay(dayNumber: 2, title: "Job: Demanding Answers", passages: [BiblePassagePointer(bookAbbr: "JOB", startChapter: 23, startVerse: 1, endChapter: 23, endVerse: 9, displayText: "Job 23:1-9")], reflectionPrompt: "Job wishes he could find God to plead his case. What does his raw honesty teach us about wrestling with faith?"),
+      ReadingPlanDay(dayNumber: 3, title: "Thomas: The Need for Evidence", passages: [BiblePassagePointer(bookAbbr: "JHN", startChapter: 20, startVerse: 24, endChapter: 20, endVerse: 29, displayText: "John 20:24-29")], reflectionPrompt: "Thomas needed to see to believe. How does Jesus respond to his doubt? Is there room for intellectual seeking in faith?"),
+      ReadingPlanDay(dayNumber: 4, title: "The Psalmist's Anguish (Psalm 77)", passages: [BiblePassagePointer(bookAbbr: "PSA", startChapter: 77, startVerse: 1, endChapter: 77, endVerse: 10, displayText: "Psalm 77:1-10")], reflectionPrompt: "The psalmist questions if God has forgotten or rejected him. How can remembering God's past actions help in times of present doubt?"),
+      ReadingPlanDay(dayNumber: 5, title: "Jeremiah: The Prophet's Complaint", passages: [BiblePassagePointer(bookAbbr: "JER", startChapter: 20, startVerse: 7, endChapter: 20, endVerse: 9, displayText: "Jeremiah 20:7-9"), BiblePassagePointer(bookAbbr: "JER", startChapter: 20, startVerse: 14, endChapter: 20, endVerse: 18, displayText: "Jeremiah 20:14-18")], reflectionPrompt: "Jeremiah feels deceived and overwhelmed by his calling. Can doubt and faithfulness coexist?"),
+      ReadingPlanDay(dayNumber: 6, title: "Asaph's Crisis of Faith (Psalm 73)", passages: [BiblePassagePointer(bookAbbr: "PSA", startChapter: 73, startVerse: 1, endChapter: 73, endVerse: 17, displayText: "Psalm 73:1-17 (Focus on v. 1-3, 12-14, 16-17)")], reflectionPrompt: "The psalmist doubts God's justice when seeing the wicked prosper. What helps shift his perspective?"),
+      ReadingPlanDay(dayNumber: 7, title: "John the Baptist: Doubts from Prison", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 11, startVerse: 2, endChapter: 11, endVerse: 6, displayText: "Matthew 11:2-6")], reflectionPrompt: "Even John the Baptist had moments of questioning. How does Jesus' answer affirm his ministry while addressing John's doubts?"),
+      ReadingPlanDay(dayNumber: 8, title: "The Father of the Afflicted Boy", passages: [BiblePassagePointer(bookAbbr: "MRK", startChapter: 9, startVerse: 21, endChapter: 9, endVerse: 24, displayText: "Mark 9:21-24")], reflectionPrompt: "'I believe; help my unbelief!' What does this honest prayer teach us about faith and doubt existing together?"),
+      ReadingPlanDay(dayNumber: 9, title: "Habakkuk's Dialogue with God", passages: [BiblePassagePointer(bookAbbr: "HAB", startChapter: 1, startVerse: 1, endChapter: 1, endVerse: 4, displayText: "Habakkuk 1:1-4"), BiblePassagePointer(bookAbbr: "HAB", startChapter: 1, startVerse: 12, endChapter: 1, endVerse: 13, displayText: "Habakkuk 1:12-13")], reflectionPrompt: "Habakkuk questions God's methods. How can honest dialogue, even if challenging, strengthen our relationship with the Divine?"),
+      ReadingPlanDay(dayNumber: 10, title: "Embracing Mystery", passages: [BiblePassagePointer(bookAbbr: "ECC", startChapter: 3, startVerse: 11, endChapter: 3, endVerse: 11, displayText: "Ecclesiastes 3:11"), BiblePassagePointer(bookAbbr: "1CO", startChapter: 13, startVerse: 12, endChapter: 13, endVerse: 12, displayText: "1 Corinthians 13:12")], reflectionPrompt: "We may not have all the answers. How can embracing mystery and 'seeing in a mirror dimly' be a part of a mature faith?"),
+    ],
+  ),
+  ReadingPlan(
+    id: "rp_beyond_borders_7day",
+    title: "Beyond Borders: Welcoming the Stranger",
+    description: "A 7-day deep dive into biblical teachings on hospitality, immigration, and our call to care for the 'stranger' or 'foreigner' among us.",
+    category: "Topical / Social Justice",
+    isPremium: true,
+    dailyReadings: [
+      ReadingPlanDay(dayNumber: 1, title: "Love the Sojourner", passages: [BiblePassagePointer(bookAbbr: "DEU", startChapter: 10, startVerse: 17, endChapter: 10, endVerse: 19, displayText: "Deuteronomy 10:17-19")], reflectionPrompt: "Why does God emphasize loving the sojourner, reminding Israel of their own past? How does this apply today?"),
+      ReadingPlanDay(dayNumber: 2, title: "Hospitality as a Virtue", passages: [BiblePassagePointer(bookAbbr: "HEB", startChapter: 13, startVerse: 1, endChapter: 13, endVerse: 2, displayText: "Hebrews 13:1-2"), BiblePassagePointer(bookAbbr: "ROM", startChapter: 12, startVerse: 13, endChapter: 12, endVerse: 13, displayText: "Romans 12:13")], reflectionPrompt: "What are the practical implications of 'practicing hospitality' in our modern context, especially towards those from different backgrounds?"),
+      ReadingPlanDay(dayNumber: 3, title: "One Law for All", passages: [BiblePassagePointer(bookAbbr: "LEV", startChapter: 24, startVerse: 22, endChapter: 24, endVerse: 22, displayText: "Leviticus 24:22"), BiblePassagePointer(bookAbbr: "NUM", startChapter: 15, startVerse: 15, endChapter: 15, endVerse: 16, displayText: "Numbers 15:15-16")], reflectionPrompt: "The Law often stressed equal treatment for the native-born and the foreigner. How does this challenge discriminatory attitudes or policies today?"),
+      ReadingPlanDay(dayNumber: 4, title: "Jesus as a Refugee", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 2, startVerse: 13, endChapter: 2, endVerse: 15, displayText: "Matthew 2:13-15"), BiblePassagePointer(bookAbbr: "MAT", startChapter: 2, startVerse: 19, endChapter: 2, endVerse: 21, displayText: "Matthew 2:19-21")], reflectionPrompt: "Reflecting on Jesus' own experience as a refugee, how might this shape our compassion and response to those fleeing persecution today?"),
+      ReadingPlanDay(dayNumber: 5, title: "Welcoming the 'Least of These'", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 25, startVerse: 34, endChapter: 25, endVerse: 40, displayText: "Matthew 25:34-40 (focus on 'I was a stranger and you welcomed me')")], reflectionPrompt: "How is welcoming the stranger directly linked to serving Christ himself, according to this passage?"),
+      ReadingPlanDay(dayNumber: 6, title: "Ruth: An Immigrant's Story", passages: [BiblePassagePointer(bookAbbr: "RUT", startChapter: 2, startVerse: 8, endChapter: 2, endVerse: 12, displayText: "Ruth 2:8-12")], reflectionPrompt: "Boaz showed kindness and provision to Ruth, a Moabite foreigner. What can we learn from his example about integrating and supporting newcomers?"),
+      ReadingPlanDay(dayNumber: 7, title: "The Inclusive Vision of God's People", passages: [BiblePassagePointer(bookAbbr: "ISA", startChapter: 56, startVerse: 3, endChapter: 56, endVerse: 8, displayText: "Isaiah 56:3-8"), BiblePassagePointer(bookAbbr: "GAL", startChapter: 3, startVerse: 28, endChapter: 3, endVerse: 28, displayText: "Galatians 3:28")], reflectionPrompt: "How do these passages paint a picture of God's community as one that transcends national, ethnic, and social barriers? What is our role in building such a community?"),
+    ],
+  ),
+  ReadingPlan(
+    id: "rp_beatitudes_reimagined_8day",
+    title: "Reimagining The Beatitudes: Blessings for Today",
+    description: "An 8-day exploration of Jesus' Beatitudes from the Sermon on the Mount, applying their counter-cultural wisdom to modern life and societal challenges.",
+    category: "Gospels / Sermon on the Mount",
+    isPremium: true,
+    dailyReadings: [
+      ReadingPlanDay(dayNumber: 1, title: "Blessed are the Poor in Spirit", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 5, startVerse: 3, endChapter: 5, endVerse: 3, displayText: "Matthew 5:3")], reflectionPrompt: "What does it mean to be 'poor in spirit' in a world that values self-sufficiency? How does recognizing our need for God/Goodness open us to the 'kingdom of heaven' within and among us?"),
+      ReadingPlanDay(dayNumber: 2, title: "Blessed are Those Who Mourn", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 5, startVerse: 4, endChapter: 5, endVerse: 4, displayText: "Matthew 5:4")], reflectionPrompt: "How can allowing ourselves to truly mourn personal and societal losses lead to genuine comfort and inspire compassionate action?"),
+      ReadingPlanDay(dayNumber: 3, title: "Blessed are the Meek", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 5, startVerse: 5, endChapter: 5, endVerse: 5, displayText: "Matthew 5:5")], reflectionPrompt: "Meekness isn't weakness, but power under control. In a world that often rewards aggression, how can meekness (gentle strength, humility) lead to 'inheriting the earth' or finding our true place?"),
+      ReadingPlanDay(dayNumber: 4, title: "Blessed are Those Who Hunger for Righteousness", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 5, startVerse: 6, endChapter: 5, endVerse: 6, displayText: "Matthew 5:6")], reflectionPrompt: "What does it mean to hunger and thirst for 'righteousness' (justice, fairness, right-relationships) today? How can this deep desire lead to fulfillment and positive change?"),
+      ReadingPlanDay(dayNumber: 5, title: "Blessed are the Merciful", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 5, startVerse: 7, endChapter: 5, endVerse: 7, displayText: "Matthew 5:7")], reflectionPrompt: "In what areas of your life or in society is mercy most needed? How does extending mercy to others open us to receiving it more fully?"),
+      ReadingPlanDay(dayNumber: 6, title: "Blessed are the Pure in Heart", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 5, startVerse: 8, endChapter: 5, endVerse: 8, displayText: "Matthew 5:8")], reflectionPrompt: "Purity of heart implies integrity and undivided devotion to good. How can cultivating inner clarity and sincere motives allow us to 'see God' in ourselves, others, and the world?"),
+      ReadingPlanDay(dayNumber: 7, title: "Blessed are the Peacemakers", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 5, startVerse: 9, endChapter: 5, endVerse: 9, displayText: "Matthew 5:9")], reflectionPrompt: "What does it mean to be a 'peacemaker' (not just a peacekeeper) in our relationships, communities, and world? How are they recognized as 'children of God'?"),
+      ReadingPlanDay(dayNumber: 8, title: "Blessed are the Persecuted for Righteousness", passages: [BiblePassagePointer(bookAbbr: "MAT", startChapter: 5, startVerse: 10, endChapter: 5, endVerse: 12, displayText: "Matthew 5:10-12")], reflectionPrompt: "Standing for justice and truth can sometimes lead to opposition. How can we find blessing and maintain joy even when facing challenges for doing what is right?"),
+    ],
+  ),
+];
