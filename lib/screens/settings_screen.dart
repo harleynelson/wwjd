@@ -1,10 +1,12 @@
 // lib/screens/settings_screen.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:wwjd_app/database_helper.dart';
 import 'package:wwjd_app/prefs_helper.dart';
 import 'package:wwjd_app/models/reader_settings_enums.dart';
 import '../daily_devotions.dart';
+import '../theme/theme_provider.dart';
 
 // Make sure this class name is spelled exactly "SettingsScreen"
 class SettingsScreen extends StatefulWidget {
@@ -131,6 +133,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -138,11 +141,60 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: <Widget>[
+
+          
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: const Text("App Version"),
             subtitle: const Text("1.0.0 (WWJD Daily)"),
             onTap: _onAppVersionTap,
+          ),
+          const Divider(),
+          // --- NEW: App Theme Mode Setting ---
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+            child: Text(
+              "App Theme",
+              style: textTheme.titleSmall?.copyWith(
+                    color: colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(
+                themeProvider.themeMode == ThemeMode.dark ? Icons.dark_mode_outlined :
+                themeProvider.themeMode == ThemeMode.light ? Icons.light_mode_outlined :
+                Icons.brightness_auto_outlined
+            ),
+            title: const Text("Appearance"),
+            // Use a Dropdown or SegmentedButton for more options (System, Light, Dark)
+            // For a simple toggle, a Switch can work well for Light/Dark.
+            // Here's an example with a dropdown:
+            trailing: DropdownButtonHideUnderline(
+              child: DropdownButton<ThemeMode>(
+                value: themeProvider.themeMode,
+                items: const [
+                  DropdownMenuItem(
+                    value: ThemeMode.system,
+                    child: Text("System Default"),
+                  ),
+                  DropdownMenuItem(
+                    value: ThemeMode.light,
+                    child: Text("Light"),
+                  ),
+                  DropdownMenuItem(
+                    value: ThemeMode.dark,
+                    child: Text("Dark"),
+                  ),
+                ],
+                onChanged: (ThemeMode? newValue) {
+                  if (newValue != null) {
+                    themeProvider.setThemeMode(newValue);
+                  }
+                },
+              ),
+            ),
           ),
           const Divider(),
           Padding(

@@ -15,6 +15,8 @@ class PrefsHelper {
   static const String _readerFontFamilyKey = 'reader_font_family';
   static const String _readerThemeModeKey = 'reader_theme_mode';
 
+  static const String _appThemeModeKey = 'app_theme_mode';
+
   // Call this method in main.dart before runApp
   static Future<void> init() async {
     _prefs ??= await SharedPreferences.getInstance();
@@ -122,6 +124,17 @@ class PrefsHelper {
   static Future<void> setReaderThemeMode(ReaderThemeMode themeMode) async {
     if (_prefs == null) return;
     await _prefs!.setString(_readerThemeModeKey, themeMode.name);
+  }
+
+  // --- App Theme Mode Methods ---
+  static Future<String?> getAppThemeMode() async {
+    if (_prefs == null) await init(); // Ensure initialized
+    return _prefs!.getString(_appThemeModeKey);
+  }
+
+  static Future<void> setAppThemeMode(String themeModeName) async {
+    if (_prefs == null) await init();
+    await _prefs!.setString(_appThemeModeKey, themeModeName);
   }
 
 }
