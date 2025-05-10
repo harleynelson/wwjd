@@ -1,3 +1,22 @@
+# Keystore files
+*.jks
+*.keystore
+
+# API Keys and Configuration files
+# Add this line to ignore the api_keys.dart file within the config directory:
+config/api_keys.dart
+lib/config/api_keys.dart
+
+# If you have other sensitive files in the config directory, you might ignore the whole directory:
+# config/
+
+# Firebase (if you use it and have google-services.json or GoogleService-Info.plist locally but not checked in)
+# If you check these into a private repo, you might not need to ignore them.
+# However, for public repos, definitely ignore them.
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+
 # Miscellaneous
 *.class
 *.log
@@ -43,3 +62,5 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+

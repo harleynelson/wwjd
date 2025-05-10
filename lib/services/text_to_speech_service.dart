@@ -1,296 +1,360 @@
 // lib/services/text_to_speech_service.dart
-import 'dart:io' show Platform;
-import 'dart:math'; // For random greetings
-import 'package:flutter/foundation.dart'; // For ValueNotifier
-import 'package:flutter_tts/flutter_tts.dart';
-import '../helpers/daily_devotions.dart'; // Import Devotional model
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io'; // Added for File operations
+import 'dart:typed_data';
+import 'dart:math';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:audioplayers/audioplayers.dart';
+import 'package:path_provider/path_provider.dart'; // Added for cache directory
+import 'package:path/path.dart' as p; // Added for path joining
+
+import '../helpers/daily_devotions.dart';
+import '../config/api_keys.dart';
+import '../config/tts_voices.dart';
+import '../helpers/prefs_helper.dart';
 
 class TextToSpeechService {
   static final TextToSpeechService _instance = TextToSpeechService._internal();
   factory TextToSpeechService() => _instance;
 
-  late FlutterTts _flutterTts;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  PlayerState? _audioPlayerState;
+  StreamSubscription? _playerCompleteSubscription;
+  StreamSubscription? _playerStateChangeSubscription;
 
   final ValueNotifier<bool> isSpeakingNotifier = ValueNotifier(false);
-  final ValueNotifier<List<Map<dynamic, dynamic>>> availableVoicesNotifier =
-      ValueNotifier([]);
-  final ValueNotifier<Map<dynamic, dynamic>?> selectedVoiceNotifier =
+  final ValueNotifier<AppTtsVoice?> selectedAppVoiceNotifier =
       ValueNotifier(null);
 
-  double _speechRate = 0.55;
-  double _pitch = 0.9;
-  String _targetLanguage = "en-US";
-  bool _sequenceCancelled = false; // To handle stop during sequence
+  double _speakingRate = 0.88;
+  double _pitch = -3.5;
+
+  String _currentLanguageCode = "en-US";
+  String? _currentVoiceNameApi;
+
+  bool _sequenceCancelled = false;
+  Completer<void>? _currentSpeechCompleter;
+
+  final String _apiKey = googleCloudApiKey;
+
+  final List<String> _voicesSupportingPitchRate = [
+    'Standard', 'Wavenet', 'Neural2'
+  ];
+
+  bool _isInitialized = false;
+  String? _cacheDirectoryPath;
 
   TextToSpeechService._internal() {
-    _flutterTts = FlutterTts();
-    _initializeTtsAndLoadDefaults();
+    _initializeAudioPlayerListeners();
+    if (_apiKey == "YOUR_ACTUAL_GOOGLE_CLOUD_API_KEY" || _apiKey.isEmpty) {
+      print("TTS Service WARNING: API Key is still the placeholder or empty. "
+            "Please update it in lib/config/api_keys.dart");
+    }
+    // ensureInitialized() should be called explicitly from outside if needed before first use
+    // or implicitly by methods that depend on it.
   }
 
-  Future<void> _setAwaitOptions() async {
-    // Ensure speak completion is awaited for sequenced speaking
-    await _flutterTts.awaitSpeakCompletion(true);
+  Future<void> ensureInitialized() async {
+    if (_isInitialized) return;
+    await _initializeCacheDirectory();
+    await _loadInitialVoiceSettings();
+    _isInitialized = true;
+    print("TTS Service: Explicitly initialized with cache directory.");
   }
 
-  Future<void> _initializeTtsAndLoadDefaults() async {
-    _flutterTts.setStartHandler(() {
-      // isSpeakingNotifier.value = true; // Will be set by speak methods
+  Future<void> _initializeCacheDirectory() async {
+    if (_cacheDirectoryPath != null) return;
+    try {
+      final directory = await getApplicationSupportDirectory();
+      _cacheDirectoryPath = p.join(directory.path, 'tts_cache');
+      final cacheDir = Directory(_cacheDirectoryPath!);
+      if (!await cacheDir.exists()) {
+        await cacheDir.create(recursive: true);
+      }
+      print("TTS Service: Cache directory set to $_cacheDirectoryPath");
+    } catch (e) {
+      print("TTS Service: Error initializing cache directory: $e");
+      // Handle error, perhaps by disabling caching or alerting the user
+    }
+  }
+
+  String _generateCacheKey(String text) {
+    // Simple hash a unique key. Consider more robust hashing if needed.
+    final voiceId = _currentVoiceNameApi ?? _currentLanguageCode;
+    final rate = _speakingRate.toStringAsFixed(2);
+    final pitchVal = _pitch.toStringAsFixed(2);
+    final String rawKey = "$voiceId-$rate-$pitchVal-$text";
+    // Using text.hashCode is simple but can have collisions for very different long texts.
+    // For devotional segments, it's likely sufficient.
+    // A more robust approach for general text might involve a cryptographic hash of 'rawKey'.
+    return "${rawKey.hashCode}.mp3";
+  }
+
+  Future<File?> _getCachedFile(String text) async {
+    if (_cacheDirectoryPath == null) return null;
+    final String fileName = _generateCacheKey(text);
+    final String filePath = p.join(_cacheDirectoryPath!, fileName);
+    final file = File(filePath);
+    if (await file.exists()) {
+      print("TTS Service: Cache hit for text (hashCode: ${text.hashCode}) -> $fileName");
+      return file;
+    }
+    print("TTS Service: Cache miss for text (hashCode: ${text.hashCode}) -> $fileName");
+    return null;
+  }
+
+  Future<void> _saveToCache(String text, Uint8List audioBytes) async {
+    if (_cacheDirectoryPath == null || audioBytes.isEmpty) return;
+    final String fileName = _generateCacheKey(text);
+    final String filePath = p.join(_cacheDirectoryPath!, fileName);
+    try {
+      final file = File(filePath);
+      await file.writeAsBytes(audioBytes, flush: true);
+      print("TTS Service: Saved to cache $fileName");
+    } catch (e) {
+      print("TTS Service: Error saving to cache $fileName: $e");
+    }
+  }
+
+  void _initializeAudioPlayerListeners() {
+    _playerStateChangeSubscription?.cancel();
+    _playerCompleteSubscription?.cancel();
+
+    _playerStateChangeSubscription = _audioPlayer.onPlayerStateChanged.listen((PlayerState s) {
+      _audioPlayerState = s;
+      bool currentlyPlaying = (s == PlayerState.playing);
+      if (isSpeakingNotifier.value != currentlyPlaying) {
+        isSpeakingNotifier.value = currentlyPlaying;
+      }
     });
 
-    _flutterTts.setCompletionHandler(() {
-      // Only set to false if not immediately starting another part of a sequence
-      // The speakDevotionalScript will manage the overall speaking state.
-      // If _sequenceCancelled is false, it means a single utterance completed.
-      // If it's a part of a sequence, the sequence handler should manage the final state.
+    _playerCompleteSubscription = _audioPlayer.onPlayerComplete.listen((event) {
+      print("TTS Service: AudioPlayer completed an utterance.");
+      if (!(_currentSpeechCompleter?.isCompleted ?? true)) {
+        _currentSpeechCompleter?.complete();
+      }
     });
+  }
 
-    _flutterTts.setErrorHandler((msg) {
-      isSpeakingNotifier.value = false;
-      _sequenceCancelled = true; // Stop sequence on error
-      print("TTS Service Error: $msg");
-    });
+  Future<void> _loadInitialVoiceSettings() async {
+    await PrefsHelper.init();
+    String? preferredVoiceName = PrefsHelper.getSelectedVoiceName();
+    AppTtsVoice? voiceToSet;
 
-    // iOS specific settings
-    if (Platform.isIOS) {
+    if (preferredVoiceName != null && preferredVoiceName.isNotEmpty) {
       try {
-        await _flutterTts.setSharedInstance(true);
-        await _flutterTts.setIosAudioCategory(
-            IosTextToSpeechAudioCategory.playback,
-            [
-              IosTextToSpeechAudioCategoryOptions.defaultToSpeaker,
-              IosTextToSpeechAudioCategoryOptions.allowBluetooth,
-            ],
-            IosTextToSpeechAudioMode.voicePrompt);
+        voiceToSet = googleTtsAppVoices.firstWhere((v) => v.name == preferredVoiceName);
+        print("TTS Service: Loaded preferred voice from Prefs: ${voiceToSet.displayName}");
       } catch (e) {
-         print("TTS Service: Error setting iOS audio category: $e");
+        print("TTS Service: Preferred voice '$preferredVoiceName' not found. Using default.");
       }
     }
-    
-    await _setAwaitOptions(); // Crucial for sequenced speaking
-    await _checkAndSetInitialLanguage();
-    await _loadAndSetDefaultVoice();
-  }
 
-  Future<void> _checkAndSetInitialLanguage() async {
-    // ... (previous implementation is fine)
-    print("TTS Service: Checking language availability for $_targetLanguage");
-    try {
-      bool? isTargetLangAvailable = await _flutterTts.isLanguageAvailable(_targetLanguage);
-      print("TTS Service: Language '$_targetLanguage' available: $isTargetLangAvailable");
-
-      if (isTargetLangAvailable == true) {
-        await _flutterTts.setLanguage(_targetLanguage);
-        print("TTS Service: Initial language successfully set to $_targetLanguage");
+    if (voiceToSet == null) {
+      if (googleTtsAppVoices.isNotEmpty) {
+        voiceToSet = googleTtsAppVoices.firstWhere(
+          (v) => v.name == "en-US-Neural2-D", // Default preferred voice
+          orElse: () => googleTtsAppVoices.firstWhere(
+            (v) => v.languageCode == "en-US" && _voicesSupportingPitchRate.any((type) => v.name.toLowerCase().contains(type.toLowerCase())),
+            orElse: () => googleTtsAppVoices.first,
+          ),
+        );
+        print("TTS Service: No preferred voice in Prefs or not found. Using default: ${voiceToSet.displayName}");
       } else {
-        print("TTS Service WARN: Target language '$_targetLanguage' is NOT available.");
-        bool? isGenericEnAvailable = await _flutterTts.isLanguageAvailable("en");
-        print("TTS Service: Language 'en' available: $isGenericEnAvailable");
-        if (isGenericEnAvailable == true) {
-          _targetLanguage = "en";
-          await _flutterTts.setLanguage(_targetLanguage);
-          print("TTS Service: Initial language successfully set to '$_targetLanguage'");
-        } else {
-          print("TTS Service ERROR: Neither '$_targetLanguage' nor 'en' are available. TTS may use system default language.");
-        }
+         print("TTS Service WARNING: googleTtsAppVoices list is empty!");
       }
-    } catch (e) {
-      print("TTS Service: Error during initial language check/set: $e");
     }
+    await setAppVoice(voiceToSet, savePreference: false);
   }
 
-  Future<void> _loadAndSetDefaultVoice() async {
-    // ... (previous implementation is fine, ensure it calls setVoice)
-    try {
-      var voices = await _flutterTts.getVoices;
-      if (voices != null && voices is List && voices.isNotEmpty) {
-        availableVoicesNotifier.value = List<Map<dynamic, dynamic>>.from(
-            voices.map((v) => v as Map<dynamic, dynamic>));
-        
-        print("TTS Service: Available Voices (${availableVoicesNotifier.value.length}):");
-        for (var v in availableVoicesNotifier.value) {
-          print("  - Name: ${v['name']}, Locale: ${v['locale']}, Gender: ${v['gender']}, Identifier: ${v['identifier']}, Engine: ${v['engine']}");
-        }
-
-        Map<dynamic, dynamic>? voiceToSelect;
-        int foundIndex = -1;
-
-        // Priority 1: Male "en-US" voice
-        foundIndex = availableVoicesNotifier.value.indexWhere(
-            (v) => (v["locale"]?.toString().toLowerCase() == "en-us" || v["locale"]?.toString().toLowerCase() == "en_us") &&
-                   (v["name"]?.toString().toLowerCase().contains("male") == true ||
-                    v["gender"]?.toString().toLowerCase() == "male" ||
-                    ["david", "john", "paul", "james", "mark", "tom", "guy", "man"]
-                        .any((namePart) => v["name"]?.toString().toLowerCase().contains(namePart) == true)));
-        
-        if (foundIndex != -1) {
-          voiceToSelect = availableVoicesNotifier.value[foundIndex];
-          print("TTS Service: Found preferred 'en-US male' voice: ${voiceToSelect['name']}");
-        } else {
-          foundIndex = availableVoicesNotifier.value.indexWhere(
-              (v) => v["locale"]?.toString().toLowerCase() == "en-us" || v["locale"]?.toString().toLowerCase() == "en_us");
-          if (foundIndex != -1) {
-            voiceToSelect = availableVoicesNotifier.value[foundIndex];
-            print("TTS Service: No specific 'male' en-US voice, using first available 'en-US': ${voiceToSelect['name']}");
-          } else {
-            foundIndex = availableVoicesNotifier.value.indexWhere(
-                (v) => v["locale"]?.toString().toLowerCase().startsWith("en") == true);
-             if (foundIndex != -1) {
-                voiceToSelect = availableVoicesNotifier.value[foundIndex];
-                print("TTS Service: No 'en-US' voices, using first available generic 'en': ${voiceToSelect['name']}");
-             } else if (availableVoicesNotifier.value.isNotEmpty) {
-                voiceToSelect = availableVoicesNotifier.value.first;
-                print("TTS Service WARNING: No English voices found. Using first overall available voice: ${voiceToSelect['name']} (Locale: ${voiceToSelect['locale']}). This might not be English.");
-             }
-          }
-        }
-        await setVoice(voiceToSelect);
-      } else {
-         print("TTS Service: No voices returned from getVoices or list is empty.");
-         selectedVoiceNotifier.value = null;
-         await _flutterTts.setLanguage(_targetLanguage);
-      }
-    } catch (e) {
-      print("TTS Service: Error getting/processing voices: $e");
-      selectedVoiceNotifier.value = null;
-      await _flutterTts.setLanguage(_targetLanguage);
-    }
+  List<AppTtsVoice> getCuratedAppVoices() {
+    return googleTtsAppVoices;
   }
 
-  List<Map<dynamic, dynamic>> get availableVoices => availableVoicesNotifier.value;
-  Map<dynamic, dynamic>? get currentVoice => selectedVoiceNotifier.value;
-  double get currentSpeechRate => _speechRate;
+  AppTtsVoice? get currentSelectedAppVoice => selectedAppVoiceNotifier.value;
+  double get currentSpeakingRate => _speakingRate;
   double get currentPitch => _pitch;
-  String get currentLanguage => _targetLanguage;
+  String get currentLanguageCode => _currentLanguageCode;
 
-  Future<void> setLanguage(String language, {bool forceSetting = false}) async {
-    // ... (previous implementation is fine)
-    if (forceSetting || _targetLanguage != language) {
-        _targetLanguage = language; 
-    }
-    try {
-      await _flutterTts.setLanguage(language);
-      print("TTS Service: Attempted to set language on engine to $language");
-    } catch (e) {
-      print("TTS Service: Error setting language on engine to $language: $e");
-    }
-  }
-
-  Future<void> setVoice(Map<dynamic, dynamic>? voice) async {
-    // ... (previous implementation is fine)
-    if (voice == null) {
-      selectedVoiceNotifier.value = null;
-      print("TTS Service: Voice cleared. Will use default for language '$_targetLanguage'.");
-      await _flutterTts.setLanguage(_targetLanguage);
+  Future<void> setAppVoice(AppTtsVoice? appVoice, {bool savePreference = true}) async {
+    if (appVoice == null) {
+       if (googleTtsAppVoices.isNotEmpty) {
+        final fallbackVoice = googleTtsAppVoices.firstWhere(
+            (v) => v.name == "en-US-Neural2-D",
+            orElse: () => googleTtsAppVoices.first);
+        selectedAppVoiceNotifier.value = fallbackVoice;
+        _currentVoiceNameApi = fallbackVoice.name;
+        _currentLanguageCode = fallbackVoice.languageCode;
+      } else {
+        selectedAppVoiceNotifier.value = null;
+        _currentVoiceNameApi = null;
+        _currentLanguageCode = "en-US"; 
+      }
+      if (savePreference) {
+        await PrefsHelper.setSelectedVoiceName("");
+        await PrefsHelper.setSelectedVoiceLanguageCode("");
+      }
       return;
     }
 
-    final String voiceName = voice['name']?.toString() ?? "";
-    final String voiceLocale = voice['locale']?.toString() ?? "";
-    final String? voiceIdentifier = voice['identifier']?.toString();
+    selectedAppVoiceNotifier.value = appVoice;
+    _currentVoiceNameApi = appVoice.name;
+    _currentLanguageCode = appVoice.languageCode;
 
-    print("TTS Service: Attempting to set voice: Name='$voiceName', Locale='$voiceLocale', Identifier='$voiceIdentifier'");
-
-    try {
-      bool voiceSetAttempted = false;
-      if (Platform.isIOS && voiceIdentifier != null && voiceIdentifier.isNotEmpty) {
-        await _flutterTts.setVoice({"identifier": voiceIdentifier});
-        print("TTS Service: Voice set via identifier (iOS): $voiceIdentifier");
-        voiceSetAttempted = true;
-      } else if (voiceName.isNotEmpty && voiceLocale.isNotEmpty) {
-        await _flutterTts.setVoice({"name": voiceName, "locale": voiceLocale});
-        print("TTS Service: Voice set via name/locale: Name='$voiceName', Locale='$voiceLocale'");
-        voiceSetAttempted = true;
-      } else {
-        print("TTS Service WARN: Critical properties (name/locale or identifier) missing for voice: $voice. Cannot set specific voice.");
-      }
-
-      if (voiceSetAttempted) {
-        selectedVoiceNotifier.value = voice;
-        if (voiceLocale.isNotEmpty) {
-          await setLanguage(voiceLocale, forceSetting: true); 
-        }
-      } else {
-        selectedVoiceNotifier.value = null;
-        await _flutterTts.setLanguage(_targetLanguage);
-        print("TTS Service: Failed to set specific voice, ensuring language is '$_targetLanguage'.");
-      }
-    } catch (e) {
-      print("TTS Service: Error setting voice $voice: $e");
-      selectedVoiceNotifier.value = null;
-      await _flutterTts.setLanguage(_targetLanguage);
+    if (savePreference) {
+      await PrefsHelper.setSelectedVoiceName(appVoice.name);
+      await PrefsHelper.setSelectedVoiceLanguageCode(appVoice.languageCode);
     }
+    print("TTS Service: AppVoice set to Name: ${_currentVoiceNameApi}, Language: $_currentLanguageCode");
   }
 
-  Future<void> setSpeechRate(double rate) async {
-    // ... (previous implementation is fine)
-    final clampedRate = rate.clamp(0.1, 1.0); 
-    try {
-      await _flutterTts.setSpeechRate(clampedRate);
-      _speechRate = clampedRate;
-      print("TTS Service: Speech rate set to $_speechRate");
-    } catch (e) {
-      print("TTS Service: Error setting speech rate to $clampedRate: $e");
-    }
+  Future<void> setSpeakingRate(double rate) async {
+    _speakingRate = rate.clamp(0.25, 4.0);
   }
 
   Future<void> setPitch(double pitch) async {
-    // ... (previous implementation is fine)
-     final clampedPitch = pitch.clamp(0.5, 2.0);
-    try {
-      await _flutterTts.setPitch(clampedPitch);
-      _pitch = clampedPitch;
-      print("TTS Service: Pitch set to $_pitch");
-    } catch (e) {
-      print("TTS Service: Error setting pitch to $clampedPitch: $e");
-    }
+    _pitch = pitch.clamp(-20.0, 20.0);
   }
 
-  // Internal speak method for single utterances
-  Future<void> _speakInternal(String text) async {
-    if (text.isEmpty || _sequenceCancelled) return;
-
-    // Ensure current settings are applied
-    String langToUse = _targetLanguage;
-    if (selectedVoiceNotifier.value != null &&
-        selectedVoiceNotifier.value!['locale'] != null &&
-        selectedVoiceNotifier.value!['locale'].toString().isNotEmpty) {
-      langToUse = selectedVoiceNotifier.value!['locale'].toString();
+  // Internal method to synthesize audio, does not play, returns bytes.
+  Future<Uint8List?> _synthesizeAudio(String text) async {
+    if (text.isEmpty) return null;
+    if (_apiKey == "YOUR_ACTUAL_GOOGLE_CLOUD_API_KEY" || _apiKey.isEmpty) {
+      print("TTS Service: API Key not set. Cannot synthesize speech.");
+      return null;
     }
-    await _flutterTts.setLanguage(langToUse);
 
-    if (selectedVoiceNotifier.value != null) {
-      final voiceMap = selectedVoiceNotifier.value!;
-      final String voiceName = voiceMap['name']?.toString() ?? "";
-      final String voiceLocale = voiceMap['locale']?.toString() ?? "";
-      final String? voiceIdentifier = voiceMap['identifier']?.toString();
-      if (Platform.isIOS && voiceIdentifier != null && voiceIdentifier.isNotEmpty) {
-        await _flutterTts.setVoice({"identifier": voiceIdentifier});
-      } else if (voiceName.isNotEmpty && voiceLocale.isNotEmpty) {
-        await _flutterTts.setVoice({"name": voiceName, "locale": voiceLocale});
+    final String apiUrl = 'https://texttospeech.googleapis.com/v1/text:synthesize?key=$_apiKey';
+    final Map<String, dynamic> voiceParams = {'languageCode': _currentLanguageCode};
+    if (_currentVoiceNameApi != null) {
+      voiceParams['name'] = _currentVoiceNameApi;
+    }
+
+    final Map<String, dynamic> audioConfig = {'audioEncoding': 'MP3'};
+    bool supportsPitchRate = _currentVoiceNameApi != null &&
+        _voicesSupportingPitchRate.any((type) =>
+            _currentVoiceNameApi!.toLowerCase().contains(type.toLowerCase()));
+
+    if (supportsPitchRate) {
+      audioConfig['speakingRate'] = _speakingRate;
+      audioConfig['pitch'] = _pitch;
+    }
+     print("TTS Service: Synthesizing for cache: '${text.substring(0, min(text.length, 30))}...' with voice: ${_currentVoiceNameApi ?? 'default for $_currentLanguageCode'}");
+
+
+    final Map<String, dynamic> requestBody = {
+      'input': {'text': text}, 'voice': voiceParams, 'audioConfig': audioConfig,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        final responseBody = json.decode(response.body);
+        final String? audioBase64 = responseBody['audioContent'] as String?;
+        if (audioBase64 != null) {
+          return base64Decode(audioBase64);
+        }
+      } else {
+        print("TTS Service: Google TTS API Error (Synthesize Audio) ${response.statusCode}: ${response.body}");
       }
+    } catch (e) {
+      print("TTS Service: Error synthesizing audio: $e");
+    }
+    return null;
+  }
+
+  // Proactively synthesize and cache a piece of text. Does not play.
+  Future<void> _proactivelyCache(String text) async {
+    if (!_isInitialized) await ensureInitialized();
+    if (text.isEmpty || _cacheDirectoryPath == null) return;
+
+    File? cachedFile = await _getCachedFile(text);
+    if (cachedFile != null) {
+      // print("TTS Service: Proactive cache check: Already cached for '${text.substring(0, min(text.length, 30))}'.");
+      return; // Already cached
+    }
+
+    print("TTS Service: Proactively caching text: '${text.substring(0, min(text.length, 30))}...'");
+    Uint8List? audioBytes = await _synthesizeAudio(text);
+    if (audioBytes != null) {
+      await _saveToCache(text, audioBytes);
+    }
+  }
+  
+  // Plays audio from bytes or file path, managing the completer.
+  Future<void> _playAudioData({Uint8List? audioBytes, String? filePath}) async {
+    if (_sequenceCancelled) {
+        if (!(_currentSpeechCompleter?.isCompleted ?? true)) _currentSpeechCompleter?.complete();
+        return;
+    }
+    _currentSpeechCompleter = Completer<void>();
+    if (audioBytes != null) {
+        await _audioPlayer.play(BytesSource(audioBytes));
+    } else if (filePath != null) {
+        await _audioPlayer.play(DeviceFileSource(filePath));
+    } else {
+        if (!(_currentSpeechCompleter?.isCompleted ?? true)) _currentSpeechCompleter?.completeError("No audio data to play");
+        return;
     }
     
-    await _flutterTts.setSpeechRate(_speechRate);
-    await _flutterTts.setPitch(_pitch);
-
-    await _flutterTts.speak(text);
+    // Timeout for the playback of a single segment
+    await _currentSpeechCompleter!.future.timeout(const Duration(minutes: 2), 
+        onTimeout: () {
+            print("TTS Service: Playback segment timed out.");
+            if (_audioPlayerState == PlayerState.playing) _audioPlayer.stop();
+            if (!(_currentSpeechCompleter?.isCompleted ?? true)) {
+              _currentSpeechCompleter?.completeError("Segment playback timeout");
+            }
+            _sequenceCancelled = true; // Stop the whole sequence on timeout
+        });
   }
 
 
-  // --- NEW METHOD for structured devotional reading ---
-  Future<void> speakDevotionalScript(Devotional devotional) async {
-    if (isSpeakingNotifier.value) {
-      await stop(); // Stop if already speaking something else
+  // Main method to play a single text, using cache if available or synthesizing.
+  Future<void> _playOrSynthesizeAndPlay(String text) async {
+    if (text.isEmpty || _sequenceCancelled) {
+      if (_sequenceCancelled) print("TTS Service: Playback skipped due to cancellation for '${text.substring(0, min(text.length, 30))}'.");
+      if (!(_currentSpeechCompleter?.isCompleted ?? true)) _currentSpeechCompleter?.complete();
+      return;
     }
-    isSpeakingNotifier.value = true;
-    _sequenceCancelled = false;
+     if (!_isInitialized) await ensureInitialized();
 
-    // List of greetings for variation
+
+    File? cachedFile = await _getCachedFile(text);
+
+    if (cachedFile != null && !_sequenceCancelled) {
+      print("TTS Service: Playing from cache: ${cachedFile.path}");
+      await _playAudioData(filePath: cachedFile.path);
+    } else if (!_sequenceCancelled) {
+      print("TTS Service: Synthesizing and playing text: '${text.substring(0, min(text.length, 30))}...'");
+      Uint8List? audioBytes = await _synthesizeAudio(text);
+      if (audioBytes != null && !_sequenceCancelled) {
+        await _saveToCache(text, audioBytes); // Save before playing
+        await _playAudioData(audioBytes: audioBytes);
+      } else {
+        if (!(_currentSpeechCompleter?.isCompleted ?? true)) _currentSpeechCompleter?.completeError("Failed to synthesize audio for playback.");
+         _sequenceCancelled = true; // If synthesis fails, cancel sequence
+      }
+    }
+  }
+
+
+  Future<void> speakDevotionalScript(Devotional devotional) async {
+    if (!_isInitialized) await ensureInitialized();
+    if (isSpeakingNotifier.value && _audioPlayerState == PlayerState.playing) {
+      await stop();
+    }
+    _sequenceCancelled = false;
+    isSpeakingNotifier.value = true;
+
     const greetings = [
-      // Original set
-      "Peace and blessings to you.",
-      "Let's take a moment to reflect.",
-      "Welcome, let's consider today's word.",
       "A moment of inspiration for your day.",
       "Hello there friend. I'm so glad you're here with us today.",
       "It's a beautiful day to discover something wonderful together, isn't it?",
@@ -330,134 +394,132 @@ class TextToSpeechService {
       "May our hearts be open and our spirits be lifted as we reflect.",
       "What a blessing to gather for these few moments. Let's receive today's message."
     ];
-    final greeting = greetings[Random().nextInt(greetings.length)];
+    String greeting = "Welcome.";
+    if (greetings.isNotEmpty) {
+        greeting = greetings[Random().nextInt(greetings.length)];
+    }
 
-    // Prepare scripture reference (remove last 3 letters if they are typical version codes)
+    // --- Scripture Reference Formatting ---
     String rawRef = devotional.scriptureReference;
     String formattedRef = rawRef;
-    if (rawRef.length > 3) { // Basic check: needs to be longer than a typical 3-letter version code
+    if (rawRef.length > 3) {
         // List of common Bible version abbreviations (add more if needed)
-        bool isKnownVersion = ["NIV", "ESV", "KJV", "NKJ", "NAS", "MSG", "NLT", "AMP", "NRS", "CSB"] 
+        bool isKnownVersion = ["NIV", "ESV", "KJV", "NKJ", "NAS", "MSG", "NLT", "AMP", "NRS", "CSB"]
             .any((v) => rawRef.toUpperCase().endsWith(v));
-        
+
         if (isKnownVersion) {
-            // Try to find the last space to separate the reference from the version
             int lastSpaceIndex = rawRef.lastIndexOf(' ');
-            // Ensure the part after the last space looks like a version code (2-3 uppercase letters)
-            if (lastSpaceIndex != -1 && 
+            // Check if the part after the last space is 2-3 uppercase letters (a version code)
+            if (lastSpaceIndex != -1 &&
                 rawRef.substring(lastSpaceIndex + 1).toUpperCase().contains(RegExp(r'^[A-Z]{2,3}$'))) {
                  formattedRef = rawRef.substring(0, lastSpaceIndex).trim();
-            } else if (RegExp(r'[A-Z]{3}$').hasMatch(rawRef.substring(rawRef.length - 3))) {
-                // Fallback for simple 3-letter all-caps versions if no space or different pattern
+            } 
+            // Fallback for 3-letter all-caps versions if no space or different pattern (e.g., "GEN1:1ESV")
+            else if (RegExp(r'[A-Z]{3}$').hasMatch(rawRef.substring(rawRef.length - 3))) {
                  formattedRef = rawRef.substring(0, rawRef.length - 3).trim();
             }
-            // If it's just a 2-letter version and ends with it.
+            // Fallback for 2-letter all-caps versions
             else if (rawRef.length > 2 && RegExp(r'[A-Z]{2}$').hasMatch(rawRef.substring(rawRef.length - 2))) {
                  formattedRef = rawRef.substring(0, rawRef.length - 2).trim();
             }
         }
     }
+    // --- End Scripture Reference Formatting ---
 
+    final List<String> script = [
+      "$greeting. Let's explore today's daily reflection... ${devotional.title}.",
+      devotional.coreMessage,
+      "$formattedRef tells us: ${devotional.scriptureFocus}.", // Use formattedRef
+      "... ${devotional.reflection}",
+      "And together, let's declare... ${devotional.prayerDeclaration}.",
+    ];
 
     try {
-      // Sequence of speaking parts
-      await _speakInternal(greeting);
-      if (_sequenceCancelled) return;
+      for (int i = 0; i < script.length; i++) {
+        if (_sequenceCancelled) break;
+        final textToSpeak = script[i];
 
-      await _speakInternal("Let's explore today's daily devotional,: ${devotional.title}.");
-      if (_sequenceCancelled) return;
-      
-      await _speakInternal(devotional.coreMessage);
-      if (_sequenceCancelled) return;
+        // Proactively cache the next part (if it exists) - do not await
+        if (i + 1 < script.length && !_sequenceCancelled) {
+          _proactivelyCache(script[i + 1]).catchError((e) {
+            print("TTS Service: Error during proactive caching of part ${i+2}: $e");
+            // Non-fatal, continue with current playback
+          });
+        }
 
-      await _speakInternal("$formattedRef tells us: ${devotional.scriptureFocus}.");
-      if (_sequenceCancelled) return;
-      
-      // Adding a slight deliberate pause if needed, beyond awaitSpeakCompletion
-      // For flutter_tts, `awaitSpeakCompletion(true)` IS the pause.
-      // If you need longer pauses, you might speak a very short silence string (engine dependent)
-      // or use multiple `awaitSpeakCompletion(true)` with empty speaks, though this is hacky.
-      // For now, awaitSpeakCompletion handles the pause between segments.
-
-      await _speakInternal("... ${devotional.reflection}");
-      if (_sequenceCancelled) return;
-
-      await _speakInternal("And together, let's declare today...");
-      if (_sequenceCancelled) return;
-      
-      await _speakInternal(devotional.prayerDeclaration);
-      // awaitSpeakCompletion is true, so this will wait for the last part to finish
-
-    } catch (e) {
-      print("TTS Service (speakDevotionalScript): Error during sequenced speaking: $e");
-      _sequenceCancelled = true; // Ensure sequence stops
-    } finally {
-      // Ensure isSpeakingNotifier is set to false once the whole sequence is done or cancelled
-      if (mounted) { // Assuming this service might be used in a context where mounted check is relevant (though less so for a pure service)
-         isSpeakingNotifier.value = false;
-      } else {
-         isSpeakingNotifier.value = false;
+        // Play the current part (will use cache if available, or synthesize, cache, and play)
+        await _playOrSynthesizeAndPlay(textToSpeak);
+        
+        if (_sequenceCancelled) break; 
       }
-    }
-  }
-  // Helper for mounted check, mainly for ValueNotifier updates if used in a StatefulWidget context directly.
-  // For a singleton service, this isn't strictly necessary for its internal logic but doesn't hurt.
-  bool get mounted => true; // Simplified for a service context.
-
-
-  // Original speak method for generic text (can still be used)
-  Future<void> speak(String text) async {
-    if (text.isEmpty) {
-      print("TTS Service: Speak called with empty text.");
-      return;
-    }
-    if (isSpeakingNotifier.value) {
-      await stop(); 
-    }
-    isSpeakingNotifier.value = true; // Set speaking true when this method starts
-    _sequenceCancelled = false; // Reset for generic speak
-
-    try {
-      await _speakInternal(text); // Use the internal method that sets params
-      // awaitSpeakCompletion is true, so it will wait.
     } catch (e) {
-      print("TTS Service (speak): Error during speak execution: $e");
+      print("TTS Service: Error in speakDevotionalScript playback loop: $e");
       _sequenceCancelled = true;
     } finally {
-      // The completion handler of _flutterTts will set isSpeakingNotifier to false.
-      // If we want to ensure it's false after this single speak call:
-      // (This depends on whether awaitSpeakCompletion truly waits for the handler)
-      // For now, rely on the setCompletionHandler for single speaks.
+      if (!_sequenceCancelled) print("TTS Service: Devotional script completed.");
+      // isSpeakingNotifier should be managed by player state changes, but ensure it's false if sequence ends/cancels.
+      if (_audioPlayerState != PlayerState.playing && isSpeakingNotifier.value) {
+          isSpeakingNotifier.value = false;
+      } else if (_sequenceCancelled && isSpeakingNotifier.value){
+          isSpeakingNotifier.value = false; // Ensure it's off if cancelled
+      }
     }
   }
 
+  Future<void> speak(String text) async {
+    if (!_isInitialized) await ensureInitialized();
+    if (text.isEmpty) return;
+    if (isSpeakingNotifier.value && _audioPlayerState == PlayerState.playing) {
+      await stop();
+    }
+    _sequenceCancelled = false;
+    isSpeakingNotifier.value = true; // Manually set for single speak
+    await _playOrSynthesizeAndPlay(text);
+     // For single speaks, if not cancelled and player isn't playing, set notifier false.
+    if (!_sequenceCancelled && _audioPlayerState != PlayerState.playing && isSpeakingNotifier.value) {
+        isSpeakingNotifier.value = false;
+    } else if (_sequenceCancelled && isSpeakingNotifier.value) {
+        isSpeakingNotifier.value = false;
+    }
+  }
 
   Future<void> stop() async {
-    _sequenceCancelled = true; // Signal any ongoing sequence to stop
-    try {
-      var result = await _flutterTts.stop();
-      if (result == 1) { // 1 usually means success
+    _sequenceCancelled = true;
+    if (_audioPlayerState == PlayerState.playing || _audioPlayerState == PlayerState.paused) {
+      await _audioPlayer.stop(); // This should trigger onPlayerComplete eventually
+    }
+    // The onPlayerComplete listener (or state change to stopped/completed)
+    // should ideally handle setting isSpeakingNotifier.value to false.
+    // And also complete the _currentSpeechCompleter.
+    if (!(_currentSpeechCompleter?.isCompleted ?? true)) {
+      _currentSpeechCompleter?.completeError("Speech stopped by user");
+    }
+     if (isSpeakingNotifier.value) {
         isSpeakingNotifier.value = false;
-         print("TTS Service: Speech stopped.");
-      }
-    } catch (e) {
-      print("TTS Service: Error stopping speech: $e");
-      isSpeakingNotifier.value = false; // Ensure state is correct
+     }
+    print("TTS Service: Speech stop requested.");
+  }
+
+  Future<void> pause() async {
+    if (_audioPlayerState == PlayerState.playing) {
+      await _audioPlayer.pause(); // This should trigger onPlayerStateChanged
+      print("TTS Service: Speech pause requested.");
     }
   }
 
-  Future<void> pause() async { 
-    if (!isSpeakingNotifier.value) return;
-    _sequenceCancelled = true; // Pausing should also break a sequence
-    try {
-      print("TTS Service: Attempting to pause speech.");
-      var result = await _flutterTts.pause();
-       if (result == 1) {
-        isSpeakingNotifier.value = false; 
-        print("TTS Service: Speech paused (or stop for Android workaround).");
-      }
-    } catch (e) {
-      print("TTS Service: Error pausing speech: $e");
+  Future<void> resume() async {
+    if (_audioPlayerState == PlayerState.paused) {
+      await _audioPlayer.resume(); // This should trigger onPlayerStateChanged
+      print("TTS Service: Speech resume requested.");
     }
+  }
+
+  void dispose() {
+    _playerCompleteSubscription?.cancel();
+    _playerStateChangeSubscription?.cancel();
+    _audioPlayer.dispose();
+    isSpeakingNotifier.dispose();
+    selectedAppVoiceNotifier.dispose();
+    print("TTS Service: Disposed.");
   }
 }

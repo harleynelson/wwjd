@@ -5,52 +5,70 @@ import 'package:provider/provider.dart';
 import 'package:wwjd_app/helpers/database_helper.dart';
 import 'package:wwjd_app/helpers/prefs_helper.dart';
 import 'package:wwjd_app/models/reader_settings_enums.dart';
-import '../helpers/daily_devotions.dart';
+import '../helpers/daily_devotions.dart'; // For forceNextDevotional if it's still here
 import '../theme/theme_provider.dart';
+import '../services/text_to_speech_service.dart'; 
+import '../config/tts_voices.dart'; 
 
-// Make sure this class name is spelled exactly "SettingsScreen"
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  // And ensure "SettingsScreen" is spelled correctly here in State<SettingsScreen>
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-// And also ensure "SettingsScreen" is spelled correctly here in State<SettingsScreen>
 class _SettingsScreenState extends State<SettingsScreen> {
-  // ... rest of the _SettingsScreenState class from the previous response
-  // (The content of this class related to loading settings and building the UI
-  // should be correct from the last step, the error is about the class declaration line itself)
-
-  final DatabaseHelper _dbHelper = DatabaseHelper();
+  final DatabaseHelper _dbHelper = DatabaseHelper(); // For dev options
   bool _devOptionsEnabled = false;
   int _devTapCount = 0;
 
+  // Reader Appearance Settings
   double _fontSizeDelta = 0.0;
   ReaderFontFamily _selectedFontFamily = ReaderFontFamily.systemDefault;
   ReaderThemeMode _selectedReaderTheme = ReaderThemeMode.light;
-  bool _isLoadingReaderSettings = true;
+  
+  bool _isLoadingSettings = true; // General loading flag for the screen
 
-  static const double _baseReaderFontSize = 18.0;
+  // TTS Service and Voice List
+  final TextToSpeechService _ttsService = TextToSpeechService();
+  List<AppTtsVoice> _availableAppTtsVoices = [];
+
+  static const double _baseReaderFontSize = 18.0; // Base size for reader font
 
   @override
   void initState() {
     super.initState();
-    _loadReaderSettings();
+    _loadScreenSettings();
   }
 
-  Future<void> _loadReaderSettings() async {
-    if (!mounted) return;
-    setState(() {
-      _isLoadingReaderSettings = true;
-    });
+  Future<void> _loadScreenSettings() async {
+    if (mounted) {
+      setState(() {
+        _isLoadingSettings = true;
+      });
+    }
+
+    // Ensure PrefsHelper is initialized (idempotent call)
+    await PrefsHelper.init();
+
+    // Explicitly initialize TTS Service and wait for it to load its own prefs
+    await _ttsService.ensureInitialized(); 
+
+    // Load reader appearance settings synchronously from PrefsHelper
     _fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
     _selectedFontFamily = PrefsHelper.getReaderFontFamily();
     _selectedReaderTheme = PrefsHelper.getReaderThemeMode();
+
+    // Get the curated list of voices (this is synchronous)
+    _availableAppTtsVoices = _ttsService.getCuratedAppVoices();
+    
+    // The selected voice for the dropdown will be taken from _ttsService.selectedAppVoiceNotifier
+    // via a ValueListenableBuilder in the build method.
+    // _ttsService.ensureInitialized() should have already loaded the preferred voice.
+
     if (mounted) {
       setState(() {
-        _isLoadingReaderSettings = false;
+        _isLoadingSettings = false;
       });
     }
   }
@@ -73,13 +91,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: isError ? Colors.redAccent : Colors.green,
+        backgroundColor: isError ? Theme.of(context).colorScheme.error : Colors.green,
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }
 
+  // Assuming forceNextDevotional is defined in daily_devotions.dart or similar
   Future<void> _handleForceNextDevotional() async {
-    await forceNextDevotional();
+    await forceNextDevotional(); 
     _showSnackBar("Next devotional will be shown on Home screen refresh.");
   }
 
@@ -120,11 +140,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         setState(() { _devOptionsEnabled = true; });
         _showSnackBar("Developer Options Enabled!");
       }
-    } else if (_devOptionsEnabled && _devTapCount >=10) {
+    } else if (_devOptionsEnabled && _devTapCount >= 10) { 
         if (mounted) {
             setState(() { _devOptionsEnabled = false; });
             _showSnackBar("Developer Options Disabled.");
-            _devTapCount = 0;
+            _devTapCount = 0; 
         }
     }
   }
@@ -139,18 +159,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         title: const Text("Settings"),
       ),
-      body: ListView(
+      body: _isLoadingSettings
+          ? const Center(child: CircularProgressIndicator())
+          : ListView(
+        padding: const EdgeInsets.all(8.0),
         children: <Widget>[
-
-          
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: const Text("App Version"),
-            subtitle: const Text("1.0.0 (WWJD Daily)"),
+            subtitle: const Text("1.0.0 (WWJD Daily)"), 
             onTap: _onAppVersionTap,
           ),
           const Divider(),
-          // --- NEW: App Theme Mode Setting ---
           Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
             child: Text(
@@ -168,25 +188,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Icons.brightness_auto_outlined
             ),
             title: const Text("Appearance"),
-            // Use a Dropdown or SegmentedButton for more options (System, Light, Dark)
-            // For a simple toggle, a Switch can work well for Light/Dark.
-            // Here's an example with a dropdown:
             trailing: DropdownButtonHideUnderline(
               child: DropdownButton<ThemeMode>(
                 value: themeProvider.themeMode,
                 items: const [
-                  DropdownMenuItem(
-                    value: ThemeMode.system,
-                    child: Text("System Default"),
-                  ),
-                  DropdownMenuItem(
-                    value: ThemeMode.light,
-                    child: Text("Light"),
-                  ),
-                  DropdownMenuItem(
-                    value: ThemeMode.dark,
-                    child: Text("Dark"),
-                  ),
+                  DropdownMenuItem(value: ThemeMode.system, child: Text("System Default")),
+                  DropdownMenuItem(value: ThemeMode.light, child: Text("Light")),
+                  DropdownMenuItem(value: ThemeMode.dark, child: Text("Dark")),
                 ],
                 onChanged: (ThemeMode? newValue) {
                   if (newValue != null) {
@@ -207,86 +215,155 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
             ),
           ),
-          if (_isLoadingReaderSettings)
-            const ListTile(title: Center(child: CircularProgressIndicator()))
-          else ...[
-            ListTile(
-              leading: const Icon(Icons.format_size_rounded),
-              title: const Text("Font Size"),
-              subtitle: Row(
-                children: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.remove_circle_outline_rounded),
-                    tooltip: "Decrease font size",
-                    onPressed: _fontSizeDelta > -4.0 ? () async {
-                      setState(() { _fontSizeDelta -= 1.0; });
-                      await PrefsHelper.setReaderFontSizeDelta(_fontSizeDelta);
-                    } : null,
+          ListTile(
+            leading: const Icon(Icons.format_size_rounded),
+            title: const Text("Font Size"),
+            subtitle: Row(
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.remove_circle_outline_rounded),
+                  tooltip: "Decrease font size",
+                  onPressed: _fontSizeDelta > -4.0 ? () async {
+                    setState(() { _fontSizeDelta -= 1.0; });
+                    await PrefsHelper.setReaderFontSizeDelta(_fontSizeDelta);
+                  } : null,
+                ),
+                Expanded(
+                  child: Text(
+                    "Aa (${(_baseReaderFontSize + _fontSizeDelta).toStringAsFixed(0)})",
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodyMedium,
                   ),
-                  Expanded(
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add_circle_outline_rounded),
+                  tooltip: "Increase font size",
+                  onPressed: _fontSizeDelta < 6.0 ? () async {
+                    setState(() { _fontSizeDelta += 1.0; });
+                    await PrefsHelper.setReaderFontSizeDelta(_fontSizeDelta);
+                  } : null,
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.font_download_outlined),
+            title: const Text("Font Family"),
+            trailing: DropdownButtonHideUnderline(
+              child: DropdownButton<ReaderFontFamily>(
+                value: _selectedFontFamily,
+                items: ReaderFontFamily.values.map((ReaderFontFamily family) {
+                  return DropdownMenuItem<ReaderFontFamily>(
+                    value: family,
                     child: Text(
-                      "Aa (${(_baseReaderFontSize + _fontSizeDelta).toStringAsFixed(0)})",
-                      textAlign: TextAlign.center,
-                      style: textTheme.bodyMedium,
+                      family.displayName,
+                      style: _getTextStyleForFontFamilyPreview(family, context),
                     ),
+                  );
+                }).toList(),
+                onChanged: (ReaderFontFamily? newValue) async {
+                  if (newValue != null) {
+                    setState(() { _selectedFontFamily = newValue; });
+                    await PrefsHelper.setReaderFontFamily(newValue);
+                  }
+                },
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.color_lens_outlined),
+            title: const Text("Reader Theme"),
+            trailing: DropdownButtonHideUnderline(
+              child: DropdownButton<ReaderThemeMode>(
+                value: _selectedReaderTheme,
+                items: ReaderThemeMode.values.map((ReaderThemeMode themeMode) {
+                  return DropdownMenuItem<ReaderThemeMode>(
+                    value: themeMode,
+                    child: Text(themeMode.displayName),
+                  );
+                }).toList(),
+                onChanged: (ReaderThemeMode? newValue) async {
+                  if (newValue != null) {
+                    setState(() { _selectedReaderTheme = newValue; });
+                    await PrefsHelper.setReaderThemeMode(newValue);
+                  }
+                },
+              ),
+            ),
+          ),
+          const Divider(), 
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+            child: Text(
+              "Narration Voice (Google Cloud TTS)",
+              style: textTheme.titleSmall?.copyWith(
+                    color: colorScheme.primary,
+                    fontWeight: FontWeight.bold,
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.add_circle_outline_rounded),
-                    tooltip: "Increase font size",
-                    onPressed: _fontSizeDelta < 6.0 ? () async {
-                      setState(() { _fontSizeDelta += 1.0; });
-                      await PrefsHelper.setReaderFontSizeDelta(_fontSizeDelta);
-                    } : null,
+            ),
+          ),
+          ValueListenableBuilder<AppTtsVoice?>(
+            valueListenable: _ttsService.selectedAppVoiceNotifier,
+            builder: (context, currentSelectedVoice, child) {
+              if (_availableAppTtsVoices.isEmpty && _isLoadingSettings) {
+                return const ListTile(
+                  leading: Icon(Icons.record_voice_over_outlined),
+                  title: Text("Narration Voice"),
+                  subtitle: Text("Loading voice options..."),
+                );
+              }
+              if (_availableAppTtsVoices.isEmpty) {
+                return const ListTile(
+                  leading: Icon(Icons.record_voice_over_outlined),
+                  title: Text("Narration Voice"),
+                  subtitle: Text("No voices available or API key issue."),
+                );
+              }
+
+              AppTtsVoice? dropdownValue = currentSelectedVoice;
+              // Ensure the value in the notifier is actually present in the dropdown items
+              if (currentSelectedVoice != null && 
+                  !_availableAppTtsVoices.any((v) => v.name == currentSelectedVoice.name)) {
+                print("SettingsScreen WARNING: Selected voice '${currentSelectedVoice.name}' from service "
+                      "is not in the current _availableAppTtsVoices list. Defaulting dropdown.");
+                dropdownValue = _availableAppTtsVoices.isNotEmpty ? _availableAppTtsVoices.first : null;
+              } else if (currentSelectedVoice == null && _availableAppTtsVoices.isNotEmpty) {
+                // If service notifier is null but we have voices, maybe default the dropdown display
+                // but the service should ideally have a default.
+                // This case is mostly covered by the service's own default logic.
+                // For safety, if currentSelectedVoice is null, dropdownValue will be null, showing hintText.
+              }
+
+
+              return ListTile(
+                leading: const Icon(Icons.record_voice_over_outlined),
+                title: const Text("Narration Voice"),
+                trailing: DropdownButtonHideUnderline(
+                  child: DropdownButton<AppTtsVoice>(
+                    value: dropdownValue, 
+                    hint: const Text("Select Voice"),
+                    isExpanded: false, // Keep false to prevent overly wide dropdown
+                    items: _availableAppTtsVoices.map((AppTtsVoice voice) {
+                      return DropdownMenuItem<AppTtsVoice>(
+                        value: voice, 
+                        child: Text(
+                          voice.displayName,
+                          style: textTheme.bodyMedium, // Ensure consistent text style
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (AppTtsVoice? newValue) async {
+                      if (newValue != null) {
+                        await _ttsService.setAppVoice(newValue, savePreference: true);
+                        // ValueListenableBuilder will handle UI update
+                      }
+                    },
                   ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.font_download_outlined),
-              title: const Text("Font Family"),
-              trailing: DropdownButtonHideUnderline(
-                child: DropdownButton<ReaderFontFamily>(
-                  value: _selectedFontFamily,
-                  items: ReaderFontFamily.values.map((ReaderFontFamily family) {
-                    return DropdownMenuItem<ReaderFontFamily>(
-                      value: family,
-                      child: Text(
-                        family.displayName,
-                        style: _getTextStyleForFontFamilyPreview(family, context),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (ReaderFontFamily? newValue) async {
-                    if (newValue != null) {
-                      setState(() { _selectedFontFamily = newValue; });
-                      await PrefsHelper.setReaderFontFamily(newValue);
-                    }
-                  },
                 ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.color_lens_outlined),
-              title: const Text("Reader Theme"),
-              trailing: DropdownButtonHideUnderline(
-                child: DropdownButton<ReaderThemeMode>(
-                  value: _selectedReaderTheme,
-                  items: ReaderThemeMode.values.map((ReaderThemeMode themeMode) {
-                    return DropdownMenuItem<ReaderThemeMode>(
-                      value: themeMode,
-                      child: Text(themeMode.displayName),
-                    );
-                  }).toList(),
-                  onChanged: (ReaderThemeMode? newValue) async {
-                    if (newValue != null) {
-                      setState(() { _selectedReaderTheme = newValue; });
-                      await PrefsHelper.setReaderThemeMode(newValue);
-                    }
-                  },
-                ),
-              ),
-            ),
-          ],
+              );
+            }
+          ),
           const Divider(),
           if (_devOptionsEnabled) ...[
             Padding(

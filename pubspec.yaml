@@ -21,6 +21,8 @@ dependencies:
   google_fonts: ^6.2.1 # For custom fonts
   provider: ^6.1.2 # For state management
   flutter_tts: ^4.2.2 # For text-to-speech functionality
+  http: ^1.2.1 # Or latest version, for making API calls
+  audioplayers: ^6.0.0 # Or latest version, for playing audio
 
 dev_dependencies:
   flutter_test:
