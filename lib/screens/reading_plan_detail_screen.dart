@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../models.dart';
 import '../database_helper.dart';
 // import '../helpers/ui_helpers.dart'; // No longer needed if we pass the gradient
+import '../models/reader_settings_enums.dart';
+import '../prefs_helper.dart';
 import '../theme/app_colors.dart'; // For fallback or default if needed
 import 'daily_reading_screen.dart'; 
 
@@ -117,19 +119,30 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
   }
 
   Future<void> _navigateToDailyReading(ReadingPlanDay day) async {
-     final result = await Navigator.push(
+    // --- NEW: Load reader preferences ---
+    final ReaderThemeMode themeMode = PrefsHelper.getReaderThemeMode();
+    final double fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
+    final ReaderFontFamily fontFamily = PrefsHelper.getReaderFontFamily();
+    // --- END NEW ---
+
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DailyReadingScreen(
           planId: widget.plan.id,
           dayReading: day,
           planTitle: widget.plan.title,
+          // --- NEW: Pass loaded preferences ---
+          readerThemeMode: themeMode,
+          fontSizeDelta: fontSizeDelta,
+          readerFontFamily: fontFamily,
+          // --- END NEW ---
         ),
       ),
     );
 
     if (result == true && mounted) {
-      _loadProgress(); 
+      _loadProgress();
     }
   }
 
