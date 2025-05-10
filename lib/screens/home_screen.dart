@@ -411,7 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wake up With Jesus Daily'),
+        title: const Text('Wake up with Jesus'),
         centerTitle: true,
         actions: [
           IconButton(

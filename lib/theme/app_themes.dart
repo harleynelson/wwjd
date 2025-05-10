@@ -52,7 +52,7 @@ class AppThemes {
     ),
     scaffoldBackgroundColor: Colors.grey.shade900, // Dark background
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.grey.shade800, // Dark appbar
+      backgroundColor: const Color.fromARGB(255, 22, 34, 68), // Dark appbar
       foregroundColor: Colors.white.withOpacity(0.9), // Light text on dark appbar
       elevation: 1.0,
       scrolledUnderElevation: 2.0,
