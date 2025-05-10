@@ -1,10 +1,11 @@
 // lib/widgets/devotional_of_the_day_card.dart
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // For custom fonts
+import 'package:google_fonts/google_fonts.dart';
 import '../helpers/daily_devotions.dart'; // For Devotional model
 import 'animated_religious_background_card.dart';
 import '../theme/app_colors.dart';
 import '../models/reader_settings_enums.dart'; // For ReaderFontFamily
+import '../services/text_to_speech_service.dart'; // Import the service
 
 class DevotionalOfTheDayCard extends StatefulWidget {
   final Devotional devotional;
@@ -32,6 +33,7 @@ class DevotionalOfTheDayCard extends StatefulWidget {
 
 class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
   bool _isExpanded = false;
+  final TextToSpeechService _ttsService = TextToSpeechService(); // Get instance of the service
 
   // Base font sizes
   static const double _baseTitleFontSize = 19.0;
@@ -42,7 +44,46 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
   static const double _baseDeclarationTextFontSize = 15.0;
   static const double _baseLabelFontSize = 12.0; // For "Daily Reflection" label
 
-  // Helper to get text style based on reader settings
+  @override
+  void initState() {
+    super.initState();
+    // TTS initialization is handled by the service's constructor / its own init method.
+  }
+
+  @override
+  void dispose() {
+    // Design decision: If this card is disposed, should ongoing speech stop?
+    // If speech was triggered by *this instance* of the card, maybe it should.
+    // However, _ttsService is a singleton. If another part of app is using it,
+    // stopping here might be disruptive.
+    // For now, clicking the button again will stop it.
+    // If you want speech tied to this card's lifecycle and it was the initiator:
+    // if (_ttsService.isSpeakingNotifier.value && _wasInitiatedByThisCard) { // _wasInitiatedByThisCard would need to be managed
+    //   _ttsService.stop();
+    // }
+    super.dispose();
+  }
+
+  Future<void> _toggleSpeakDevotional() async {
+    if (_ttsService.isSpeakingNotifier.value) {
+      await _ttsService.stop(); // Stop any ongoing speech
+    } else {
+      if (widget.devotional.title == "No Devotional Available" ||
+          widget.devotional.title == "Content Coming Soon" ||
+          widget.isLoading) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("No devotional content to read.")),
+          );
+        }
+        return;
+      }
+      
+      // Call the scripted method from the service
+      await _ttsService.speakDevotionalScript(widget.devotional);
+    }
+  }
+
   TextStyle _getTextStyle(
       ReaderFontFamily family, double baseSize, FontWeight fontWeight, Color color,
       {FontStyle? fontStyle, double? letterSpacing, double? height}) {
@@ -72,22 +113,16 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
     final ThemeData appTheme = Theme.of(context);
     final ColorScheme colorScheme = appTheme.colorScheme;
 
-    // --- Define DARK text colors for this card's light gradient background ---
-    // These colors are chosen to be dark and provide good contrast on the
-    // AppColors.devotionalCardTwoColorGradient [Color(0xFFFFD180), Color(0xFFCE93D8)]
     final Color primaryDarkText = Colors.black.withOpacity(0.87);
     final Color secondaryDarkText = Colors.black.withOpacity(0.70);
-    // Accent colors can be derived from the app's theme or be specific dark contrasting colors.
-    // Using a darker shade of the app's primary/tertiary if they are light,
-    // or a specific dark color.
     final Color accentScriptureRefColor = colorScheme.primary.computeLuminance() > 0.5
-        ? Color.lerp(colorScheme.primary, Colors.black, 0.4)! // Darken if primary is light
-        : colorScheme.primary; // Use as is if primary is dark
+        ? Color.lerp(colorScheme.primary, Colors.black, 0.4)!
+        : colorScheme.primary;
     final Color tertiaryDeclarationColor = colorScheme.tertiary.computeLuminance() > 0.5
         ? Color.lerp(colorScheme.tertiary, Colors.black, 0.4)!
         : colorScheme.tertiary;
-    final Color readMoreButtonColor = accentScriptureRefColor; // Reuse for consistency
-
+    final Color readMoreButtonColor = accentScriptureRefColor;
+    final Color audioButtonColor = accentScriptureRefColor;
 
     if (widget.isLoading) {
       return SizedBox(
@@ -104,9 +139,9 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
     }
 
     if (widget.devotional.title == "No Devotional Available" || widget.devotional.title == "Content Coming Soon") {
-        final placeholderTitleStyle = _getTextStyle(widget.readerFontFamily, _DevotionalOfTheDayCardState._baseTitleFontSize * 0.8, FontWeight.bold, colorScheme.onSurfaceVariant);
-        final placeholderCoreMessageStyle = _getTextStyle(widget.readerFontFamily, _DevotionalOfTheDayCardState._baseCoreMessageFontSize * 0.9, FontWeight.normal, colorScheme.onSurfaceVariant);
-        final placeholderReflectionStyle = _getTextStyle(widget.readerFontFamily, _DevotionalOfTheDayCardState._baseReflectionFontSize * 0.9, FontWeight.normal, colorScheme.onSurfaceVariant.withOpacity(0.8));
+        final placeholderTitleStyle = _getTextStyle(widget.readerFontFamily, _baseTitleFontSize * 0.8, FontWeight.bold, colorScheme.onSurfaceVariant);
+        final placeholderCoreMessageStyle = _getTextStyle(widget.readerFontFamily, _baseCoreMessageFontSize * 0.9, FontWeight.normal, colorScheme.onSurfaceVariant);
+        final placeholderReflectionStyle = _getTextStyle(widget.readerFontFamily, _baseReflectionFontSize * 0.9, FontWeight.normal, colorScheme.onSurfaceVariant.withOpacity(0.8));
 
       return AnimatedReligiousBackgroundCard(
         gradientColors: AppColors.mutedPlaceholderGradient,
@@ -131,7 +166,6 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
       );
     }
 
-    // Compute dynamic TextStyles using the helper and dark text colors
     final TextStyle dailyReflectionLabelStyle = _getTextStyle(ReaderFontFamily.systemDefault, _baseLabelFontSize, FontWeight.w500, secondaryDarkText.withOpacity(0.8));
     final TextStyle titleStyle = _getTextStyle(widget.readerFontFamily, _baseTitleFontSize, FontWeight.bold, primaryDarkText);
     final TextStyle coreMessageStyle = _getTextStyle(widget.readerFontFamily, _baseCoreMessageFontSize, FontWeight.w600, secondaryDarkText, fontStyle: FontStyle.italic);
@@ -153,7 +187,31 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Daily Reflection", style: dailyReflectionLabelStyle),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Daily Reflection", style: dailyReflectionLabelStyle),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _ttsService.isSpeakingNotifier,
+                    builder: (context, isSpeaking, child) {
+                      return IconButton(
+                        icon: Icon(
+                          isSpeaking ? Icons.pause_circle_filled_outlined : Icons.play_circle_fill_outlined,
+                          color: audioButtonColor,
+                          size: 28.0,
+                        ),
+                        tooltip: isSpeaking ? "Stop Reading" : "Read Aloud",
+                        onPressed: (widget.isLoading ||
+                                    widget.devotional.title == "No Devotional Available" ||
+                                    widget.devotional.title == "Content Coming Soon")
+                            ? null
+                            : _toggleSpeakDevotional,
+                      );
+                    }
+                  ),
+                ],
+              ),
               const SizedBox(height: 10.0),
               Align(
                 alignment: Alignment.center,
@@ -219,7 +277,7 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
       );
 
     return AnimatedReligiousBackgroundCard(
-      gradientColors: AppColors.devotionalCardTwoColorGradient, // Specific gradient for this card
+      gradientColors: AppColors.devotionalCardTwoColorGradient, // Card's specific background
       beginGradientAlignment: Alignment.topRight,
       endGradientAlignment: Alignment.bottomLeft,
       enableGodRays: widget.enableCardAnimations,

@@ -1,5 +1,5 @@
 name: wwjd_app
-description: Wake up With Jesus Daily app.
+description: Wake up With Jesus app.
 publish_to: 'none' # Remove this line if you intend to publish to pub.dev
 
 version: 1.0.0+1
@@ -20,6 +20,7 @@ dependencies:
   share_plus: ^9.0.0 # For sharing content
   google_fonts: ^6.2.1 # For custom fonts
   provider: ^6.1.2 # For state management
+  flutter_tts: ^4.2.2 # For text-to-speech functionality
 
 dev_dependencies:
   flutter_test:
