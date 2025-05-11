@@ -485,20 +485,29 @@ class TextToSpeechService {
   }
 
   Future<void> stop() async {
+    print("TTS Service: Stop requested. Current isSpeaking: ${isSpeakingNotifier.value}");
     _sequenceCancelled = true;
-    if (_audioPlayerState == PlayerState.playing || _audioPlayerState == PlayerState.paused) {
-      await _audioPlayer.stop(); // This should trigger onPlayerComplete eventually
+
+    // Immediately update notifier for faster UI feedback, if it's currently true.
+    // The AudioPlayer listener will also update it, but this can be quicker visually.
+    if (isSpeakingNotifier.value) {
+      isSpeakingNotifier.value = false;
     }
-    // The onPlayerComplete listener (or state change to stopped/completed)
-    // should ideally handle setting isSpeakingNotifier.value to false.
-    // And also complete the _currentSpeechCompleter.
+
+    if (_audioPlayerState == PlayerState.playing || _audioPlayerState == PlayerState.paused) {
+      await _audioPlayer.stop(); // This should trigger onPlayerStateChanged -> isSpeakingNotifier = false
+    }
+    
     if (!(_currentSpeechCompleter?.isCompleted ?? true)) {
       _currentSpeechCompleter?.completeError("Speech stopped by user");
     }
-     if (isSpeakingNotifier.value) {
-        isSpeakingNotifier.value = false;
-     }
-    print("TTS Service: Speech stop requested.");
+    
+    // Ensure isSpeakingNotifier is false after attempting to stop.
+    // This is a bit redundant if the listener works perfectly, but acts as a safeguard.
+    if (isSpeakingNotifier.value) {
+       isSpeakingNotifier.value = false;
+    }
+    print("TTS Service: Speech stop actions processed. isSpeaking: ${isSpeakingNotifier.value}");
   }
 
   Future<void> pause() async {

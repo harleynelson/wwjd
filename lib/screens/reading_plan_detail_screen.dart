@@ -34,10 +34,16 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
   UserReadingProgress? _progress;
   bool _isLoadingProgress = false; 
 
+  // --- State variable for dev premium ---
+  bool _devPremiumEnabled = false;
+
   @override
   void initState() {
     super.initState();
     _progress = widget.initialProgress;
+    // --- Load dev premium setting ---
+    _devPremiumEnabled = PrefsHelper.getDevPremiumEnabled();
+
     if (_progress == null && widget.initialProgress == null) { 
       _loadProgress();
     }
@@ -62,10 +68,19 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
   }
 
   Future<void> _startPlan() async {
+
+    // --- Consider dev premium setting ---
+    // TODO: Replace with actual user check
+    // For now, we assume the user is not premium unless the dev setting is enabled
+    bool effectivelyHasPremium = _devPremiumEnabled; // In a real app, this would be OR user.isActuallyPremium
+    
+
     if (widget.plan.isPremium /* && !currentUser.hasPremiumAccess */) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("This is a premium plan. Unlock premium to start!")),
       );
+      // Potentially show premium upsell screen
+      // Navigator.push(context, MaterialPageRoute(builder: (_) => PremiumUpsellScreen()));
       return;
     }
 
@@ -152,11 +167,14 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
     if (_isLoadingProgress) return const Center(child: CircularProgressIndicator());
 
     bool isFullyCompleted = _progress != null && _progress!.completedDays.length >= widget.plan.durationDays;
+    // --- Consider dev premium setting for button label/action ---
+    bool effectivelyHasPremium = _devPremiumEnabled; // OR actual premium status
+    bool planRequiresPremiumAndNotEffectivelyOwned = widget.plan.isPremium && !effectivelyHasPremium;
 
     if (_progress == null || (!_progress!.isActive && !isFullyCompleted)) {
       return ElevatedButton.icon(
         icon: const Icon(Icons.play_arrow),
-        label: Text(widget.plan.isPremium ? "Unlock Premium" : "Start Plan"),
+        label: Text(planRequiresPremiumAndNotEffectivelyOwned ? "Unlock Premium" : "Start Plan"),
         onPressed: _startPlan, // _startPlan handles premium check
         style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary, foregroundColor: Theme.of(context).colorScheme.onPrimary),
       );

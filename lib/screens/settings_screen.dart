@@ -49,6 +49,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   static const double _baseReaderFontSize = 18.0;
 
+  // --- Dev Premium Toggle ---
+  bool _devPremiumEnabled = false;
+
   @override
   void initState() {
     super.initState();
@@ -75,6 +78,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _selectedFontFamily = PrefsHelper.getReaderFontFamily();
     _selectedReaderTheme = PrefsHelper.getReaderThemeMode();
     _availableAppTtsVoices = _ttsService.getCuratedAppVoices();
+
+    // --- Load Dev Premium Setting ---
+    _devPremiumEnabled = PrefsHelper.getDevPremiumEnabled();
 
     if (mounted) {
       setState(() {
@@ -600,6 +606,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Padding(padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0), child: Text("Developer Options", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold,))),
                   ListTile(contentPadding: const EdgeInsets.symmetric(horizontal: 20.0), leading: const Icon(Icons.skip_next_outlined, color: Colors.orange), title: const Text("Force Next Devotional"), subtitle: const Text("Shows the next devotional on Home screen refresh."), onTap: _handleForceNextDevotional,),
                   ListTile(contentPadding: const EdgeInsets.symmetric(horizontal: 20.0), leading: const Icon(Icons.restart_alt_outlined, color: Colors.redAccent), title: const Text("Reset All Reading Plan Progress"), subtitle: const Text("Resets streaks and all daily reading progress."), onTap: _handleResetAllPlanProgress,),
+                  const Divider(indent: 8, endIndent: 8),
+                  
+                  // --- SwitchListTile for Dev Premium ---
+                  SwitchListTile(
+                    title: const Text("Developer: Premium Enabled"),
+                    subtitle: const Text("Simulates premium access for testing."),
+                    value: _devPremiumEnabled,
+                    onChanged: (bool newValue) async {
+                      setState(() {
+                        _devPremiumEnabled = newValue;
+                      });
+                      await PrefsHelper.setDevPremiumEnabled(newValue);
+                      _showSnackBar(
+                        "Dev Premium ${newValue ? 'Enabled' : 'Disabled'}. Restart or re-navigate to see full effect.",
+                      );
+                    },
+                    secondary: Icon(
+                        _devPremiumEnabled ? Icons.workspace_premium_rounded : Icons.workspace_premium_outlined,
+                        color: _devPremiumEnabled ? Colors.amber.shade700 : null,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  ),
                   const Divider(indent: 8, endIndent: 8),
                 ],
               ],

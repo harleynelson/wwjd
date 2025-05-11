@@ -19,7 +19,9 @@ class PrefsHelper {
   // --- NEW: Keys for TTS Voice Preferences ---
   static const String _ttsSelectedVoiceNameKey = 'tts_selected_voice_name';
   static const String _ttsSelectedVoiceLangCodeKey = 'tts_selected_voice_lang_code';
-  // --- END NEW ---
+  
+  // premium features
+  static const String _devPremiumEnabledKey = 'dev_premium_enabled';
 
 
   static Future<void> init() async {
@@ -167,4 +169,21 @@ static Future<void> setReaderViewMode(ReaderViewMode viewMode) async {
   if (_prefs == null) return;
   await _prefs!.setString(_readerViewModeKey, viewMode.name);
 }
+
+// premium features
+static bool getDevPremiumEnabled() {
+    if (_prefs == null) {
+      print("Warning: SharedPreferences not initialized for getDevPremiumEnabled!");
+      return false; // Default to false if prefs not ready
+    }
+    return _prefs!.getBool(_devPremiumEnabledKey) ?? false;
+  }
+
+  static Future<void> setDevPremiumEnabled(bool isEnabled) async {
+    if (_prefs == null) {
+       print("Warning: SharedPreferences not initialized for setDevPremiumEnabled! Value not saved.");
+       return;
+    }
+    await _prefs!.setBool(_devPremiumEnabledKey, isEnabled);
+  }
 }

@@ -9,11 +9,12 @@ import '../helpers/book_names.dart';
 import '../models/reader_settings_enums.dart';
 import '../helpers/prefs_helper.dart';
 import '../widgets/reader_settings_bottom_sheet.dart';
-// --- NEW IMPORTS ---
 import '../widgets/verse_list_item.dart';
 import '../widgets/verse_actions_bottom_sheet.dart';
 import '../dialogs/flag_selection_dialog.dart';
-// --- END NEW IMPORTS ---
+// --- NEW IMPORT ---
+import '../widgets/tts_play_button.dart';
+import '../services/text_to_speech_service.dart'; // For speakScriptFunction type
 
 class DailyReadingScreen extends StatefulWidget {
   final String planId;
@@ -23,6 +24,8 @@ class DailyReadingScreen extends StatefulWidget {
   final ReaderThemeMode readerThemeMode;
   final double fontSizeDelta;
   final ReaderFontFamily readerFontFamily;
+
+  
 
   const DailyReadingScreen({
     super.key,
@@ -40,21 +43,24 @@ class DailyReadingScreen extends StatefulWidget {
 
 class _DailyReadingScreenState extends State<DailyReadingScreen> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
+  final TextToSpeechService _ttsService = TextToSpeechService(); // Instance for direct use if needed
+
   bool _isLoadingVerses = true;
   Map<BiblePassagePointer, List<Verse>> _passageVerses = {};
   String _errorMessage = '';
   bool _isCompletedToday = false;
+
+  // --- Use PrefsHelper for dev premium status ---
+  late bool _userHasPremiumAccess;
 
   late double _currentFontSizeDelta;
   late ReaderFontFamily _currentReaderFontFamily;
   late ReaderThemeMode _currentReaderThemeMode;
   late ReaderViewMode _currentReaderViewMode;
 
-  // --- NEW STATE for favorites and flags ---
   List<Flag> _allAvailableFlags = [];
   Map<String, bool> _isVerseFavoriteMap = {};
   Map<String, List<int>> _assignedFlagIdsMap = {};
-  // --- END NEW STATE ---
 
   static const double _baseVerseFontSize = 18.0;
   static const double _baseDailyReaderVerseNumberFontSize = 12.0;
@@ -68,38 +74,22 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     _currentReaderThemeMode = widget.readerThemeMode;
     _currentReaderViewMode = PrefsHelper.getReaderViewMode();
 
+    // --- SET _userHasPremiumAccess from PrefsHelper ---
+    // TODO: Fix this shit
+    // This will be checked each time the screen is initialized.
+    // For instant updates if changed in settings while this screen is in the background,
+    // you might need to reload it in onResume or pass it via Provider if it becomes app-wide state.
+    _userHasPremiumAccess = PrefsHelper.getDevPremiumEnabled();
+
     _initializeScreenData();
   }
 
   Future<void> _initializeScreenData() async {
-    await _loadAvailableFlags(); // Load flags first
+    await _loadAvailableFlags();
     _checkIfAlreadyCompleted();
-    _loadAllPassageVerses(); // Now loads fav/flag info too
+    _loadAllPassageVerses();
   }
-
-  Future<void> _loadAvailableFlags() async {
-    if (!mounted) return;
-    try {
-      final Set<int> hiddenIds = PrefsHelper.getHiddenFlagIds();
-      final List<Flag> visiblePrebuiltFlags = prebuiltFlags.where((flag) => !hiddenIds.contains(flag.id)).toList();
-      final userFlagMaps = await _dbHelper.getUserFlags();
-      final userFlags = userFlagMaps.map((map) => Flag.fromUserDbMap(map)).toList();
-      if (mounted) {
-        setState(() {
-          _allAvailableFlags = [...visiblePrebuiltFlags, ...userFlags];
-          _allAvailableFlags.sort((a, b) => a.name.compareTo(b.name));
-        });
-      }
-    } catch (e) {
-      print("Error loading available flags in DailyReadingScreen: $e");
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Error loading flag data: ${e.toString()}")));
-      }
-    }
-  }
-
-  Future<void> _checkIfAlreadyCompleted() async {
+  Future<void> _checkIfAlreadyCompleted() async { // METHOD DEFINITION
     UserReadingProgress? progress = await _dbHelper.getReadingPlanProgress(widget.planId);
     if (progress != null && progress.completedDays.containsKey(widget.dayReading.dayNumber)) {
       if (mounted) {
@@ -108,7 +98,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     }
   }
 
-  Future<void> _loadAllPassageVerses() async {
+  Future<void> _loadAllPassageVerses() async { // METHOD DEFINITION
     if (!mounted) return;
     setState(() { _isLoadingVerses = true; _errorMessage = ''; });
     Map<BiblePassagePointer, List<Verse>> tempPassageVerses = {};
@@ -143,6 +133,27 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
       }
     }
   }
+  Future<void> _loadAvailableFlags() async {
+    if (!mounted) return;
+    try {
+      final Set<int> hiddenIds = PrefsHelper.getHiddenFlagIds();
+      final List<Flag> visiblePrebuiltFlags = prebuiltFlags.where((flag) => !hiddenIds.contains(flag.id)).toList();
+      final userFlagMaps = await _dbHelper.getUserFlags();
+      final userFlags = userFlagMaps.map((map) => Flag.fromUserDbMap(map)).toList();
+      if (mounted) {
+        setState(() {
+          _allAvailableFlags = [...visiblePrebuiltFlags, ...userFlags];
+          _allAvailableFlags.sort((a, b) => a.name.compareTo(b.name));
+        });
+      }
+    } catch (e) {
+      print("Error loading available flags in DailyReadingScreen: $e");
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error loading flag data: ${e.toString()}")));
+      }
+    }
+  }
 
   Future<void> _markDayAsComplete() async {
     try {
@@ -150,7 +161,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text("Day ${widget.dayReading.dayNumber} marked complete!"), backgroundColor: Colors.green,));
         setState(() { _isCompletedToday = true; });
-        Navigator.pop(context, true);
+        Navigator.pop(context, true); // Signal to refresh previous screen
       }
     } catch (e) {
       if (mounted) {
@@ -159,7 +170,6 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     }
   }
 
-  // --- Favorite and Flagging Logic (similar to FullBibleReaderScreen) ---
   Future<void> _toggleFavoriteForVerse(Verse verse) async {
     if (verse.verseID == null || !mounted) return;
     final verseID = verse.verseID!;
@@ -175,7 +185,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
           DatabaseHelper.bibleColVerseText: verse.text,
         };
         await _dbHelper.addFavorite(favData);
-        List<int> currentFlagIds = await _dbHelper.getFlagIdsForFavorite(verseID); // Fetch flags if newly favorited
+        List<int> currentFlagIds = await _dbHelper.getFlagIdsForFavorite(verseID);
         if (mounted) {
           setState(() {
             _isVerseFavoriteMap[verseID] = true;
@@ -187,7 +197,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
         if (mounted) {
           setState(() {
             _isVerseFavoriteMap[verseID] = false;
-            _assignedFlagIdsMap.remove(verseID); // Clear flags when unfavorited
+            _assignedFlagIdsMap.remove(verseID);
           });
         }
       }
@@ -209,11 +219,11 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
       builder: (_) => FlagSelectionDialog(
         verseRef: verseRef,
         initialSelectedFlagIds: currentSelection,
-        allAvailableFlags: _allAvailableFlags, // Pass the loaded list
+        allAvailableFlags: _allAvailableFlags,
         onHideFlag: (flagIdToHide) async {
           await PrefsHelper.hideFlagId(flagIdToHide);
-          await _loadAvailableFlags(); // Refresh available flags
-          if (mounted) { // Update local assignment for this verse
+          await _loadAvailableFlags(); 
+          if (mounted) { 
             setState(() {
               _assignedFlagIdsMap[verseID]?.remove(flagIdToHide);
             });
@@ -221,8 +231,8 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
         },
         onDeleteFlag: (flagIdToDelete) async {
           await _dbHelper.deleteUserFlag(flagIdToDelete);
-          await _loadAvailableFlags(); // Refresh available flags
-           if (mounted) { // Update local assignment for this verse
+          await _loadAvailableFlags(); 
+           if (mounted) { 
             setState(() {
               _assignedFlagIdsMap[verseID]?.remove(flagIdToDelete);
             });
@@ -230,7 +240,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
         },
         onAddNewFlag: (newName) async {
           int newId = await _dbHelper.addUserFlag(newName);
-          await _loadAvailableFlags(); // Refresh available flags
+          await _loadAvailableFlags(); 
           try {
             return _allAvailableFlags.firstWhere((f) => f.id == newId);
           } catch (e) { return null; }
@@ -278,7 +288,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent, // Important for custom sheet design
+      backgroundColor: Colors.transparent,
       builder: (BuildContext bContext) {
         return VerseActionsBottomSheet(
           verse: verse,
@@ -286,11 +296,8 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
           assignedFlagNames: currentFlagNames,
           onToggleFavorite: () {
             _toggleFavoriteForVerse(verse);
-            // Optionally close sheet, or let parent handle rebuild if necessary
-            // Navigator.pop(bContext); 
           },
           onManageFlags: () {
-            // Navigator.pop(bContext); // Close this sheet before opening dialog
             _manageFlagsForVerse(verse);
           },
           fullBookName: bookName,
@@ -298,9 +305,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
       },
     );
   }
-  // --- End Favorite and Flagging Logic ---
 
-  // ... (styling methods _getTextStyle, _getBackgroundColor, etc. remain the same) ...
   TextStyle _getTextStyle(
     ReaderFontFamily family,
     double baseSize,
@@ -400,7 +405,6 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     }
   }
 
-
   void _openReaderSettings() {
     showModalBottomSheet(
       context: context,
@@ -426,6 +430,65 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
         );
       },
     );
+  }
+
+  // --- compile text for TTS ---
+  Future<String?> _getCombinedTextForTts() async {
+    if (_isLoadingVerses || _passageVerses.isEmpty) {
+      return null; 
+    }
+    StringBuffer sb = StringBuffer();
+
+    // Announce the day title if available
+    if (widget.dayReading.title.isNotEmpty) {
+        sb.writeln("Today's focus, ${widget.dayReading.title}.");
+    } else {
+        sb.writeln("Today's reading: Day ${widget.dayReading.dayNumber}.");
+    }
+    sb.writeln(); 
+
+    for (var passagePtr in widget.dayReading.passages) {
+      final versesForPassage = _passageVerses[passagePtr] ?? [];
+      if (versesForPassage.isNotEmpty) {
+        // --- REFINED PASSAGE ANNOUNCEMENT FOR TTS ---
+        String bookName = getFullBookName(passagePtr.bookAbbr);
+        String ttsPassageAnnouncement;
+
+        if (passagePtr.startChapter == passagePtr.endChapter) {
+          // Single chapter passage
+          ttsPassageAnnouncement = "Reading from $bookName, chapter ${passagePtr.startChapter}";
+          if (passagePtr.startVerse == 0 && passagePtr.endVerse == 0) {
+            // Entire chapter (assuming 0,0 means whole chapter, adjust if convention is different)
+            // No specific verse range needed here if it implies the whole chapter.
+            // Or, you might want to say "the entirety of chapter X"
+          } else if (passagePtr.startVerse == passagePtr.endVerse) {
+            ttsPassageAnnouncement += ", verse ${passagePtr.startVerse}";
+          } else {
+            ttsPassageAnnouncement += ", verses ${passagePtr.startVerse} through ${passagePtr.endVerse}";
+          }
+        } else {
+          // Multi-chapter passage (less common for daily readings usually)
+          ttsPassageAnnouncement = "Reading from $bookName, beginning at chapter ${passagePtr.startChapter}, verse ${passagePtr.startVerse}, through chapter ${passagePtr.endChapter}, verse ${passagePtr.endVerse}";
+        }
+        sb.writeln("$ttsPassageAnnouncement.");
+        // --- END REFINED PASSAGE ANNOUNCEMENT ---
+        sb.writeln(); // Add a slight pause after announcing the passage
+
+        for (var verse in versesForPassage) {
+          // Optionally, you can choose to *not* say "Verse X" if it feels too repetitive
+          // and just read the text, especially if the passage is short.
+          // For now, keeping it for clarity.
+          sb.writeln("${verse.text}");
+        }
+        sb.writeln(); // Add a slight pause after a block of verses for a passage
+      }
+    }
+
+    if (widget.dayReading.reflectionPrompt != null && widget.dayReading.reflectionPrompt!.isNotEmpty) {
+      //sb.writeln("Reflection Prompt."); 
+      sb.writeln(widget.dayReading.reflectionPrompt!);
+    }
+    return sb.toString().trim();
   }
 
   Widget _buildProseStylePassage(
@@ -477,14 +540,12 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     );
   }
 
-  // --- MODIFIED to use VerseListItem ---
   Widget _buildVerseByVerseStylePassage(
       BiblePassagePointer passagePtr,
       List<Verse> verses,
       TextStyle passageTitleStyle,
-      // Styles for VerseListItem will be computed based on current theme state
-      Color currentTextColor, // Pass for fallback text
-      Color currentSecondaryAccentColor // Pass for verse numbers if needed for fallback text
+      Color currentTextColor,
+      Color currentSecondaryAccentColor
   ) {
      List<Widget> passageWidgets = [];
       passageWidgets.add(
@@ -509,7 +570,6 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
           bool isFavorite = _isVerseFavoriteMap[verse.verseID] ?? false;
           List<String> flagNames = _getFlagNamesForVerseId(verse.verseID);
 
-          // Compute styles for VerseListItem based on current theme
           TextStyle vTextStyle = _getTextStyle(_currentReaderFontFamily, _baseVerseFontSize, FontWeight.normal, _getTextColor(), height: 1.6);
           TextStyle vNumStyle = _getTextStyle(_currentReaderFontFamily, _baseDailyReaderVerseNumberFontSize, FontWeight.bold, _getSecondaryAccentColor(), height: 1.6);
           TextStyle fChipStyle = _getTextStyle(_currentReaderFontFamily, 10.0, FontWeight.normal, (_currentReaderThemeMode == ReaderThemeMode.dark) ? Colors.grey.shade300 : Theme.of(context).colorScheme.onSecondaryContainer);
@@ -519,7 +579,6 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
           Color flagChipBorder = (_currentReaderThemeMode == ReaderThemeMode.dark) ? Colors.grey.shade600 : Theme.of(context).colorScheme.secondaryContainer;
           Color divColor = (_currentReaderThemeMode == ReaderThemeMode.dark) ? Colors.grey.shade700 : Theme.of(context).colorScheme.outlineVariant.withOpacity(0.5);
 
-
           passageWidgets.add(
             VerseListItem(
               verse: verse,
@@ -528,7 +587,6 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
               onToggleFavorite: () => _toggleFavoriteForVerse(verse),
               onManageFlags: () => _manageFlagsForVerse(verse),
               onVerseTap: () => _showActionsForVerse(verse),
-              // Pass computed styles
               verseTextStyle: vTextStyle,
               verseNumberStyle: vNumStyle,
               flagChipStyle: fChipStyle,
@@ -537,15 +595,12 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
               flagChipBackgroundColor: flagChipBg,
               flagChipBorderColor: flagChipBorder,
               dividerColor: divColor,
-              // isHighlighted and verseHighlightColor are not used in DailyReadingScreen for now
             ),
           );
         }
       }
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: passageWidgets);
   }
-  // --- END MODIFICATION ---
-
 
   @override
   Widget build(BuildContext context) {
@@ -569,6 +624,12 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
         fontStyle: FontStyle.italic
     );
 
+    // Determine AppBar icon color based on AppBar's perceived brightness.
+    // This is a simplification; true AppBar brightness depends on theme.
+    final appBarIconColor = Theme.of(context).appBarTheme.foregroundColor ?? 
+                            (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black54);
+
+
     return Scaffold(
       backgroundColor: currentBackgroundColor,
       appBar: AppBar(
@@ -580,10 +641,26 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
           ],
         ),
         actions: [
+          // --- NEW: TtsPlayButton in AppBar ---
+          TtsPlayButton<String>( // Specify type if using textProvider
+            textProvider: _getCombinedTextForTts,
+            isPremiumFeature: true, // This is a premium feature
+            hasPremiumAccess: _userHasPremiumAccess, // Pass user's premium status
+            iconColor: appBarIconColor, // Match other AppBar icons
+            iconSize: 26.0, // Slightly smaller for AppBar
+            onPremiumLockTap: () {
+              // TODO: Implement premium upsell dialog/navigation
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Unlock Premium to use audio playback for guided readings!")),
+              );
+            },
+          ),
+          // --- END NEW ---
           IconButton(
             icon: const Icon(Icons.tune_rounded),
             tooltip: "Reader Settings",
             onPressed: _openReaderSettings,
+            // iconSize: 26.0, // If you want to match the TtsPlayButton size
           ),
         ],
       ),
@@ -603,24 +680,21 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
                         if (_currentReaderViewMode == ReaderViewMode.prose) {
                           widgetsForPassageContent.add(_buildProseStylePassage(
                               passagePtr, versesForPassage, passageTitleStyle, verseNumberStyle, verseTextStyle, currentTextColor));
-                        } else { 
+                        } else {
                           widgetsForPassageContent.add(_buildVerseByVerseStylePassage(
                               passagePtr, versesForPassage, passageTitleStyle, currentTextColor, currentSecondaryAccentColor));
                         }
-                        
-                        // If not using VerseListItem's internal divider, or if an explicit passage divider is still desired
+
                         if (_currentReaderViewMode == ReaderViewMode.prose) {
                            widgetsForPassageContent.add(const SizedBox(height: 12));
                            widgetsForPassageContent.add(Divider(color: currentTextColor.withOpacity(0.2)));
                            widgetsForPassageContent.add(const SizedBox(height: 10));
                         }
-
-
                         return widgetsForPassageContent;
                       }).toList(),
 
                       if (widget.dayReading.reflectionPrompt != null && widget.dayReading.reflectionPrompt!.isNotEmpty) ...[
-                        if(_currentReaderViewMode == ReaderViewMode.verseByVerse) const SizedBox(height:10), // Add space if coming from VLV items
+                        if(_currentReaderViewMode == ReaderViewMode.verseByVerse && widget.dayReading.passages.isNotEmpty) const SizedBox(height:10),
                         Text("Reflection Prompt:", style: reflectionPromptTitleStyle),
                         const SizedBox(height: 8.0),
                         Container(
