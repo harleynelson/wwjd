@@ -311,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         int streakCount = snapshot.data ?? 0;
 
-        const String mainCtaText = "Guided Reading Plans";
+        const String mainCtaText = "Guided Readings";
         const IconData mainCtaIcon = Icons.checklist_rtl_outlined;
         // Text color for main CTA on its gradient - assuming light text for AppColors.sereneSkyGradient
         final Color mainCtaTextColor = Colors.black.withOpacity(0.8); // Or a theme-aware color

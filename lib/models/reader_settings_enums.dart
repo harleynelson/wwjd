@@ -17,3 +17,11 @@ enum ReaderThemeMode {
   const ReaderThemeMode(this.displayName);
   final String displayName;
 }
+
+enum ReaderViewMode {
+  prose('Prose Style'),       // Continuous text, good for narrative
+  verseByVerse('Verse by Verse'); // Each verse is a distinct block
+
+  const ReaderViewMode(this.displayName);
+  final String displayName;
+}

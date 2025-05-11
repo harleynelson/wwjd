@@ -91,7 +91,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Reading Plans"),
+        title: const Text("Guided Readings"),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())

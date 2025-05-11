@@ -3,7 +3,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; 
+import 'package:google_fonts/google_fonts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../helpers/database_helper.dart';
 import '../models/models.dart';
@@ -13,9 +13,7 @@ import '../dialogs/flag_selection_dialog.dart';
 import '../widgets/verse_list_item.dart';
 import '../widgets/verse_actions_bottom_sheet.dart';
 import '../models/reader_settings_enums.dart';
-// --- NEW: Import the new widget ---
 import '../widgets/reader_settings_bottom_sheet.dart';
-// --- END NEW ---
 
 enum BibleReaderView { books, chapters, verses }
 
@@ -45,11 +43,11 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   String _appBarTitle = "Select a Book";
 
   List<Book> _books = [];
-  List<String> _chapters = []; 
+  List<String> _chapters = [];
   List<Verse> _verses = [];
   Book? _selectedBook;
-  String? _selectedChapter; 
-  int _currentChapterIndex = -1; 
+  String? _selectedChapter;
+  int _currentChapterIndex = -1;
 
   List<Flag> _allAvailableFlags = [];
   Set<String> _favoritedVerseIdsInChapter = {};
@@ -62,6 +60,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   late double _fontSizeDelta;
   late ReaderFontFamily _selectedFontFamily;
   late ReaderThemeMode _selectedReaderTheme;
+  late ReaderViewMode _selectedReaderViewMode; // <<< ADDED
 
   static const double _baseVerseFontSize = 18.0;
   static const double _baseVerseNumberFontSize = 12.0;
@@ -69,18 +68,18 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   @override
   void initState() {
     super.initState();
-    _fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
-    _selectedFontFamily = PrefsHelper.getReaderFontFamily();
-    _selectedReaderTheme = PrefsHelper.getReaderThemeMode();
+    _loadReaderPreferences(); // Now calls the consolidated method
     _loadInitialData();
   }
 
+  // MODIFIED to load all preferences
   Future<void> _loadReaderPreferences() async {
     if (!mounted) return;
     setState(() {
       _fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
       _selectedFontFamily = PrefsHelper.getReaderFontFamily();
       _selectedReaderTheme = PrefsHelper.getReaderThemeMode();
+      _selectedReaderViewMode = PrefsHelper.getReaderViewMode(); // <<< LOAD PREFERENCE
     });
   }
 
@@ -103,7 +102,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
           _appBarTitle = "${_selectedBook!.fullName} ${_selectedChapter!}";
           _isLoading = true;
         });
-        await _loadData(book: _selectedBook, chapter: _selectedChapter); 
+        await _loadData(book: _selectedBook, chapter: _selectedChapter);
       } else {
         _loadBooks();
       }
@@ -111,7 +110,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
       _loadBooks();
     }
   }
-  
+
   Future<Book?> _findBookByAbbr(String abbr) async {
     if (_books.isEmpty) {
       final List<Map<String, dynamic>> bookMaps = await _dbHelper.getBookAbbreviations();
@@ -165,12 +164,12 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         _currentView = BibleReaderView.books; _appBarTitle = "Select a Book"; _selectedBook = null; _selectedChapter = null; _chapters = []; _verses = []; _favoritedVerseIdsInChapter = {}; _flagAssignmentsForChapter = {}; _currentChapterIndex = -1;
       } else if (chapter == null) {
         _chapters = await _dbHelper.getChaptersForBook(book.abbreviation);
-        _selectedBook = book; 
-        _currentView = BibleReaderView.chapters; 
-        _appBarTitle = book.fullName; 
-        _selectedChapter = null; 
-        _verses = []; 
-        _favoritedVerseIdsInChapter = {}; 
+        _selectedBook = book;
+        _currentView = BibleReaderView.chapters;
+        _appBarTitle = book.fullName;
+        _selectedChapter = null;
+        _verses = [];
+        _favoritedVerseIdsInChapter = {};
         _flagAssignmentsForChapter = {};
         _currentChapterIndex = (initialChapterTarget != null) ? _chapters.indexOf(initialChapterTarget) : -1;
 
@@ -192,7 +191,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         _selectedChapter = chapter;
         _currentView = BibleReaderView.verses;
         _appBarTitle = "${book.fullName} $chapter";
-        if (_chapters.isEmpty || _chapters.first.split(' ').first != book.abbreviation) { 
+        if (_chapters.isEmpty || _chapters.first.split(' ').first != book.abbreviation) {
             _chapters = await _dbHelper.getChaptersForBook(book.abbreviation);
         }
         _currentChapterIndex = _chapters.indexOf(chapter);
@@ -312,12 +311,12 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
     double currentSize = baseSize + _fontSizeDelta;
     switch (family) {
       case ReaderFontFamily.serif:
-        return GoogleFonts.notoSerif(fontSize: currentSize, fontWeight: fontWeight); 
+        return GoogleFonts.notoSerif(fontSize: currentSize, fontWeight: fontWeight);
       case ReaderFontFamily.sansSerif:
-        return GoogleFonts.roboto(fontSize: currentSize, fontWeight: fontWeight); 
+        return GoogleFonts.roboto(fontSize: currentSize, fontWeight: fontWeight);
       case ReaderFontFamily.systemDefault:
       default:
-        return TextStyle(fontSize: currentSize, fontWeight: fontWeight); 
+        return TextStyle(fontSize: currentSize, fontWeight: fontWeight);
     }
   }
 
@@ -344,7 +343,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         return Colors.black87;
     }
   }
-  
+
   Color _getReaderVerseNumberColor() {
      switch (_selectedReaderTheme) {
       case ReaderThemeMode.dark:
@@ -362,7 +361,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
       case ReaderThemeMode.dark:
         return const Color(0xFF2D2D2D);
       case ReaderThemeMode.sepia:
-        return isMaterial3 ? Color.lerp(const Color(0xFFFBF0D9), Colors.black, 0.3)! : Colors.brown.shade800; 
+        return isMaterial3 ? Color.lerp(const Color(0xFFFBF0D9), Colors.black, 0.3)! : Colors.brown.shade800;
       case ReaderThemeMode.light:
       default:
         return isMaterial3 ? Theme.of(context).colorScheme.surfaceContainer.withOpacity(0.9) : Colors.grey.shade200;
@@ -373,16 +372,15 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
     final ThemeData currentTheme = Theme.of(context);
     switch (_selectedReaderTheme) {
       case ReaderThemeMode.dark:
-        return Colors.grey.shade400; 
+        return Colors.grey.shade400;
       case ReaderThemeMode.sepia:
-        return const Color(0xFFFBF0D9).withOpacity(0.8); 
+        return const Color(0xFFFBF0D9).withOpacity(0.8);
       case ReaderThemeMode.light:
       default:
         return currentTheme.colorScheme.onSurfaceVariant;
     }
   }
 
-  // --- MODIFIED: Use the new ReaderSettingsBottomSheet ---
   void _openReaderSettings() {
     showModalBottomSheet(
       context: context,
@@ -392,23 +390,23 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
           initialFontSizeDelta: _fontSizeDelta,
           initialFontFamily: _selectedFontFamily,
           initialThemeMode: _selectedReaderTheme,
-          onSettingsChanged: (newDelta, newFamily, newMode) async {
-            // This callback is triggered by the sheet when a setting changes
+          initialReaderViewMode: _selectedReaderViewMode, // <<< PASS CURRENT
+          onSettingsChanged: (newDelta, newFamily, newMode, newViewMode) async { // <<< RECEIVE newViewMode
             setState(() {
               _fontSizeDelta = newDelta;
               _selectedFontFamily = newFamily;
               _selectedReaderTheme = newMode;
+              _selectedReaderViewMode = newViewMode; // <<< SET STATE
             });
-            // Save preferences asynchronously
             await PrefsHelper.setReaderFontSizeDelta(newDelta);
             await PrefsHelper.setReaderFontFamily(newFamily);
             await PrefsHelper.setReaderThemeMode(newMode);
+            await PrefsHelper.setReaderViewMode(newViewMode); // <<< SAVE PREFERENCE
           },
         );
       },
     );
   }
-  // --- END MODIFICATION ---
 
 
   void _goToPreviousChapter() {
@@ -421,7 +419,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
                 if (prevBookChapters.isNotEmpty) {
                     _loadData(book: previousBook, chapter: prevBookChapters.last);
                 } else {
-                    _loadChapters(previousBook); 
+                    _loadChapters(previousBook);
                 }
             });
             return;
@@ -459,6 +457,15 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
 
 
   Widget _buildBody() {
+    // NOTE: FullBibleReaderScreen currently always displays verse-by-verse
+    // using VerseListItem. Implementing a "prose" style here would require
+    // a significant change to how this list is built, potentially replacing
+    // ScrollablePositionedList with a different widget or fundamentally
+    // changing VerseListItem for prose mode.
+    // For now, this screen will respect and save the ReaderViewMode setting,
+    // but it won't visually change its layout based on it.
+    // The DailyReadingScreen is where the visual switch for ReaderViewMode is implemented.
+
     if (_isLoading) { return const Center(child: CircularProgressIndicator()); }
 
     Color readerBackgroundColor = _getReaderBackgroundColor();
@@ -504,19 +511,19 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         return GestureDetector(
           onHorizontalDragEnd: (details) {
             if (details.primaryVelocity == null) return;
-            if (details.primaryVelocity! < -500) { 
+            if (details.primaryVelocity! < -500) {
               _goToNextChapter();
-            } else if (details.primaryVelocity! > 500) { 
+            } else if (details.primaryVelocity! > 500) {
               _goToPreviousChapter();
             }
           },
-          child: Container( 
+          child: Container(
             color: readerBackgroundColor,
             child: ScrollablePositionedList.builder(
               itemScrollController: _itemScrollController,
               itemPositionsListener: _itemPositionsListener,
               itemCount: _verses.length,
-              padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0), 
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0),
               itemBuilder: (context, index) {
                 final verse = _verses[index];
                 final bool isFavorite = _favoritedVerseIdsInChapter.contains(verse.verseID);
@@ -530,7 +537,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
                   isHighlighted: shouldHighlight,
                   onToggleFavorite: () => _toggleFavorite(verse),
                   onManageFlags: () => _openFlagManagerForVerse(verse),
-                  onVerseTap: () { 
+                  onVerseTap: () {
                     final String bookName = getFullBookName(verse.bookAbbr ?? "Unknown Book");
                     showModalBottomSheet(context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
                       builder: (BuildContext bContext) {
@@ -581,8 +588,8 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
 
      return Scaffold(
        backgroundColor: (_currentView == BibleReaderView.verses || (_isLoading && _currentView == BibleReaderView.chapters && _selectedChapter != null) )
-                        ? currentReaderBackgroundColor 
-                        : Theme.of(context).scaffoldBackgroundColor, 
+                        ? currentReaderBackgroundColor
+                        : Theme.of(context).scaffoldBackgroundColor,
        appBar: AppBar(
          title: Text(_appBarTitle),
          leading: _currentView != BibleReaderView.books || Navigator.canPop(context) || (widget.targetBookAbbr != null)
@@ -593,13 +600,11 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
              IconButton(
                icon: const Icon(Icons.tune_rounded),
                tooltip: "Reader Settings",
-               // --- MODIFIED: Call the new method ---
                onPressed: _openReaderSettings,
-               // --- END MODIFICATION ---
              ),
          ],
        ),
-       body: _buildBody(), 
+       body: _buildBody(),
        bottomNavigationBar: _currentView == BibleReaderView.verses
         ? Container(
             decoration: BoxDecoration(

@@ -4,32 +4,31 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wwjd_app/models/reader_settings_enums.dart';
-import 'package:wwjd_app/helpers/prefs_helper.dart'; // For saving preferences
+// PrefsHelper is not directly used here anymore, parent screens handle saving.
 
-// Callback signature for when settings are changed and should be saved
 typedef ReaderSettingsCallback = void Function(
   double newFontSizeDelta,
   ReaderFontFamily newFontFamily,
   ReaderThemeMode newThemeMode,
+  ReaderViewMode newViewMode, // <<< ADDED
 );
 
 class ReaderSettingsBottomSheet extends StatefulWidget {
   final double initialFontSizeDelta;
   final ReaderFontFamily initialFontFamily;
   final ReaderThemeMode initialThemeMode;
+  final ReaderViewMode initialReaderViewMode; // <<< ADDED
   final ReaderSettingsCallback onSettingsChanged;
 
-  // Base font size for previewing font family changes
   static const double _basePreviewFontSize = 16.0;
-  // Base font size for calculating the "Aa (XX)" display
   static const double _baseReaderControlFontSize = 18.0;
-
 
   const ReaderSettingsBottomSheet({
     super.key,
     required this.initialFontSizeDelta,
     required this.initialFontFamily,
     required this.initialThemeMode,
+    required this.initialReaderViewMode, // <<< ADDED
     required this.onSettingsChanged,
   });
 
@@ -41,6 +40,7 @@ class _ReaderSettingsBottomSheetState extends State<ReaderSettingsBottomSheet> {
   late double _currentFontSizeDelta;
   late ReaderFontFamily _currentFontFamily;
   late ReaderThemeMode _currentThemeMode;
+  late ReaderViewMode _currentReaderViewMode; // <<< ADDED
 
   @override
   void initState() {
@@ -48,9 +48,9 @@ class _ReaderSettingsBottomSheetState extends State<ReaderSettingsBottomSheet> {
     _currentFontSizeDelta = widget.initialFontSizeDelta;
     _currentFontFamily = widget.initialFontFamily;
     _currentThemeMode = widget.initialThemeMode;
+    _currentReaderViewMode = widget.initialReaderViewMode; // <<< ADDED
   }
 
-  // Helper to get text style for font family dropdown preview
   TextStyle _getFontFamilyPreviewStyle(ReaderFontFamily family, BuildContext context) {
     final Color textColor = _getPreviewTextColorForTheme(_currentThemeMode, context);
     final defaultStyle = TextStyle(fontSize: ReaderSettingsBottomSheet._basePreviewFontSize, color: textColor);
@@ -67,15 +67,11 @@ class _ReaderSettingsBottomSheetState extends State<ReaderSettingsBottomSheet> {
   }
 
   Color _getPreviewTextColorForTheme(ReaderThemeMode themeMode, BuildContext context) {
-    // Determine text color based on the *sheet's* current theme, not the reader's theme,
-    // to ensure dropdown text is visible against the sheet's background.
     return Theme.of(context).colorScheme.onSurface;
   }
 
-
   @override
   Widget build(BuildContext context) {
-    // Use the context provided by StatefulBuilder for theme access within the sheet
     final Color currentSheetTextColor = Theme.of(context).colorScheme.onSurface;
     final Color currentSheetIconColor = Theme.of(context).colorScheme.onSurfaceVariant;
 
@@ -101,7 +97,7 @@ class _ReaderSettingsBottomSheetState extends State<ReaderSettingsBottomSheet> {
                           setState(() {
                             _currentFontSizeDelta -= 1.0;
                           });
-                          widget.onSettingsChanged(_currentFontSizeDelta, _currentFontFamily, _currentThemeMode);
+                          widget.onSettingsChanged(_currentFontSizeDelta, _currentFontFamily, _currentThemeMode, _currentReaderViewMode);
                         }
                       : null,
                 ),
@@ -117,7 +113,7 @@ class _ReaderSettingsBottomSheetState extends State<ReaderSettingsBottomSheet> {
                           setState(() {
                             _currentFontSizeDelta += 1.0;
                           });
-                          widget.onSettingsChanged(_currentFontSizeDelta, _currentFontFamily, _currentThemeMode);
+                          widget.onSettingsChanged(_currentFontSizeDelta, _currentFontFamily, _currentThemeMode, _currentReaderViewMode);
                         }
                       : null,
                 ),
@@ -139,16 +135,16 @@ class _ReaderSettingsBottomSheetState extends State<ReaderSettingsBottomSheet> {
                   setState(() {
                     _currentFontFamily = newValue;
                   });
-                  widget.onSettingsChanged(_currentFontSizeDelta, _currentFontFamily, _currentThemeMode);
+                  widget.onSettingsChanged(_currentFontSizeDelta, _currentFontFamily, _currentThemeMode, _currentReaderViewMode);
                 }
               },
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                fillColor: Theme.of(context).colorScheme.surfaceContainerHighest, // Example
+                fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                 filled: true,
               ),
-              dropdownColor: Theme.of(context).colorScheme.surfaceContainerHighest, // Match dropdown bg
+              dropdownColor: Theme.of(context).colorScheme.surfaceContainerHighest,
             ),
 
             // Reader Theme
@@ -166,7 +162,7 @@ class _ReaderSettingsBottomSheetState extends State<ReaderSettingsBottomSheet> {
                   setState(() {
                     _currentThemeMode = newValue;
                   });
-                  widget.onSettingsChanged(_currentFontSizeDelta, _currentFontFamily, _currentThemeMode);
+                  widget.onSettingsChanged(_currentFontSizeDelta, _currentFontFamily, _currentThemeMode, _currentReaderViewMode);
                 }
               },
               decoration: InputDecoration(
@@ -177,6 +173,39 @@ class _ReaderSettingsBottomSheetState extends State<ReaderSettingsBottomSheet> {
               ),
               dropdownColor: Theme.of(context).colorScheme.surfaceContainerHighest,
             ),
+
+            // --- NEW: Reader View Mode ---
+            Text("View Style", style: Theme.of(context).textTheme.titleMedium?.copyWith(color: currentSheetTextColor)),
+            SegmentedButton<ReaderViewMode>(
+              segments: ReaderViewMode.values.map((ReaderViewMode mode) {
+                return ButtonSegment<ReaderViewMode>(
+                  value: mode,
+                  label: Text(mode.displayName, style: TextStyle(color: currentSheetTextColor.withOpacity(_currentReaderViewMode == mode ? 1.0 : 0.7))),
+                  icon: Icon(
+                    mode == ReaderViewMode.prose ? Icons.notes_rounded : Icons.view_list_rounded,
+                    color: currentSheetIconColor.withOpacity(_currentReaderViewMode == mode ? 1.0 : 0.7),
+                  ),
+                );
+              }).toList(),
+              selected: <ReaderViewMode>{_currentReaderViewMode},
+              onSelectionChanged: (Set<ReaderViewMode> newSelection) {
+                if (newSelection.isNotEmpty) {
+                  setState(() {
+                    _currentReaderViewMode = newSelection.first;
+                  });
+                  widget.onSettingsChanged(_currentFontSizeDelta, _currentFontFamily, _currentThemeMode, _currentReaderViewMode);
+                }
+              },
+              style: SegmentedButton.styleFrom(
+                // backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                // foregroundColor: currentSheetTextColor,
+                // selectedForegroundColor: Theme.of(context).colorScheme.primary,
+                // selectedBackgroundColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
+              ),
+              showSelectedIcon: true,
+              multiSelectionEnabled: false,
+            ),
+            // --- END NEW ---
             
             const SizedBox(height: 10),
             Center(

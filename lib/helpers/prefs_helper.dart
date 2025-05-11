@@ -13,7 +13,7 @@ class PrefsHelper {
   static const String _readerFontSizeDeltaKey = 'reader_font_size_delta';
   static const String _readerFontFamilyKey = 'reader_font_family';
   static const String _readerThemeModeKey = 'reader_theme_mode';
-
+  static const String _readerViewModeKey = 'reader_view_mode'; // For sentence structure (e.g., "paragraph" or "sentence")
   static const String _appThemeModeKey = 'app_theme_mode';
 
   // --- NEW: Keys for TTS Voice Preferences ---
@@ -152,5 +152,19 @@ class PrefsHelper {
     if (_prefs == null) return;
     await _prefs!.setString(_ttsSelectedVoiceLangCodeKey, langCode);
   }
-  // --- END NEW ---
+  
+  // --- ReaderViewMode ---
+static ReaderViewMode getReaderViewMode() {
+  if (_prefs == null) return ReaderViewMode.verseByVerse; // Default to verseByVerse
+  String? viewModeName = _prefs!.getString(_readerViewModeKey);
+  return ReaderViewMode.values.firstWhere(
+    (e) => e.name == viewModeName,
+    orElse: () => ReaderViewMode.verseByVerse, // Default if not found or invalid
+  );
+}
+
+static Future<void> setReaderViewMode(ReaderViewMode viewMode) async {
+  if (_prefs == null) return;
+  await _prefs!.setString(_readerViewModeKey, viewMode.name);
+}
 }
