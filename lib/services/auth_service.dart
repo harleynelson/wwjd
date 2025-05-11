@@ -41,18 +41,20 @@ class AuthService {
   }
 
   Future<AppUser?> signInAnonymouslyIfNeeded() async {
-    if (_firebaseAuth.currentUser == null) {
-      try {
-        final userCredential = await _firebaseAuth.signInAnonymously();
-        print("AuthService: Signed in anonymously. UID: ${userCredential.user?.uid}, IsAnonymous: ${userCredential.user?.isAnonymous}");
-        return _mapFirebaseUserToAppUser(userCredential.user);
-      } catch (e) {
-        print("AuthService: Error signing in anonymously: $e");
-        return null;
-      }
+  if (_firebaseAuth.currentUser == null) {
+    try {
+      print("AuthService: No current user. Attempting to sign in anonymously.");
+      final userCredential = await _firebaseAuth.signInAnonymously();
+      print("AuthService: Signed in anonymously. New UID: ${userCredential.user?.uid}");
+      return _mapFirebaseUserToAppUser(userCredential.user);
+    } catch (e) {
+      print("AuthService: Error signing in anonymously: $e");
+      return null;
     }
-    return _mapFirebaseUserToAppUser(_firebaseAuth.currentUser);
   }
+  // print("AuthService: Current user exists (UID: ${_firebaseAuth.currentUser?.uid}, IsAnonymous: ${_firebaseAuth.currentUser?.isAnonymous}). No anonymous sign-in needed now.");
+  return _mapFirebaseUserToAppUser(_firebaseAuth.currentUser);
+}
 
   Future<AppUser?> signUpWithEmailPassword(String email, String password) async {
     fb_auth.UserCredential userCredential;
@@ -109,14 +111,14 @@ class AuthService {
 
   Future<AppUser?> signInWithGoogle() async {
     fb_auth.User? initialCurrentUser = _firebaseAuth.currentUser; // Capture initial user state
-    GoogleSignInAccount? googleUserAccount;
+    GoogleSignInAccount? googleUserAccount; // To store the GoogleSignInAccount
     fb_auth.UserCredential? finalUserCredential; // To store the result of the successful operation
 
     try {
       // Critical check for serverClientId configuration
-      if (_googleSignIn.serverClientId == null || 
-          _googleSignIn.serverClientId!.isEmpty || 
-          _googleSignIn.serverClientId == 'REPLACE_WITH_YOUR_WEB_APPLICATION_OAUTH_CLIENT_ID.apps.googleusercontent.com') {
+      if (_googleSignIn.serverClientId == null ||
+          _googleSignIn.serverClientId!.isEmpty ||
+          _googleSignIn.serverClientId == 'REPLACE_WITH_YOUR_WEB_APPLICATION_OAUTH_CLIENT_ID.apps.googleusercontent.com') { // Ensure this placeholder is updated in your actual code
           final errorMessage = "AuthService CRITICAL ERROR: serverClientId for GoogleSignIn is not correctly set. Please use your WEB OAuth 2.0 Client ID from GCP.";
           print(errorMessage);
           throw Exception(errorMessage); // Fail early
@@ -145,21 +147,33 @@ class AuthService {
           finalUserCredential = await initialCurrentUser.linkWithCredential(credential);
           print("AuthService: Anonymous account successfully linked with Google. New User State -> UID: ${finalUserCredential.user?.uid}, IsAnonymous: ${finalUserCredential.user?.isAnonymous}, Name: ${finalUserCredential.user?.displayName}");
         } on fb_auth.FirebaseAuthException catch (linkError) {
-          if (linkError.code == 'credential-already-in-use') {
-            // This Google account is already linked to a *different* Firebase user.
-            // Sign in with this Google account, effectively replacing the anonymous user.
-            print("AuthService: Linking failed ('credential-already-in-use'). Google account is linked to another Firebase user. Attempting direct sign-in with Google credential.");
-            finalUserCredential = await _firebaseAuth.signInWithCredential(credential); // This is the success path
-            print("AuthService: Signed in with existing Google-linked Firebase account. New User State -> UID: ${finalUserCredential.user?.uid}, IsAnonymous: ${finalUserCredential.user?.isAnonymous}, Name: ${finalUserCredential.user?.displayName}");
-          } else if (linkError.code == 'account-exists-with-different-credential') {
-            print("AuthService: Linking failed ('account-exists-with-different-credential'). Email (${googleUserAccount.email}) is used by another sign-in method.");
-            throw fb_auth.FirebaseAuthException( // Propagate for UI to handle password prompt
-              code: 'link-google-to-email-erforderlich',
-              message: 'This Google account\'s email is already used with an Email/Password account. Please sign in with your password to link them.',
-              email: googleUserAccount.email,
+          print("AuthService: Linking anonymous user with Google failed. Code: ${linkError.code}, Message: ${linkError.message}");
+          
+          if (linkError.code == 'credential-already-in-use' || 
+              linkError.code == 'user-not-found' || 
+              linkError.code == 'invalid-user-token'
+             ) {
+            print("AuthService: Linking failed (${linkError.code}). Attempting direct sign-in with Google credential, abandoning/replacing anonymous user.");
+            try {
+                finalUserCredential = await _firebaseAuth.signInWithCredential(credential);
+                print("AuthService: Signed in with Google credential directly after linking failed. New User State -> UID: ${finalUserCredential.user?.uid}, IsAnonymous: ${finalUserCredential.user?.isAnonymous}, Name: ${finalUserCredential.user?.displayName}");
+            } on fb_auth.FirebaseAuthException catch (signInError) {
+                print("AuthService: Direct signInWithCredential after linking failure also failed. Code: ${signInError.code}, Message: ${signInError.message}");
+                throw signInError; 
+            }
+          } else if (linkError.code == 'account-exists-with-different-credential') { 
+             // This case means the Google account's email is already associated with an Email/Password account in Firebase.
+             // Throw a specific error that the UI (SettingsScreen) can catch to prompt for password to link.
+             print("AuthService: Linking failed ('account-exists-with-different-credential'). Email (${googleUserAccount.email}) is used by another sign-in method.");
+             throw fb_auth.FirebaseAuthException( 
+              code: 'link-google-to-email-erforderlich', // Your custom error code for this scenario
+              message: linkError.message ?? 'This Google account\'s email is already used with an Email/Password account. Please sign in with your password to link them.',
+              email: googleUserAccount.email, // Pass the email for the prompt
             );
-          } else {
-            throw linkError; // Re-throw other linking errors to be caught by outer catch
+          }
+          else {
+            // For other, unexpected linking errors, re-throw them to be caught by the outer catch block.
+            throw linkError; 
           }
         }
       } else {
@@ -169,15 +183,62 @@ class AuthService {
         print("AuthService: Signed in with Google. New User State -> UID: ${finalUserCredential.user?.uid}, IsAnonymous: ${finalUserCredential.user?.isAnonymous}, Name: ${finalUserCredential.user?.displayName}");
       }
       
-      // Log provider data of the final user
-      // finalUserCredential?.user?.providerData.forEach((profile) {
-      //   print("Final User Provider: ${profile.providerId}, UID: ${profile.uid}, Email: ${profile.email}, Name: ${profile.displayName}");
-      // });
-      return _mapFirebaseUserToAppUser(finalUserCredential?.user);
+      // --- Profile Update Logic ---
+      fb_auth.User? firebaseUserToMap = finalUserCredential?.user;
+
+      if (firebaseUserToMap != null && googleUserAccount != null) { // Ensure googleUserAccount is not null here
+          bool profileNeedsUpdate = false;
+          String? newDisplayName = firebaseUserToMap.displayName;
+          String? newPhotoURL = firebaseUserToMap.photoURL;
+
+          // Check if display name is missing on Firebase user but available from Google account
+          if ((firebaseUserToMap.displayName == null || firebaseUserToMap.displayName!.isEmpty) &&
+              googleUserAccount.displayName != null && googleUserAccount.displayName!.isNotEmpty) {
+              newDisplayName = googleUserAccount.displayName; // Prepare new display name
+              profileNeedsUpdate = true;
+          }
+
+          // Check if photo URL is missing on Firebase user but available from Google account
+          if ((firebaseUserToMap.photoURL == null || firebaseUserToMap.photoURL!.isEmpty) &&
+              googleUserAccount.photoUrl != null && googleUserAccount.photoUrl!.isNotEmpty) {
+              newPhotoURL = googleUserAccount.photoUrl; // Prepare new photo URL
+              profileNeedsUpdate = true;
+          }
+
+          if (profileNeedsUpdate) {
+              try {
+                  print("AuthService: Attempting to update Firebase user profile. New Name: $newDisplayName, New Photo: $newPhotoURL");
+                  // Only call update if the new value is different from current or current is null/empty
+                  if (newDisplayName != firebaseUserToMap.displayName) {
+                    await firebaseUserToMap.updateDisplayName(newDisplayName);
+                  }
+                  if (newPhotoURL != firebaseUserToMap.photoURL) {
+                    await firebaseUserToMap.updatePhotoURL(newPhotoURL);
+                  }
+                  
+                  print("AuthService: Firebase profile update calls made (if necessary). Reloading user.");
+                  await firebaseUserToMap.reload();
+                  // After reload, get the fresh user instance from FirebaseAuth
+                  firebaseUserToMap = _firebaseAuth.currentUser; 
+                  print("AuthService: Firebase user reloaded. Current displayName: ${firebaseUserToMap?.displayName}, photoURL: ${firebaseUserToMap?.photoURL}");
+              } catch (e) {
+                  print("AuthService: Error updating profile or reloading user: $e");
+                  // Fallback to the user object from finalUserCredential if reload fails or current user becomes null
+                  firebaseUserToMap = _firebaseAuth.currentUser ?? finalUserCredential?.user;
+              }
+          }
+      }
+      // --- End Profile Update Logic ---
+      
+      // Log provider data of the final user (for debugging purposes)
+      firebaseUserToMap?.providerData.forEach((profile) {
+        print("Final User Provider Data: ProviderId=${profile.providerId}, UID=${profile.uid}, Email=${profile.email}, DisplayName=${profile.displayName}, PhotoURL=${profile.photoURL}");
+      });
+      return _mapFirebaseUserToAppUser(firebaseUserToMap);
 
     } on fb_auth.FirebaseAuthException catch (e) {
-      // This outer catch handles errors from direct signInWithCredential if not anonymous,
-      // or errors re-thrown from the linking block, or the custom 'link-google-to-email-erforderlich'.
+      // This outer catch handles errors from direct signInWithCredential (if not anonymous),
+      // errors re-thrown from the linking block, or the custom 'link-google-to-email-erforderlich'.
       print("AuthService: FirebaseAuthException during Google sign-in process: (Code: ${e.code}) - ${e.message}");
       if (e.code == 'link-google-to-email-erforderlich') {
         throw e; // Re-throw for UI to handle specifically
@@ -187,7 +248,7 @@ class AuthService {
       if (e.code == 'network-request-failed') {
          uiMessage = 'Network error. Please check your internet connection.';
       } else if (e.code == 'credential-already-in-use' || e.code == 'account-exists-with-different-credential') {
-        // This message is for when direct signInWithCredential fails due to these conflicts
+        // This message is for when direct signInWithCredential fails due to these conflicts (and wasn't handled by linking fallback)
         uiMessage = 'This Google account is already associated with a user profile or uses a different sign-in method. Please try a different Google account or sign in with the original method for that profile.';
       }
       throw fb_auth.FirebaseAuthException(code: e.code, message: uiMessage); // Throw with potentially more user-friendly message
@@ -196,14 +257,14 @@ class AuthService {
         print("AuthService: PlatformException during Google sign-in: (Code: ${e.code}) - ${e.message} - Details: ${e.details}");
         String uiMessage = "Google Sign-In failed.";
         if (e.code == "sign_in_failed" || e.code == "google_sign_in_failed") {
-            if (e.message?.contains(" ApiException: 10") ?? false) {
+            if (e.message?.contains(" ApiException: 10") ?? false) { // DEVELOPER_ERROR
                 uiMessage = "Google Sign-In configuration error (10). Please ensure app is correctly configured with Google services (SHA-1, google-services.json, Web Client ID for serverClientId).";
-            } else if (e.message?.contains(" ApiException: 12500") ?? false) {
-                uiMessage = "Google Sign-In was cancelled or there was an issue with Google Play Services (12500). Check network and Play Services.";
+            } else if (e.message?.contains(" ApiException: 12500") ?? false) { // SIGN_IN_FAILED or CANCELED (often Play Services issue or user back out)
+                uiMessage = "Google Sign-In was cancelled or there was an issue with Google Play Services (12500). Check network and Play Services, or try again.";
             } else if (e.message?.contains(" ApiException: 12501") ?? false) { // SIGN_IN_CANCELLED
                 print("AuthService: Google Sign-In cancelled by user (ApiException 12501).");
                 return null; // Not an error to show to user, just cancellation.
-            } else if (e.message?.contains("NetworkError") ?? false) { // Check for generic network error string
+            } else if (e.message?.contains("NetworkError") ?? false) { 
                 uiMessage = "Network error during Google Sign-In. Please check your connection.";
             } else {
                 uiMessage = "An error occurred with Google Sign-In. Please try again. (Code: ${e.code})";
@@ -247,19 +308,28 @@ class AuthService {
   }
 
   Future<void> signOut() async {
-    try {
-      final String? oldUid = _firebaseAuth.currentUser?.uid;
-      final bool wasAnonymousBeforeSignOut = _firebaseAuth.currentUser?.isAnonymous ?? true;
+  try {
+    final String? oldUid = _firebaseAuth.currentUser?.uid;
+    final bool wasAnonymousBeforeSignOut = _firebaseAuth.currentUser?.isAnonymous ?? false; // Default to false if null
 
-      if (await _googleSignIn.isSignedIn()) {
-        await _googleSignIn.signOut();
-        print("AuthService: Signed out from Google.");
-      }
-      await _firebaseAuth.signOut();
-      print("AuthService: User signed out from Firebase (Old UID: $oldUid, WasAnonymous: $wasAnonymousBeforeSignOut).");
-      await signInAnonymouslyIfNeeded();
-    } catch (e) {
-      print("AuthService: Error signing out: $e");
+    if (await _googleSignIn.isSignedIn()) {
+      await _googleSignIn.signOut();
+      print("AuthService: Signed out from Google.");
     }
+    await _firebaseAuth.signOut(); // This makes currentUser null
+    print("AuthService: User signed out from Firebase (Old UID: $oldUid, WasAnonymous: $wasAnonymousBeforeSignOut). Current Firebase user is now null.");
+
+    // DO NOT automatically sign in anonymously here.
+    // Let the app state reflect that the user is truly signed out.
+    // signInAnonymouslyIfNeeded() will be called on next app start or when
+    // an action requiring a user is taken, if currentUser is still null.
+    // If you absolutely need an anonymous session immediately after logout for some app logic,
+    // then you might call it, but it will generate a new anonymous user.
+    // For reducing anonymous user proliferation, it's better to wait.
+
+  } catch (e) {
+    print("AuthService: Error signing out: $e");
+    // Consider if an anonymous sign-in is a fallback here, or just let the error propagate.
   }
+}
 }
