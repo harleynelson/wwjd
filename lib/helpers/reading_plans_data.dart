@@ -8,6 +8,7 @@ final List<ReadingPlan> allReadingPlans = [
     title: "First Steps: Genesis",
     description: "Explore the book of beginnings, covering creation, the fall, early patriarchs, and God's covenant promises. A 7-day introduction.",
     category: "Old Testament",
+    headerImageAssetPath: "assets/images/reading_plan_headers/rp_genesis_intro.png",
     isPremium: false,
     dailyReadings: [
       ReadingPlanDay(
@@ -65,6 +66,7 @@ final List<ReadingPlan> allReadingPlans = [
     title: "Meet Jesus: Gospel of John",
     description: "A 7-day journey through key passages in the Gospel of John, revealing who Jesus is and what He offers.",
     category: "Gospels",
+    headerImageAssetPath: "assets/images/reading_plan_headers/rp_john_gospel_7day.png",
     isPremium: false,
     dailyReadings: [
       ReadingPlanDay(
@@ -116,6 +118,7 @@ final List<ReadingPlan> allReadingPlans = [
     title: "Daily Wisdom from Proverbs",
     description: "A 5-day plan to gain practical wisdom for everyday living from the book of Proverbs.",
     category: "Wisdom Literature",
+    headerImageAssetPath: "assets/images/reading_plan_headers/rp_proverbs_wisdom_5day.png",
     isPremium: true,
     dailyReadings: [
        ReadingPlanDay(
@@ -150,6 +153,7 @@ final List<ReadingPlan> allReadingPlans = [
     title: "Love Your Neighbor: A Call to Compassion",
     description: "Discover the radical call to love and compassion found in scripture. This 7-day plan explores how to extend empathy and justice to all.",
     category: "Topical",
+    headerImageAssetPath: "assets/images/reading_plan_headers/rp_love_your_neighbor_7day.png",
     isPremium: false,
     dailyReadings: [
       ReadingPlanDay(
@@ -219,6 +223,7 @@ final List<ReadingPlan> allReadingPlans = [
     title: "Finding Strength in Lament",
     description: "Explore the biblical practice of lament as a path to honesty with God, healing, and renewed strength. A 5-day reflective journey.",
     category: "Wisdom Literature",
+    headerImageAssetPath: "assets/images/reading_plan_headers/rp_lament_strength_5day.png",
     isPremium: false,
     dailyReadings: [
       ReadingPlanDay(
@@ -258,6 +263,7 @@ final List<ReadingPlan> allReadingPlans = [
     title: "Women of Wisdom & Courage",
     description: "A 10-day exploration of impactful women in scripture, celebrating their faith, leadership, and resilience. Uncover their often untold stories.",
     category: "Biblical Women",
+    headerImageAssetPath: "assets/images/reading_plan_headers/rp_women_wisdom_courage_10day.png",
     isPremium: true,
     dailyReadings: [
       ReadingPlanDay(
@@ -317,6 +323,7 @@ final List<ReadingPlan> allReadingPlans = [
     title: "Justice & Renewal: Prophetic Voices",
     description: "A 14-day plan exploring the prophets' calls for social justice, care for the vulnerable, and a renewed relationship with God and creation.",
     category: "Prophetic Literature",
+    headerImageAssetPath: "assets/images/reading_plan_headers/rp_justice_renewal_14day.png",
     isPremium: true,
     dailyReadings: [
       ReadingPlanDay(dayNumber: 1, title: "What God Requires", passages: [BiblePassagePointer(bookAbbr: "MIC", startChapter: 6, startVerse: 6, endChapter: 6, endVerse: 8, displayText: "Micah 6:6-8")], reflectionPrompt: "Reflect on 'acting justly,' 'loving mercy,' and 'walking humbly.' How can you embody these today?"),
@@ -340,6 +347,7 @@ final List<ReadingPlan> allReadingPlans = [
     title: "Parables of Inclusion: Rethinking Boundaries",
     description: "A 7-day journey through Jesus' parables that challenge social norms and religious exclusivity, revealing a radically inclusive vision of God's kingdom.",
     category: "Gospels / Parables",
+    headerImageAssetPath: "assets/images/reading_plan_headers/rp_parables_inclusion_7day.png",
     isPremium: true,
     dailyReadings: [
       ReadingPlanDay(
@@ -386,10 +394,7 @@ final List<ReadingPlan> allReadingPlans = [
       ),
     ],
   ),
-
-  // --- NEW PLANS (Round 2) ---
-
-  // --- FREE PLANS ---
+  
   ReadingPlan(
     id: "rp_peace_troubled_times_7day",
     title: "Peace in Troubled Times",

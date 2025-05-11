@@ -173,7 +173,7 @@ class ReadingPlan {
   final String description;
   final int durationDays; // Calculated or stored
   final String category; // e.g., "Gospels", "Topical", "Old Testament"
-  // final String? coverImageUrl; // REMOVED
+  final String? headerImageAssetPath; // Optional header image for the plan
   final bool isPremium;
   final List<ReadingPlanDay> dailyReadings;
 
@@ -182,7 +182,7 @@ class ReadingPlan {
     required this.title,
     required this.description,
     required this.category,
-    // this.coverImageUrl, // REMOVED
+    this.headerImageAssetPath,
     required this.isPremium,
     required this.dailyReadings,
   }) : durationDays = dailyReadings.length;

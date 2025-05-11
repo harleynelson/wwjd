@@ -1,5 +1,6 @@
 // lib/screens/reading_plan_detail_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/models.dart';
 import '../helpers/database_helper.dart';
 // import '../helpers/ui_helpers.dart'; // No longer needed if we pass the gradient
@@ -212,91 +213,152 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
 
 
   @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
+Widget build(BuildContext context) {
+  final textTheme = Theme.of(context).textTheme;
+  final colorScheme = Theme.of(context).colorScheme;
 
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.pop(context, true); // Always signal potential refresh to list screen
-        return false; 
+  Widget headerContent;
+  if (widget.plan.headerImageAssetPath != null && widget.plan.headerImageAssetPath!.isNotEmpty) {
+    headerContent = Image.asset(
+      widget.plan.headerImageAssetPath!,
+      fit: BoxFit.cover,
+      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: widget.headerGradientColors,
+              begin: widget.headerBeginAlignment,
+              end: widget.headerEndAlignment,
+            ),
+          ),
+        );
       },
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              expandedHeight: 200.0,
-              floating: false,
-              pinned: true,
-              leading: BackButton(onPressed: () {
-                 Navigator.pop(context, true); // Signal refresh
-              }),
-              flexibleSpace: FlexibleSpaceBar(
-                title: Text(widget.plan.title, style: const TextStyle(shadows: [Shadow(blurRadius: 1.0, color: Colors.black54, offset: Offset(1,1))])),
-                background: Container( // Use the passed-in gradient properties
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: widget.headerGradientColors,
-                      begin: widget.headerBeginAlignment,
-                      end: widget.headerEndAlignment,
-                    )
-                  ),
-                  child: widget.plan.isPremium ? Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Chip(label: Text("Premium", style: TextStyle(color: colorScheme.onSecondaryContainer)), backgroundColor: colorScheme.secondaryContainer, visualDensity: VisualDensity.compact),
-                      )
-                  ) : null,
-                ),
-              ),
-            ),
-            SliverToBoxAdapter( /* ... content ... */ // Unchanged
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row( mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [ Text(widget.plan.category, style: textTheme.titleMedium?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold)), Text("${widget.plan.durationDays} Days", style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)), ],),
-                    const SizedBox(height: 8.0),
-                    Text(widget.plan.description, style: textTheme.bodyLarge),
-                    const SizedBox(height: 16.0),
-                    if(_progress != null && _progress!.isActive && !(_progress!.completedDays.length >= widget.plan.durationDays)) ...[
-                      LinearProgressIndicator( value: widget.plan.durationDays > 0 ? _progress!.completedDays.length / widget.plan.durationDays : 0, minHeight: 8, borderRadius: BorderRadius.circular(4), backgroundColor: colorScheme.surfaceVariant.withOpacity(0.5), valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),),
-                      const SizedBox(height: 4),
-                      Align( alignment: Alignment.centerRight, child: Text("${_progress!.completedDays.length} / ${widget.plan.durationDays} complete", style: textTheme.labelSmall) ),
-                      const SizedBox(height: 16.0),
-                    ],
-                    Center(child: _buildActionButton()),
-                    const SizedBox(height: 20.0),
-                    Text("Daily Readings:", style: textTheme.headlineSmall),
-                    const Divider(),
-                  ],
-                ),
-              ),
-            ),
-            SliverList( /* ... list of days ... */ // Unchanged
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final day = widget.plan.dailyReadings[index];
-                  bool isDayCompleted = _progress?.completedDays.containsKey(day.dayNumber) ?? false;
-                  bool isCurrentActiveDay = _progress != null && _progress!.isActive && !isDayCompleted && _progress!.currentDayNumber == day.dayNumber;
-                  return ListTile(
-                    leading: CircleAvatar( backgroundColor: isDayCompleted ? Colors.green.shade100 : (isCurrentActiveDay ? colorScheme.primaryContainer : colorScheme.surfaceVariant), child: isDayCompleted ? Icon(Icons.check_circle, color: Colors.green.shade700) : Text( day.dayNumber.toString(), style: TextStyle( fontWeight: isCurrentActiveDay ? FontWeight.bold : FontWeight.normal, color: isCurrentActiveDay ? colorScheme.onPrimaryContainer : null), ),),
-                    title: Text(day.title.isNotEmpty ? day.title : "Day ${day.dayNumber}", style: TextStyle(fontWeight: isCurrentActiveDay ? FontWeight.bold : FontWeight.normal)),
-                    subtitle: Text(day.passages.map((p) => p.displayText).join('; ')),
-                    trailing: isCurrentActiveDay && !isDayCompleted ? const Icon(Icons.arrow_forward_ios, size: 16) : (isDayCompleted ? null : Icon(Icons.circle_outlined, size:16, color: Colors.grey.shade400)),
-                    onTap: () => _handleDayTap(day), 
-                    tileColor: isCurrentActiveDay ? colorScheme.primaryContainer.withOpacity(0.3) : null,
-                  );
-                },
-                childCount: widget.plan.dailyReadings.length,
-              ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 30)), 
-          ],
+    );
+  } else {
+    headerContent = Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: widget.headerGradientColors,
+          begin: widget.headerBeginAlignment,
+          end: widget.headerEndAlignment,
         ),
       ),
     );
   }
+
+  return WillPopScope(
+    onWillPop: () async {
+      Navigator.pop(context, true); 
+      return false;
+    },
+    child: Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 200.0,
+            floating: false,
+            pinned: true,
+            // --- MODIFICATIONS FOR BETTER CONTRAST ---
+            iconTheme: const IconThemeData(color: Colors.white), // Make back arrow (and other icons) white
+            actionsIconTheme: const IconThemeData(color: Colors.white), // Make action icons white
+            systemOverlayStyle: SystemUiOverlayStyle.light, // Makes status bar icons (time, battery) light
+            // --- END MODIFICATIONS ---
+            leading: BackButton( // BackButton will now use the white color from iconTheme
+              onPressed: () {
+                 Navigator.pop(context, true); 
+              }
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                widget.plan.title, 
+                style: const TextStyle(
+                  color: Colors.white, // Ensure title text is white
+                  shadows: [ // Add a more pronounced shadow for readability
+                    Shadow(blurRadius: 2.0, color: Colors.black87, offset: Offset(1,1))
+                  ]
+                )
+              ),
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  headerContent, 
+                  // --- MODIFIED SCRIM for better overall contrast ---
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.60), // Darker at the top for icons
+                          Colors.black.withOpacity(0.30), // Fading in the middle
+                          Colors.black.withOpacity(0.70), // Darker at the bottom for title
+                        ],
+                        stops: const [0.0, 0.5, 1.0], // Control gradient transition
+                      ),
+                    ),
+                  ),
+                  // --- END MODIFIED SCRIM ---
+                  if (widget.plan.isPremium)
+                    Positioned(
+                      top: MediaQuery.of(context).padding.top + 8.0, 
+                      right: 16.0,
+                      child: Chip(
+                        label: Text("Premium", style: TextStyle(color: colorScheme.onSecondaryContainer, fontSize: 10, fontWeight: FontWeight.bold)),
+                        backgroundColor: colorScheme.secondaryContainer.withOpacity(0.8), 
+                        visualDensity: VisualDensity.compact,
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row( mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [ Text(widget.plan.category, style: textTheme.titleMedium?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold)), Text("${widget.plan.durationDays} Days", style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)), ],),
+                  const SizedBox(height: 8.0),
+                  Text(widget.plan.description, style: textTheme.bodyLarge),
+                  const SizedBox(height: 16.0),
+                  if(_progress != null && _progress!.isActive && !(_progress!.completedDays.length >= widget.plan.durationDays)) ...[
+                    LinearProgressIndicator( value: widget.plan.durationDays > 0 ? _progress!.completedDays.length / widget.plan.durationDays : 0, minHeight: 8, borderRadius: BorderRadius.circular(4), backgroundColor: colorScheme.surfaceVariant.withOpacity(0.5), valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),),
+                    const SizedBox(height: 4),
+                    Align( alignment: Alignment.centerRight, child: Text("${_progress!.completedDays.length} / ${widget.plan.durationDays} complete", style: textTheme.labelSmall) ),
+                    const SizedBox(height: 16.0),
+                  ],
+                  Center(child: _buildActionButton()),
+                  const SizedBox(height: 20.0),
+                  Text("Daily Readings:", style: textTheme.headlineSmall),
+                  const Divider(),
+                ],
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final day = widget.plan.dailyReadings[index];
+                bool isDayCompleted = _progress?.completedDays.containsKey(day.dayNumber) ?? false;
+                bool isCurrentActiveDay = _progress != null && _progress!.isActive && !isDayCompleted && _progress!.currentDayNumber == day.dayNumber;
+                return ListTile(
+                  leading: CircleAvatar( backgroundColor: isDayCompleted ? Colors.green.shade100 : (isCurrentActiveDay ? colorScheme.primaryContainer : colorScheme.surfaceVariant), child: isDayCompleted ? Icon(Icons.check_circle, color: Colors.green.shade700) : Text( day.dayNumber.toString(), style: TextStyle( fontWeight: isCurrentActiveDay ? FontWeight.bold : FontWeight.normal, color: isCurrentActiveDay ? colorScheme.onPrimaryContainer : null), ),),
+                  title: Text(day.title.isNotEmpty ? day.title : "Day ${day.dayNumber}", style: TextStyle(fontWeight: isCurrentActiveDay ? FontWeight.bold : FontWeight.normal)),
+                  subtitle: Text(day.passages.map((p) => p.displayText).join('; ')),
+                  trailing: isCurrentActiveDay && !isDayCompleted ? const Icon(Icons.arrow_forward_ios, size: 16) : (isDayCompleted ? null : Icon(Icons.circle_outlined, size:16, color: Colors.grey.shade400)),
+                  onTap: () => _handleDayTap(day),
+                  tileColor: isCurrentActiveDay ? colorScheme.primaryContainer.withOpacity(0.3) : null,
+                );
+              },
+              childCount: widget.plan.dailyReadings.length,
+            ),
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 30)),
+        ],
+      ),
+    ),
+  );
+}
 }

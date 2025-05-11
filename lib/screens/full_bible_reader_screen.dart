@@ -1,7 +1,9 @@
-// lib/full_bible_reader_screen.dart
+// lib/screens/full_bible_reader_screen.dart
+// Path: lib/screens/full_bible_reader_screen.dart
+
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // For custom fonts
+import 'package:google_fonts/google_fonts.dart'; 
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../helpers/database_helper.dart';
 import '../models/models.dart';
@@ -10,8 +12,10 @@ import '../helpers/prefs_helper.dart';
 import '../dialogs/flag_selection_dialog.dart';
 import '../widgets/verse_list_item.dart';
 import '../widgets/verse_actions_bottom_sheet.dart';
-// Assuming reader_settings_enums.dart is in lib/models/
 import '../models/reader_settings_enums.dart';
+// --- NEW: Import the new widget ---
+import '../widgets/reader_settings_bottom_sheet.dart';
+// --- END NEW ---
 
 enum BibleReaderView { books, chapters, verses }
 
@@ -41,11 +45,11 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   String _appBarTitle = "Select a Book";
 
   List<Book> _books = [];
-  List<String> _chapters = []; // List of chapter numbers for the selected book
+  List<String> _chapters = []; 
   List<Verse> _verses = [];
   Book? _selectedBook;
-  String? _selectedChapter; // The current chapter string (e.g., "1", "12")
-  int _currentChapterIndex = -1; // Index of _selectedChapter within _chapters list
+  String? _selectedChapter; 
+  int _currentChapterIndex = -1; 
 
   List<Flag> _allAvailableFlags = [];
   Set<String> _favoritedVerseIdsInChapter = {};
@@ -55,24 +59,20 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   String? _verseToHighlight;
   Timer? _highlightTimer;
 
-  // --- NEW Reader Settings State ---
-  double _fontSizeDelta = 0.0;
-  ReaderFontFamily _selectedFontFamily = ReaderFontFamily.systemDefault;
-  ReaderThemeMode _selectedReaderTheme = ReaderThemeMode.light;
+  late double _fontSizeDelta;
+  late ReaderFontFamily _selectedFontFamily;
+  late ReaderThemeMode _selectedReaderTheme;
 
-  // Base font sizes (can be adjusted)
   static const double _baseVerseFontSize = 18.0;
   static const double _baseVerseNumberFontSize = 12.0;
 
   @override
   void initState() {
     super.initState();
-    _loadReaderPreferencesAndInitialData();
-  }
-
-  Future<void> _loadReaderPreferencesAndInitialData() async {
-    await _loadReaderPreferences(); // Load settings first
-    await _loadInitialData();     // Then load Bible data
+    _fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
+    _selectedFontFamily = PrefsHelper.getReaderFontFamily();
+    _selectedReaderTheme = PrefsHelper.getReaderThemeMode();
+    _loadInitialData();
   }
 
   Future<void> _loadReaderPreferences() async {
@@ -95,10 +95,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
     if (widget.targetBookAbbr != null && widget.targetChapter != null && widget.targetVerseNumber != null) {
       Book? targetBook = await _findBookByAbbr(widget.targetBookAbbr!);
       if (targetBook != null) {
-        // Temporarily set to fetch chapters to correctly set _currentChapterIndex
         await _loadData(book: targetBook, chapter: null, initialChapterTarget: widget.targetChapter!);
-
-        // Now properly load verses for the target
         setState(() {
           _selectedBook = targetBook;
           _selectedChapter = widget.targetChapter!;
@@ -106,7 +103,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
           _appBarTitle = "${_selectedBook!.fullName} ${_selectedChapter!}";
           _isLoading = true;
         });
-        await _loadData(book: _selectedBook, chapter: _selectedChapter); // This will trigger scroll and highlight
+        await _loadData(book: _selectedBook, chapter: _selectedChapter); 
       } else {
         _loadBooks();
       }
@@ -195,12 +192,10 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         _selectedChapter = chapter;
         _currentView = BibleReaderView.verses;
         _appBarTitle = "${book.fullName} $chapter";
-        // Ensure _chapters is populated if we landed here directly
-        if (_chapters.isEmpty || _chapters.first.split(' ').first != book.abbreviation) { // Crude check, assumes chapters are loaded for selectedBook
+        if (_chapters.isEmpty || _chapters.first.split(' ').first != book.abbreviation) { 
             _chapters = await _dbHelper.getChaptersForBook(book.abbreviation);
         }
         _currentChapterIndex = _chapters.indexOf(chapter);
-
 
         bool shouldScrollAndHighlight = widget.targetBookAbbr == book.abbreviation &&
                             widget.targetChapter == chapter &&
@@ -313,17 +308,16 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
       names.sort(); return names;
   }
 
-  // --- Reader Settings and Theme Logic ---
   TextStyle _getTextStyleForFontFamily(ReaderFontFamily family, double baseSize, FontWeight fontWeight) {
     double currentSize = baseSize + _fontSizeDelta;
     switch (family) {
       case ReaderFontFamily.serif:
-        return GoogleFonts.notoSerif(fontSize: currentSize, fontWeight: fontWeight); // Example Serif
+        return GoogleFonts.notoSerif(fontSize: currentSize, fontWeight: fontWeight); 
       case ReaderFontFamily.sansSerif:
-        return GoogleFonts.roboto(fontSize: currentSize, fontWeight: fontWeight); // Example Sans-Serif
+        return GoogleFonts.roboto(fontSize: currentSize, fontWeight: fontWeight); 
       case ReaderFontFamily.systemDefault:
       default:
-        return TextStyle(fontSize: currentSize, fontWeight: fontWeight); // System default
+        return TextStyle(fontSize: currentSize, fontWeight: fontWeight); 
     }
   }
 
@@ -368,8 +362,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
       case ReaderThemeMode.dark:
         return const Color(0xFF2D2D2D);
       case ReaderThemeMode.sepia:
-        // A darker, muted color that complements sepia
-        return isMaterial3 ? Color.lerp(const Color(0xFFFBF0D9), Colors.black, 0.3)! : Colors.brown.shade800; // Darker sepia tone
+        return isMaterial3 ? Color.lerp(const Color(0xFFFBF0D9), Colors.black, 0.3)! : Colors.brown.shade800; 
       case ReaderThemeMode.light:
       default:
         return isMaterial3 ? Theme.of(context).colorScheme.surfaceContainer.withOpacity(0.9) : Colors.grey.shade200;
@@ -380,158 +373,55 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
     final ThemeData currentTheme = Theme.of(context);
     switch (_selectedReaderTheme) {
       case ReaderThemeMode.dark:
-        return Colors.grey.shade400; // Light icons on dark bar
+        return Colors.grey.shade400; 
       case ReaderThemeMode.sepia:
-        return const Color(0xFFFBF0D9).withOpacity(0.8); // Light icons on brownish bar
+        return const Color(0xFFFBF0D9).withOpacity(0.8); 
       case ReaderThemeMode.light:
       default:
-        // Use a color that contrasts well with the light grey BottomAppBar
         return currentTheme.colorScheme.onSurfaceVariant;
     }
   }
 
-  void _showReaderSettingsBottomSheet() {
+  // --- MODIFIED: Use the new ReaderSettingsBottomSheet ---
+  void _openReaderSettings() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext bContext) {
-        // Use a StatefulWidget here to manage the local state of the bottom sheet controls
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter sheetSetState) {
-            return Container(
-              padding: const EdgeInsets.all(20),
-              child: SafeArea(
-                child: Wrap( // Use Wrap for better layout with multiple sections
-                  children: <Widget>[
-                    Text("Reader Settings", style: Theme.of(context).textTheme.titleLarge),
-                    const Divider(height: 20),
-
-                    // Font Size
-                    Text("Font Size", style: Theme.of(context).textTheme.titleMedium),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.remove_circle_outline),
-                          onPressed: _fontSizeDelta > -4.0 ? () async { // Min delta
-                            // Update sheet UI first
-                            sheetSetState(() {
-                              _fontSizeDelta -= 1.0;
-                            });
-                            // Then update main screen state
-                            setState(() {
-                              // _fontSizeDelta is already changed, this triggers reader rebuild
-                            });
-                            // Then save asynchronously
-                            await PrefsHelper.setReaderFontSizeDelta(_fontSizeDelta);
-                          } : null
-                        ),
-                        Text((_baseVerseFontSize + _fontSizeDelta).toStringAsFixed(0), style: Theme.of(context).textTheme.bodyLarge),
-                        IconButton(
-                          icon: const Icon(Icons.add_circle_outline),
-                          onPressed: _fontSizeDelta < 6.0 ? () async { // Max delta
-                            // Update sheet UI first
-                            sheetSetState(() {
-                              _fontSizeDelta += 1.0;
-                            });
-                            // Then update main screen state
-                            setState(() {
-                              // _fontSizeDelta is already changed, this triggers reader rebuild
-                            });
-                            // Then save asynchronously
-                            await PrefsHelper.setReaderFontSizeDelta(_fontSizeDelta);
-                          } : null
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-
-                    // Font Family
-                    Text("Font Family", style: Theme.of(context).textTheme.titleMedium),
-                    DropdownButtonFormField<ReaderFontFamily>(
-                      value: _selectedFontFamily,
-                      items: ReaderFontFamily.values.map((ReaderFontFamily family) {
-                        return DropdownMenuItem<ReaderFontFamily>(
-                          value: family,
-                          child: Text(family.displayName, style: _getTextStyleForFontFamily(family, 16, FontWeight.normal)),
-                        );
-                      }).toList(),
-                      onChanged: (ReaderFontFamily? newValue) async { // Make callback async
-                        if (newValue != null) {
-                          // Update sheet UI first
-                          sheetSetState(() {
-                            _selectedFontFamily = newValue;
-                          });
-                          // Then update main screen state
-                          setState(() {
-                            // _selectedFontFamily is already changed
-                          });
-                          // Then save asynchronously
-                          await PrefsHelper.setReaderFontFamily(newValue);
-                        }
-                      },
-                      decoration: const InputDecoration(border: OutlineInputBorder()),
-                    ),
-                    const SizedBox(height: 10),
-
-                    // Reader Theme
-                    Text("Theme", style: Theme.of(context).textTheme.titleMedium),
-                    DropdownButtonFormField<ReaderThemeMode>(
-                      value: _selectedReaderTheme,
-                      items: ReaderThemeMode.values.map((ReaderThemeMode themeMode) {
-                        return DropdownMenuItem<ReaderThemeMode>(
-                          value: themeMode,
-                          child: Text(themeMode.displayName),
-                        );
-                      }).toList(),
-                      onChanged: (ReaderThemeMode? newValue) async { // Make callback async
-                        if (newValue != null) {
-                          // Update sheet UI first
-                          sheetSetState(() {
-                            _selectedReaderTheme = newValue;
-                          });
-                          // Then update main screen state
-                          setState(() {
-                            // _selectedReaderTheme is already changed
-                          });
-                          // Then save asynchronously
-                          await PrefsHelper.setReaderThemeMode(newValue);
-                        }
-                      },
-                      decoration: const InputDecoration(border: OutlineInputBorder()),
-                    ),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: TextButton(
-                        child: const Text("Done"),
-                        onPressed: () => Navigator.pop(bContext),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
+        return ReaderSettingsBottomSheet(
+          initialFontSizeDelta: _fontSizeDelta,
+          initialFontFamily: _selectedFontFamily,
+          initialThemeMode: _selectedReaderTheme,
+          onSettingsChanged: (newDelta, newFamily, newMode) async {
+            // This callback is triggered by the sheet when a setting changes
+            setState(() {
+              _fontSizeDelta = newDelta;
+              _selectedFontFamily = newFamily;
+              _selectedReaderTheme = newMode;
+            });
+            // Save preferences asynchronously
+            await PrefsHelper.setReaderFontSizeDelta(newDelta);
+            await PrefsHelper.setReaderFontFamily(newFamily);
+            await PrefsHelper.setReaderThemeMode(newMode);
           },
         );
       },
     );
   }
+  // --- END MODIFICATION ---
 
 
-  // --- Chapter Navigation Methods ---
   void _goToPreviousChapter() {
     if (_selectedBook == null || _selectedChapter == null || _currentChapterIndex <= 0) {
-      // At the first chapter of the book or book/chapter not selected
       if (_currentChapterIndex == 0 && _selectedBook != null) {
           int currentBookIndex = _books.indexWhere((b) => b.abbreviation == _selectedBook!.abbreviation);
           if (currentBookIndex > 0) {
             Book previousBook = _books[currentBookIndex - 1];
-            // Load last chapter of previous book
             _dbHelper.getChaptersForBook(previousBook.abbreviation).then((prevBookChapters) {
                 if (prevBookChapters.isNotEmpty) {
                     _loadData(book: previousBook, chapter: prevBookChapters.last);
                 } else {
-                    _loadChapters(previousBook); // If no chapters, just load the book view.
+                    _loadChapters(previousBook); 
                 }
             });
             return;
@@ -546,12 +436,10 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
 
   void _goToNextChapter() {
     if (_selectedBook == null || _selectedChapter == null || _currentChapterIndex < 0 || _currentChapterIndex >= _chapters.length - 1) {
-      // At the last chapter of the book or book/chapter not selected
       if (_currentChapterIndex == _chapters.length - 1 && _selectedBook != null) {
           int currentBookIndex = _books.indexWhere((b) => b.abbreviation == _selectedBook!.abbreviation);
           if (currentBookIndex < _books.length - 1 && currentBookIndex != -1) {
               Book nextBook = _books[currentBookIndex + 1];
-              // Load first chapter of next book
               _dbHelper.getChaptersForBook(nextBook.abbreviation).then((nextBookChapters) {
                   if (nextBookChapters.isNotEmpty) {
                       _loadData(book: nextBook, chapter: nextBookChapters.first);
@@ -573,7 +461,6 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   Widget _buildBody() {
     if (_isLoading) { return const Center(child: CircularProgressIndicator()); }
 
-    // Apply reader theme background to the main content area for verses
     Color readerBackgroundColor = _getReaderBackgroundColor();
     Color readerTextColor = _getReaderTextColor();
     Color readerVerseNumberColor = _getReaderVerseNumberColor();
@@ -593,7 +480,6 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
 
     switch (_currentView) {
       case BibleReaderView.books:
-        // Book list remains themed by the main app theme
         if (_books.isEmpty) return const Center(child: Text("No books found."));
         return ListView.builder(
           itemCount: _books.length,
@@ -603,7 +489,6 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
           },
         );
       case BibleReaderView.chapters:
-        // Chapter grid remains themed by the main app theme
         if (_chapters.isEmpty) return Center(child: Text("No chapters found for ${_selectedBook?.fullName ?? 'this book'}."));
         return GridView.builder(
           padding: const EdgeInsets.all(8.0),
@@ -616,23 +501,22 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         );
       case BibleReaderView.verses:
         if (_verses.isEmpty) return const Center(child: Text("No verses found for this chapter."));
-        // Apply reader theme background here
         return GestureDetector(
           onHorizontalDragEnd: (details) {
             if (details.primaryVelocity == null) return;
-            if (details.primaryVelocity! < -500) { // Swipe Left
+            if (details.primaryVelocity! < -500) { 
               _goToNextChapter();
-            } else if (details.primaryVelocity! > 500) { // Swipe Right
+            } else if (details.primaryVelocity! > 500) { 
               _goToPreviousChapter();
             }
           },
-          child: Container( // Container to apply background color for the reader
+          child: Container( 
             color: readerBackgroundColor,
             child: ScrollablePositionedList.builder(
               itemScrollController: _itemScrollController,
               itemPositionsListener: _itemPositionsListener,
               itemCount: _verses.length,
-              padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0), // Keep padding for FAB/BottomBar
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0), 
               itemBuilder: (context, index) {
                 final verse = _verses[index];
                 final bool isFavorite = _favoritedVerseIdsInChapter.contains(verse.verseID);
@@ -646,7 +530,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
                   isHighlighted: shouldHighlight,
                   onToggleFavorite: () => _toggleFavorite(verse),
                   onManageFlags: () => _openFlagManagerForVerse(verse),
-                  onVerseTap: () { /* ... verse actions bottom sheet ... */
+                  onVerseTap: () { 
                     final String bookName = getFullBookName(verse.bookAbbr ?? "Unknown Book");
                     showModalBottomSheet(context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
                       builder: (BuildContext bContext) {
@@ -657,7 +541,6 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
                         );
                       },);
                   },
-                  // Pass computed styles and colors
                   verseTextStyle: currentVerseTextStyle,
                   verseNumberStyle: currentVerseNumberStyle,
                   flagChipStyle: currentFlagChipStyle,
@@ -694,19 +577,14 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
      Color bottomAppBarIconColor = _getReaderBottomAppBarIconColor(context);
      TextStyle bottomAppBarTextStyle = Theme.of(context).textTheme.bodySmall!.copyWith(color: bottomAppBarIconColor.withOpacity(0.7));
 
-     // Get the reader background color
      Color currentReaderBackgroundColor = _getReaderBackgroundColor();
 
      return Scaffold(
-       // --- NEW: Apply dynamic background color to Scaffold ---
        backgroundColor: (_currentView == BibleReaderView.verses || (_isLoading && _currentView == BibleReaderView.chapters && _selectedChapter != null) )
-                        ? currentReaderBackgroundColor // Apply reader theme if in verses view or loading into verses view
-                        : Theme.of(context).scaffoldBackgroundColor, // Use default scaffold bg for book/chapter lists
+                        ? currentReaderBackgroundColor 
+                        : Theme.of(context).scaffoldBackgroundColor, 
        appBar: AppBar(
          title: Text(_appBarTitle),
-         // Adapt AppBar color if needed based on reader theme, or keep it consistent with app theme
-         // For simplicity, we'll let the main app theme control the AppBar for now.
-         // If you want the AppBar to also change with the reader theme, you'd apply similar logic here.
          leading: _currentView != BibleReaderView.books || Navigator.canPop(context) || (widget.targetBookAbbr != null)
            ? IconButton( icon: const Icon(Icons.arrow_back), onPressed: () { if (_currentView != BibleReaderView.books) { _goBack(); } else if (Navigator.canPop(context)){ Navigator.of(context).pop(); } },)
            : null,
@@ -715,11 +593,13 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
              IconButton(
                icon: const Icon(Icons.tune_rounded),
                tooltip: "Reader Settings",
-               onPressed: _showReaderSettingsBottomSheet,
+               // --- MODIFIED: Call the new method ---
+               onPressed: _openReaderSettings,
+               // --- END MODIFICATION ---
              ),
          ],
        ),
-       body: _buildBody(), // _buildBody will also respect the theme for its direct background when showing verses
+       body: _buildBody(), 
        bottomNavigationBar: _currentView == BibleReaderView.verses
         ? Container(
             decoration: BoxDecoration(

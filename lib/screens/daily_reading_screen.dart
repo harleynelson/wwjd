@@ -1,19 +1,22 @@
 // lib/screens/daily_reading_screen.dart
+// Path: lib/screens/daily_reading_screen.dart
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // For custom fonts
+import 'package:google_fonts/google_fonts.dart'; 
 import '../models/models.dart';
 import '../helpers/database_helper.dart';
-import '../helpers/book_names.dart'; // For getFullBookName
-// Assuming reader_settings_enums.dart is in lib/models/
-import '../models/reader_settings_enums.dart'; // Import reader enums
-import '../helpers/prefs_helper.dart'; // To load defaults if not passed (though passing is better)
+import '../helpers/book_names.dart'; 
+import '../models/reader_settings_enums.dart'; 
+import '../helpers/prefs_helper.dart'; 
+// --- NEW: Import the new widget ---
+import '../widgets/reader_settings_bottom_sheet.dart'; 
+// --- END NEW ---
 
 class DailyReadingScreen extends StatefulWidget {
   final String planId;
   final ReadingPlanDay dayReading;
   final String planTitle;
 
-  // --- NEW: Theme parameters ---
   final ReaderThemeMode readerThemeMode;
   final double fontSizeDelta;
   final ReaderFontFamily readerFontFamily;
@@ -23,7 +26,6 @@ class DailyReadingScreen extends StatefulWidget {
     required this.planId,
     required this.dayReading,
     required this.planTitle,
-    // --- NEW: Theme parameters in constructor ---
     required this.readerThemeMode,
     required this.fontSizeDelta,
     required this.readerFontFamily,
@@ -40,14 +42,21 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
   String _errorMessage = '';
   bool _isCompletedToday = false;
 
-  // Base font sizes (can be adjusted or made consistent with FullBibleReaderScreen)
+  late double _currentFontSizeDelta;
+  late ReaderFontFamily _currentReaderFontFamily;
+  late ReaderThemeMode _currentReaderThemeMode;
+  
   static const double _baseVerseFontSize = 18.0;
-  static const double _baseVerseNumberFontSize = 12.0;
-  static const double _basePassageTitleFontSize = 20.0; // For "Genesis 1:1-10"
+  static const double _baseDailyReaderVerseNumberFontSize = 12.0;
+  static const double _basePassageTitleFontSize = 20.0; 
 
   @override
   void initState() {
     super.initState();
+    _currentFontSizeDelta = widget.fontSizeDelta;
+    _currentReaderFontFamily = widget.readerFontFamily;
+    _currentReaderThemeMode = widget.readerThemeMode;
+
     _checkIfAlreadyCompleted();
     _loadAllPassageVerses();
   }
@@ -95,22 +104,21 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     }
   }
 
-  // --- Theme Helper Methods (similar to FullBibleReaderScreen) ---
   TextStyle _getTextStyle(
     ReaderFontFamily family,
     double baseSize,
     FontWeight fontWeight,
     Color color, {
     double height = 1.5,
-    FontStyle? fontStyle, // NEW: Add optional fontStyle parameter
+    FontStyle? fontStyle, 
   }) {
-    double currentSize = baseSize + widget.fontSizeDelta;
+    double currentSize = baseSize + _currentFontSizeDelta;
     TextStyle defaultStyle = TextStyle(
         fontSize: currentSize,
         fontWeight: fontWeight,
         color: color,
         height: height,
-        fontStyle: fontStyle, // Apply fontStyle here
+        fontStyle: fontStyle, 
       );
     switch (family) {
       case ReaderFontFamily.serif:
@@ -124,19 +132,19 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
   }
 
   Color _getBackgroundColor() {
-    switch (widget.readerThemeMode) {
+    switch (_currentReaderThemeMode) {
       case ReaderThemeMode.dark:
         return Colors.black87;
       case ReaderThemeMode.sepia:
         return const Color(0xFFFBF0D9);
       case ReaderThemeMode.light:
       default:
-        return Colors.white; // Or Theme.of(context).colorScheme.background
+        return Colors.white; 
     }
   }
 
   Color _getTextColor() {
-    switch (widget.readerThemeMode) {
+    switch (_currentReaderThemeMode) {
       case ReaderThemeMode.dark:
         return Colors.grey.shade300;
       case ReaderThemeMode.sepia:
@@ -147,8 +155,8 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     }
   }
 
-  Color _getAccentColor() { // For verse numbers, passage titles etc.
-    switch (widget.readerThemeMode) {
+  Color _getAccentColor() { 
+    switch (_currentReaderThemeMode) {
       case ReaderThemeMode.dark:
         return Colors.tealAccent.shade100;
       case ReaderThemeMode.sepia:
@@ -159,20 +167,20 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     }
   }
 
-   Color _getSecondaryAccentColor() { // For verse numbers within text spans
-    switch (widget.readerThemeMode) {
+   Color _getSecondaryAccentColor() { 
+    switch (_currentReaderThemeMode) {
       case ReaderThemeMode.dark:
         return Colors.cyanAccent.shade200.withOpacity(0.9);
       case ReaderThemeMode.sepia:
         return Colors.brown.shade600;
       case ReaderThemeMode.light:
       default:
-        return Theme.of(context).colorScheme.secondary;
+        return Theme.of(context).colorScheme.primary.withOpacity(0.85);
     }
   }
 
   Color _getReflectionBoxColor() {
-    switch (widget.readerThemeMode) {
+    switch (_currentReaderThemeMode) {
       case ReaderThemeMode.dark:
         return Colors.grey.shade800;
       case ReaderThemeMode.sepia:
@@ -184,7 +192,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
   }
 
   Color _getReflectionBoxBorderColor() {
-     switch (widget.readerThemeMode) {
+     switch (_currentReaderThemeMode) {
       case ReaderThemeMode.dark:
         return Colors.grey.shade700;
       case ReaderThemeMode.sepia:
@@ -195,6 +203,34 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     }
   }
 
+  // --- MODIFIED: Use the new ReaderSettingsBottomSheet ---
+  void _openReaderSettings() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Important for larger content
+      builder: (BuildContext bContext) {
+        return ReaderSettingsBottomSheet(
+          initialFontSizeDelta: _currentFontSizeDelta,
+          initialFontFamily: _currentReaderFontFamily,
+          initialThemeMode: _currentReaderThemeMode,
+          onSettingsChanged: (newDelta, newFamily, newMode) async {
+            // This callback is triggered by the sheet when a setting changes
+            setState(() {
+              _currentFontSizeDelta = newDelta;
+              _currentReaderFontFamily = newFamily;
+              _currentReaderThemeMode = newMode;
+            });
+            // Save preferences asynchronously
+            await PrefsHelper.setReaderFontSizeDelta(newDelta);
+            await PrefsHelper.setReaderFontFamily(newFamily);
+            await PrefsHelper.setReaderThemeMode(newMode);
+          },
+        );
+      },
+    );
+  }
+  // --- END MODIFICATION ---
+
 
   @override
   Widget build(BuildContext context) {
@@ -203,27 +239,24 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     final Color currentAccentColor = _getAccentColor();
     final Color currentSecondaryAccentColor = _getSecondaryAccentColor();
 
-    final TextTheme appTextTheme = Theme.of(context).textTheme; // For AppBar
+    final TextTheme appTextTheme = Theme.of(context).textTheme; 
 
-    final TextStyle passageTitleStyle = _getTextStyle(widget.readerFontFamily, _basePassageTitleFontSize, FontWeight.bold, currentAccentColor);
-    final TextStyle verseTextStyle = _getTextStyle(widget.readerFontFamily, _baseVerseFontSize, FontWeight.normal, currentTextColor, height: 1.6);
-    final TextStyle verseNumberStyle = _getTextStyle(widget.readerFontFamily, _baseVerseFontSize, FontWeight.bold, currentSecondaryAccentColor, height: 1.6);
-    final TextStyle reflectionPromptTitleStyle = _getTextStyle(widget.readerFontFamily, 16.0, FontWeight.bold, currentTextColor);
-    
-    // --- MODIFIED LINE ---
+    final TextStyle passageTitleStyle = _getTextStyle(_currentReaderFontFamily, _basePassageTitleFontSize, FontWeight.bold, currentAccentColor);
+    final TextStyle verseTextStyle = _getTextStyle(_currentReaderFontFamily, _baseVerseFontSize, FontWeight.normal, currentTextColor, height: 1.6);
+    final TextStyle verseNumberStyle = _getTextStyle(_currentReaderFontFamily, _baseDailyReaderVerseNumberFontSize, FontWeight.bold, currentSecondaryAccentColor, height: 1.6);
+    final TextStyle reflectionPromptTitleStyle = _getTextStyle(_currentReaderFontFamily, 16.0, FontWeight.bold, currentTextColor);
     final TextStyle reflectionPromptTextStyle = _getTextStyle(
-        widget.readerFontFamily, 
-        16.0, // baseSize
-        FontWeight.normal, // fontWeight (assuming normal weight for italic text)
+        _currentReaderFontFamily, 
+        16.0, 
+        FontWeight.normal, 
         currentTextColor, 
         height: 1.5, 
-        fontStyle: FontStyle.italic // Pass fontStyle correctly
+        fontStyle: FontStyle.italic 
     );
 
     return Scaffold(
-      backgroundColor: currentBackgroundColor, // Apply themed background
+      backgroundColor: currentBackgroundColor, 
       appBar: AppBar(
-        // AppBar uses main app theme, not reader theme for consistency with rest of app
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -231,6 +264,15 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
             Text("Day ${widget.dayReading.dayNumber}${widget.dayReading.title.isNotEmpty ? ': ${widget.dayReading.title}' : ''}", style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor)),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.tune_rounded),
+            tooltip: "Reader Settings",
+            // --- MODIFIED: Call the new method ---
+            onPressed: _openReaderSettings,
+            // --- END MODIFICATION ---
+          ),
+        ],
       ),
       body: _isLoadingVerses
           ? Center(child: CircularProgressIndicator(color: currentAccentColor))
@@ -247,7 +289,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: Text(
-                              "${getFullBookName(passagePtr.bookAbbr)} ${passagePtr.displayText.replaceFirst(RegExp(r'^[A-Za-z]+\s*'), '')}",
+                              "${getFullBookName(passagePtr.bookAbbr)} ${passagePtr.displayText.replaceFirst(RegExp(r'^[A-Za-z\s]+'), '')}",
                               style: passageTitleStyle,
                             ),
                           ),
@@ -264,11 +306,11 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
                                     children: [
                                       TextSpan(
                                         text: "${verse.verseNumber} ",
-                                        style: verseNumberStyle, // Apply themed style
+                                        style: verseNumberStyle, 
                                       ),
                                       TextSpan(
                                         text: "${verse.text} ",
-                                        style: verseTextStyle, // Apply themed style
+                                        style: verseTextStyle, 
                                       ),
                                     ],
                                   );
@@ -299,15 +341,24 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
                       const SizedBox(height: 30.0),
                       ElevatedButton.icon(
                         icon: Icon(_isCompletedToday ? Icons.check_circle : Icons.check_circle_outline,
-                                   color: _isCompletedToday ? (_getBackgroundColor() == Colors.white ? Colors.white : _getBackgroundColor()) : _getBackgroundColor() // Icon color contrasts with button bg
+                                   color: _isCompletedToday 
+                                        ? (_getBackgroundColor().computeLuminance() > 0.5 ? Colors.black87 : Colors.white) 
+                                        : (_getAccentColor().computeLuminance() > 0.5 ? Colors.black87 : Colors.white) 
                         ),
                         label: Text(
                             _isCompletedToday ? "Day Completed" : "Mark as Complete",
-                            style: _getTextStyle(ReaderFontFamily.systemDefault, 16, FontWeight.bold, _isCompletedToday ? (_getBackgroundColor() == Colors.white ? Colors.white : _getBackgroundColor()) : _getBackgroundColor())
+                            style: _getTextStyle(ReaderFontFamily.systemDefault, 16, FontWeight.bold, 
+                                    _isCompletedToday 
+                                        ? (_getBackgroundColor().computeLuminance() > 0.5 ? Colors.black87 : Colors.white) 
+                                        : (_getAccentColor().computeLuminance() > 0.5 ? Colors.black87 : Colors.white)
+                            )
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: _isCompletedToday ? Colors.green.shade600 : currentAccentColor,
                           padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          foregroundColor: _isCompletedToday 
+                                        ? (_getBackgroundColor().computeLuminance() > 0.5 ? Colors.black87 : Colors.white) 
+                                        : (_getAccentColor().computeLuminance() > 0.5 ? Colors.black87 : Colors.white),
                         ),
                         onPressed: _isCompletedToday ? null : _markDayAsComplete,
                       ),

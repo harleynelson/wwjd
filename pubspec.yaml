@@ -37,3 +37,4 @@ flutter:
 
   assets:
     - assets/database/wwjd_bible_free.sqlite # Correct path to your database
+    - assets/images/reading_plan_headers/   # Reading plan header images
