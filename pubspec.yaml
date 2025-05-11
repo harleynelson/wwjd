@@ -17,14 +17,15 @@ dependencies:
   scrollable_positioned_list: ^0.3.8 # For scrollable list view
   cupertino_icons: ^1.0.6
   intl: ^0.19.0
-  share_plus: ^9.0.0 # For sharing content
+  share_plus: ^11.0.0 # For sharing content
   google_fonts: ^6.2.1 # For custom fonts
   provider: ^6.1.2 # For state management
   flutter_tts: ^4.2.2 # For text-to-speech functionality
   http: ^1.2.1 # Or latest version, for making API calls
   audioplayers: ^6.0.0 # Or latest version, for playing audio
-  firebase_core: ^2.30.1 # Use latest from pub.dev
-  firebase_auth: ^4.19.4 # Use latest from pub.dev
+  firebase_core: ^3.13.0 # For Firebase core functionality
+  firebase_auth: ^5.5.3  # For Firebase authentication
+  google_sign_in: ^6.3.0 # For Google Sign-In 
 
 dev_dependencies:
   flutter_test:
