@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:path_provider/path_provider.dart'; // Added for cache directory
 import 'package:path/path.dart' as p; // Added for path joining
+import 'package:wwjd_app/config/constants.dart';
 
 import '../helpers/daily_devotions.dart';
 import '../config/api_keys.dart';
@@ -155,7 +156,7 @@ class TextToSpeechService {
     if (voiceToSet == null) {
       if (googleTtsAppVoices.isNotEmpty) {
         voiceToSet = googleTtsAppVoices.firstWhere(
-          (v) => v.name == "en-US-Neural2-D", // Default preferred voice
+          (v) => v.name == defaultVoice, // Default preferred voice in constants.dart
           orElse: () => googleTtsAppVoices.firstWhere(
             (v) => v.languageCode == "en-US" && _voicesSupportingPitchRate.any((type) => v.name.toLowerCase().contains(type.toLowerCase())),
             orElse: () => googleTtsAppVoices.first,
@@ -182,7 +183,7 @@ class TextToSpeechService {
     if (appVoice == null) {
        if (googleTtsAppVoices.isNotEmpty) {
         final fallbackVoice = googleTtsAppVoices.firstWhere(
-            (v) => v.name == "en-US-Neural2-D",
+            (v) => v.name == defaultVoice,
             orElse: () => googleTtsAppVoices.first);
         selectedAppVoiceNotifier.value = fallbackVoice;
         _currentVoiceNameApi = fallbackVoice.name;

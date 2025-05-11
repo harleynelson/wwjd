@@ -17,7 +17,8 @@ import 'package:wwjd_app/services/text_to_speech_service.dart';
 import 'package:wwjd_app/config/tts_voices.dart';
 import 'package:wwjd_app/services/auth_service.dart';
 import 'package:wwjd_app/models/app_user.dart';
-import 'package:wwjd_app/widgets/account_section.dart'; // Import the new widget
+import 'package:wwjd_app/widgets/account_section.dart';
+import 'package:wwjd_app/config/constants.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -154,7 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _onAppVersionTap() {
     _devTapCount++;
-    if (_devTapCount >= 7 && !_devOptionsEnabled) {
+    if (_devTapCount >= 3 && !_devOptionsEnabled) {
       if (mounted) {
         setState(() { _devOptionsEnabled = true; });
         _showSnackBar("Developer Options Enabled!");
@@ -390,7 +391,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       leading: const Icon(Icons.info_outline),
       title: const Text("App Version"),
-      subtitle: const Text("1.0.0 (WWJD Daily)"), // Consider making this dynamic if needed
+      subtitle: const Text(appVersion), // Consider making this dynamic if needed
       onTap: _onAppVersionTap,
     );
 
@@ -541,7 +542,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 // Narration Voice Section
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
-                  child: Text("Narration Voice (Google Cloud TTS)", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold,)),
+                  child: Text("Narration Voice", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold,)),
                 ),
                 ValueListenableBuilder<AppTtsVoice?>( 
                     valueListenable: _ttsService.selectedAppVoiceNotifier,
