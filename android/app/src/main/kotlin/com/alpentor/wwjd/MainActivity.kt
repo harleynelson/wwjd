@@ -1,4 +1,4 @@
-package com.example.wwjd
+package com.alpentor.wwjd
 
 import io.flutter.embedding.android.FlutterActivity
 

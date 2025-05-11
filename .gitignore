@@ -6,6 +6,7 @@
 # Add this line to ignore the api_keys.dart file within the config directory:
 config/api_keys.dart
 lib/config/api_keys.dart
+lib/firebase_options.dart
 
 # If you have other sensitive files in the config directory, you might ignore the whole directory:
 # config/
