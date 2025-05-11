@@ -486,6 +486,8 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
 
     if (widget.dayReading.reflectionPrompt != null && widget.dayReading.reflectionPrompt!.isNotEmpty) {
       //sb.writeln("Reflection Prompt."); 
+      sb.writeln(); // Add a slight pause after a block of verses for a passage
+      sb.writeln(); // Add a slight pause after a block of verses for a passage
       sb.writeln(widget.dayReading.reflectionPrompt!);
     }
     return sb.toString().trim();
