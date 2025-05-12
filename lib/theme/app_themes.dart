@@ -40,6 +40,14 @@ class AppThemes {
     listTileTheme: ListTileThemeData(
       iconColor: Colors.deepPurple.shade700,
     ),
+    pageTransitionsTheme: const PageTransitionsTheme(
+  builders: {
+    TargetPlatform.android: CupertinoPageTransitionsBuilder(), // Uses iOS-style slide for Android
+    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),     // Default iOS slide
+    // Or use OpenUpwardsPageTransitionsBuilder, ZoomPageTransitionsBuilder, FadeUpwardsPageTransitionsBuilder
+    // Or create your own custom PageTransitionsBuilder
+  },
+),
     // Define other component themes
   );
 
@@ -79,6 +87,14 @@ class AppThemes {
     listTileTheme: ListTileThemeData(
       iconColor: Colors.purple.shade200,
     ),
+    pageTransitionsTheme: const PageTransitionsTheme(
+  builders: {
+    TargetPlatform.android: CupertinoPageTransitionsBuilder(), // Uses iOS-style slide for Android
+    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),     // Default iOS slide
+    // Or use OpenUpwardsPageTransitionsBuilder, ZoomPageTransitionsBuilder, FadeUpwardsPageTransitionsBuilder
+    // Or create your own custom PageTransitionsBuilder
+  },
+),
     // Define other component themes
   );
 }
