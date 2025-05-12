@@ -20,7 +20,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    // This uses the class you manually created (or that flutterfire would generate)
     options: DefaultFirebaseOptions.currentPlatform,
   );
 

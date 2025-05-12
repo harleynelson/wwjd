@@ -13,17 +13,17 @@ class AppThemes {
     ),
     scaffoldBackgroundColor: Colors.grey.shade100, // Lighter background
     appBarTheme: AppBarTheme(
-      backgroundColor: AppColors.sereneSkyGradient[1], // Example: Color(0xFFC2E9FB)
-      foregroundColor: AppColors.textPrimary, // Dark text on light appbar
+      backgroundColor: const Color.fromARGB(255, 22, 34, 68), // Dark appbar
+      foregroundColor: Colors.white.withOpacity(0.9), // Light text on dark appbar
       elevation: 1.0,
       scrolledUnderElevation: 2.0,
-      titleTextStyle: GoogleFonts.lato( // Example font
+      titleTextStyle: GoogleFonts.lato(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: AppColors.textPrimary,
+        color: Colors.white.withOpacity(0.9),
       ),
-      iconTheme: const IconThemeData(
-        color: AppColors.textPrimary,
+      iconTheme: IconThemeData(
+        color: Colors.white.withOpacity(0.9),
       ),
     ),
     textTheme: GoogleFonts.latoTextTheme(ThemeData.light().textTheme).copyWith(
