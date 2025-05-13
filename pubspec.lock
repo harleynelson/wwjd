@@ -153,6 +153,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  firebase_app_check:
+    dependency: "direct main"
+    description:
+      name: firebase_app_check
+      sha256: "9c2b9af9204f5255501127b2e62597ead4003121a93eb385732a43e05fb182e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2+5"
+  firebase_app_check_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_app_check_platform_interface
+      sha256: bac6ede93128828039f4cf95c5ecd2f7aca0daec41005ec8375b98d8fb470b1c
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1+5"
+  firebase_app_check_web:
+    dependency: transitive
+    description:
+      name: firebase_app_check_web
+      sha256: d9a406cf2e99917aa20ab2c68c350550e5b0bd448d3095f7eeb48c4673d02797
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0+9"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -201,6 +225,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.22.0"
+  firebase_remote_config:
+    dependency: "direct main"
+    description:
+      name: firebase_remote_config
+      sha256: "0178bc8f44a8a30e720ec837fc2a0bac3d99837091d53c2a84d2d5d11da55854"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.3"
+  firebase_remote_config_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_remote_config_platform_interface
+      sha256: df77610b1d0b542729e66358c9a1fd3633b35eb58634269686d36058e57e3c84
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.3"
+  firebase_remote_config_web:
+    dependency: transitive
+    description:
+      name: firebase_remote_config_web
+      sha256: "0cbfbe358f396f1663e53bdae626748efed4cf17bf316f29c680c975aa7601e8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.8.3"
   fixnum:
     dependency: transitive
     description:
@@ -214,14 +262,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: b7c7be5cd9f6ef7a78429cabd2774d3c4af50e79cb2b7593e3d5d763ef95c61b
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.1"
   flutter_lints:
     dependency: "direct dev"
     description:
       name: flutter_lints
-      sha256: "9e8c3858111da373efc5aa341de011d9bd23e2c5c5e0c62bccf32438e192d7b1"
+      sha256: "5398f14efa795ffb7a33e9b6a08798b26a180edac4ad7db3f231e40f82ce11e1"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.2"
+    version: "5.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -316,10 +372,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.19.0"
+    version: "0.20.2"
   leak_tracker:
     dependency: transitive
     description:
@@ -348,10 +404,10 @@ packages:
     dependency: transitive
     description:
       name: lints
-      sha256: cbf8d4b858bb0134ef3ef87841abdf8d63bfc255c266b7bf6b39daa1085c4290
+      sha256: c35bb79562d980e9a453fc715854e1ed39e24e7d0297a880ef54e17f9874a9d7
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "5.1.1"
   matcher:
     dependency: transitive
     description:
@@ -380,10 +436,10 @@ packages:
     dependency: transitive
     description:
       name: mime
-      sha256: "801fd0b26f14a4a58ccb09d5892c3fbdeff209594300a542492cf13fba9d247a"
+      sha256: "41a20518f0cb1256669420fdba0cd90d21561e560ac240f26ef8322e45bb7ed6"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.6"
+    version: "2.0.0"
   nested:
     dependency: transitive
     description:

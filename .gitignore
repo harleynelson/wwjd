@@ -2,6 +2,8 @@
 *.jks
 *.keystore
 
+*.env
+
 # API Keys and Configuration files
 # Add this line to ignore the api_keys.dart file within the config directory:
 config/api_keys.dart
