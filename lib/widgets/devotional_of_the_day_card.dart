@@ -108,14 +108,11 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
     final ThemeData appTheme = Theme.of(context);
     final ColorScheme colorScheme = appTheme.colorScheme;
 
-    final Color primaryDarkText = Colors.black.withOpacity(0.87);
-    final Color secondaryDarkText = Colors.black.withOpacity(0.70);
-    final Color accentScriptureRefColor = colorScheme.primary.computeLuminance() > 0.5
-        ? Color.lerp(colorScheme.primary, Colors.black, 0.4)!
-        : colorScheme.primary;
-    final Color audioButtonColorForThisCard = accentScriptureRefColor; // Used by TtsPlayButton
+    final Color primaryDarkTextOnCard = Colors.black.withOpacity(0.87);
+    final Color secondaryDarkTextOnCard = Colors.black.withOpacity(0.70);
+    final Color accentColorForLinksAndRefsOnCard = Color.lerp(primaryDarkTextOnCard, Colors.indigo.shade700, 0.6) ?? Colors.indigo.shade700;
+    final Color audioButtonColorForThisCard = accentColorForLinksAndRefsOnCard;
 
-    // ... (isLoading and No Devotional Available placeholder cards remain the same) ...
     if (widget.isLoading) {
       return SizedBox(
         height: 200,
@@ -131,9 +128,9 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
     }
 
     if (widget.devotional.title == "No Devotional Available" || widget.devotional.title == "Content Coming Soon") {
-        final placeholderTitleStyle = _getTextStyle(widget.readerFontFamily, _baseTitleFontSize * 0.8, FontWeight.bold, colorScheme.onSurfaceVariant);
-        final placeholderCoreMessageStyle = _getTextStyle(widget.readerFontFamily, _baseCoreMessageFontSize * 0.9, FontWeight.normal, colorScheme.onSurfaceVariant);
-        final placeholderReflectionStyle = _getTextStyle(widget.readerFontFamily, _baseReflectionFontSize * 0.9, FontWeight.normal, colorScheme.onSurfaceVariant.withOpacity(0.8));
+      final placeholderTitleStyle = _getTextStyle(widget.readerFontFamily, _baseTitleFontSize * 0.8, FontWeight.bold, colorScheme.onSurfaceVariant);
+      final placeholderCoreMessageStyle = _getTextStyle(widget.readerFontFamily, _baseCoreMessageFontSize * 0.9, FontWeight.normal, colorScheme.onSurfaceVariant);
+      final placeholderReflectionStyle = _getTextStyle(widget.readerFontFamily, _baseReflectionFontSize * 0.9, FontWeight.normal, colorScheme.onSurfaceVariant.withOpacity(0.8));
 
       return AnimatedReligiousBackgroundCard(
         gradientColors: AppColors.mutedPlaceholderGradient,
@@ -158,16 +155,40 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
       );
     }
     
-    final TextStyle dailyReflectionLabelStyle = _getTextStyle(ReaderFontFamily.systemDefault, 12.0, FontWeight.w500, secondaryDarkText.withOpacity(0.8));
-    final TextStyle titleStyle = _getTextStyle(widget.readerFontFamily, _baseTitleFontSize, FontWeight.bold, primaryDarkText);
-    final TextStyle coreMessageStyle = _getTextStyle(widget.readerFontFamily, _baseCoreMessageFontSize, FontWeight.w600, secondaryDarkText, fontStyle: FontStyle.italic);
-    final TextStyle baseScriptureStyle = _getTextStyle(widget.readerFontFamily, 15.0, FontWeight.normal, primaryDarkText, height: 1.5);
+    final TextStyle dailyReflectionLabelStyle = _getTextStyle(ReaderFontFamily.systemDefault, 12.0, FontWeight.w500, secondaryDarkTextOnCard.withOpacity(0.8));
+    final TextStyle titleStyle = _getTextStyle(widget.readerFontFamily, _baseTitleFontSize, FontWeight.bold, primaryDarkTextOnCard);
+    final TextStyle coreMessageStyle = _getTextStyle(widget.readerFontFamily, _baseCoreMessageFontSize, FontWeight.w600, secondaryDarkTextOnCard, fontStyle: FontStyle.italic);
+    
+    final TextStyle baseScriptureStyle = _getTextStyle(widget.readerFontFamily, 15.0, FontWeight.normal, primaryDarkTextOnCard, height: 1.5);
     final TextStyle scriptureFocusItalicStyle = baseScriptureStyle.copyWith(fontStyle: FontStyle.italic);
-    final TextStyle scriptureRefStyle = _getTextStyle(widget.readerFontFamily, 15.0, FontWeight.bold, accentScriptureRefColor, height: 1.5);
-    final TextStyle reflectionTextStyle = _getTextStyle(widget.readerFontFamily, 14.0, FontWeight.normal, secondaryDarkText, height: 1.6);
-    final TextStyle declarationLabelStyle = _getTextStyle(widget.readerFontFamily, 14.0, FontWeight.bold, primaryDarkText);
-    final TextStyle declarationTextStyle = _getTextStyle(widget.readerFontFamily, 15.0, FontWeight.w500, colorScheme.tertiary.computeLuminance() > 0.5 ? Color.lerp(colorScheme.tertiary, Colors.black, 0.4)! : colorScheme.tertiary, fontStyle: FontStyle.italic);
-    final TextStyle readMoreStyle = _getTextStyle(ReaderFontFamily.systemDefault, 14.0, FontWeight.bold, accentScriptureRefColor);
+    final TextStyle scriptureRefStyle = _getTextStyle(widget.readerFontFamily, 15.0, FontWeight.bold, accentColorForLinksAndRefsOnCard, height: 1.5); 
+    
+    final TextStyle reflectionTextStyle = _getTextStyle(widget.readerFontFamily, 14.0, FontWeight.normal, secondaryDarkTextOnCard, height: 1.6);
+    final TextStyle declarationLabelStyle = _getTextStyle(widget.readerFontFamily, 14.0, FontWeight.bold, primaryDarkTextOnCard);
+    
+    final Color declarationTextColorOnCard = Color.lerp(primaryDarkTextOnCard, Colors.teal.shade800, 0.6) ?? Colors.teal.shade800;
+    final TextStyle declarationTextStyle = _getTextStyle(widget.readerFontFamily, 15.0, FontWeight.w500, declarationTextColorOnCard, fontStyle: FontStyle.italic);
+    
+    final TextStyle readMoreStyle = _getTextStyle(ReaderFontFamily.systemDefault, 14.0, FontWeight.bold, accentColorForLinksAndRefsOnCard);
+
+    // --- Define the subtle background for the declaration section ---
+    // This will be a slightly translucent white, overlaying the card's gradient.
+    final BoxDecoration declarationSectionDecoration = BoxDecoration(
+      color: Colors.white.withOpacity(0.25), // Adjust opacity for desired subtlety
+      borderRadius: BorderRadius.circular(12.0),
+      border: Border.all(
+        color: Colors.white.withOpacity(0.5), // A very light border
+        width: 0.5,
+      ),
+      // Optional: Add a very subtle shadow for a slight lift
+      // boxShadow: [
+      //   BoxShadow(
+      //     color: Colors.black.withOpacity(0.05),
+      //     blurRadius: 4.0,
+      //     offset: Offset(0, 2),
+      //   ),
+      // ],
+    );
 
 
     Widget devotionalContent = Material(
@@ -183,16 +204,13 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text("Daily Reflection", style: dailyReflectionLabelStyle),
-                  // --- REPLACED WITH TtsPlayButton ---
                   TtsPlayButton<Devotional>(
                     scriptProvider: _getDevotionalScriptDataProvider,
                     speakScriptFunction: _speakDevotionalScriptCallback,
-                    hasPremiumAccess: true, // TTS for daily devotional is not premium
+                    hasPremiumAccess: true, 
                     isPremiumFeature: false,
                     iconColor: audioButtonColorForThisCard,
-                    // iconSize will use default from TtsPlayButton
                   ),
-                  // --- END REPLACEMENT ---
                 ],
               ),
               const SizedBox(height: 10.0),
@@ -209,7 +227,7 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
               if (widget.devotional.scriptureFocus.isNotEmpty) ...[
                 RichText(
                   text: TextSpan(
-                    style: baseScriptureStyle,
+                    style: baseScriptureStyle, 
                     children: [
                       TextSpan(text: '"${widget.devotional.scriptureFocus}" ', style: scriptureFocusItalicStyle),
                       TextSpan(text: widget.devotional.scriptureReference, style: scriptureRefStyle),
@@ -222,19 +240,30 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
               ],
               AnimatedCrossFade(
                 firstChild: const SizedBox.shrink(),
-                secondChild: Column(
+                secondChild: Column( // This is the Column for the expanded content
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Divider(color: primaryDarkText.withOpacity(0.2)),
+                    Divider(color: primaryDarkTextOnCard.withOpacity(0.2)),
                     const SizedBox(height: 12.0),
                     SelectableText(widget.devotional.reflection, style: reflectionTextStyle, textAlign: TextAlign.justify),
                     const SizedBox(height: 16.0),
-                    Divider(color: primaryDarkText.withOpacity(0.2)),
+                    Divider(color: primaryDarkTextOnCard.withOpacity(0.2)),
                     const SizedBox(height: 12.0),
-                    Text("Today's Declaration:", style: declarationLabelStyle),
-                    const SizedBox(height: 8.0),
-                    SelectableText(widget.devotional.prayerDeclaration, style: declarationTextStyle),
+                    // --- Apply new background to the declaration section ---
+                    Container(
+                      padding: const EdgeInsets.all(16.0), // Internal padding for the declaration section
+                      decoration: declarationSectionDecoration, // Apply the new subtle background decoration
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Today's Declaration:", style: declarationLabelStyle),
+                          const SizedBox(height: 10.0), // Increased space after label
+                          SelectableText(widget.devotional.prayerDeclaration, style: declarationTextStyle),
+                        ],
+                      ),
+                    ),
+                    // --- End declaration section styling ---
                   ],
                 ),
                 crossFadeState: _isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
@@ -249,7 +278,7 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
                     children: [
                       Text(_isExpanded ? "Show Less" : "Read More", style: readMoreStyle),
                       const SizedBox(width: 4.0),
-                      Icon(_isExpanded ? Icons.expand_less : Icons.expand_more, color: accentScriptureRefColor, size: 20.0),
+                      Icon(_isExpanded ? Icons.expand_less : Icons.expand_more, color: accentColorForLinksAndRefsOnCard, size: 20.0),
                     ],
                   ),
                 ),

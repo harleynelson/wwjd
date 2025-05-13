@@ -38,7 +38,7 @@ class AppThemes {
       color: Colors.white, // Light card background
     ),
     listTileTheme: ListTileThemeData(
-      iconColor: Colors.deepPurple.shade700,
+      iconColor: const Color.fromARGB(255, 63, 22, 160),
     ),
     pageTransitionsTheme: const PageTransitionsTheme(
   builders: {

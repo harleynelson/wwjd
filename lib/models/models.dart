@@ -151,6 +151,33 @@ class BiblePassagePointer {
       );
 }
 
+class InterspersedInsight {
+  final int afterPassageIndex; // 0-based index of the passage in 'passages' list, this insight comes AFTER it.
+                               // Use -1 to place an insight before the first passage.
+  final String text;
+  final String? attribution; // Optional: e.g., "A thought from your friends at WWJD" or a character name
+
+  const InterspersedInsight({
+    required this.afterPassageIndex,
+    required this.text,
+    this.attribution,
+  });
+
+  // For JSON serialization if you move plans to Firebase later
+  Map<String, dynamic> toJson() => {
+        'afterPassageIndex': afterPassageIndex,
+        'text': text,
+        'attribution': attribution,
+      };
+
+  factory InterspersedInsight.fromJson(Map<String, dynamic> json) => InterspersedInsight(
+        afterPassageIndex: json['afterPassageIndex'] as int,
+        text: json['text'] as String,
+        attribution: json['attribution'] as String?,
+      );
+}
+
+
 class ReadingPlanDay {
   final int dayNumber;
   final String title; // Optional title for the day's reading
@@ -158,14 +185,19 @@ class ReadingPlanDay {
   final String? reflectionPrompt; // Optional prompt for journaling
   // final String? devotionalId; // Optional: Link to a specific devotional from your list
 
+  // --- interspersed insights ---
+  final List<InterspersedInsight> interspersedInsights;
+
   const ReadingPlanDay({
     required this.dayNumber,
     this.title = '',
     required this.passages,
     this.reflectionPrompt,
+    this.interspersedInsights = const [], // Default to an empty list
     // this.devotionalId,
   });
 }
+
 
 class ReadingPlan {
   final String id;
