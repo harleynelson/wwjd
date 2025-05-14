@@ -1,0 +1,188 @@
+{
+  "id": "rp_beatitudes_reimagined_8day",
+  "title": "Reimagining The Beatitudes: Blessings for Today",
+  "description": "An 8-day exploration of Jesus' Beatitudes from the Sermon on the Mount, applying their counter-cultural wisdom to modern life and societal challenges.",
+  "category": "Gospels / Sermon on the Mount",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_beatitudes_reimagined_8day.png",
+  "isPremium": true,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "Blessed are the Poor in Spirit",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 3,
+          "endChapter": 5,
+          "endVerse": 3,
+          "displayText": "Matthew 5:3"
+        }
+      ],
+      "reflectionPrompt": "What does it mean to be 'poor in spirit' in a world that values self-sufficiency? How does recognizing our need for God/Goodness open us to the 'kingdom of heaven' within and among us?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "In a culture often celebrating relentless self-reliance, Jesus begins by blessing those who recognize their deep need. This 'poverty of spirit' isn't about material lack, but an inner openness and humility—the very posture that allows us to receive the gifts and presence of the 'kingdom'.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "Blessed are Those Who Mourn",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 4,
+          "endChapter": 5,
+          "endVerse": 4,
+          "displayText": "Matthew 5:4"
+        }
+      ],
+      "reflectionPrompt": "How can allowing ourselves to truly mourn personal and societal losses lead to genuine comfort and inspire compassionate action?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This blessing invites us to resist the pressure to always appear strong or quickly 'get over' sadness. Allowing ourselves to genuinely mourn—our personal losses, the world's brokenness—creates space for authentic comfort and often fuels the deep empathy needed for compassionate action.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Blessed are the Meek",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 5,
+          "endChapter": 5,
+          "endVerse": 5,
+          "displayText": "Matthew 5:5"
+        }
+      ],
+      "reflectionPrompt": "Meekness isn't weakness, but power under control. In a world that often rewards aggression, how can meekness (gentle strength, humility) lead to 'inheriting the earth' or finding our true place?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Often misunderstood as weakness, 'meekness' in the biblical sense suggests a gentle strength, a power held with restraint and humility. In a world prizing dominance, Jesus proposes that this quiet confidence finds its true, secure place—'inheriting the earth' not through force, but through groundedness and right relationship.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Blessed are Those Who Hunger for Righteousness",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 6,
+          "endChapter": 5,
+          "endVerse": 6,
+          "displayText": "Matthew 5:6"
+        }
+      ],
+      "reflectionPrompt": "What does it mean to hunger and thirst for 'righteousness' (justice, fairness, right-relationships) today? How can this deep desire lead to fulfillment and positive change?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This isn't just a polite wish for things to be better; it's described as a deep, driving 'hunger and thirst' for justice, fairness, and right relationships in the world. Jesus blesses this passionate, gut-level longing, promising that such deep desire for goodness ultimately leads to profound fulfillment and satisfaction.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Blessed are the Merciful",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 7,
+          "endChapter": 5,
+          "endVerse": 7,
+          "displayText": "Matthew 5:7"
+        }
+      ],
+      "reflectionPrompt": "In what areas of your life or in society is mercy most needed? How does extending mercy to others open us to receiving it more fully?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Mercy involves seeing beyond faults and failures to the shared humanity beneath. This blessing highlights a beautiful spiritual dynamic: the act of extending compassion and forgiveness often softens our own hearts, making us more open and able to receive the mercy we ourselves need, from others and from God.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "Blessed are the Pure in Heart",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 8,
+          "endChapter": 5,
+          "endVerse": 8,
+          "displayText": "Matthew 5:8"
+        }
+      ],
+      "reflectionPrompt": "Purity of heart implies integrity and undivided devotion to good. How can cultivating inner clarity and sincere motives allow us to 'see God' in ourselves, others, and the world?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Purity of heart suggests an inner alignment—integrity, sincerity, an undivided devotion where our intentions and actions aim for goodness. Jesus links this inner clarity and authenticity directly to a profound ability to perceive the divine ('see God') woven into the fabric of life and relationships.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "Blessed are the Peacemakers",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 9,
+          "endChapter": 5,
+          "endVerse": 9,
+          "displayText": "Matthew 5:9"
+        }
+      ],
+      "reflectionPrompt": "What does it mean to be a 'peacemaker' (not just a peacekeeper) in our relationships, communities, and world? How are they recognized as 'children of God'?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Notice Jesus blesses the peace*makers*, not just the peace*keepers*. This implies active work—mending brokenness, building bridges, fostering reconciliation, and addressing the roots of conflict. This challenging, creative effort, Jesus says, deeply reflects the restorative nature of God, marking peacemakers as God's own children.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 8,
+      "title": "Blessed are the Persecuted for Righteousness",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 10,
+          "endChapter": 5,
+          "endVerse": 12,
+          "displayText": "Matthew 5:10-12"
+        }
+      ],
+      "reflectionPrompt": "Standing for justice and truth can sometimes lead to opposition. How can we find blessing and maintain joy even when facing challenges for doing what is right?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This final Beatitude realistically acknowledges that living out these values—standing for justice, truth, and peace—can sometimes provoke resistance or opposition. Yet, Jesus reframes this potential hardship not as failure, but as a blessing—a sign of deep alignment with God's kingdom values and participation in a long, honorable tradition of prophetic witness.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 8
+}

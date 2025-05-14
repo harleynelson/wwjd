@@ -7,7 +7,7 @@ import '../helpers/database_helper.dart';
 import '../models/reader_settings_enums.dart';
 import '../helpers/prefs_helper.dart';
 import '../theme/app_colors.dart'; // For fallback or default if needed
-import 'daily_reading_screen.dart'; 
+import 'daily_reading_screen.dart';
 
 class ReadingPlanDetailScreen extends StatefulWidget {
   final ReadingPlan plan;
@@ -32,7 +32,7 @@ class ReadingPlanDetailScreen extends StatefulWidget {
 class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   UserReadingProgress? _progress;
-  bool _isLoadingProgress = false; 
+  bool _isLoadingProgress = false;
 
   // --- State variable for dev premium ---
   bool _devPremiumEnabled = false;
@@ -44,7 +44,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
     // --- Load dev premium setting ---
     _devPremiumEnabled = PrefsHelper.getDevPremiumEnabled();
 
-    if (_progress == null && widget.initialProgress == null) { 
+    if (_progress == null && widget.initialProgress == null) {
       _loadProgress();
     }
   }
@@ -73,7 +73,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
     // TODO: Replace with actual user check
     // For now, we assume the user is not premium unless the dev setting is enabled
     bool effectivelyHasPremium = _devPremiumEnabled; // In a real app, this would be OR user.isActuallyPremium
-    
+
 
     if (widget.plan.isPremium /* && !currentUser.hasPremiumAccess */) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -88,7 +88,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
     UserReadingProgress newProgress = UserReadingProgress(
       planId: widget.plan.id,
       startDate: DateTime.now(),
-      currentDayNumber: 1, 
+      currentDayNumber: 1,
       isActive: true,
     );
     await _dbHelper.saveReadingPlanProgress(newProgress);
@@ -100,7 +100,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
       // No need to pop with true here, _loadProgress will be called on resume if needed
       // or the list screen can refresh based on other signals if necessary.
       // However, if an immediate refresh of the list is desired after starting:
-      // Navigator.pop(context, true); 
+      // Navigator.pop(context, true);
     }
   }
 
@@ -111,13 +111,13 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
         context: context,
         builder: (ctx) => AlertDialog(
           title: Text(widget.plan.isPremium ? "Unlock Premium Plan?" : "Start Reading Plan?"),
-          content: Text(widget.plan.isPremium 
-              ? "To access '${widget.plan.title}', please unlock our premium features." 
+          content: Text(widget.plan.isPremium
+              ? "To access '${widget.plan.title}', please unlock our premium features."
               : "Would you like to start the reading plan '${widget.plan.title}' to view Day ${day.dayNumber}?"),
           actions: [
             TextButton(child: const Text("Cancel"), onPressed: () => Navigator.of(ctx).pop(false)),
             TextButton(
-              child: Text(widget.plan.isPremium ? "Unlock (Coming Soon)" : "Start Plan"), 
+              child: Text(widget.plan.isPremium ? "Unlock (Coming Soon)" : "Start Plan"),
               onPressed: widget.plan.isPremium ? null : () => Navigator.of(ctx).pop(true)
             ),
           ],
@@ -200,13 +200,13 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
                 );
                 if (confirm == true) {
                   await _dbHelper.deleteReadingPlanProgress(widget.plan.id);
-                  _loadProgress(); 
+                  _loadProgress();
                 }
               },
             ),
          ],
        );
-    } else { 
+    } else {
       final currentDayExists = _progress!.currentDayNumber > 0 && _progress!.currentDayNumber <= widget.plan.dailyReadings.length;
       ReadingPlanDay? currentDayReading;
       if(currentDayExists){
@@ -223,7 +223,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
         label: Text(currentDayReading != null ? "Continue: Day ${_progress!.currentDayNumber}" : "Review Plan"),
         onPressed: currentDayReading != null ? () {
           _navigateToDailyReading(currentDayReading!);
-        } : null, 
+        } : null,
          style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.secondary, foregroundColor: Theme.of(context).colorScheme.onSecondary),
       );
     }
@@ -266,7 +266,7 @@ Widget build(BuildContext context) {
 
   return WillPopScope(
     onWillPop: () async {
-      Navigator.pop(context, true); 
+      Navigator.pop(context, true);
       return false;
     },
     child: Scaffold(
@@ -283,12 +283,12 @@ Widget build(BuildContext context) {
             // --- END MODIFICATIONS ---
             leading: BackButton( // BackButton will now use the white color from iconTheme
               onPressed: () {
-                 Navigator.pop(context, true); 
+                 Navigator.pop(context, true);
               }
             ),
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
-                widget.plan.title, 
+                widget.plan.title,
                 style: const TextStyle(
                   color: Colors.white, // Ensure title text is white
                   shadows: [ // Add a more pronounced shadow for readability
@@ -299,7 +299,7 @@ Widget build(BuildContext context) {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  headerContent, 
+                  headerContent,
                   // --- MODIFIED SCRIM for better overall contrast ---
                   Container(
                     decoration: BoxDecoration(
@@ -318,11 +318,11 @@ Widget build(BuildContext context) {
                   // --- END MODIFIED SCRIM ---
                   if (widget.plan.isPremium)
                     Positioned(
-                      top: MediaQuery.of(context).padding.top + 8.0, 
+                      top: MediaQuery.of(context).padding.top + 8.0,
                       right: 16.0,
                       child: Chip(
                         label: Text("Premium", style: TextStyle(color: colorScheme.onSecondaryContainer, fontSize: 10, fontWeight: FontWeight.bold)),
-                        backgroundColor: colorScheme.secondaryContainer.withOpacity(0.8), 
+                        backgroundColor: colorScheme.secondaryContainer.withOpacity(0.8),
                         visualDensity: VisualDensity.compact,
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
                       ),

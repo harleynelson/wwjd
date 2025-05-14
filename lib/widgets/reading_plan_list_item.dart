@@ -1,8 +1,10 @@
 // lib/widgets/reading_plan_list_item.dart
 // Path: lib/widgets/reading_plan_list_item.dart
+// This is the version consistent with your initially uploaded ReadingPlansListScreen
 
 import 'package:flutter/material.dart';
-import '../models/models.dart';
+import '../models/models.dart'; // For ReadingPlan and UserReadingProgress
+import '../theme/app_colors.dart'; // For AppColors.getReadingPlanGradient
 
 class ReadingPlanListItem extends StatelessWidget {
   final ReadingPlan plan;
@@ -11,17 +13,17 @@ class ReadingPlanListItem extends StatelessWidget {
   final List<Color> backgroundGradientColors;
   final Alignment beginGradientAlignment;
   final Alignment endGradientAlignment;
-  final bool isPlanEffectivelyLocked;
+  final bool isPlanEffectivelyLocked; // This was a parameter we added later in discussion
 
   const ReadingPlanListItem({
     super.key,
     required this.plan,
     this.progress,
     required this.onTap,
-    required this.backgroundGradientColors,
-    this.beginGradientAlignment = Alignment.topRight,
-    this.endGradientAlignment = Alignment.bottomLeft,
-    required this.isPlanEffectivelyLocked,
+    required this.backgroundGradientColors, // This was expected by the calling screen
+    this.beginGradientAlignment = Alignment.topLeft, // Default if not specified earlier
+    this.endGradientAlignment = Alignment.bottomRight, // Default if not specified earlier
+    required this.isPlanEffectivelyLocked, // This was expected by the calling screen
   });
 
   @override
@@ -30,30 +32,32 @@ class ReadingPlanListItem extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     double progressValue = 0.0;
-    String progressText = "Not Started";
+    String progressText = "Not Started"; // Default text
     bool isCompleted = false;
+    int completedDaysCount = 0;
 
     if (progress != null && progress!.isActive) {
+      completedDaysCount = progress!.completedDays.length;
       if (plan.durationDays > 0) {
-        progressValue = progress!.completedDays.length / plan.durationDays;
+        progressValue = completedDaysCount / plan.durationDays;
       }
-      if (progress!.completedDays.length >= plan.durationDays) {
+      if (completedDaysCount >= plan.durationDays) {
         progressText = "Completed!";
         isCompleted = true;
-      } else if (progress!.completedDays.isNotEmpty) {
-        progressText = "${progress!.completedDays.length} / ${plan.durationDays} days";
-      } else if (progress!.currentDayNumber > 1) {
+      } else if (completedDaysCount > 0) {
+        progressText = "$completedDaysCount / ${plan.durationDays} days";
+      } else if (progress!.currentDayNumber > 1 && completedDaysCount == 0) {
+         // Started but no days marked complete yet beyond day 1 not being the current
          progressText = "In Progress";
       }
     } else if (progress != null && !progress!.isActive && progress!.completedDays.length >= plan.durationDays) {
+      // Case where plan was completed and then perhaps made inactive (though less common)
       progressValue = 1.0;
       progressText = "Completed";
       isCompleted = true;
-    // --- CORRECTED: Use 'isPlanEffectivelyLocked' directly ---
-    } else if (isPlanEffectivelyLocked && progress == null) { 
+    } else if (isPlanEffectivelyLocked && progress == null) {
         progressText = "Premium Plan";
     }
-    // --- END CORRECTION ---
 
 
     Widget headerBackground;
@@ -62,6 +66,7 @@ class ReadingPlanListItem extends StatelessWidget {
         plan.headerImageAssetPath!,
         fit: BoxFit.cover,
         errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+          // Fallback gradient if image fails to load
           return Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -74,6 +79,7 @@ class ReadingPlanListItem extends StatelessWidget {
         },
       );
     } else {
+      // Default gradient if no image path is provided
       headerBackground = Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -91,17 +97,18 @@ class ReadingPlanListItem extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       child: InkWell(
-        onTap: onTap,
+        onTap: onTap, // Use the passed onTap callback
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 120,
+              height: 120, // Fixed height for the header image/gradient area
               width: double.infinity,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
                   headerBackground,
+                  // Scrim for text readability on image
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
@@ -109,7 +116,7 @@ class ReadingPlanListItem extends StatelessWidget {
                           colors: [Colors.black.withOpacity(0.6), Colors.transparent],
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
-                          stops: const [0.0, 0.8],
+                          stops: const [0.0, 0.8], // Adjust scrim intensity and spread
                         ),
                       ),
                     ),
@@ -132,22 +139,22 @@ class ReadingPlanListItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // --- CORRECTED: Use 'plan.isPremium' and 'isPlanEffectivelyLocked' directly ---
-                  if (plan.isPremium) 
+                  if (plan.isPremium) // Check the plan's own premium status
                     Positioned(
                       top: 8,
                       right: 8,
                       child: Chip(
-                        label: Text(isPlanEffectivelyLocked ? "Premium" : "Premium (Dev)", style: TextStyle(fontSize: 9)),
+                        label: Text(
+                          isPlanEffectivelyLocked ? "Premium" : "Premium (Dev Unlocked)", // Differentiate based on effective lock status
+                          style: TextStyle(fontSize: 9, color: Colors.white, fontWeight: FontWeight.bold)
+                        ),
                         backgroundColor: isPlanEffectivelyLocked
                                           ? Colors.amber.shade700.withOpacity(0.7) 
                                           : Colors.green.shade700.withOpacity(0.7), 
-                        labelStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                         visualDensity: VisualDensity.compact,
                       ),
                     ),
-                  // --- END CORRECTION ---
                 ],
               ),
             ),
@@ -167,7 +174,7 @@ class ReadingPlanListItem extends StatelessWidget {
                   Text(
                     plan.description,
                     style: textTheme.bodyMedium?.copyWith(color: textTheme.bodySmall?.color?.withOpacity(0.8)),
-                    maxLines: 2,
+                    maxLines: 2, // Limit description lines in list view
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 8.0),
@@ -178,28 +185,21 @@ class ReadingPlanListItem extends StatelessWidget {
                         "${plan.durationDays} Days",
                         style: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      if (progress != null && progress!.isActive || isCompleted)
-                        Text(
-                          progressText, 
-                          style: textTheme.labelLarge?.copyWith(
-                            color: isCompleted ? Colors.green.shade700 : colorScheme.tertiary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      // --- CORRECTED: Use 'isPlanEffectivelyLocked' directly ---
-                      else if (isPlanEffectivelyLocked && progress == null)
-                         Text("Premium Plan", style: textTheme.labelLarge?.copyWith(color: colorScheme.secondary, fontWeight: FontWeight.bold))
-                      // --- END CORRECTION ---
-                      else 
-                         Text(progressText, style: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
+                      Text(
+                        progressText, 
+                        style: textTheme.labelLarge?.copyWith(
+                          color: isCompleted ? Colors.green.shade700 : ( (progress != null && progress!.isActive) ? colorScheme.tertiary : colorScheme.onSurface.withOpacity(0.7) ),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
                     ],
                   ),
                   if (progress != null && progress!.isActive && !isCompleted && progressValue > 0) ...[
                     const SizedBox(height: 8.0),
                     LinearProgressIndicator(
                       value: progressValue,
-                      backgroundColor: colorScheme.surfaceVariant,
-                      valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                      backgroundColor: colorScheme.surfaceVariant.withOpacity(0.5), // Lighter background for progress
+                      valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary), // Use primary color for progress
                       minHeight: 6,
                       borderRadius: BorderRadius.circular(3),
                     ),

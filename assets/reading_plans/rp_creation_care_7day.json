@@ -1,0 +1,198 @@
+{
+  "id": "rp_creation_care_7day",
+  "title": "Creation Care Challenge",
+  "description": "Explore our sacred call to be stewards of the Earth. This 7-day plan reflects on biblical mandates for environmental care and action.",
+  "category": "Topical / Creation",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_creation_care_7day.png",
+  "isPremium": false,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "The Earth is the Lord's",
+      "passages": [
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 24,
+          "startVerse": 1,
+          "endChapter": 24,
+          "endVerse": 2,
+          "displayText": "Psalm 24:1-2"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 1,
+          "startVerse": 1,
+          "endChapter": 1,
+          "endVerse": 1,
+          "displayText": "Genesis 1:1"
+        }
+      ],
+      "reflectionPrompt": "If the Earth and everything in it belongs to God, what responsibilities does this imply for us?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Starting with the understanding that the Earth isn't ultimately ours, but God's, changes everything. It shifts our perspective from one of entitlement to one of gratitude, from seeing ourselves as owners to seeing ourselves as responsible partners in caring for God's creation.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "Dominion and Stewardship",
+      "passages": [
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 1,
+          "startVerse": 26,
+          "endChapter": 1,
+          "endVerse": 28,
+          "displayText": "Genesis 1:26-28"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 2,
+          "startVerse": 15,
+          "endChapter": 2,
+          "endVerse": 15,
+          "displayText": "Genesis 2:15"
+        }
+      ],
+      "reflectionPrompt": "What is the difference between 'dominion' as responsible stewardship versus exploitative domination of creation?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Placed side-by-side, these verses help clarify our role. 'Dominion' seems less about unchecked power and more like the caring responsibility of a gardener. The specific instruction to 'work' and 'take care of' the garden points towards active cultivation and protection, not passive ownership or exploitation.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Creation Groans",
+      "passages": [
+        {
+          "bookAbbr": "ROM",
+          "startChapter": 8,
+          "startVerse": 19,
+          "endChapter": 8,
+          "endVerse": 23,
+          "displayText": "Romans 8:19-23"
+        }
+      ],
+      "reflectionPrompt": "In what ways do you see creation 'groaning' today? How does this motivate a desire for its renewal and our role in it?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Paul uses such powerful, empathetic language here – 'groaning as in the pains of childbirth.' It gives creation a voice, suggesting its suffering under brokenness is real and deeply felt. This passage connects creation's longing for renewal with our own hope, inviting us to listen and respond with care.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Sabbath for the Land",
+      "passages": [
+        {
+          "bookAbbr": "LEV",
+          "startChapter": 25,
+          "startVerse": 1,
+          "endChapter": 25,
+          "endVerse": 7,
+          "displayText": "Leviticus 25:1-7"
+        }
+      ],
+      "reflectionPrompt": "The concept of Sabbath extended to the land, allowing it to rest and recover. How can we apply principles of rest and sustainability to our environment today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This idea of a Sabbath rest extending to the land itself is quite profound. It acknowledges that the Earth, like us, needs periods of recovery and renewal. It's a built-in limit on human exploitation, reminding us that sustainable rhythms, not constant productivity, are part of God's loving design for creation.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Wisdom from Creation",
+      "passages": [
+        {
+          "bookAbbr": "JOB",
+          "startChapter": 12,
+          "startVerse": 7,
+          "endChapter": 12,
+          "endVerse": 10,
+          "displayText": "Job 12:7-10"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 6,
+          "startVerse": 6,
+          "endChapter": 6,
+          "endVerse": 8,
+          "displayText": "Proverbs 6:6-8"
+        }
+      ],
+      "reflectionPrompt": "What lessons can we learn about diligence, interconnectedness, or God's providence by observing the natural world?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Scripture encourages us to look closely at the natural world not just as a resource, but as a source of wisdom and revelation. From the diligence of the ant to the unspoken testimony of the birds and fish, creation itself reflects aspects of God's character and design, inviting us to observe, listen, and learn.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "Justice for the Earth and Poor",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 24,
+          "startVerse": 4,
+          "endChapter": 24,
+          "endVerse": 6,
+          "displayText": "Isaiah 24:4-6"
+        }
+      ],
+      "reflectionPrompt": "How are environmental degradation and social injustice often linked? Who is most affected by environmental damage?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Isaiah draws a stark connection between breaking covenant—our relationship with God and ethical responsibilities—and the suffering of the land itself ('The earth mourns and withers'). It's a powerful reminder that environmental justice and social justice are often deeply linked; how we treat the planet frequently reflects how we treat its most vulnerable people.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "Hope for a Renewed Creation",
+      "passages": [
+        {
+          "bookAbbr": "REV",
+          "startChapter": 21,
+          "startVerse": 1,
+          "endChapter": 21,
+          "endVerse": 5,
+          "displayText": "Revelation 21:1-5"
+        },
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 11,
+          "startVerse": 6,
+          "endChapter": 11,
+          "endVerse": 9,
+          "displayText": "Isaiah 11:6-9"
+        }
+      ],
+      "reflectionPrompt": "Scripture offers a vision of a renewed heaven and earth. What is one practical step you can take this week to contribute to the healing and care of our planet?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "These beautiful visions point towards God's ultimate goal: not abandoning the world, but renewing and restoring *all* things—a new heaven and a new earth where peace and harmony reign. This ultimate hope fuels our present efforts, reminding us that our work towards healing and caring for creation aligns with God's loving, redemptive purpose for the future.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

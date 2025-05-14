@@ -31,7 +31,7 @@ Future<void> main() async {
   // For debug builds, you might use AndroidProvider.debug or AppleProvider.debug initially.
   // Ensure you have properly configured Play Integrity (Android) and App Attest/DeviceCheck (iOS) in the Firebase console.
   await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.playIntegrity, // Or AndroidProvider.debug for testing
+    androidProvider: AndroidProvider.playIntegrity, // Or AndroidProvider.debug for testing .. AndroidProvider.playIntegrity for release
     appleProvider: AppleProvider.appAttest,       // Or AppleProvider.deviceCheck or AppleProvider.debug for testing
     // webProvider: ReCaptchaV3Provider('YOUR_RECAPTCHA_V3_SITE_KEY'), // If using for web
   );

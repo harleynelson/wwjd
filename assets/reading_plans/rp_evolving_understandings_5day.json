@@ -1,0 +1,190 @@
+{
+  "id": "rp_evolving_understandings_5day",
+  "title": "Evolving Understandings: The Bible in Context",
+  "description": "A 5-day plan examining biblical texts that present challenges when read without historical, cultural, or literary context, inviting growth and nuanced interpretation.",
+  "category": "Biblical Interpretation",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_evolving_understandings_5day.png",
+  "isPremium": false,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "Ancient Worldviews: Cosmology",
+      "passages": [
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 1,
+          "startVerse": 6,
+          "endChapter": 1,
+          "endVerse": 8,
+          "displayText": "Genesis 1:6-8 (The Firmament)"
+        },
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 19,
+          "startVerse": 1,
+          "endChapter": 19,
+          "endVerse": 6,
+          "displayText": "Psalm 19:1-6 (Sun's circuit)"
+        }
+      ],
+      "reflectionPrompt": "Ancient texts describe the cosmos based on their era's understanding (e.g., a solid dome, flat earth). How does recognizing the Bible's primary theological purpose, rather than as a science textbook, help us appreciate its message while embracing modern scientific discovery?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": -1,
+          "text": "Engaging with ancient texts often means encountering worldviews different from our own. It's an invitation to explore the primary purpose of these writings, which frequently focus on theological truths rather than precise scientific descriptions.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "The imagery of a 'firmament' or a solid dome reflects common ancient Near Eastern understandings of the cosmos. This framework helped ancient peoples articulate a sense of divine order and structure in creation.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "Interpreting Difficult Laws: Slavery",
+      "passages": [
+        {
+          "bookAbbr": "EXO",
+          "startChapter": 21,
+          "startVerse": 2,
+          "endChapter": 21,
+          "endVerse": 6,
+          "displayText": "Exodus 21:2-6 (Laws concerning Hebrew slaves)"
+        },
+        {
+          "bookAbbr": "PHM",
+          "startChapter": 1,
+          "startVerse": 8,
+          "endChapter": 1,
+          "endVerse": 17,
+          "displayText": "Philemon 1:8-17 (Paul's appeal for Onesimus)"
+        }
+      ],
+      "reflectionPrompt": "The Bible contains laws that regulated, but didn't abolish, slavery in ancient contexts. How can we reconcile this with a progressive ethic of liberation and equality? How does focusing on the Bible's overall trajectory towards justice and love help us interpret such passages today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Confronting passages that regulate practices like slavery requires careful contextualization. These ancient legal codes often operated within existing societal structures, sometimes aiming to mitigate harshness rather than outright abolish common practices of the era.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Paul's appeal for Onesimus, though not a direct condemnation of slavery as an institution, subtly introduces transformative principles of brotherhood and love in Christ that challenge the very underpinnings of such hierarchical systems.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Women in Scripture: Context and Trajectory",
+      "passages": [
+        {
+          "bookAbbr": "1TI",
+          "startChapter": 2,
+          "startVerse": 11,
+          "endChapter": 2,
+          "endVerse": 12,
+          "displayText": "1 Timothy 2:11-12 (Women to be silent)"
+        },
+        {
+          "bookAbbr": "JDG",
+          "startChapter": 4,
+          "startVerse": 4,
+          "endChapter": 4,
+          "endVerse": 5,
+          "displayText": "Judges 4:4-5 (Deborah as a leader)"
+        },
+        {
+          "bookAbbr": "ROM",
+          "startChapter": 16,
+          "startVerse": 1,
+          "endChapter": 16,
+          "endVerse": 2,
+          "displayText": "Romans 16:1-2 (Phoebe as a deacon/patron)"
+        },
+        {
+          "bookAbbr": "GAL",
+          "startChapter": 3,
+          "startVerse": 28,
+          "endChapter": 3,
+          "endVerse": 28,
+          "displayText": "Galatians 3:28 (Neither male nor female in Christ)"
+        }
+      ],
+      "reflectionPrompt": "Some biblical texts reflect patriarchal norms of their time regarding women's roles, while others highlight women in significant leadership. How can understanding historical context and a broader theological vision of equality (e.g., Galatians 3:28) guide our interpretation and application?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Passages like this one in 1 Timothy are often understood by scholars as addressing specific situations within a particular early church community, rather than laying down universal rules for all time. Context is key to interpretation.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The presence of figures like Deborah, a judge and prophetess, and Phoebe, a recognized deacon and patron in the early church, alongside Paul's inclusive declaration in Galatians, offers a broader, more complex picture of women's roles and spiritual significance within the biblical tradition.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Conquest and Violence: Understanding Difficult Narratives",
+      "passages": [
+        {
+          "bookAbbr": "JOS",
+          "startChapter": 6,
+          "startVerse": 20,
+          "endChapter": 6,
+          "endVerse": 21,
+          "displayText": "Joshua 6:20-21 (Fall of Jericho)"
+        },
+        {
+          "bookAbbr": "DEU",
+          "startChapter": 20,
+          "startVerse": 16,
+          "endChapter": 20,
+          "endVerse": 18,
+          "displayText": "Deuteronomy 20:16-18 (Commands to destroy nations)"
+        }
+      ],
+      "reflectionPrompt": "Narratives of conquest and divinely sanctioned violence are among the most challenging in scripture. How might considering literary genre (e.g., ancient Near Eastern war rhetoric), historical context, and the evolving understanding of God's character (as revealed fully in Jesus) help us grapple with these texts responsibly?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": -1,
+          "text": "The conquest narratives are undeniably among the most ethically challenging texts. Approaching them requires acknowledging their difficulty and exploring various interpretive lenses, including historical context and the nature of ancient Near Eastern war accounts.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Many theologians grapple with these texts by considering the progressive nature of revelation in scripture, culminating in the teachings of Jesus which emphasize love, even for enemies. This invites a critical reflection on how divine character is portrayed and understood across the biblical narrative.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Science and Ancient Knowledge: The Mustard Seed",
+      "passages": [
+        {
+          "bookAbbr": "MRK",
+          "startChapter": 4,
+          "startVerse": 30,
+          "endChapter": 4,
+          "endVerse": 32,
+          "displayText": "Mark 4:30-32 (Parable of the Mustard Seed)"
+        }
+      ],
+      "reflectionPrompt": "Jesus uses the mustard seed, described as 'smallest of all seeds' in its context, to illustrate a spiritual truth. Botanically, other seeds are smaller. How does understanding the use of common analogies and the primary teaching goal (rather than scientific precision) help us appreciate such parables? How can faith and reason coexist and enrich each other?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Parables, like this one, often use common, everyday illustrations from their time to convey deeper spiritual truths. The emphasis is on the message—the expansive growth of the Kingdom from humble beginnings—rather than on literal, scientific precision regarding which seed is truly the smallest.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 5
+}

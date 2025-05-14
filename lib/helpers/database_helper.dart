@@ -302,27 +302,60 @@ class DatabaseHelper {
     final List<Map<String, dynamic>> maps = await db.query( progressTableName, where: '$progressColIsActive = ?', whereArgs: [1]);
     return maps.map((map) => UserReadingProgress.fromMap(map)).toList();
   }
-  Future<void> markReadingDayAsComplete(String planId, int dayNumberToComplete) async { /* ... keep as before ... */ 
+  Future<void> markReadingDayAsComplete(String planId, int dayNumberToComplete) async { 
     final db = await database;
     UserReadingProgress? progress = await getReadingPlanProgress(planId);
-    if (progress == null) { return; }
-    DateTime now = DateTime.now(); DateTime todayDateOnly = DateTime(now.year, now.month, now.day);
+    if (progress == null) { 
+      print("Error: Could not find progress for planId $planId to mark day $dayNumberToComplete complete.");
+      // Optionally, create a new progress entry if it's truly missing and should exist
+      // For now, we'll just return if no progress is found.
+      return; 
+    }
+    DateTime now = DateTime.now(); 
+    DateTime todayDateOnly = DateTime(now.year, now.month, now.day);
+    
     progress.completedDays[dayNumberToComplete] = now;
-    if (dayNumberToComplete >= progress.currentDayNumber) { progress.currentDayNumber = dayNumberToComplete + 1; }
+    
+    // Ensure currentDayNumber advances correctly
+    if (dayNumberToComplete >= progress.currentDayNumber) { 
+      progress.currentDayNumber = dayNumberToComplete + 1; 
+    }
+    
+    // Streak logic (remains the same)
     if (progress.lastCompletionDate != null) {
       DateTime lastCompletedDateOnly = DateTime( progress.lastCompletionDate!.year, progress.lastCompletionDate!.month, progress.lastCompletionDate!.day);
       int differenceInDays = todayDateOnly.difference(lastCompletedDateOnly).inDays;
-      if (differenceInDays == 1) { progress.streakCount++; } 
-      else if (differenceInDays > 1) { progress.streakCount = 1; } 
-      else if (differenceInDays == 0 && progress.streakCount == 0) { progress.streakCount = 1;}
-    } else { progress.streakCount = 1; }
+      if (differenceInDays == 1) { 
+        progress.streakCount++; 
+      } else if (differenceInDays > 1) { 
+        progress.streakCount = 1; // Reset streak if more than one day missed
+      } else if (differenceInDays == 0 && progress.streakCount == 0) {
+        // If completing another day on the same day and streak was 0, start streak at 1
+        progress.streakCount = 1;
+      }
+      // If differenceInDays is 0 and streakCount > 0, streak remains unchanged for multiple completions on the same day.
+    } else { 
+      // First ever completion for this plan progress
+      progress.streakCount = 1; 
+    }
     progress.lastCompletionDate = now; 
-    try {
-        final planDefinition = allReadingPlans.firstWhere((p) => p.id == planId);
-        if (progress.completedDays.length >= planDefinition.durationDays) { print("Congratulations! Plan '$planId' fully completed."); }
-    } catch (e) { print("Could not find plan definition for $planId to check for completion: $e"); }
+
+    // REMOVED the check that used allReadingPlans:
+    // try {
+    //     final planDefinition = allReadingPlans.firstWhere((p) => p.id == planId); 
+    //     if (progress.completedDays.length >= planDefinition.durationDays) { 
+    //         print("Congratulations! Plan '$planId' fully completed."); 
+    //     }
+    // } catch (e) { 
+    //     print("Could not find plan definition for $planId to check for completion: $e"); 
+    // }
+    // The UI or ReadingPlanService can now be responsible for checking if 
+    // progress.completedDays.length >= plan.durationDays (where plan is the loaded ReadingPlan object)
+
     await saveReadingPlanProgress(progress);
+    print("Marked day $dayNumberToComplete for plan $planId as complete. Streak: ${progress.streakCount}. Current Day: ${progress.currentDayNumber}");
   }
+
   Future<void> setPlanActivity(String planId, bool isActive) async { /* ... keep as before ... */ 
     UserReadingProgress? progress = await getReadingPlanProgress(planId);
     if (progress != null) { progress.isActive = isActive; await saveReadingPlanProgress(progress); }

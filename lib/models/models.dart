@@ -1,5 +1,9 @@
-// lib/models.dart
+// lib/models/models.dart
+// Path: lib/models/models.dart
+// Approximate line: Entire File (Significant Changes)
+
 import '../helpers/database_helper.dart'; // Needed for Flag.fromUserDbMap
+import 'dart:convert'; // Required for jsonEncode/Decode if used directly in models, though usually handled by serialization logic
 
 class Book {
   final String abbreviation; // e.g., "GEN"
@@ -19,7 +23,6 @@ class Verse {
   final String? bookAbbr;
   final String? chapter;
 
-  // Make constructor const if possible (all fields must be final)
   const Verse({
     required this.verseNumber,
     required this.text,
@@ -30,32 +33,26 @@ class Verse {
 }
 
 class Flag {
-  final int id; // Negative for pre-built, Positive for user-defined in DB
+  final int id;
   final String name;
-  // This field is needed for the dialog state
-  bool isSelected; // <--- MAKE SURE THIS LINE EXISTS
+  bool isSelected;
 
   Flag({
     required this.id,
     required this.name,
-    // This optional named parameter needs to exist
-    this.isSelected = false // <--- MAKE SURE THIS PART EXISTS IN THE CONSTRUCTOR
+    this.isSelected = false,
   });
 
-  // Check if it's pre-built based on ID
   bool get isPrebuilt => id < 0;
 
-  // Factory for user flags from DB map
   factory Flag.fromUserDbMap(Map<String, dynamic> map) {
     return Flag(
       id: map[DatabaseHelper.flagsColId] as int,
       name: map[DatabaseHelper.flagsColName] as String,
-      // isSelected defaults to false when creating from DB map
     );
   }
 }
 
-// Define Pre-built Flags (This part should be okay)
 final List<Flag> prebuiltFlags = [
   Flag(id: -1, name: "Love"),
   Flag(id: -2, name: "Family"),
@@ -76,7 +73,7 @@ class FavoriteVerse {
   final String verseNumber;
   final String verseText;
   final DateTime createdAt;
-  final String bookCanonOrder; // Added for sorting
+  final String bookCanonOrder;
   List<Flag> assignedFlags;
 
   FavoriteVerse({
@@ -86,15 +83,14 @@ class FavoriteVerse {
     required this.verseNumber,
     required this.verseText,
     required this.createdAt,
-    required this.bookCanonOrder, // Added
+    required this.bookCanonOrder,
     this.assignedFlags = const [],
   });
 
-  // Update factory method
   factory FavoriteVerse.fromMapAndFlags({
     required Map<String, dynamic> favMap,
     required List<Flag> flags,
-    required String canonOrder, // Require canonOrder
+    required String canonOrder,
   }) {
     return FavoriteVerse(
       verseID: favMap[DatabaseHelper.favColVerseID] as String,
@@ -104,7 +100,7 @@ class FavoriteVerse {
       verseText: favMap[DatabaseHelper.favColVerseText] as String,
       createdAt: DateTime.tryParse(favMap[DatabaseHelper.favColCreatedAt] as String? ?? '') ?? DateTime.now(),
       assignedFlags: flags,
-      bookCanonOrder: canonOrder, // Assign it
+      bookCanonOrder: canonOrder,
     );
   }
 
@@ -113,14 +109,13 @@ class FavoriteVerse {
   }
 }
 
-
 class BiblePassagePointer {
   final String bookAbbr;
   final int startChapter;
   final int startVerse;
   final int endChapter;
   final int endVerse;
-  final String displayText; // e.g., "Matthew 5:1-16" or "Genesis 1"
+  final String displayText;
 
   const BiblePassagePointer({
     required this.bookAbbr,
@@ -131,7 +126,6 @@ class BiblePassagePointer {
     required this.displayText,
   });
 
-  // For JSON serialization if storing progress with passage details
   Map<String, dynamic> toJson() => {
         'bookAbbr': bookAbbr,
         'startChapter': startChapter,
@@ -142,20 +136,19 @@ class BiblePassagePointer {
       };
 
   factory BiblePassagePointer.fromJson(Map<String, dynamic> json) => BiblePassagePointer(
-        bookAbbr: json['bookAbbr'],
-        startChapter: json['startChapter'],
-        startVerse: json['startVerse'],
-        endChapter: json['endChapter'],
-        endVerse: json['endVerse'],
-        displayText: json['displayText'],
+        bookAbbr: json['bookAbbr'] as String,
+        startChapter: json['startChapter'] as int,
+        startVerse: json['startVerse'] as int,
+        endChapter: json['endChapter'] as int,
+        endVerse: json['endVerse'] as int,
+        displayText: json['displayText'] as String,
       );
 }
 
 class InterspersedInsight {
-  final int afterPassageIndex; // 0-based index of the passage in 'passages' list, this insight comes AFTER it.
-                               // Use -1 to place an insight before the first passage.
+  final int afterPassageIndex;
   final String text;
-  final String? attribution; // Optional: e.g., "A thought from your friends at WWJD" or a character name
+  final String? attribution;
 
   const InterspersedInsight({
     required this.afterPassageIndex,
@@ -163,7 +156,6 @@ class InterspersedInsight {
     this.attribution,
   });
 
-  // For JSON serialization if you move plans to Firebase later
   Map<String, dynamic> toJson() => {
         'afterPassageIndex': afterPassageIndex,
         'text': text,
@@ -177,15 +169,11 @@ class InterspersedInsight {
       );
 }
 
-
 class ReadingPlanDay {
   final int dayNumber;
-  final String title; // Optional title for the day's reading
+  final String title;
   final List<BiblePassagePointer> passages;
-  final String? reflectionPrompt; // Optional prompt for journaling
-  // final String? devotionalId; // Optional: Link to a specific devotional from your list
-
-  // --- interspersed insights ---
+  final String? reflectionPrompt;
   final List<InterspersedInsight> interspersedInsights;
 
   const ReadingPlanDay({
@@ -193,23 +181,53 @@ class ReadingPlanDay {
     this.title = '',
     required this.passages,
     this.reflectionPrompt,
-    this.interspersedInsights = const [], // Default to an empty list
-    // this.devotionalId,
+    this.interspersedInsights = const [],
   });
-}
 
+  factory ReadingPlanDay.fromJson(Map<String, dynamic> json) {
+    var passagesList = json['passages'] as List? ?? [];
+    List<BiblePassagePointer> passages = passagesList
+        .map((p) => BiblePassagePointer.fromJson(p as Map<String, dynamic>))
+        .toList();
+
+    var insightsList = json['interspersedInsights'] as List? ?? [];
+    List<InterspersedInsight> insights = insightsList
+        .map((i) => InterspersedInsight.fromJson(i as Map<String, dynamic>))
+        .toList();
+
+    return ReadingPlanDay(
+      dayNumber: json['dayNumber'] as int,
+      title: json['title'] as String? ?? '',
+      passages: passages,
+      reflectionPrompt: json['reflectionPrompt'] as String?,
+      interspersedInsights: insights,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'dayNumber': dayNumber,
+      'title': title,
+      'passages': passages.map((p) => p.toJson()).toList(),
+      'reflectionPrompt': reflectionPrompt,
+      'interspersedInsights':
+          interspersedInsights.map((i) => i.toJson()).toList(),
+    };
+  }
+}
 
 class ReadingPlan {
   final String id;
   final String title;
   final String description;
-  final int durationDays; // Calculated or stored
-  final String category; // e.g., "Gospels", "Topical", "Old Testament"
-  final String? headerImageAssetPath; // Optional header image for the plan
+  final int durationDays;
+  final String category;
+  final String? headerImageAssetPath;
   final bool isPremium;
   final List<ReadingPlanDay> dailyReadings;
+  final int version; // Added for updates, default to 1
 
-  const ReadingPlan({
+  ReadingPlan({
     required this.id,
     required this.title,
     required this.description,
@@ -217,18 +235,50 @@ class ReadingPlan {
     this.headerImageAssetPath,
     required this.isPremium,
     required this.dailyReadings,
+    this.version = 1, // Default version to 1
   }) : durationDays = dailyReadings.length;
+
+  factory ReadingPlan.fromJson(Map<String, dynamic> json) {
+    var readingsList = json['dailyReadings'] as List? ?? [];
+    List<ReadingPlanDay> readings = readingsList
+        .map((r) => ReadingPlanDay.fromJson(r as Map<String, dynamic>))
+        .toList();
+
+    return ReadingPlan(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      category: json['category'] as String,
+      headerImageAssetPath: json['headerImageAssetPath'] as String?,
+      isPremium: json['isPremium'] as bool? ?? false,
+      dailyReadings: readings,
+      version: json['version'] as int? ?? 1, // Default to 1 if not present
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'durationDays': durationDays,
+      'category': category,
+      'headerImageAssetPath': headerImageAssetPath,
+      'isPremium': isPremium,
+      'dailyReadings': dailyReadings.map((r) => r.toJson()).toList(),
+      'version': version,
+    };
+  }
 }
 
-// Model for user's progress in a reading plan
 class UserReadingProgress {
   final String planId;
-  int currentDayNumber; // Next day to read (starts at 1)
-  Map<int, DateTime> completedDays; // Map of dayNumber to completion DateTime
+  int currentDayNumber;
+  Map<int, DateTime> completedDays;
   DateTime startDate;
-  DateTime? lastCompletionDate; // Tracks the date of the last completed reading
+  DateTime? lastCompletionDate;
   int streakCount;
-  bool isActive; // If the user is currently active on this plan
+  bool isActive;
 
   UserReadingProgress({
     required this.planId,

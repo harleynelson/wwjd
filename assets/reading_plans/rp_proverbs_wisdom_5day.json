@@ -1,0 +1,116 @@
+{
+  "id": "rp_proverbs_wisdom_5day",
+  "title": "Daily Wisdom from Proverbs",
+  "description": "A 5-day plan to gain practical wisdom for everyday living from the book of Proverbs.",
+  "category": "Wisdom Literature",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_proverbs_wisdom_5day.png",
+  "isPremium": true,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "The Value of Wisdom",
+      "passages": [
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 1,
+          "startVerse": 1,
+          "endChapter": 1,
+          "endVerse": 33,
+          "displayText": "Proverbs 1"
+        }
+      ],
+      "reflectionPrompt": "Where do you need to apply more wisdom in your life this week?",
+      "interspersedInsights": []
+    },
+    {
+      "dayNumber": 2,
+      "title": "Wisdom in Relationships",
+      "passages": [
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 3,
+          "startVerse": 1,
+          "endChapter": 3,
+          "endVerse": 35,
+          "displayText": "Proverbs 3"
+        }
+      ],
+      "reflectionPrompt": "How can you cultivate trust and integrity in your relationships using today's reading?",
+      "interspersedInsights": []
+    },
+    {
+      "dayNumber": 3,
+      "title": "Wisdom with Words",
+      "passages": [
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 10,
+          "startVerse": 1,
+          "endChapter": 10,
+          "endVerse": 32,
+          "displayText": "Proverbs 10 (selections)"
+        }
+      ],
+      "reflectionPrompt": "Reflect on the power of your words. How can you use them more wisely?",
+      "interspersedInsights": []
+    },
+    {
+      "dayNumber": 4,
+      "title": "Wisdom in Work & Diligence",
+      "passages": [
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 6,
+          "startVerse": 6,
+          "endChapter": 6,
+          "endVerse": 11,
+          "displayText": "Proverbs 6:6-11"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 12,
+          "startVerse": 24,
+          "endChapter": 12,
+          "endVerse": 24,
+          "displayText": "Proverbs 12:24"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 13,
+          "startVerse": 4,
+          "endChapter": 13,
+          "endVerse": 4,
+          "displayText": "Proverbs 13:4"
+        }
+      ],
+      "reflectionPrompt": "What steps can you take to be more diligent and wise in your responsibilities?",
+      "interspersedInsights": []
+    },
+    {
+      "dayNumber": 5,
+      "title": "The Fear of the Lord",
+      "passages": [
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 9,
+          "startVerse": 10,
+          "endChapter": 9,
+          "endVerse": 12,
+          "displayText": "Proverbs 9:10-12"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 14,
+          "startVerse": 26,
+          "endChapter": 14,
+          "endVerse": 27,
+          "displayText": "Proverbs 14:26-27"
+        }
+      ],
+      "reflectionPrompt": "What does 'the fear of the Lord' mean to you in a practical sense?",
+      "interspersedInsights": []
+    }
+  ],
+  "version": 1,
+  "durationDays": 5
+}
