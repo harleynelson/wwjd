@@ -1,0 +1,166 @@
+{
+  "id": "rp_parables_inclusion_7day",
+  "title": "Parables of Inclusion: Rethinking Boundaries",
+  "description": "A 7-day journey through Jesus' parables that challenge social norms and religious exclusivity, revealing a radically inclusive vision of God's kingdom.",
+  "category": "Gospels / Parables",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_parables_inclusion_7day.png",
+  "isPremium": true,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "The Lost Sheep & Lost Coin",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 15,
+          "startVerse": 1,
+          "endChapter": 15,
+          "endVerse": 10,
+          "displayText": "Luke 15:1-10"
+        }
+      ],
+      "reflectionPrompt": "Who are the 'lost' or marginalized in our society that God actively seeks? How do these parables challenge our ideas of who 'belongs' and the effort we extend towards inclusion?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "These parables emphasize the immense value God places on each individual, especially those who might seem 'lost' or overlooked by society. The active seeking and joyous celebration highlight a divine compassion that leaves no one behind.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "The Prodigal Son (and the Elder Brother)",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 15,
+          "startVerse": 11,
+          "endChapter": 15,
+          "endVerse": 32,
+          "displayText": "Luke 15:11-32"
+        }
+      ],
+      "reflectionPrompt": "This parable highlights unconditional forgiveness but also the resentment of the 'insider.' How can we cultivate a heart that celebrates restoration rather than focusing on perceived fairness or personal merit?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This rich story explores not only the unconditional welcome offered to the repentant 'outsider' but also the challenge faced by the 'insider' to embrace such radical grace. It's a call to move beyond resentment and scorekeeping to joyful reconciliation.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "The Workers in the Vineyard",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 20,
+          "startVerse": 1,
+          "endChapter": 20,
+          "endVerse": 16,
+          "displayText": "Matthew 20:1-16"
+        }
+      ],
+      "reflectionPrompt": "God's generosity can seem disruptive to our notions of fairness. How does this parable challenge our ideas about who 'deserves' blessing and the nature of divine grace?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The landowner's seemingly 'unfair' generosity challenges our human tendency to compare and to base worthiness on effort or timing. This parable suggests that divine grace operates on principles beyond our conventional understanding of merit.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "The Great Banquet",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 14,
+          "startVerse": 15,
+          "endChapter": 14,
+          "endVerse": 24,
+          "displayText": "Luke 14:15-24"
+        }
+      ],
+      "reflectionPrompt": "Those initially invited made excuses, so the invitation extended to the 'poor, crippled, blind, and lame.' Who is being invited into God's community today that conventional structures might overlook or exclude?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "When the initially invited guests make excuses, the invitation is extended to those on the fringes of society. This parable highlights the unexpected and inclusive nature of God's kingdom, often embracing those the 'establishment' might deem unworthy.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "The Unforgiving Servant",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 18,
+          "startVerse": 21,
+          "endChapter": 18,
+          "endVerse": 35,
+          "displayText": "Matthew 18:21-35"
+        }
+      ],
+      "reflectionPrompt": "Having received boundless grace and forgiveness in our lives, how does withholding forgiveness from others obstruct the flow of divine love and reconciliation in our communities and personal relationships?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This parable starkly illustrates the disconnect between receiving immense forgiveness and failing to extend it to others. It suggests that our own experience of grace should fundamentally shape how we treat those who have wronged us.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "The Talents (or Minas)",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 25,
+          "startVerse": 14,
+          "endChapter": 25,
+          "endVerse": 30,
+          "displayText": "Matthew 25:14-30"
+        }
+      ],
+      "reflectionPrompt": "This parable can be understood as a call to utilize all our diverse gifts for positive impact. How can recognizing, cultivating, and employing these varied gifts build a more vibrant and inclusive community?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "While often interpreted regarding financial stewardship, this parable also speaks to the responsibility of using all God-given gifts and resources—time, abilities, opportunities—productively and faithfully, rather than out of fear or neglect.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "The Sheep and the Goats",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 25,
+          "startVerse": 31,
+          "endChapter": 25,
+          "endVerse": 46,
+          "displayText": "Matthew 25:31-46"
+        }
+      ],
+      "reflectionPrompt": "The ultimate standard for judgment in this parable is compassionate action towards the vulnerable. How does this radical call to identify with and serve the marginalized define true belonging and righteousness in God's eyes?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "In this powerful depiction of final judgment, the criteria for entering the kingdom are based on tangible acts of compassion towards those in need—the hungry, thirsty, stranger, naked, sick, and imprisoned. It implies that our treatment of the 'least of these' is a direct reflection of our relationship with the Divine.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

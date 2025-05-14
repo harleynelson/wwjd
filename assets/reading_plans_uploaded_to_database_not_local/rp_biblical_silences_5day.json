@@ -1,0 +1,229 @@
+{
+  "id": "rp_biblical_silences_5day",
+  "title": "Biblical Silences & Modern Questions",
+  "description": "Explore how ancient scriptures speak to (or are silent on) contemporary issues, inviting us to interpret principles of wisdom, love, and justice for today. A 5-day reflective journey.",
+  "category": "Topical / Ethics",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_biblical_silences_5day.png",
+  "isPremium": false,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "Wisdom for New Frontiers",
+      "passages": [
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 2,
+          "startVerse": 1,
+          "endChapter": 2,
+          "endVerse": 11,
+          "displayText": "Proverbs 2:1-11"
+        },
+        {
+          "bookAbbr": "JAS",
+          "startChapter": 1,
+          "startVerse": 5,
+          "endChapter": 1,
+          "endVerse": 5,
+          "displayText": "James 1:5"
+        }
+      ],
+      "reflectionPrompt": "The Bible doesn't mention technologies like AI or stem cell research. How can principles of wisdom, stewardship (Genesis 1:28), and seeking understanding guide our approach to new ethical challenges?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The pursuit of wisdom, as described here, is an active and earnest endeavor. It suggests that when facing new complexities, a foundational step is to deeply value and seek understanding and discernment.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "This invitation from James is a quiet reassurance: when faced with decisions, especially in uncharted territory, the resource of divine wisdom is generously available to those who sincerely ask.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "The Spirit of the Law: Love & Inclusion",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 22,
+          "startVerse": 36,
+          "endChapter": 22,
+          "endVerse": 40,
+          "displayText": "Matthew 22:36-40"
+        },
+        {
+          "bookAbbr": "GAL",
+          "startChapter": 3,
+          "startVerse": 28,
+          "endChapter": 3,
+          "endVerse": 28,
+          "displayText": "Galatians 3:28"
+        },
+        {
+          "bookAbbr": "ROM",
+          "startChapter": 14,
+          "startVerse": 1,
+          "endChapter": 14,
+          "endVerse": 4,
+          "displayText": "Romans 14:1-4"
+        }
+      ],
+      "reflectionPrompt": "Scripture contains varied passages regarding social inclusion. How do overarching commands to love God and neighbor, and statements about unity in Christ, inform our approach to those who have been historically marginalized (e.g., LGBTQ+ individuals, other communities)?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Jesus centers the entire law on these two expressions of love. This suggests that love should be the primary lens through which we interpret all other teachings and interact with one another.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Paul's declaration here points towards a radical vision of unity that transcends common societal divisions. It invites reflection on how such a vision challenges us to foster belonging for everyone.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The call to welcome others without passing judgment on disputable matters speaks to a posture of humility and grace in community, especially when navigating diverse perspectives.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Caring for Our Common Home",
+      "passages": [
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 2,
+          "startVerse": 15,
+          "endChapter": 2,
+          "endVerse": 15,
+          "displayText": "Genesis 2:15"
+        },
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 24,
+          "startVerse": 1,
+          "endChapter": 24,
+          "endVerse": 2,
+          "displayText": "Psalm 24:1-2"
+        },
+        {
+          "bookAbbr": "LEV",
+          "startChapter": 25,
+          "startVerse": 23,
+          "endChapter": 25,
+          "endVerse": 24,
+          "displayText": "Leviticus 25:23-24"
+        }
+      ],
+      "reflectionPrompt": "While the Bible doesn't use terms like 'climate change,' what responsibilities do its teachings on stewardship and the Earth being the Lord's imply for our environmental ethics today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This early instruction to 'work it and take care of it' frames humanity's relationship with the Earth not as one of sheer domination, but of responsible cultivation and preservation.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The affirmation that the Earth belongs to God fundamentally shifts our perspective from ownership to stewardship, implying accountability for how we treat this shared inheritance.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Navigating Conflict: Diverse Voices on Peace",
+      "passages": [
+        {
+          "bookAbbr": "EXO",
+          "startChapter": 21,
+          "startVerse": 23,
+          "endChapter": 21,
+          "endVerse": 25,
+          "displayText": "Exodus 21:23-25 ('An eye for an eye')"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 38,
+          "endChapter": 5,
+          "endVerse": 41,
+          "displayText": "Matthew 5:38-41 ('Turn the other cheek')"
+        },
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 2,
+          "startVerse": 4,
+          "endChapter": 2,
+          "endVerse": 4,
+          "displayText": "Isaiah 2:4 ('Nation shall not lift up sword against nation')"
+        }
+      ],
+      "reflectionPrompt": "The Bible presents a range of responses to conflict, from retributive justice to radical peacemaking. How do we discern a path forward when scriptures themselves seem to offer differing perspectives?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The principle of 'an eye for an eye' in its original context was often about limiting retribution to proportionality, preventing escalating vengeance, rather than a mandate for personal revenge.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus' teaching here introduces a transformative ethic that moves beyond mere reciprocal justice towards non-retaliation and proactive peacemaking, challenging conventional responses to offense.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "This prophetic vision offers a powerful hope for ultimate global peace, where instruments of war are converted into tools of sustenance and cooperative living. It calls us to imagine and work towards such a future.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Faith and Governance",
+      "passages": [
+        {
+          "bookAbbr": "1SA",
+          "startChapter": 8,
+          "startVerse": 10,
+          "endChapter": 8,
+          "endVerse": 18,
+          "displayText": "1 Samuel 8:10-18 (Samuel's warning about a king)"
+        },
+        {
+          "bookAbbr": "ROM",
+          "startChapter": 13,
+          "startVerse": 1,
+          "endChapter": 13,
+          "endVerse": 2,
+          "displayText": "Romans 13:1-2 (Submit to governing authorities)"
+        },
+        {
+          "bookAbbr": "ACT",
+          "startChapter": 5,
+          "startVerse": 29,
+          "endChapter": 5,
+          "endVerse": 29,
+          "displayText": "Acts 5:29 ('We must obey God rather than men')"
+        }
+      ],
+      "reflectionPrompt": "Scripture offers varied perspectives on human governance. How do principles of justice, coupled with these texts, help us navigate our civic responsibilities and critique power structures today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Samuel's warning highlights the potential for human power structures to become oppressive, urging a degree of caution and a reminder of where ultimate allegiance lies.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The apostles' stance here underscores a crucial principle: while civic order is valued, allegiance to divine conscience and justice must take precedence when human laws conflict with fundamental moral truth.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 5
+}

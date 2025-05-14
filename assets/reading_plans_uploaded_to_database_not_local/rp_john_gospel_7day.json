@@ -1,0 +1,166 @@
+{
+  "id": "rp_john_gospel_7day",
+  "title": "Meet Jesus: Gospel of John",
+  "description": "A 7-day journey through key passages in the Gospel of John, revealing who Jesus is and what He offers.",
+  "category": "Gospels",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_john_gospel_7day.png",
+  "isPremium": false,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "The Word Became Flesh",
+      "passages": [
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 1,
+          "startVerse": 1,
+          "endChapter": 1,
+          "endVerse": 18,
+          "displayText": "John 1:1-18"
+        }
+      ],
+      "reflectionPrompt": "What does it mean to you that the divine 'Word became flesh and dwelt among us'? How does this idea of God's closeness impact your perspective?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "John begins his account with such profound and poetic language. He's not just telling a story; he's inviting us into a cosmic understanding of who Jesus is—the eternal Word, the source of life and light, now present with us in a tangible way.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "The Wedding at Cana & Temple Cleansing",
+      "passages": [
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 2,
+          "startVerse": 1,
+          "endChapter": 2,
+          "endVerse": 25,
+          "displayText": "John 2"
+        }
+      ],
+      "reflectionPrompt": "How do these initial actions of Jesus—providing joy and challenging misuse of sacred space—reveal His authority and the nature of His mission?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "These first 'signs' in John's Gospel are powerful. Turning water into wine speaks of abundance and transformation, while clearing the temple courts speaks to a passion for true worship and reverence. Both hint at a new way of experiencing the divine that Jesus is introducing.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Born Again: Nicodemus",
+      "passages": [
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 3,
+          "startVerse": 1,
+          "endChapter": 3,
+          "endVerse": 21,
+          "displayText": "John 3:1-21"
+        }
+      ],
+      "reflectionPrompt": "Reflect on the meaning of being 'born again' or experiencing a spiritual awakening. What might this look like in a person's life today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This intimate conversation with Nicodemus touches on one of the most transformative ideas: spiritual rebirth. Jesus speaks of a profound inner change, a new beginning that allows us to truly see and enter a different kind of reality—the kingdom of God.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "The Woman at the Well",
+      "passages": [
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 4,
+          "startVerse": 1,
+          "endChapter": 4,
+          "endVerse": 42,
+          "displayText": "John 4:1-42"
+        }
+      ],
+      "reflectionPrompt": "Jesus offers 'living water' to someone who was an outsider by many standards. How does this story challenge our own barriers and invite us to share hope and acceptance with all?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Notice how Jesus crosses several social and cultural boundaries to engage this Samaritan woman. Their conversation moves from physical thirst to a deep spiritual longing, revealing Jesus' offer of 'living water' that satisfies the soul.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "I AM the Bread of Life",
+      "passages": [
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 6,
+          "startVerse": 25,
+          "endChapter": 6,
+          "endVerse": 40,
+          "displayText": "John 6:25-40"
+        }
+      ],
+      "reflectionPrompt": "In what ways do you seek spiritual nourishment in your life? How does the idea of Jesus as the 'Bread of Life' speak to your deepest needs?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "After feeding thousands, Jesus redirects the crowd's focus from physical bread to spiritual nourishment. His claim to be the 'Bread of Life' is an invitation to find ultimate sustenance and eternal life in relationship with him.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "The Good Shepherd",
+      "passages": [
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 10,
+          "startVerse": 1,
+          "endChapter": 10,
+          "endVerse": 18,
+          "displayText": "John 10:1-18"
+        }
+      ],
+      "reflectionPrompt": "How do you experience guidance, care, or protection in your spiritual journey? What does it mean to 'know his voice'?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The imagery of a shepherd who knows, leads, and lays down his life for his sheep is rich with care and protection. Jesus uses this to describe his intimate relationship with those who follow him.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "The Resurrection and the Life",
+      "passages": [
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 11,
+          "startVerse": 1,
+          "endChapter": 11,
+          "endVerse": 44,
+          "displayText": "John 11:1-44"
+        }
+      ],
+      "reflectionPrompt": "How does the story of Lazarus and Jesus's claim to be 'the resurrection and the life' impact your understanding of hope, loss, and eternal life?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The raising of Lazarus is a dramatic demonstration of Jesus's power over death and his profound compassion. His declaration, 'I am the resurrection and the life,' offers hope beyond our earthly existence.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

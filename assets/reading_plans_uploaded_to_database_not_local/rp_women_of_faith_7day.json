@@ -1,0 +1,206 @@
+{
+  "id": "rp_women_of_faith_7day",
+  "title": "Women of Faith: Stories of Strength & Influence",
+  "description": "Rediscover the stories of pivotal women in scripture—leaders, prophets, disciples, and pioneers—whose faith and actions shaped biblical history and inspire us today. (7 days)",
+  "category": "Topical / Character Study",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_women_of_faith_7day.png",
+  "isPremium": true,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "Deborah: Prophetess and Judge",
+      "passages": [
+        {
+          "bookAbbr": "JDG",
+          "startChapter": 4,
+          "startVerse": 4,
+          "endChapter": 4,
+          "endVerse": 10,
+          "displayText": "Judges 4:4-10"
+        }
+      ],
+      "reflectionPrompt": "Deborah led Israel with wisdom and courage. What does her example teach us about recognizing and affirming leadership gifts in unexpected people or places today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "In a predominantly patriarchal society, Deborah stands out as a recognized leader—a prophetess judging Israel. She confidently gives military command based on God's direction, demonstrating remarkable authority and faith. Her story challenges assumptions about gender roles and highlights God's use of diverse leaders.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "Ruth: Loyalty and Resilience",
+      "passages": [
+        {
+          "bookAbbr": "RUT",
+          "startChapter": 1,
+          "startVerse": 15,
+          "endChapter": 1,
+          "endVerse": 18,
+          "displayText": "Ruth 1:15-18"
+        },
+        {
+          "bookAbbr": "RUT",
+          "startChapter": 2,
+          "startVerse": 10,
+          "endChapter": 2,
+          "endVerse": 12,
+          "displayText": "Ruth 2:10-12"
+        }
+      ],
+      "reflectionPrompt": "Ruth showed profound loyalty and took risks for her relationship with Naomi. What does her story teach us about commitment, resilience, and the power of character in navigating challenging life transitions?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Ruth, a Moabite widow, demonstrates extraordinary loyalty and courage by choosing to stay with her mother-in-law, Naomi, and move to a foreign land. Her character—her kindness and hard work—shines through, earning her respect and provision. Her story is one of resilience, faithfulness in relationships, and finding hope in difficult circumstances.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Esther: Courage for Such a Time as This",
+      "passages": [
+        {
+          "bookAbbr": "EST",
+          "startChapter": 4,
+          "startVerse": 13,
+          "endChapter": 4,
+          "endVerse": 16,
+          "displayText": "Esther 4:13-16"
+        },
+        {
+          "bookAbbr": "EST",
+          "startChapter": 5,
+          "startVerse": 1,
+          "endChapter": 5,
+          "endVerse": 3,
+          "displayText": "Esther 5:1-3"
+        }
+      ],
+      "reflectionPrompt": "Esther used her position of influence courageously. What positions of influence (formal or informal) do you have? How might you be called to use your voice or resources 'for such a time as this' to advocate for others?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Esther, facing a terrifying situation, chooses courage over safety. Encouraged by Mordecai's famous words, 'And who knows but that you have come to your royal position for such a time as this?', she risks her life to advocate for her people. Her story is a powerful example of using one's position and influence for justice, even at great personal cost.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Mary, Mother of Jesus: Faith and Surrender",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 1,
+          "startVerse": 26,
+          "endChapter": 1,
+          "endVerse": 38,
+          "displayText": "Luke 1:26-38 (The Annunciation)"
+        }
+      ],
+      "reflectionPrompt": "Mary said 'yes' to a difficult and world-changing calling. What does her response teach you about faith, trust, and willingness to participate in something bigger than yourself, even when it involves uncertainty or sacrifice?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Mary's response to the angel's astonishing announcement is one of profound faith and surrender: 'I am the Lord’s servant... May your word to me be fulfilled.' Despite the personal risks and social stigma, she trusts God's plan. Her 'yes' demonstrates incredible courage and willingness to participate in God's work in the world.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Mary Magdalene: Witness to the Resurrection",
+      "passages": [
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 20,
+          "startVerse": 1,
+          "endChapter": 20,
+          "endVerse": 2,
+          "displayText": "John 20:1-2"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 20,
+          "startVerse": 11,
+          "endChapter": 20,
+          "endVerse": 18,
+          "displayText": "John 20:11-18"
+        }
+      ],
+      "reflectionPrompt": "Jesus entrusted Mary Magdalene with the crucial news of his resurrection. What does it mean that the first witness and messenger of the central event of Christian faith was a woman? How does this affirm the value of women's voices and experiences?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Mary Magdalene's devotion is evident as she goes to the tomb early on Sunday morning. Significantly, the resurrected Jesus appears first to her and commissions her to be the first messenger—the 'apostle to the apostles'—to announce the resurrection. This highlights her importance and challenges cultural norms that often dismissed women's testimony.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "Lydia: Businesswoman and Church Leader",
+      "passages": [
+        {
+          "bookAbbr": "ACT",
+          "startChapter": 16,
+          "startVerse": 13,
+          "endChapter": 16,
+          "endVerse": 15,
+          "displayText": "Acts 16:13-15"
+        },
+        {
+          "bookAbbr": "ACT",
+          "startChapter": 16,
+          "startVerse": 40,
+          "endChapter": 16,
+          "endVerse": 40,
+          "displayText": "Acts 16:40"
+        }
+      ],
+      "reflectionPrompt": "Lydia used her resources (her home, her business background) to support the fledgling church community. How can we use our unique skills, resources, and spheres of influence to foster community and support spiritual growth?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Lydia is described as a successful businesswoman ('dealer in purple cloth') and a worshiper of God. After hearing Paul's message, she and her household respond, and she immediately offers hospitality, opening her home to become a center for the new church in Philippi. Her story showcases female entrepreneurship, spiritual openness, and practical leadership in the early church.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "Priscilla: Teacher and Ministry Partner",
+      "passages": [
+        {
+          "bookAbbr": "ACT",
+          "startChapter": 18,
+          "startVerse": 1,
+          "endChapter": 18,
+          "endVerse": 3,
+          "displayText": "Acts 18:1-3"
+        },
+        {
+          "bookAbbr": "ACT",
+          "startChapter": 18,
+          "startVerse": 24,
+          "endChapter": 18,
+          "endVerse": 26,
+          "displayText": "Acts 18:24-26"
+        }
+      ],
+      "reflectionPrompt": "Priscilla worked alongside her husband and others in ministry and teaching. What does her example show us about partnership, collaboration, and the importance of women's contributions in teaching and theological understanding?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Priscilla is consistently mentioned alongside her husband, Aquila, suggesting a true partnership in life and ministry. Together, they work with Paul and notably take Apollos aside to explain 'the way of God more adequately.' This highlights Priscilla's theological understanding and her active role in teaching and mentoring within the early church community.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

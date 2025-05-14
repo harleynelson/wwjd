@@ -1,0 +1,198 @@
+{
+  "id": "rp_beyond_borders_7day",
+  "title": "Beyond Borders: Welcoming the Stranger",
+  "description": "A 7-day deep dive into biblical teachings on hospitality, immigration, and our call to care for the 'stranger' or 'foreigner' among us.",
+  "category": "Topical / Social Justice",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_beyond_borders_7day.png",
+  "isPremium": true,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "Love the Sojourner",
+      "passages": [
+        {
+          "bookAbbr": "DEU",
+          "startChapter": 10,
+          "startVerse": 17,
+          "endChapter": 10,
+          "endVerse": 19,
+          "displayText": "Deuteronomy 10:17-19"
+        }
+      ],
+      "reflectionPrompt": "Why does God emphasize loving the sojourner, reminding Israel of their own past? How does this apply today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The reason given here for loving the sojourner is profound: because God does, and because the Israelites themselves knew what it felt like to be foreigners ('you yourselves were sojourners'). This roots the command not just in obedience, but in empathy born from shared experience and reflecting God's own compassionate character.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "Hospitality as a Virtue",
+      "passages": [
+        {
+          "bookAbbr": "HEB",
+          "startChapter": 13,
+          "startVerse": 1,
+          "endChapter": 13,
+          "endVerse": 2,
+          "displayText": "Hebrews 13:1-2"
+        },
+        {
+          "bookAbbr": "ROM",
+          "startChapter": 12,
+          "startVerse": 13,
+          "endChapter": 12,
+          "endVerse": 13,
+          "displayText": "Romans 12:13"
+        }
+      ],
+      "reflectionPrompt": "What are the practical implications of 'practicing hospitality' in our modern context, especially towards those from different backgrounds?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Hospitality is presented here as more than just basic politeness; it's an active 'practice' and a way to generously 'share' what we have. The hint about possibly entertaining 'angels unaware' adds a layer of sacred wonder, suggesting we might encounter the divine in unexpected ways when we open our lives to others.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "One Law for All",
+      "passages": [
+        {
+          "bookAbbr": "LEV",
+          "startChapter": 24,
+          "startVerse": 22,
+          "endChapter": 24,
+          "endVerse": 22,
+          "displayText": "Leviticus 24:22"
+        },
+        {
+          "bookAbbr": "NUM",
+          "startChapter": 15,
+          "startVerse": 15,
+          "endChapter": 15,
+          "endVerse": 16,
+          "displayText": "Numbers 15:15-16"
+        }
+      ],
+      "reflectionPrompt": "The Law often stressed equal treatment for the native-born and the foreigner. How does this challenge discriminatory attitudes or policies today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "The repetition of this command for 'the same standard' or 'one law' for both the native-born and the foreigner living among them is striking. It establishes a core principle of legal equality and inclusion, challenging any system or attitude that would treat newcomers as inherently lesser or lacking basic rights within the community.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Jesus as a Refugee",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 2,
+          "startVerse": 13,
+          "endChapter": 2,
+          "endVerse": 15,
+          "displayText": "Matthew 2:13-15"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 2,
+          "startVerse": 19,
+          "endChapter": 2,
+          "endVerse": 21,
+          "displayText": "Matthew 2:19-21"
+        }
+      ],
+      "reflectionPrompt": "Reflecting on Jesus' own experience as a refugee, how might this shape our compassion and response to those fleeing persecution today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "It’s a powerful and humbling reality that Jesus' own story includes the experience of being a refugee – his family fleeing violence and seeking safety across borders in Egypt. This aspect of his life deeply connects him to the plight of millions today, inviting us towards a response rooted in compassion and the recognition of shared human vulnerability.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Welcoming the 'Least of These'",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 25,
+          "startVerse": 34,
+          "endChapter": 25,
+          "endVerse": 40,
+          "displayText": "Matthew 25:34-40 (focus on 'I was a stranger and you welcomed me')"
+        }
+      ],
+      "reflectionPrompt": "How is welcoming the stranger directly linked to serving Christ himself, according to this passage?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Jesus makes the connection incredibly direct and personal: welcoming the stranger *is* welcoming Him. This passage elevates acts of hospitality and inclusion beyond mere social kindness; they become profound encounters with Christ himself, present in the person needing welcome and care.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "Ruth: An Immigrant's Story",
+      "passages": [
+        {
+          "bookAbbr": "RUT",
+          "startChapter": 2,
+          "startVerse": 8,
+          "endChapter": 2,
+          "endVerse": 12,
+          "displayText": "Ruth 2:8-12"
+        }
+      ],
+      "reflectionPrompt": "Boaz showed kindness and provision to Ruth, a Moabite foreigner. What can we learn from his example about integrating and supporting newcomers?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Boaz's interaction with Ruth, a Moabite woman in Israelite territory, goes far beyond simple tolerance. He actively ensures her safety, provides for her sustenance, acknowledges her character, and blesses her journey. His actions model a proactive, dignifying welcome that facilitates integration and offers genuine support to a newcomer.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "The Inclusive Vision of God's People",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 56,
+          "startVerse": 3,
+          "endChapter": 56,
+          "endVerse": 8,
+          "displayText": "Isaiah 56:3-8"
+        },
+        {
+          "bookAbbr": "GAL",
+          "startChapter": 3,
+          "startVerse": 28,
+          "endChapter": 3,
+          "endVerse": 28,
+          "displayText": "Galatians 3:28"
+        }
+      ],
+      "reflectionPrompt": "How do these passages paint a picture of God's community as one that transcends national, ethnic, and social barriers? What is our role in building such a community?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "From Isaiah's explicit welcome to foreigners joining God's people to Paul's radical declaration that in Christ 'there is neither Jew nor Gentile,' scripture consistently points towards a community defined by faith, not borders or ethnicity. This expansive vision challenges us to actively build communities that reflect God's embrace, breaking down barriers that divide.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

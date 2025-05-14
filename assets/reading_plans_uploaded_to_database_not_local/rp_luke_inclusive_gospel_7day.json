@@ -1,0 +1,182 @@
+{
+  "id": "rp_luke_inclusive_gospel_7day",
+  "title": "Luke: The Inclusive Gospel",
+  "description": "Journey through Luke's Gospel, highlighting Jesus' radical welcome for the poor, marginalized, women, and outsiders. Explore parables of compassion and justice. (7 days)",
+  "category": "Gospels / Life of Jesus",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_luke_inclusive_gospel_7day.png",
+  "isPremium": false,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "Mary's Song: Good News for the Lowly",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 1,
+          "startVerse": 46,
+          "endChapter": 1,
+          "endVerse": 55,
+          "displayText": "Luke 1:46-55 (The Magnificat)"
+        }
+      ],
+      "reflectionPrompt": "Mary sings about God bringing down the powerful and lifting up the humble. Where do you see this kind of 'great reversal' needed in the world or in your own life today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Mary's powerful song sets the stage for Luke's Gospel. It celebrates a God who notices the humble, lifts up the lowly, and challenges oppressive power structures. It's a radical vision of hope from the margins, reminding us that God's good news often starts where we least expect it.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "Jesus' Mission: Good News to the Poor",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 4,
+          "startVerse": 16,
+          "endChapter": 4,
+          "endVerse": 21,
+          "displayText": "Luke 4:16-21"
+        }
+      ],
+      "reflectionPrompt": "Jesus declared 'good news to the poor' as central to his purpose. What does 'good news' look like for those struggling economically or socially in our communities?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "In his hometown synagogue, Jesus announces his mission by quoting Isaiah. He explicitly aligns himself with bringing good news to the poor, freedom for the oppressed, and sight for the blind. This defines his ministry from the start—one centered on liberation, healing, and justice.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Calling the Unlikely",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 5,
+          "startVerse": 1,
+          "endChapter": 5,
+          "endVerse": 11,
+          "displayText": "Luke 5:1-11"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 5,
+          "startVerse": 27,
+          "endChapter": 5,
+          "endVerse": 32,
+          "displayText": "Luke 5:27-32"
+        }
+      ],
+      "reflectionPrompt": "Jesus intentionally sought out those considered 'sinners' or outsiders by the religious establishment. Who might be the 'tax collectors' or 'sinners' our society marginalizes today, and how are we called to engage with them?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus doesn't call the religious elite or the obviously 'qualified'. He calls ordinary fishermen and even a tax collector—someone viewed as a collaborator and sinner. His statement, 'I have not come to call the righteous, but sinners to repentance,' radically redefines who belongs in God's kingdom.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Compassion Beyond Boundaries",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 7,
+          "startVerse": 1,
+          "endChapter": 7,
+          "endVerse": 10,
+          "displayText": "Luke 7:1-10"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 7,
+          "startVerse": 11,
+          "endChapter": 7,
+          "endVerse": 17,
+          "displayText": "Luke 7:11-17"
+        }
+      ],
+      "reflectionPrompt": "Jesus showed compassion to a Roman soldier and a grieving widow, crossing social barriers. What barriers (cultural, political, social) might prevent us from showing compassion today, and how can we overcome them?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Here, Jesus extends healing and compassion across significant social divides—to a Roman centurion (an outsider) and a grieving widow (vulnerable in that society). His actions demonstrate that God's care and power are not limited by ethnicity, social status, or circumstance.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Who Is My Neighbor? The Good Samaritan",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 10,
+          "startVerse": 25,
+          "endChapter": 10,
+          "endVerse": 37,
+          "displayText": "Luke 10:25-37"
+        }
+      ],
+      "reflectionPrompt": "The Good Samaritan showed mercy when the religious figures passed by. What does this parable teach us about the difference between religious observance and genuine compassion? Who is the unexpected 'neighbor' in your life?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This famous parable flips the question 'Who is my neighbor?' to 'Who *acted* like a neighbor?' The hero is a Samaritan—despised by the religious establishment—who showed mercy. Jesus challenges us to define neighborliness not by affiliation, but by compassionate action, especially towards those different from us.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "Lost and Found: Extravagant Grace",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 15,
+          "startVerse": 11,
+          "endChapter": 15,
+          "endVerse": 32,
+          "displayText": "Luke 15:11-32 (The Prodigal Son)"
+        }
+      ],
+      "reflectionPrompt": "The father's love extends to both the prodigal son and the resentful older brother. Which character do you relate to more in this story, and what does the father's response teach you about God's inclusive grace?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This story reveals the heart of a God who waits with open arms, ready to celebrate the return of the lost with extravagant grace. It challenges both the rebellious 'younger son' and the resentful 'older son,' inviting everyone into the Father's embrace, regardless of their past or their self-righteousness.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "Seeking and Saving the Lost: Zacchaeus",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 19,
+          "startVerse": 1,
+          "endChapter": 19,
+          "endVerse": 10,
+          "displayText": "Luke 19:1-10"
+        }
+      ],
+      "reflectionPrompt": "Jesus initiated the encounter with Zacchaeus, leading to transformation. How can actively seeking out and welcoming those often judged or excluded lead to positive change in their lives and ours?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Jesus seeks out Zacchaeus, a wealthy but despised chief tax collector, initiating relationship despite public disapproval. This encounter leads to Zacchaeus's radical transformation and restitution. It's a beautiful picture of how being seen and welcomed by Jesus can inspire profound change and restoration.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

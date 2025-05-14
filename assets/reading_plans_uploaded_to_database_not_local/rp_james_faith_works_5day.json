@@ -1,0 +1,146 @@
+{
+  "id": "rp_james_faith_works_5day",
+  "title": "James: Faith That Works",
+  "description": "Discover the practical wisdom of James, exploring how genuine faith translates into tangible actions like controlling speech, caring for the needy, and seeking wisdom in trials. (5 days)",
+  "category": "Epistles / Christian Living",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_james_faith_works_5day.png",
+  "isPremium": false,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "Wisdom Through Trials",
+      "passages": [
+        {
+          "bookAbbr": "JAS",
+          "startChapter": 1,
+          "startVerse": 2,
+          "endChapter": 1,
+          "endVerse": 8,
+          "displayText": "James 1:2-8"
+        }
+      ],
+      "reflectionPrompt": "James encourages finding joy even in trials because they build perseverance. How can reframing challenges as opportunities for growth change your perspective? When facing difficulty, how easy or hard is it for you to ask for wisdom?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "James doesn't shy away from life's difficulties. He suggests that facing trials can actually develop perseverance and maturity. Notice the immediate link to wisdom – when facing challenges, we're invited to ask generously for guidance, trusting we'll receive it without judgment.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "Listen More, Speak Less",
+      "passages": [
+        {
+          "bookAbbr": "JAS",
+          "startChapter": 1,
+          "startVerse": 19,
+          "endChapter": 1,
+          "endVerse": 21,
+          "displayText": "James 1:19-21"
+        },
+        {
+          "bookAbbr": "JAS",
+          "startChapter": 3,
+          "startVerse": 2,
+          "endChapter": 3,
+          "endVerse": 12,
+          "displayText": "James 3:2-12 (Focus on the power of the tongue)"
+        }
+      ],
+      "reflectionPrompt": "Consider your communication patterns. In what situations could you practice being 'quicker to listen' and 'slower to speak'? How have you seen words build up or tear down relationships?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "James places great emphasis on the power of our words. Being 'quick to listen, slow to speak and slow to become angry' is presented as practical wisdom. Chapter 3 uses vivid imagery (like a ship's rudder or a small spark) to show how much influence our tongue has, for good or ill.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Faith and Deeds: Beyond Words",
+      "passages": [
+        {
+          "bookAbbr": "JAS",
+          "startChapter": 1,
+          "startVerse": 22,
+          "endChapter": 1,
+          "endVerse": 27,
+          "displayText": "James 1:22-27 (Doers of the word)"
+        },
+        {
+          "bookAbbr": "JAS",
+          "startChapter": 2,
+          "startVerse": 14,
+          "endChapter": 2,
+          "endVerse": 17,
+          "displayText": "James 2:14-17 (Faith without deeds is dead)"
+        }
+      ],
+      "reflectionPrompt": "James challenges us to be 'doers of the word, and not hearers only.' What is one specific way you can put your beliefs or values into practice this week, particularly in caring for someone in need?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "This is a core theme for James: genuine faith isn't just about hearing or believing; it's about doing. He contrasts merely listening to the word with actively putting it into practice. True religion, he argues, involves tangible actions like caring for orphans and widows and keeping oneself ethically grounded.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "No Partiality: Treating Everyone Equally",
+      "passages": [
+        {
+          "bookAbbr": "JAS",
+          "startChapter": 2,
+          "startVerse": 1,
+          "endChapter": 2,
+          "endVerse": 9,
+          "displayText": "James 2:1-9"
+        }
+      ],
+      "reflectionPrompt": "Think about your community or social circles. Are there subtle (or not-so-subtle) ways that favoritism based on wealth, status, or appearance shows up? How can you actively practice treating everyone with equal honor?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "James strongly condemns favoritism, especially based on wealth or status. He argues that showing partiality violates the core command to 'love your neighbor as yourself.' Genuine faith requires treating all people with equal dignity and respect, regardless of their appearance or social standing.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Patience, Prayer, and Healing",
+      "passages": [
+        {
+          "bookAbbr": "JAS",
+          "startChapter": 5,
+          "startVerse": 7,
+          "endChapter": 5,
+          "endVerse": 11,
+          "displayText": "James 5:7-11 (Patience in suffering)"
+        },
+        {
+          "bookAbbr": "JAS",
+          "startChapter": 5,
+          "startVerse": 13,
+          "endChapter": 5,
+          "endVerse": 16,
+          "displayText": "James 5:13-16 (Prayer for the sick)"
+        }
+      ],
+      "reflectionPrompt": "James encourages patience in hardship and persistent prayer. What situation currently requires patience from you? How can you incorporate prayer, both for yourself and others, more intentionally into your daily rhythm?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Concluding his letter, James circles back to perseverance, urging patience like a farmer waiting for rain. He then emphasizes the power of prayer in all circumstances—in trouble, happiness, or sickness. He encourages praying for one another, linking it to healing and restoration within the community.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 5
+}

@@ -1,0 +1,192 @@
+{
+  "id": "rp_genesis_intro",
+  "title": "First Steps: Genesis",
+  "description": "Explore the book of beginnings, covering creation, the fall, early patriarchs, and God's covenant promises. A 7-day introduction.",
+  "category": "Old Testament",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_genesis_intro.png",
+  "isPremium": false,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "Creation",
+      "passages": [
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 1,
+          "startVerse": 1,
+          "endChapter": 1,
+          "endVerse": 31,
+          "displayText": "Genesis 1"
+        }
+      ],
+      "reflectionPrompt": "What aspect of God's creation amazes you the most today, and how does it speak to you about its Source?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The poetic rhythm of these verses paints a picture of order emerging from chaos, of intention and goodness in every act of creation. It invites us to see the world not as a random accident, but as a thoughtfully crafted space, brimming with potential and declared 'good'.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "The First Man and Woman",
+      "passages": [
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 2,
+          "startVerse": 1,
+          "endChapter": 2,
+          "endVerse": 25,
+          "displayText": "Genesis 2"
+        }
+      ],
+      "reflectionPrompt": "Reflect on the concept of being 'made in God's image' and the idea of 'not good for man to be alone.' What does this suggest about our inherent relational nature and purpose?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This chapter offers a more intimate look at the creation of humanity and the beginnings of relationship—with the Creator, with the earth, and with each other. Notice the emphasis on companionship and the naming of creatures, suggesting a deep connection and responsibility.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "The Fall",
+      "passages": [
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 3,
+          "startVerse": 1,
+          "endChapter": 3,
+          "endVerse": 24,
+          "displayText": "Genesis 3"
+        }
+      ],
+      "reflectionPrompt": "How does this story of 'the fall' resonate with your understanding of human struggles and the longing for restoration or grace in your own life?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This narrative explores themes of choice, consequence, and the introduction of brokenness into the world. It's a story that has shaped much thought about human nature and our relationship with the divine. It also subtly introduces the idea of redemption, even amidst hardship.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Cain and Abel / Noah's Calling",
+      "passages": [
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 4,
+          "startVerse": 1,
+          "endChapter": 4,
+          "endVerse": 16,
+          "displayText": "Genesis 4:1-16"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 6,
+          "startVerse": 9,
+          "endChapter": 6,
+          "endVerse": 22,
+          "displayText": "Genesis 6:9-22"
+        }
+      ],
+      "reflectionPrompt": "Consider the themes of human choice, its consequences, and the idea of finding favor or being called to a unique purpose even in challenging times.",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The story of Cain and Abel introduces challenging themes of jealousy, anger, and the devastating consequences of unchecked negative emotions. It also shows, even in judgment, a measure of divine protection.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Amidst a world described as corrupt, Noah stands out for his righteousness. His story is one of heeding a difficult call and trusting in a divine plan for preservation, even when it seemed overwhelming.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "The Flood and God's Covenant",
+      "passages": [
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 7,
+          "startVerse": 1,
+          "endChapter": 7,
+          "endVerse": 24,
+          "displayText": "Genesis 7"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 8,
+          "startVerse": 1,
+          "endChapter": 8,
+          "endVerse": 22,
+          "displayText": "Genesis 8"
+        }
+      ],
+      "reflectionPrompt": "What does God's covenant with Noah, symbolized by the rainbow, reveal about the nature of divine promises and the hope for renewal after devastation?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The flood narrative is a powerful and complex story of judgment and preservation. It speaks to the seriousness of human actions and the sweeping nature of divine response in ancient storytelling.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Emerging from the flood, there's a sense of a new beginning, culminating in a promise. The covenant symbolized by the rainbow is a profound statement of divine commitment to the earth and its inhabitants.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "The Call of Abram",
+      "passages": [
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 12,
+          "startVerse": 1,
+          "endChapter": 12,
+          "endVerse": 9,
+          "displayText": "Genesis 12:1-9"
+        }
+      ],
+      "reflectionPrompt": "What does it mean to step out in faith when you feel a divine calling or a deep inner prompting, even if the path ahead isn't entirely clear?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Abram's call involves leaving the familiar and stepping into the unknown, based purely on a promise. This is a foundational story about faith as trust and obedience, even without all the answers.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "God's Covenant with Abram",
+      "passages": [
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 15,
+          "startVerse": 1,
+          "endChapter": 15,
+          "endVerse": 21,
+          "displayText": "Genesis 15"
+        }
+      ],
+      "reflectionPrompt": "Reflect on the nature of promises—both human and divine. How does the concept of covenant shape your understanding of relationship and commitment?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This chapter deepens the covenant theme, with Abram expressing doubt and God providing reassurance through a powerful, symbolic ritual. It shows that even foundational figures of faith had moments of questioning.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

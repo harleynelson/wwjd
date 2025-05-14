@@ -1,0 +1,219 @@
+{
+  "id": "rp_love_your_neighbor_7day",
+  "title": "Love Your Neighbor: A Call to Compassion",
+  "description": "Discover the radical call to love and compassion found in scripture. This 7-day plan explores how to extend empathy and justice to all.",
+  "category": "Topical",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_love_your_neighbor_7day.png",
+  "isPremium": false,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "The Greatest Commandment",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 22,
+          "startVerse": 34,
+          "endChapter": 22,
+          "endVerse": 40,
+          "displayText": "Matthew 22:34-40"
+        },
+        {
+          "bookAbbr": "LEV",
+          "startChapter": 19,
+          "startVerse": 18,
+          "endChapter": 19,
+          "endVerse": 18,
+          "displayText": "Leviticus 19:18"
+        }
+      ],
+      "reflectionPrompt": "Who is your 'neighbor' in today's world? How can you show them love actively?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Jesus distills countless laws into two core principles: love for God and love for neighbor. This pairing suggests that our spiritual devotion is intrinsically linked to our human connections and ethical actions.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "It's significant that Jesus draws the command to love neighbors from Leviticus, rooting this central teaching deeply within the Hebraic tradition. It's not a new idea, but one with enduring importance.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "The Good Samaritan",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 10,
+          "startVerse": 25,
+          "endChapter": 10,
+          "endVerse": 37,
+          "displayText": "Luke 10:25-37"
+        }
+      ],
+      "reflectionPrompt": "What excuses do we make for not helping others? How can this parable challenge those excuses and call us to compassionate action?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This parable radically redefines 'neighbor' from someone within our own group to anyone in need whom we encounter. It challenges social, religious, and ethnic boundaries, emphasizing action over affiliation.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Empathy and Shared Burdens",
+      "passages": [
+        {
+          "bookAbbr": "GAL",
+          "startChapter": 6,
+          "startVerse": 2,
+          "endChapter": 6,
+          "endVerse": 2,
+          "displayText": "Galatians 6:2"
+        },
+        {
+          "bookAbbr": "ROM",
+          "startChapter": 12,
+          "startVerse": 15,
+          "endChapter": 12,
+          "endVerse": 15,
+          "displayText": "Romans 12:15"
+        }
+      ],
+      "reflectionPrompt": "Reflect on a time someone showed you empathy or helped bear your burden. How can you practice 'rejoicing with those who rejoice and mourning with those who mourn' this week?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Bearing burdens and sharing in both joy and sorrow are practical expressions of love. They speak to the importance of presence, solidarity, and deep empathy in our relationships and communities.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Love for the 'Other'",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 43,
+          "endChapter": 5,
+          "endVerse": 48,
+          "displayText": "Matthew 5:43-48"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 6,
+          "startVerse": 27,
+          "endChapter": 6,
+          "endVerse": 36,
+          "displayText": "Luke 6:27-36"
+        }
+      ],
+      "reflectionPrompt": "Who are the people or groups you find it hardest to love? What would it mean to extend God-like love—love that seeks the other's good—even there?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The call to love even enemies and pray for persecutors is one of the most challenging and counter-cultural teachings. It pushes the boundaries of compassion far beyond our natural inclinations.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Justice for the Oppressed",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 1,
+          "startVerse": 17,
+          "endChapter": 1,
+          "endVerse": 17,
+          "displayText": "Isaiah 1:17"
+        },
+        {
+          "bookAbbr": "MIC",
+          "startChapter": 6,
+          "startVerse": 8,
+          "endChapter": 6,
+          "endVerse": 8,
+          "displayText": "Micah 6:8"
+        }
+      ],
+      "reflectionPrompt": "How can loving your neighbor practically involve seeking justice, defending the oppressed, and working to correct systemic wrongs?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "The prophetic tradition consistently links true spirituality with a commitment to justice. Micah's summary—acting justly, loving mercy, and walking humbly—provides a powerful three-fold guide for a life that honors God and cares for others.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "Hospitality and Welcome",
+      "passages": [
+        {
+          "bookAbbr": "ROM",
+          "startChapter": 12,
+          "startVerse": 13,
+          "endChapter": 12,
+          "endVerse": 13,
+          "displayText": "Romans 12:13"
+        },
+        {
+          "bookAbbr": "HEB",
+          "startChapter": 13,
+          "startVerse": 2,
+          "endChapter": 13,
+          "endVerse": 2,
+          "displayText": "Hebrews 13:2"
+        }
+      ],
+      "reflectionPrompt": "In what practical ways can you show hospitality and create a welcoming space for others, including those who might be considered 'strangers' or are in need?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Hospitality in the ancient world was a vital social and ethical practice. These reminders to welcome strangers and share generously extend that spirit, suggesting that our homes and resources can be places of blessing and connection.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "Love in Action",
+      "passages": [
+        {
+          "bookAbbr": "1JN",
+          "startChapter": 3,
+          "startVerse": 16,
+          "endChapter": 3,
+          "endVerse": 18,
+          "displayText": "1 John 3:16-18"
+        },
+        {
+          "bookAbbr": "JAS",
+          "startChapter": 2,
+          "startVerse": 14,
+          "endChapter": 2,
+          "endVerse": 17,
+          "displayText": "James 2:14-17"
+        }
+      ],
+      "reflectionPrompt": "Commit to one specific, tangible action this week to put your love for your neighbor into practice, moving beyond sentiment to service.",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Both John and James emphasize that true love and faith are not merely matters of words or feelings, but are demonstrated through tangible actions that meet the needs of others. Our deeds are the evidence of our heart's orientation.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

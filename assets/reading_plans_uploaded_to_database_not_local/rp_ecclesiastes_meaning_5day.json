@@ -1,0 +1,138 @@
+{
+  "id": "rp_ecclesiastes_meaning_5day",
+  "title": "Ecclesiastes: Finding Meaning Under the Sun",
+  "description": "Wrestle alongside the ancient Teacher with life's big questions about meaning, work, wisdom, and mortality, discovering invitations to find joy in the present moment. (5 days)",
+  "category": "Wisdom Literature / Old Testament",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_ecclesiastes_meaning_5day.png",
+  "isPremium": true,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "Everything is Meaningless?",
+      "passages": [
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 1,
+          "startVerse": 2,
+          "endChapter": 1,
+          "endVerse": 11,
+          "displayText": "Ecclesiastes 1:2-11"
+        }
+      ],
+      "reflectionPrompt": "The Teacher observes the endless cycles of nature and human striving, calling much of it 'meaningless.' What activities or pursuits in your own life sometimes feel repetitive or ultimately unsatisfying? Is it freeing or unsettling to acknowledge this?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The Teacher starts with a stark, almost jarring observation: 'Meaningless! Meaningless! Utterly meaningless! Everything is meaningless.' This isn't necessarily despair, but a radically honest assessment of life's cycles and the limits of human effort when viewed 'under the sun.' Acknowledging this apparent futility can be a surprising first step toward finding deeper meaning.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "The Limits of Pleasure and Toil",
+      "passages": [
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 2,
+          "startVerse": 1,
+          "endChapter": 2,
+          "endVerse": 11,
+          "displayText": "Ecclesiastes 2:1-11"
+        }
+      ],
+      "reflectionPrompt": "The Teacher pursued pleasure, wealth, and accomplishment but found them ultimately empty. What does our culture tell us will bring happiness? How does the Teacher's experience challenge those assumptions?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Here, the Teacher explores seeking meaning through pleasure, possessions, and great achievements. While these things offer temporary enjoyment, he concludes they too are 'meaningless, a chasing after the wind.' It's a caution against believing that external success or constant entertainment can provide lasting satisfaction.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "A Time for Everything",
+      "passages": [
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 3,
+          "startVerse": 1,
+          "endChapter": 3,
+          "endVerse": 15,
+          "displayText": "Ecclesiastes 3:1-15"
+        }
+      ],
+      "reflectionPrompt": "Ecclesiastes 3 lists contrasting seasons of life ('a time to weep and a time to laugh...'). Which 'season' are you currently in? How can accepting the rhythm of life, with its ups and downs, help you find meaning in the present moment?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This famous passage reflects on the rhythms and seasons of life—times for joy and sorrow, work and rest, birth and death. There's an invitation here to accept life's complexities and uncertainties, recognizing God has 'made everything beautiful in its time' even if we can't fully grasp the big picture. Finding meaning involves embracing the present season.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Oppression, Toil, and Companionship",
+      "passages": [
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 4,
+          "startVerse": 1,
+          "endChapter": 4,
+          "endVerse": 12,
+          "displayText": "Ecclesiastes 4:1-12"
+        }
+      ],
+      "reflectionPrompt": "The Teacher contrasts the pain of isolation and oppression with the strength found in companionship ('A cord of three strands is not quickly broken'). Where do you see the value of community and mutual support in your life or in society?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The Teacher observes the pain of oppression and the emptiness of competitive, isolated toil. In contrast, he highlights the profound value of companionship: 'Two are better than one... If either of them falls down, one can help the other up.' Meaning is often found not in solitary striving, but in mutual support and relationship.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Enjoy Life's Gifts & Remember Your Creator",
+      "passages": [
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 9,
+          "startVerse": 7,
+          "endChapter": 9,
+          "endVerse": 10,
+          "displayText": "Ecclesiastes 9:7-10"
+        },
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 12,
+          "startVerse": 1,
+          "endChapter": 12,
+          "endVerse": 1,
+          "displayText": "Ecclesiastes 12:1"
+        },
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 12,
+          "startVerse": 13,
+          "endChapter": 12,
+          "endVerse": 14,
+          "displayText": "Ecclesiastes 12:13-14"
+        }
+      ],
+      "reflectionPrompt": "The Teacher advises enjoying simple daily pleasures (food, work, relationships) while also remembering our Creator and ultimate responsibility. How can you cultivate both simple joys and a sense of deeper purpose in your life this week?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 2,
+          "text": "After wrestling with life's big questions, the Teacher arrives at some core conclusions: Find joy in the simple, everyday gifts of life—food, drink, work, relationships—as gifts from God. And ultimately, orient your life towards reverence for God and responsible living ('Fear God and keep his commandments'). Meaning is found in both present enjoyment and ultimate accountability.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 5
+}

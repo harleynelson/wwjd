@@ -1,0 +1,264 @@
+{
+  "id": "rp_questioning_faith_10day",
+  "title": "Questioning Faith: Stories of Doubt & Discovery",
+  "description": "Explore biblical narratives of doubt, questioning, and wrestling with faith. This 10-day plan affirms that honest inquiry can lead to deeper understanding.",
+  "category": "Topical / Character Study",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_questioning_faith_10day.png",
+  "isPremium": true,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "Job: The Cry of the Righteous Sufferer",
+      "passages": [
+        {
+          "bookAbbr": "JOB",
+          "startChapter": 3,
+          "startVerse": 1,
+          "endChapter": 3,
+          "endVerse": 11,
+          "displayText": "Job 3:1-11"
+        },
+        {
+          "bookAbbr": "JOB",
+          "startChapter": 3,
+          "startVerse": 20,
+          "endChapter": 3,
+          "endVerse": 26,
+          "displayText": "Job 3:20-26"
+        }
+      ],
+      "reflectionPrompt": "Job questions his suffering. Is it okay to voice our deepest pains and questions to God? Why or why not?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Job doesn't hold back his anguish or his profound questions about life and suffering. His words are raw, almost uncomfortable. Yet, their inclusion in scripture offers a powerful validation: even our most painful cries and difficult questions have a place before God.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "Job: Demanding Answers",
+      "passages": [
+        {
+          "bookAbbr": "JOB",
+          "startChapter": 23,
+          "startVerse": 1,
+          "endChapter": 23,
+          "endVerse": 9,
+          "displayText": "Job 23:1-9"
+        }
+      ],
+      "reflectionPrompt": "Job wishes he could find God to plead his case. What does his raw honesty teach us about wrestling with faith?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Job's longing to find God and 'lay his case before him' shows a faith that is active and engaged, not passive. He believes God *is* there, even when hidden, and wrestles for connection and clarity. It demonstrates that deep faith isn't afraid to engage directly, even demandingly.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Thomas: The Need for Evidence",
+      "passages": [
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 20,
+          "startVerse": 24,
+          "endChapter": 20,
+          "endVerse": 29,
+          "displayText": "John 20:24-29"
+        }
+      ],
+      "reflectionPrompt": "Thomas needed to see to believe. How does Jesus respond to his doubt? Is there room for intellectual seeking in faith?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Jesus meets Thomas right in his place of doubt, offering the very evidence Thomas felt he needed. It's a grace-filled moment that affirms the value of honest seeking, while gently inviting towards a faith that can trust even beyond tangible proof.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "The Psalmist's Anguish (Psalm 77)",
+      "passages": [
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 77,
+          "startVerse": 1,
+          "endChapter": 77,
+          "endVerse": 10,
+          "displayText": "Psalm 77:1-10"
+        }
+      ],
+      "reflectionPrompt": "The psalmist questions if God has forgotten or rejected him. How can remembering God's past actions help in times of present doubt?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The psalmist voices fears that echo through many hearts in difficult times: Has God forgotten? Is His love gone forever? Simply voicing these deep anxieties, bringing them out into the open before God, is often the necessary first step in navigating seasons of doubt.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "Jeremiah: The Prophet's Complaint",
+      "passages": [
+        {
+          "bookAbbr": "JER",
+          "startChapter": 20,
+          "startVerse": 7,
+          "endChapter": 20,
+          "endVerse": 9,
+          "displayText": "Jeremiah 20:7-9"
+        },
+        {
+          "bookAbbr": "JER",
+          "startChapter": 20,
+          "startVerse": 14,
+          "endChapter": 20,
+          "endVerse": 18,
+          "displayText": "Jeremiah 20:14-18"
+        }
+      ],
+      "reflectionPrompt": "Jeremiah feels deceived and overwhelmed by his calling. Can doubt and faithfulness coexist?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Jeremiah's words swing dramatically between a burning commitment he feels compelled to follow and profound personal despair. His story powerfully illustrates that genuine faithfulness and deep internal struggle, even questioning one's calling, can often reside within the same heart.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "Asaph's Crisis of Faith (Psalm 73)",
+      "passages": [
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 73,
+          "startVerse": 1,
+          "endChapter": 73,
+          "endVerse": 17,
+          "displayText": "Psalm 73:1-17 (Focus on v. 1-3, 12-14, 16-17)"
+        }
+      ],
+      "reflectionPrompt": "The psalmist doubts God's justice when seeing the wicked prosper. What helps shift his perspective?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Asaph is brutally honest about his envy and how the apparent injustice he saw shook his faith ('I almost slipped'). His turning point wasn't an immediate answer, but a shift in perspective gained by entering 'the sanctuary of God.' It suggests that seeking a different, perhaps spiritual, viewpoint can reframe our understanding, even when difficult circumstances persist.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "John the Baptist: Doubts from Prison",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 11,
+          "startVerse": 2,
+          "endChapter": 11,
+          "endVerse": 6,
+          "displayText": "Matthew 11:2-6"
+        }
+      ],
+      "reflectionPrompt": "Even John the Baptist had moments of questioning. How does Jesus' answer affirm his ministry while addressing John's doubts?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "It's deeply humanizing that even John the Baptist, the powerful forerunner of Jesus, faced moments of uncertainty from his prison cell. Jesus responds not with rebuke, but by pointing to the evidence of His work ('the blind receive sight...'), gently encouraging John to hold onto the truth he proclaimed.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 8,
+      "title": "The Father of the Afflicted Boy",
+      "passages": [
+        {
+          "bookAbbr": "MRK",
+          "startChapter": 9,
+          "startVerse": 21,
+          "endChapter": 9,
+          "endVerse": 24,
+          "displayText": "Mark 9:21-24"
+        }
+      ],
+      "reflectionPrompt": "'I believe; help my unbelief!' What does this honest prayer teach us about faith and doubt existing together?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This father's desperate, honest cry, 'I believe; help my unbelief!' resonates with so many on the faith journey. It's a beautiful picture of faith not as absolute certainty, but as a dynamic process of trusting and reaching out, even amidst our acknowledged doubts and struggles.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 9,
+      "title": "Habakkuk's Dialogue with God",
+      "passages": [
+        {
+          "bookAbbr": "HAB",
+          "startChapter": 1,
+          "startVerse": 1,
+          "endChapter": 1,
+          "endVerse": 4,
+          "displayText": "Habakkuk 1:1-4"
+        },
+        {
+          "bookAbbr": "HAB",
+          "startChapter": 1,
+          "startVerse": 12,
+          "endChapter": 1,
+          "endVerse": 13,
+          "displayText": "Habakkuk 1:12-13"
+        }
+      ],
+      "reflectionPrompt": "Habakkuk questions God's methods. How can honest dialogue, even if challenging, strengthen our relationship with the Divine?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Habakkuk doesn't just lament; he directly confronts God with his confusion and challenges what seems unjust ('Why are you silent?'). The entire book unfolds as a genuine dialogue, demonstrating that wrestling with God and bringing our hardest questions honestly can be a vital pathway toward deeper trust, rather than a sign of faltering faith.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 10,
+      "title": "Embracing Mystery",
+      "passages": [
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 3,
+          "startVerse": 11,
+          "endChapter": 3,
+          "endVerse": 11,
+          "displayText": "Ecclesiastes 3:11"
+        },
+        {
+          "bookAbbr": "1CO",
+          "startChapter": 13,
+          "startVerse": 12,
+          "endChapter": 13,
+          "endVerse": 12,
+          "displayText": "1 Corinthians 13:12"
+        }
+      ],
+      "reflectionPrompt": "We may not have all the answers. How can embracing mystery and 'seeing in a mirror dimly' be a part of a mature faith?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Throughout scripture, there's an acknowledgement that we won't always have all the answers. Phrases like 'cannot fathom' (Ecclesiastes) and seeing 'in a mirror dimly' (Paul) invite us into a faith that makes space for mystery. It suggests that maturity in faith involves humbly accepting the limits of our understanding, while continuing to trust the One who sees and knows fully.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 10
+}

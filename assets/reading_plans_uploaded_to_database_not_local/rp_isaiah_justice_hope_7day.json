@@ -1,0 +1,174 @@
+{
+  "id": "rp_isaiah_justice_hope_7day",
+  "title": "Isaiah: Justice, Hope, and Comfort",
+  "description": "Explore key passages from Isaiah, hearing his powerful calls for social justice, his breathtaking visions of peace, and his comforting words of hope for a broken people. (7 days)",
+  "category": "Prophets / Old Testament",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_isaiah_justice_hope_7day.png",
+  "isPremium": false,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "True Worship: Justice, Not Ritual",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 1,
+          "startVerse": 11,
+          "endChapter": 1,
+          "endVerse": 17,
+          "displayText": "Isaiah 1:11-17"
+        }
+      ],
+      "reflectionPrompt": "God prioritizes justice and defending the oppressed over religious sacrifices here. What does 'seeking justice' look like in our daily lives and communities today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Isaiah starts with a powerful critique: God isn't impressed by religious rituals if they aren't accompanied by justice and compassion. The call is clear: 'Learn to do right; seek justice. Defend the oppressed. Take up the cause of the fatherless; plead the case of the widow.' True worship involves caring for the vulnerable.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "A Song of Justice Denied",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 5,
+          "startVerse": 1,
+          "endChapter": 5,
+          "endVerse": 7,
+          "displayText": "Isaiah 5:1-7 (Song of the Vineyard)"
+        }
+      ],
+      "reflectionPrompt": "God looked for justice but saw bloodshed, for righteousness but heard cries of distress. Where do you see a similar gap between the hope for justice and the reality of suffering in the world?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This poignant song uses the image of a vineyard carefully tended by God, which then yields only bad fruit. The 'bad fruit' is identified as bloodshed and distress instead of justice and righteousness. It's a lament over how God's hopes for a just society have been disappointed by injustice and oppression.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Vision of Lasting Peace",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 2,
+          "startVerse": 1,
+          "endChapter": 2,
+          "endVerse": 5,
+          "displayText": "Isaiah 2:1-5"
+        },
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 11,
+          "startVerse": 1,
+          "endChapter": 11,
+          "endVerse": 9,
+          "displayText": "Isaiah 11:1-9"
+        }
+      ],
+      "reflectionPrompt": "Isaiah envisions a world where weapons become tools for life and harmony replaces conflict. What does this vision of peace inspire in you? What small steps can contribute to such a future?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Amidst critique, Isaiah offers breathtaking visions of a future transformed by God's peace. Nations converting weapons into farming tools, and natural enemies living in harmony—these images paint a powerful picture of shalom, a world restored to wholeness, justice, and right relationship.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Comfort, Comfort My People",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 40,
+          "startVerse": 1,
+          "endChapter": 40,
+          "endVerse": 11,
+          "displayText": "Isaiah 40:1-11"
+        }
+      ],
+      "reflectionPrompt": "The call here is to 'speak tenderly' and offer comfort. Who in your life or community might need words of comfort and reassurance today? How can you be a voice of hope?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This passage marks a shift, offering words of profound comfort and hope to a people feeling defeated and exiled. God speaks tenderly, promising restoration and gentle care, like a shepherd gathering lambs. It reminds us that even in difficult times, God's presence offers deep reassurance and strength.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "An Invitation to Life",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 55,
+          "startVerse": 1,
+          "endChapter": 55,
+          "endVerse": 7,
+          "displayText": "Isaiah 55:1-7"
+        }
+      ],
+      "reflectionPrompt": "God offers satisfaction 'without money and without cost.' What things do we often chase after for fulfillment that ultimately don't satisfy? How can we accept God's free invitation to true life?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This beautiful invitation calls everyone who is thirsty and hungry to come freely and receive life-giving nourishment from God. It emphasizes that God's grace and sustenance are available to all, regardless of their ability to 'pay.' It's an open door to relationship and abundant life.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "The Suffering Servant",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 53,
+          "startVerse": 3,
+          "endChapter": 53,
+          "endVerse": 7,
+          "displayText": "Isaiah 53:3-7"
+        }
+      ],
+      "reflectionPrompt": "The servant suffers silently for the healing of others. How does this image challenge our understanding of strength, suffering, and bringing about positive change?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This passage describes a figure who suffers unjustly, bearing the pain and wrongdoing of others to bring about healing and peace. While Christians see this fulfilled in Jesus, the image itself speaks powerfully about redemptive suffering and finding meaning even in hardship borne for the sake of others.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "A New Heaven and a New Earth",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 65,
+          "startVerse": 17,
+          "endChapter": 65,
+          "endVerse": 25,
+          "displayText": "Isaiah 65:17-25"
+        }
+      ],
+      "reflectionPrompt": "Isaiah paints a picture of God's ultimate future: a world of joy, justice, peace, and meaningful work. How does this vision of hope motivate you to live differently today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Isaiah concludes with a stunning vision of complete renewal—a new creation where weeping, distress, and injustice are no more. People will enjoy the fruits of their labor, live long lives in peace, and experience deep harmony with God and each other. This ultimate hope fuels our present work for justice and restoration.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

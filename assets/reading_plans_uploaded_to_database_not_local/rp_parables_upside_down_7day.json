@@ -1,0 +1,174 @@
+{
+  "id": "rp_parables_upside_down_7day",
+  "title": "Parables: Stories that Turn the World Upside Down",
+  "description": "Dive into Jesus' most famous stories, exploring how these simple narratives challenge conventional wisdom about power, wealth, religion, and who's 'in' or 'out'. (7 days)",
+  "category": "Gospels / Teachings of Jesus",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_parables_upside_down_7day.png",
+  "isPremium": true,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "The Sower: Different Soils, Different Responses",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 13,
+          "startVerse": 1,
+          "endChapter": 13,
+          "endVerse": 9,
+          "displayText": "Matthew 13:1-9"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 13,
+          "startVerse": 18,
+          "endChapter": 13,
+          "endVerse": 23,
+          "displayText": "Matthew 13:18-23 (Explanation)"
+        }
+      ],
+      "reflectionPrompt": "Jesus describes different 'soils' that receive the seed differently (path, rocky ground, thorns, good soil). Which soil best describes your heart's receptiveness right now? What 'weeds' (worries, distractions) might be choking out growth?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus begins his parables by talking about how people *receive* his message. The focus isn't just on the sower or the seed, but on the condition of the 'soil'—our hearts and minds. It challenges us to consider: what prevents the message of goodness and truth from taking root and flourishing in our own lives?",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "Mustard Seed & Yeast: Small Beginnings, Big Impact",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 13,
+          "startVerse": 31,
+          "endChapter": 13,
+          "endVerse": 33,
+          "displayText": "Matthew 13:31-33"
+        }
+      ],
+      "reflectionPrompt": "The kingdom of heaven starts like a tiny mustard seed or hidden yeast. Where have you seen small, seemingly insignificant things lead to surprisingly large outcomes, either personally or in the world? How does this encourage your own small efforts?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "In a world often impressed by size and spectacle, Jesus uses images of tiny seeds and hidden yeast to describe God's kingdom. It suggests that significant transformation often starts small, subtly, and grows unexpectedly. It's an encouragement not to despise small acts of kindness, justice, or faith.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Workers in the Vineyard: Undeserved Generosity",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 20,
+          "startVerse": 1,
+          "endChapter": 20,
+          "endVerse": 16,
+          "displayText": "Matthew 20:1-16"
+        }
+      ],
+      "reflectionPrompt": "The landowner's generosity seems unfair to the workers who started early. Does God's grace sometimes feel 'unfair' to you? How does this parable challenge your ideas about earning, deserving, and generosity?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This parable often rubs our sense of fairness the wrong way! Workers hired late receive the same pay as those who worked all day. It radically challenges a system based purely on merit or earning, highlighting God's surprising generosity and grace, which isn't limited by our human calculations of what's 'deserved'.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "The Pharisee and the Tax Collector: Humility vs. Pride",
+      "passages": [
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 18,
+          "startVerse": 9,
+          "endChapter": 18,
+          "endVerse": 14,
+          "displayText": "Luke 18:9-14"
+        }
+      ],
+      "reflectionPrompt": "The Pharisee listed his accomplishments, while the tax collector simply asked for mercy. Which prayer posture feels more natural to you? How can self-awareness and humility open us up to connection with the Divine?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Jesus contrasts two approaches to God: the self-congratulatory religious leader and the humble, repentant tax collector. Surprisingly, it's the one who acknowledges his need ('God, have mercy on me, a sinner') who goes home justified. This story turns religious expectations upside down, valuing honest humility over outward displays of piety.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "The Unforgiving Servant: Receiving and Extending Mercy",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 18,
+          "startVerse": 21,
+          "endChapter": 18,
+          "endVerse": 35,
+          "displayText": "Matthew 18:21-35"
+        }
+      ],
+      "reflectionPrompt": "The servant was forgiven a huge debt but wouldn't forgive a small one. How does reflecting on the mercy or grace you've received impact your willingness to forgive others? What makes forgiveness difficult, and what helps?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This challenging parable links the immense forgiveness we receive from God with our responsibility to forgive others. The servant, forgiven an unpayable debt, refuses to forgive a small debt owed to him. It starkly illustrates that truly experiencing and internalizing grace should transform how we treat others.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "The Talents/Minas: Using Our Gifts",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 25,
+          "startVerse": 14,
+          "endChapter": 25,
+          "endVerse": 30,
+          "displayText": "Matthew 25:14-30"
+        }
+      ],
+      "reflectionPrompt": "The servants were entrusted with different amounts ('talents'). What unique gifts, skills, or resources have you been entrusted with? How can you actively use or invest them for positive impact, rather than 'burying' them out of fear or complacency?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This parable isn't just about money; it's about stewarding whatever gifts, resources, or opportunities we've been given. The servants who use and multiply what they have are commended, while the one who buries his gift out of fear is rebuked. It challenges passivity and encourages faithful, active use of our potential for good.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "The Wedding Banquet: An Unexpected Invitation",
+      "passages": [
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 22,
+          "startVerse": 1,
+          "endChapter": 22,
+          "endVerse": 14,
+          "displayText": "Matthew 22:1-14"
+        }
+      ],
+      "reflectionPrompt": "The original guests declined the invitation, so it was extended to unexpected people. Who are the 'unexpected guests' God might be inviting into community or relationship today? How can we ensure our communities are truly welcoming to all?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "When the invited guests make excuses and refuse to come to the king's banquet, the invitation is extended unexpectedly to anyone found in the streets, 'both good and bad.' This parable dramatically illustrates God's wide, inclusive welcome, often extended to those the 'insiders' might overlook or deem unworthy.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

@@ -1,0 +1,203 @@
+{
+  "id": "rp_peace_troubled_times_7day",
+  "title": "Peace in Troubled Times",
+  "description": "Discover scriptural anchors for peace and hope amidst personal struggles or global uncertainties. A 7-day plan for finding calm.",
+  "category": "Topical",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_peace_troubled_times_7day.png",
+  "isPremium": false,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "The Peace of God",
+      "passages": [
+        {
+          "bookAbbr": "PHP",
+          "startChapter": 4,
+          "startVerse": 6,
+          "endChapter": 4,
+          "endVerse": 7,
+          "displayText": "Philippians 4:6-7"
+        }
+      ],
+      "reflectionPrompt": "What anxieties are you holding today? How can you practice prayer and gratitude to experience God's peace?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "It's remarkable how this passage links letting go of anxiety directly with prayer and thanksgiving. It suggests peace isn't just the absence of trouble, but an active presence found when we connect with God, even before circumstances change.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "He Will Not Forsake You",
+      "passages": [
+        {
+          "bookAbbr": "DEU",
+          "startChapter": 31,
+          "startVerse": 6,
+          "endChapter": 31,
+          "endVerse": 6,
+          "displayText": "Deuteronomy 31:6"
+        },
+        {
+          "bookAbbr": "HEB",
+          "startChapter": 13,
+          "startVerse": 5,
+          "endChapter": 13,
+          "endVerse": 6,
+          "displayText": "Hebrews 13:5-6"
+        }
+      ],
+      "reflectionPrompt": "How does the assurance of God's presence bring you peace in times of fear or loneliness?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "These promises, echoed across the Old and New Testaments, offer a bedrock assurance. The peace here comes from knowing we're not alone in our struggles; God's commitment to be with us is unwavering, a constant presence in uncertainty.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "The Lord is My Shepherd",
+      "passages": [
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 23,
+          "startVerse": 1,
+          "endChapter": 23,
+          "endVerse": 6,
+          "displayText": "Psalm 23"
+        }
+      ],
+      "reflectionPrompt": "Which image or promise in Psalm 23 resonates most with your need for peace and guidance today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Psalm 23 paints such a tender picture of constant care. Whether it's finding rest, navigating darkness ('the darkest valley'), or dwelling in safety, the core message is deep trust in a loving Guide whose presence itself brings profound peace.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "Do Not Let Your Hearts Be Troubled",
+      "passages": [
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 14,
+          "startVerse": 1,
+          "endChapter": 14,
+          "endVerse": 3,
+          "displayText": "John 14:1-3"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 14,
+          "startVerse": 27,
+          "endChapter": 14,
+          "endVerse": 27,
+          "displayText": "John 14:27"
+        }
+      ],
+      "reflectionPrompt": "Jesus offers a peace different from the world's. What does this divine peace mean to you personally?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus acknowledges the world offers a kind of 'peace,' often fleeting and based on circumstances. But the peace He gives is fundamentally different—an inner calm rooted in trust and His abiding presence, stable even amidst external turmoil.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "God is Our Refuge",
+      "passages": [
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 46,
+          "startVerse": 1,
+          "endChapter": 46,
+          "endVerse": 3,
+          "displayText": "Psalm 46:1-3"
+        },
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 46,
+          "startVerse": 10,
+          "endChapter": 46,
+          "endVerse": 10,
+          "displayText": "Psalm 46:10"
+        }
+      ],
+      "reflectionPrompt": "How can being 'still' and knowing God is in control bring peace even when the 'earth gives way'?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This Psalm starts by grounding us in a powerful truth: even when everything feels like it's shaking, God remains a reliable source of strength and immediate help. Peace begins with remembering where our true security lies.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "In the midst of dramatic descriptions of upheaval, the call to 'be still' is powerful. It suggests that consciously pausing and recognizing God's ultimate sovereignty allows us to find an anchor of peace—not by denying the chaos, but by knowing who holds us through it.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "Casting All Your Anxieties",
+      "passages": [
+        {
+          "bookAbbr": "1PE",
+          "startChapter": 5,
+          "startVerse": 6,
+          "endChapter": 5,
+          "endVerse": 7,
+          "displayText": "1 Peter 5:6-7"
+        }
+      ],
+      "reflectionPrompt": "What specific anxieties can you consciously 'cast' on God today, trusting in His care for you?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Notice the connection Peter makes between humility ('Humble yourselves') and casting anxieties onto God. It suggests that letting go of our burdens involves the humble act of acknowledging we don't have to carry them alone, trusting instead in God's deep, personal care for us.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "The Fruit of the Spirit: Peace",
+      "passages": [
+        {
+          "bookAbbr": "GAL",
+          "startChapter": 5,
+          "startVerse": 22,
+          "endChapter": 5,
+          "endVerse": 23,
+          "displayText": "Galatians 5:22-23"
+        },
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 26,
+          "startVerse": 3,
+          "endChapter": 26,
+          "endVerse": 3,
+          "displayText": "Isaiah 26:3"
+        }
+      ],
+      "reflectionPrompt": "How can cultivating other fruits of the Spirit (love, joy, patience) contribute to a deeper experience of peace?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Peace is presented here both as a 'fruit'—something that grows organically within us through the Spirit's presence—and as a state maintained by keeping our minds focused steadfastly on God. It reminds us that inner peace is deeply connected to our spiritual posture and ongoing trust.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 7
+}

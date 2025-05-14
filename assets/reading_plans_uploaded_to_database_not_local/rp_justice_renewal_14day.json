@@ -1,0 +1,373 @@
+{
+  "id": "rp_justice_renewal_14day",
+  "title": "Justice & Renewal: Prophetic Voices",
+  "description": "A 14-day plan exploring the prophets' calls for social justice, care for the vulnerable, and a renewed relationship with God and creation.",
+  "category": "Prophetic Literature",
+  "headerImageAssetPath": "assets/images/reading_plan_headers/rp_justice_renewal_14day.png",
+  "isPremium": true,
+  "dailyReadings": [
+    {
+      "dayNumber": 1,
+      "title": "What God Requires",
+      "passages": [
+        {
+          "bookAbbr": "MIC",
+          "startChapter": 6,
+          "startVerse": 6,
+          "endChapter": 6,
+          "endVerse": 8,
+          "displayText": "Micah 6:6-8"
+        }
+      ],
+      "reflectionPrompt": "Reflect on 'acting justly,' 'loving mercy,' and 'walking humbly.' How can you embody these in your interactions and choices today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Micah beautifully distills complex religious observance down to three core actions. It's a powerful reminder that true spirituality is deeply intertwined with our ethical behavior and relational posture.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "title": "True Fasting",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 58,
+          "startVerse": 6,
+          "endChapter": 58,
+          "endVerse": 11,
+          "displayText": "Isaiah 58:6-11"
+        }
+      ],
+      "reflectionPrompt": "What does 'true fasting,' as described by Isaiah, look like in terms of social action and care for others in our contemporary world?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Isaiah challenges the notion of ritual fasting disconnected from compassionate action. The 'fast' God chooses involves actively working to free the oppressed and care for the needy, suggesting our spiritual practices should have tangible, positive impacts on the world.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "title": "Justice for the Poor",
+      "passages": [
+        {
+          "bookAbbr": "AMO",
+          "startChapter": 5,
+          "startVerse": 21,
+          "endChapter": 5,
+          "endVerse": 24,
+          "displayText": "Amos 5:21-24"
+        }
+      ],
+      "reflectionPrompt": "How can our communal worship and personal spiritual life be authentically connected to the active pursuit of justice for marginalized people?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Amos delivers a startling message: religious assemblies and offerings are detestable if not accompanied by justice and righteousness. This calls for a profound integration of our worship and our commitment to fairness for all, especially the vulnerable.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "title": "A New Heart and Spirit",
+      "passages": [
+        {
+          "bookAbbr": "EZK",
+          "startChapter": 36,
+          "startVerse": 24,
+          "endChapter": 36,
+          "endVerse": 28,
+          "displayText": "Ezekiel 36:24-28"
+        }
+      ],
+      "reflectionPrompt": "Consider the idea of inner transformation—a 'heart of flesh' replacing a 'heart of stone'—as a necessary precursor or companion to societal renewal and justice.",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Ezekiel's vision speaks of a deep, internal transformation—a new heart and spirit—as foundational for true renewal. This suggests that lasting societal change begins with a change within individuals, enabling them to live according to divine principles.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "title": "The Year of the Lord's Favor",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 61,
+          "startVerse": 1,
+          "endChapter": 61,
+          "endVerse": 4,
+          "displayText": "Isaiah 61:1-4"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 4,
+          "startVerse": 16,
+          "endChapter": 4,
+          "endVerse": 21,
+          "displayText": "Luke 4:16-21"
+        }
+      ],
+      "reflectionPrompt": "How did Jesus embody this prophetic call outlined in Isaiah? How can we, as individuals and communities, participate in bringing 'good news to the poor' and proclaiming 'the year of the Lord's favor' today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "This passage from Isaiah beautifully describes a mission of holistic restoration—good news to the poor, healing for the brokenhearted, freedom for captives. It's a vision of comprehensive societal and spiritual renewal.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "When Jesus reads from Isaiah and declares 'Today this scripture has been fulfilled in your hearing,' he is identifying his own mission with this prophetic call for liberation and restoration. It's a powerful claim about the nature of his work.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "title": "Caring for the Foreigner",
+      "passages": [
+        {
+          "bookAbbr": "LEV",
+          "startChapter": 19,
+          "startVerse": 33,
+          "endChapter": 19,
+          "endVerse": 34,
+          "displayText": "Leviticus 19:33-34"
+        },
+        {
+          "bookAbbr": "DEU",
+          "startChapter": 10,
+          "startVerse": 17,
+          "endChapter": 10,
+          "endVerse": 19,
+          "displayText": "Deuteronomy 10:17-19"
+        }
+      ],
+      "reflectionPrompt": "How can the principle of 'loving the foreigner as yourself,' rooted in empathy and divine command, inform our attitudes and actions towards immigrants, refugees, and those perceived as 'strangers' in our communities today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "Both Leviticus and Deuteronomy emphasize that the memory of Israel's own experience as 'foreigners in Egypt' should fuel their compassion and just treatment of immigrants and sojourners in their midst. This calls for empathy rooted in shared human experience.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "title": "Integrity in Business",
+      "passages": [
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 11,
+          "startVerse": 1,
+          "endChapter": 11,
+          "endVerse": 1,
+          "displayText": "Proverbs 11:1"
+        },
+        {
+          "bookAbbr": "AMO",
+          "startChapter": 8,
+          "startVerse": 4,
+          "endChapter": 8,
+          "endVerse": 6,
+          "displayText": "Amos 8:4-6"
+        }
+      ],
+      "reflectionPrompt": "In what ways can we ensure fairness, honesty, and ethical considerations in our economic dealings, both personal and systemic, and advocate for practices that don't harm the poor or vulnerable?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "The prophets strongly condemned dishonest economic practices that exploited the vulnerable. These passages remind us that ethical conduct in commerce and daily transactions is a matter of spiritual integrity and social justice.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 8,
+      "title": "Swords into Plowshares: Peace",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 2,
+          "startVerse": 2,
+          "endChapter": 2,
+          "endVerse": 4,
+          "displayText": "Isaiah 2:2-4"
+        },
+        {
+          "bookAbbr": "MIC",
+          "startChapter": 4,
+          "startVerse": 1,
+          "endChapter": 4,
+          "endVerse": 4,
+          "displayText": "Micah 4:1-4"
+        }
+      ],
+      "reflectionPrompt": "What does this prophetic vision of ultimate peace and demilitarization mean to you in a world still rife with conflict? How can we actively work towards becoming peacemakers in our spheres of influence?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "This powerful shared vision from Isaiah and Micah of transforming weapons of war into tools of agriculture symbolizes a profound shift from conflict to constructive peace and sustenance. It's a guiding image for global reconciliation.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 9,
+      "title": "Healing the Land",
+      "passages": [
+        {
+          "bookAbbr": "HOS",
+          "startChapter": 4,
+          "startVerse": 1,
+          "endChapter": 4,
+          "endVerse": 3,
+          "displayText": "Hosea 4:1-3"
+        },
+        {
+          "bookAbbr": "2CH",
+          "startChapter": 7,
+          "startVerse": 14,
+          "endChapter": 7,
+          "endVerse": 14,
+          "displayText": "2 Chronicles 7:14"
+        }
+      ],
+      "reflectionPrompt": "How is the well-being of the land and creation connected to our collective actions and spiritual state? What does 'humbling ourselves, praying, seeking God's face, and turning from wicked ways' mean in the context of environmental stewardship and healing today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Hosea draws a direct link between the moral and spiritual state of the people—lack of faithfulness, love, and acknowledgment of God—and the suffering of the land itself. This suggests a deep interconnectedness between human ethics and environmental well-being.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 10,
+      "title": "Speaking Truth to Power",
+      "passages": [
+        {
+          "bookAbbr": "JER",
+          "startChapter": 1,
+          "startVerse": 4,
+          "endChapter": 1,
+          "endVerse": 10,
+          "displayText": "Jeremiah 1:4-10"
+        },
+        {
+          "bookAbbr": "JER",
+          "startChapter": 1,
+          "startVerse": 17,
+          "endChapter": 1,
+          "endVerse": 19,
+          "displayText": "Jeremiah 1:17-19"
+        }
+      ],
+      "reflectionPrompt": "When and how might we be called to speak uncomfortable truths to systems or individuals in authority for the sake of justice, righteousness, or the well-being of others?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 1,
+          "text": "The call of a prophet often involves speaking difficult truths to those in power, even in the face of opposition. Jeremiah's experience highlights the courage required for such a task, sustained by a sense of divine commission and presence.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 11,
+      "title": "The Inclusive Kingdom",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 56,
+          "startVerse": 6,
+          "endChapter": 56,
+          "endVerse": 8,
+          "displayText": "Isaiah 56:6-8"
+        }
+      ],
+      "reflectionPrompt": "How does this passage challenge notions of exclusivity in religious or social communities and affirm God's expansive welcome to all who sincerely seek to join in covenant?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Isaiah's vision here radically expands the boundaries of God's covenant community, explicitly including foreigners and eunuchs—groups often marginalized. It emphasizes devotion and covenant-keeping over lineage or physical wholeness as criteria for belonging.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 12,
+      "title": "Hope for Restoration",
+      "passages": [
+        {
+          "bookAbbr": "JOL",
+          "startChapter": 2,
+          "startVerse": 25,
+          "endChapter": 2,
+          "endVerse": 27,
+          "displayText": "Joel 2:25-27"
+        }
+      ],
+      "reflectionPrompt": "Even after periods of hardship, injustice, or personal loss, the prophets speak of hope and restoration. Where do you see or long for this potential for renewal in your life or in the world today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Even after times of devastation (symbolized by the locusts), the prophet Joel speaks of a divine promise to restore what was lost. This is a powerful message of hope, suggesting that no situation is beyond the possibility of renewal and restored abundance.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 13,
+      "title": "The Faithful Remnant",
+      "passages": [
+        {
+          "bookAbbr": "ZEP",
+          "startChapter": 3,
+          "startVerse": 12,
+          "endChapter": 3,
+          "endVerse": 13,
+          "displayText": "Zephaniah 3:12-13"
+        }
+      ],
+      "reflectionPrompt": "Consider the potential impact of a small group of individuals deeply committed to ethical living and divine principles. How might such a 'remnant' influence broader society?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The concept of a 'remnant'—a group that remains humble, trusts in God, and does no wrong—appears throughout prophetic literature. It suggests that even a small number of people committed to integrity and justice can be a powerful force for good and a locus of divine presence.",
+          "attribution": null
+        }
+      ]
+    },
+    {
+      "dayNumber": 14,
+      "title": "A Vision of New Creation",
+      "passages": [
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 65,
+          "startVerse": 17,
+          "endChapter": 65,
+          "endVerse": 25,
+          "displayText": "Isaiah 65:17-25"
+        }
+      ],
+      "reflectionPrompt": "What aspects of Isaiah's vision for a renewed and reconciled world inspire you most? How can we live today as signs and agents of this future hope, contributing to its unfolding?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Isaiah concludes with a breathtaking vision of new heavens and a new earth, characterized by joy, longevity, peace, security, and harmony between humanity and creation. This is the ultimate hope towards which the prophetic voice calls us.",
+          "attribution": null
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "durationDays": 14
+}
