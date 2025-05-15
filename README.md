@@ -1,3 +1,35 @@
+# WWJD App - Feature Rich Religious Application
+
+This application provides users with daily devotionals, a verse of the day, full Bible access, reading plans, and a community prayer wall, all designed to support their spiritual journey.
+
+## ✨ Key Features
+
+* **Core Bible & Devotional Content:**
+    * Verse of the Day (VotD) with favoriting and custom flagging.
+    * Daily Devotionals.
+    * Full Bible Reader with customizable appearance (font size, type, background).
+    * Favorites system for verses.
+    * Reading Plans with streak tracking and progress management.
+    * Search functionality for Bible content.
+    * Text-to-Speech (TTS) Narration for Bible chapters and devotionals.
+* **NEW: Community Prayer Wall:**
+    * **Anonymous Prayer Submission:** Users can submit prayer requests without revealing their identity. These are reviewed by an admin before appearing.
+    * **View Prayer Wall:** A public display of approved, anonymous prayer requests from the community.
+    * **Pray for Others:** Users can tap a button to indicate they have prayed for a specific request, which increments a public prayer count for that request.
+    * **Track Own Submissions (Optional):** Upon submission, users receive a unique, anonymous ID. They can use this ID on the "My Submitted Prayers" screen to see the prayer count and status of prayers they've submitted.
+    * **Moderation & Safety:**
+        * All prayers are submitted for admin approval before becoming visible.
+        * Users can report prayers they find inappropriate.
+        * (Backend TODO) Automated checks for profanity/spam are planned.
+    * **Premium Features (Planned):**
+        * (Backend TODO) Limits on free prayer submissions per period, with unlimited submissions for premium users.
+* **User Customization & Experience:**
+    * Light/Dark Mode for the overall app theme.
+    * User accounts (anonymous, email/password, Google Sign-In) with linking capabilities.
+    * Developer options for testing and debugging.
+
+---
+
 # App Setup & Deployment Checklist
 
 This guide outlines the key steps for setting up the Flutter app with Firebase, securing API keys, and preparing for release.
@@ -9,9 +41,17 @@ This guide outlines the key steps for setting up the Flutter app with Firebase, 
 * [X] **Download `google-services.json`:** Configuration file downloaded.
 * [ ] **Add iOS App to Firebase:** (PENDING) Add your iOS app to the Firebase project when ready.
 * [ ] **Download `GoogleService-Info.plist`:** (PENDING) Configuration file for iOS.
-* [X] **Add Firebase Dependencies:** `firebase_core` (and others like `firebase_auth`) added to `pubspec.yaml`.
+* [X] **Add Firebase Dependencies:** `firebase_core`, `firebase_auth`, `cloud_firestore`, `firebase_remote_config`, `firebase_app_check` (and others) added to `pubspec.yaml`.
 * [X] **Initialize Firebase in `main.dart`:** `await Firebase.initializeApp(...)` is present.
 * [X] **Anonymous User Sign-In:** Implemented `signInAnonymouslyIfNeeded()` in `AuthService`.
+* [X] **Firestore Database Setup:**
+    * [X] Enabled Firestore (Native Mode).
+    * [X] **NEW:** Created collections for Prayer Wall: `prayerRequests`, `prayerInteractions`, `userPrayerProfiles`.
+    * [ ] (TODO) Define and test comprehensive security rules for all collections, including new Prayer Wall collections.
+* [X] **Firebase Authentication:** Setup for Email/Password, Google Sign-In, and Anonymous.
+* [ ] **Firebase Cloud Functions (Planned for Prayer Wall & IAP):**
+    * (TODO) Set up Firebase Functions environment.
+    * (TODO) Deploy functions for Prayer Wall moderation, submission limits, and potentially for IAP receipt validation.
 
 ## Phase 2: Android Specific Setup
 
@@ -47,11 +87,10 @@ This guide outlines the key steps for setting up the Flutter app with Firebase, 
     * Using `AndroidProvider.playIntegrity` (or `.debug` for emulator testing).
     * (PENDING iOS) `AppleProvider.appAttest` (or `.debug` for simulator testing).
 * [X] **Initialize & Fetch Remote Config in `main.dart`:**
-    * Instance obtained, settings configured, defaults set (optional).
-    * `await remoteConfig.fetchAndActivate()` called.
+    * Instance obtained, settings configured, defaults set.
+    * `await remoteConfig.fetchAndActivate()` called. (Note: Log shows occasional fetch errors, monitor this).
 * [X] **Update `TextToSpeechService`:**
     * Now retrieves API key using `FirebaseRemoteConfig.instance.getString(...)`.
-    * Removed direct dependency on `flutter_dotenv` for this key.
 * **App Check Provider Configuration in Firebase Console:**
     * [ ] **Android (Play Integrity):**
         * Registered app in App Check.
@@ -60,16 +99,17 @@ This guide outlines the key steps for setting up the Flutter app with Firebase, 
     * [ ] **iOS (App Attest / DeviceCheck):** (PENDING)
         * Register app in App Check.
         * Enable chosen provider(s).
-        * Complete necessary Apple Developer portal configurations (e.g., App Attest capability for App ID).
-* [ ] **Enforce App Check for Remote Config:**
-    * In Firebase Console > App Check > APIs > Remote Config:
-        * Currently in "Monitor" mode (recommended for initial testing).
+        * Complete necessary Apple Developer portal configurations.
+* [ ] **Enforce App Check for Remote Config & Firestore (if applicable):**
+    * In Firebase Console > App Check > APIs:
+        * Currently in "Monitor" mode for Remote Config (recommended for initial testing).
         * **Switch to "Enforce"** once thoroughly tested on real devices.
+        * (TODO) Review and enforce for Cloud Firestore if sensitive data access needs App Check protection beyond security rules.
 * [ ] **Restrict API Key in Google Cloud Console:**
     * Go to Google Cloud Console > APIs & Services > Credentials.
     * Select your API key.
     * Under "Application restrictions":
-        * Add your Android app (package name & **SHA-1** fingerprint for *API key restrictions*, though App Check uses SHA-256).
+        * Add your Android app (package name & **SHA-1** fingerprint).
         * (PENDING iOS) Add your iOS app (bundle ID).
     * Under "API restrictions":
         * Select "Restrict key".
@@ -79,7 +119,7 @@ This guide outlines the key steps for setting up the Flutter app with Firebase, 
 
 * [ ] **Android:**
     * Create an upload keystore (if not already done).
-    * Configure `android/app/build.gradle` for release signing with your keystore details.
+    * Configure `android/app/build.gradle` for release signing.
     * Run `flutter build appbundle` or `flutter build apk --release`.
 * [ ] **iOS:** (PENDING)
     * Configure signing & capabilities in Xcode.
@@ -89,88 +129,81 @@ This guide outlines the key steps for setting up the Flutter app with Firebase, 
 
 # Application TODO List & Future Enhancements
 
-## 🚧 Core Monetization & Content Strategy
+## 圦 Core Monetization & Content Strategy
 
 * [ ] **Implement In-App Purchases (IAP):**
     * [ ] Choose an IAP package (e.g., `in_app_purchase`).
-    * [ ] Define premium features/content (e.g., exclusive reading plans, advanced TTS voices, ad-free experience, additional devotionals).
+    * [ ] Define premium features/content (e.g., exclusive reading plans, advanced TTS voices, ad-free experience, additional devotionals, **unlimited Prayer Wall submissions**).
     * [ ] Design and implement paywall/unlock UI elements.
-    * [ ] **Server-Side Receipt Validation:** Crucial for security.
-        * Consider using Firebase Functions to validate receipts with Apple/Google servers.
+    * [ ] **Server-Side Receipt Validation:** Crucial for security (Firebase Functions).
     * [ ] **Manage User Premium Status:**
-        * Use Firebase Auth custom claims (set via Firebase Functions after successful purchase/validation).
-        * Alternatively, use Firestore to store user entitlements (link to `AppUser.uid`).
+        * Use Firebase Auth custom claims or Firestore to store user entitlements (link to `AppUser.uid` and `AppUser.isPremium`).
     * [ ] Handle "Restore Purchases" functionality.
-    * [ ] Consider one-off purchases for specific content packs if it fits your model.
 * [ ] **Migrate Content to Firebase:**
-    * [ ] **Reading Plans:**
-        * Design Firestore schema for reading plans, days, and scripture passages.
-        * Move content from `lib/helpers/reading_plans_data.dart` to Firestore.
-        * Update app to fetch plans dynamically.
-        * Implement admin interface/scripts for managing plans in Firestore.
-    * [ ] **Daily Devotionals:**
-        * Design Firestore schema for devotionals.
-        * Move content from `lib/helpers/daily_devotions.dart` to Firestore.
-        * Update app to fetch daily devotional (consider caching strategies for offline/efficiency).
-        * Implement admin interface/scripts for managing devotionals.
-    * [ ] **Assets (Images):**
-        * Move plan header images (e.g., `assets/images/reading_plan_headers/`) to Firebase Storage.
-        * Update app to load these images from Firebase Storage URLs.
+    * [ ] **Reading Plans:** Move from local to Firestore.
+    * [ ] **Daily Devotionals:** Move from local to Firestore.
+    * [ ] **Assets (Images):** Move to Firebase Storage.
 
-## ✨ User Experience & Feature Enhancements
+## 🙏 Prayer Wall Enhancements (New Feature Area)
 
-* [ ] **User Notes & Journaling:**
-    * Allow users to add personal notes to specific verses or devotional entries.
-    * Store notes in Firestore, associated with the user's UID and the content ID (verse/devotional).
-* [ ] **Enhanced Offline Support:**
-    * Cache Bible text (SQLite is good for this, as it's already there).
-    * Cache fetched devotionals and reading plans (e.g., using Firestore offline persistence or caching fetched data locally).
-    * Ensure progress in reading plans can be made offline and synced when back online.
-* [ ] **Advanced Search:**
-    * Filter search results by book ranges.
-    * Consider adding topical tags to verses/devotionals for thematic searching (would require data enhancement).
-* [ ] **Push Notifications (Firebase Cloud Messaging - FCM):**
-    * Daily devotional reminders.
-    * Reading plan progress reminders/encouragement.
-    * Notifications for new content or features.
-* [ ] **User Settings Expansion:**
-    * More TTS voice customization options (if API supports more fine-grained control easily).
-    * Notification preferences.
-    * Data management (e.g., clear cache, export notes).
-* [ ] **UI/UX Polish:**
-    * Review and refine animations for a more modern feel.
-    * Ensure consistent styling and theming.
-    * Improve visual hierarchy and information density on cards/screens.
-* [ ] **Accessibility (a11y):**
-    * Ensure good color contrast.
-    * Proper semantic labels for screen readers.
-    * Adequate tap target sizes.
-* [ ] **Analytics (Firebase Analytics):**
-    * Track key user actions (e.g., plan started/completed, feature usage, TTS usage).
-    * Monitor user engagement and retention.
-    * Use insights to guide future development.
+* [ ] **Backend - Cloud Functions for Prayer Wall:**
+    * [ ] Implement robust Cloud Function for prayer submission:
+        * [ ] Securely check/update prayer submission limits (free vs. premium based on `AppUser.isPremium`).
+        * [ ] Perform profanity/spam filtering before setting prayer status to `pending`.
+        * [ ] Atomically create prayer document and update user limit counters in `userPrayerProfiles`.
+    * [ ] Cloud Function to handle `reportCount` thresholds (e.g., auto-set to `pending_review`, notify admins).
+    * [ ] (Optional) Cloud Function for notifications (e.g., when a user's prayer is approved or receives many interactions).
+* [ ] **Admin Panel for Prayer Moderation:**
+    * [ ] Develop a simple web interface (e.g., using Firebase Hosting + Callable Functions) or a protected in-app section for admins to:
+        * [ ] View prayers with `status: "pending"` or `status: "pending_review"`.
+        * [ ] Approve or reject prayers.
+        * [ ] View/manage reported prayers.
+* [ ] **Frontend - Prayer Wall UI/UX:**
+    * [ ] Implement "Already Prayed" visual feedback more robustly (persist across sessions, not just current card state).
+    * [ ] Add pagination or infinite scrolling for the Prayer Wall if it grows large.
+    * [ ] Consider advanced filtering or sorting options (e.g., by region if location is implemented, by most recent, by most prayed for).
+    * [ ] User notifications (in-app or push) when their submitted prayer is approved.
+    * [ ] UI for users to manage/delete their own anonymous prayer IDs (if this becomes a desired feature).
+* [ ] **Prayer Wall - Data & Safety:**
+    * [ ] Define and implement data retention policies for prayers in Firestore (e.g., auto-delete old/rejected prayers after a period).
+    * [ ] Further enhance GDPR compliance considerations if any (even coarse) location data is used.
 
-## 📱 iOS Specific Development
+## 笨ｨ User Experience & Feature Enhancements (General)
 
-* [ ] Complete all steps in "Phase 3: iOS Specific Setup" from the checklist.
-* [ ] Thoroughly test all features on various iOS devices and OS versions.
-* [ ] Implement iOS-specific UI conventions where appropriate.
-* [ ] Prepare for App Store submission (screenshots, app description, privacy policy, keywords).
+* [ ] **User Notes & Journaling:** For verses or devotionals.
+* [ ] **Enhanced Offline Support:** For Bible, devotionals, reading plans.
+* [ ] **Advanced Search:** Filter by book ranges, topical tags.
+* [ ] **Push Notifications (FCM):** Devotional/plan reminders, new content.
+* [ ] **User Settings Expansion:** More TTS options, notification preferences, data management.
+* [ ] **UI/UX Polish:** Animations, styling, visual hierarchy.
+* [ ] **Accessibility (a11y):** Contrast, labels, tap targets.
+* [ ] **Analytics (Firebase Analytics):** Track key user actions and engagement.
 
-## 🔒 Security, Maintenance & Admin
+## 導 iOS Specific Development
+
+* [ ] Complete all steps in "Phase 3: iOS Specific Setup".
+* [ ] Thoroughly test all features on iOS.
+* [ ] Prepare for App Store submission.
+
+## 白 Security, Maintenance & Admin (General)
 
 * [ ] **Firebase Security Rules:**
-    * Write and test robust security rules for Firestore (e.g., users can only write to their own progress/notes).
-    * Configure security rules for Firebase Storage if used.
-* [ ] **Dependency Management:** Regularly update Flutter and package dependencies to patch vulnerabilities.
-* [ ] **Error Reporting (Firebase Crashlytics):** Ensure Crashlytics is integrated and monitor for issues.
-* [ ] **Data Backup:** Implement a strategy for backing up critical Firestore data.
-* [ ] **Admin Panel/Tools (Consider):**
-    * For managing devotionals, reading plans, and potentially users if needed, directly in Firebase or via a simple web interface.
+    * [X] Write and test robust security rules for existing Firestore collections.
+    * [ ] **NEW/CRITICAL:** Define and thoroughly test security rules for new Prayer Wall collections (`prayerRequests`, `prayerInteractions`, `userPrayerProfiles`).
+        * Ensure anonymous submissions are handled correctly while protecting user data.
+        * Restrict status updates on prayers to admins (via Cloud Functions or admin SDK).
+        * Securely manage prayer counts and report increments (ideally via Cloud Functions).
+    * [ ] Configure security rules for Firebase Storage if used.
+* [ ] **Dependency Management:** Regularly update Flutter and packages.
+* [ ] **Error Reporting (Firebase Crashlytics):** Ensure integration and monitor.
+* [ ] **Data Backup:** Strategy for Firestore data.
+* [ ] **Admin Panel/Tools (General):** For managing content beyond prayers.
 
-## 👤 User Account Enhancements
+## 側 User Account Enhancements
 
 * [ ] **Password Reset:** Implement for email/password accounts.
-* [ ] **Account Deletion:** Provide an option for users to delete their account and associated data.
-* [ ] **Additional Sign-In Providers:** Consider "Sign in with Apple" for iOS users.
+* [ ] **Account Deletion:** Provide an option for users to delete their account and associated data (including prayers if linked, or a mechanism for anonymous data removal if feasible).
+* [ ] **Additional Sign-In Providers:** Consider "Sign in with Apple" for iOS.
 
+---
+This README provides a snapshot of the app's setup, current features, and future direction.
