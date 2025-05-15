@@ -424,7 +424,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final Brightness currentBrightness = Theme.of(context).brightness;
-    final currentUser = Provider.of<User?>(context); 
+    // final currentUser = Provider.of<User?>(context); // Already declared in your original code
 
     final Gradient lightGradient = LinearGradient(
       colors: [ Colors.deepPurple.shade100.withOpacity(0.6), Colors.purple.shade50.withOpacity(0.8), Colors.white, ],
@@ -481,19 +481,14 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               _buildStreakDisplay(context),
               
-              _buildNavigationButton(
-                context,
-                icon: Icons.forum_outlined, 
-                label: "Community Prayer Wall",
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const PrayerWallScreen()));
-                }
-              ),
+              // MODIFIED: Replaced the two prayer buttons with the new promo card
+              _buildPrayerWallPromoCard(context), // New promo card
               const SizedBox(height: 16.0), 
 
               FutureBuilder<Devotional?>(
                 future: _devotionalFuture, 
                 builder: (context, snapshot) {
+                  // ... (FutureBuilder logic for Devotional remains the same)
                   if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData && !snapshot.hasError) {
                     return DevotionalOfTheDayCard(
                         devotional: Devotional(title: "", coreMessage: "", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""),
@@ -535,6 +530,7 @@ class _HomeScreenState extends State<HomeScreen> {
               FutureBuilder<VotDDataBundle>(
                 future: _votdFuture, 
                 builder: (context, snapshot) {
+                  // ... (FutureBuilder logic for VotD remains the same)
                   VotDDataBundle? bundleForDisplay;
                   bool showAsLoading = snapshot.connectionState == ConnectionState.waiting && 
                                        (!snapshot.hasData || snapshot.data?.verseData == null) && 
@@ -595,43 +591,92 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16.0),
               _buildNavigationButton(context, icon: Icons.search_outlined, label: "Search", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchScreen()))),
               const SizedBox(height: 16.0), 
-              _buildNavigationButton(
-                context,
-                icon: Icons.add_comment_outlined, 
-                label: "Submit a Prayer",
-                onTap: () async { // Make onTap async
-                  if (currentUser == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please log in to submit a prayer.'))
-                    );
-                    return;
-                  }
-                  // Await the result from SubmitPrayerScreen
-                  final result = await Navigator.push<bool>( // Expect a boolean result
-                    context,
-                    MaterialPageRoute(builder: (context) => const SubmitPrayerScreen())
-                  );
-
-                  // Check if the widget is still mounted and if submission was successful
-                  if (result == true && mounted) { 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('Prayer submitted for review! You could also visit the Prayer Wall to pray for others.'),
-                        duration: const Duration(seconds: 6), // Slightly longer for action
-                        action: SnackBarAction(
-                          label: 'View Wall',
-                          onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => const PrayerWallScreen()));
-                          },
-                        ),
-                      ),
-                    );
-                  }
-                }
-              ),
-              const SizedBox(height: 16.0), 
+              // The "Submit a Prayer" button was removed from here as it's now part of the PrayerWallScreen's FAB.
+              // If you want a direct link from home, you can add it back or integrate it into the new promo card's tap action logic.
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  // NEW Helper method for the Prayer Wall promo card
+  Widget _buildPrayerWallPromoCard(BuildContext context) {
+    final theme = Theme.of(context);
+    // final currentUser = Provider.of<User?>(context, listen: false); // Not needed for this card's navigation
+
+    return Card(
+      elevation: 3.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      clipBehavior: Clip.antiAlias, // Important for Image to respect rounded corners
+      margin: const EdgeInsets.symmetric(vertical: 8.0), // Add some margin
+      child: InkWell(
+        onTap: () {
+          // Navigate directly to the PrayerWallScreen
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PrayerWallScreen()),
+          );
+        },
+        child: Stack(
+          alignment: Alignment.bottomLeft, // Align text content to the bottom left
+          children: [
+            // Background Image
+            Ink.image(
+              image: const AssetImage('assets/images/home/home_prayer_wall.png'), // Your image path
+              height: 180, // Adjust height as needed
+              fit: BoxFit.cover,
+              // Optional: Add a color filter for better text visibility
+              colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.35), // Darken the image slightly
+                BlendMode.darken,
+              ),
+            ),
+            // Text Overlay Content
+            Positioned.fill(
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  // Optional: Add a subtle gradient overlay from bottom to top for text readability
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.black.withOpacity(0.6), // Darker at the bottom
+                      Colors.black.withOpacity(0.0), // Fades to transparent at the top
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    stops: const [0.0, 0.7], // Adjust stops for gradient extent
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end, // Align text to the bottom
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Community Prayer Wall",
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          const Shadow(blurRadius: 2.0, color: Colors.black54, offset: Offset(1,1)),
+                        ]
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "Share your requests & pray for others.",
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: Colors.white.withOpacity(0.9),
+                         shadows: [
+                          const Shadow(blurRadius: 1.0, color: Colors.black38, offset: Offset(1,1)),
+                        ]
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
