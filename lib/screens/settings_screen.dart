@@ -1,5 +1,6 @@
 // lib/screens/settings_screen.dart
 // Path: lib/screens/settings_screen.dart
+// Updated to include navigation to MyPrayerRequestsScreen using MaterialPageRoute
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +21,11 @@ import 'package:wwjd_app/models/app_user.dart';
 import 'package:wwjd_app/widgets/account_section.dart';
 import 'package:wwjd_app/config/constants.dart';
 
+// Import for "My Submitted Prayers" screen
+import 'my_prayer_requests_screen.dart'; // Ensure this path is correct
+
 class SettingsScreen extends StatefulWidget {
+  // static const routeName = '/settings'; // Keep if you use named routes for other parts
   const SettingsScreen({super.key});
 
   @override
@@ -49,7 +54,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   static const double _baseReaderFontSize = 18.0;
 
-  // --- Dev Premium Toggle ---
   bool _devPremiumEnabled = false;
 
   @override
@@ -71,15 +75,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _isLoadingSettings = true;
     });
 
-    await PrefsHelper.init();
-    await _ttsService.ensureInitialized(); // ensureInitialized is async
+    // await PrefsHelper.init(); // Already called in main.dart
+    await _ttsService.ensureInitialized(); 
 
     _fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
     _selectedFontFamily = PrefsHelper.getReaderFontFamily();
     _selectedReaderTheme = PrefsHelper.getReaderThemeMode();
     _availableAppTtsVoices = _ttsService.getCuratedAppVoices();
 
-    // --- Load Dev Premium Setting ---
     _devPremiumEnabled = PrefsHelper.getDevPremiumEnabled();
 
     if (mounted) {
@@ -106,7 +109,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _showSnackBar(String message, {bool isError = false, BuildContext? ctx}) {
     final contextToShow = ctx ?? context;
-    // Ensure context is still valid if it's the main screen's context
     if (!mounted && ctx == null) return;
 
     ScaffoldMessenger.of(contextToShow).showSnackBar(
@@ -114,7 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         content: Text(message),
         backgroundColor: isError
             ? Theme.of(contextToShow).colorScheme.error
-            : Colors.green, // Or some other non-error color
+            : Colors.green.shade600,
         behavior: SnackBarBehavior.floating,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8))),
@@ -124,7 +126,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _handleForceNextDevotional() async {
-    await forceNextDevotional(); // This is from daily_devotions.dart
+    await forceNextDevotional(); 
     _showSnackBar("Next devotional will be shown on Home screen refresh.");
   }
 
@@ -161,24 +163,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _onAppVersionTap() {
     _devTapCount++;
-    if (_devTapCount >= 3 && !_devOptionsEnabled) {
+    if (_devTapCount >= 7 && !_devOptionsEnabled) { // Standard 7 taps
       if (mounted) {
         setState(() { _devOptionsEnabled = true; });
         _showSnackBar("Developer Options Enabled!");
       }
-    } else if (_devOptionsEnabled && _devTapCount >= 10) { // Allow disabling
+    } else if (_devOptionsEnabled && _devTapCount >= 10) { 
       if (mounted) {
         setState(() { _devOptionsEnabled = false; });
         _showSnackBar("Developer Options Disabled.");
-        _devTapCount = 0; // Reset count after disabling
+        _devTapCount = 0; 
       }
     }
   }
   
-  // --- Authentication Handlers (_handleGoogleSignIn, _promptForPassword, _handleEmailPasswordAuth, _handleSignOut) ---
-  // These methods remain largely the same as in your provided file, but ensure `setState` for `_isAuthActionLoading`
-  // is wrapped with `WidgetsBinding.instance.addPostFrameCallback` or check `mounted` before calling `setState` in `finally` blocks.
-
   Future<void> _handleGoogleSignIn(AuthService authService) async {
     if (!mounted) return;
     setState(() { _isAuthActionLoading = true; });
@@ -189,68 +187,55 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _showSnackBar("Successfully signed in as ${userFromAuthService.displayName ?? userFromAuthService.email ?? 'User'}.");
         _emailController.clear(); _passwordController.clear();
       } else if (mounted && userFromAuthService == null) {
-        // User cancelled or error handled in service. No explicit snackbar needed here unless desired.
         print("SettingsScreen: Google Sign-In returned null (likely cancelled or handled error in service).");
       }
     } on fb_auth.FirebaseAuthException catch (e) {
       if (mounted) {
         if (e.code == 'link-google-to-email-erforderlich' && e.email != null) {
-          // This is a custom error code you defined in AuthService
-          // Show dialog to get password and then attempt to link
           final String? password = await _promptForPassword(e.email!);
           if (password != null && password.isNotEmpty && mounted) {
-            // Re-set loading state for the linking operation
             setState(() { _isAuthActionLoading = true; });
             try {
-                // Important: Re-acquire Google sign-in details as they might not be in scope anymore
-                // Or better, have signInWithGoogle in AuthService handle this re-authentication internally if it returns a specific error.
-                // For now, let's assume we need to re-get the Google credential
-                final GoogleSignInAccount? googleUserAgain = await GoogleSignIn().signInSilently() ?? await GoogleSignIn().signIn();
-                if (googleUserAgain != null) {
-                    final GoogleSignInAuthentication googleAuthAgain = await googleUserAgain.authentication;
-                    if (googleAuthAgain.idToken != null) { // Ensure idToken is present
-                        final fb_auth.AuthCredential credentialToLink = fb_auth.GoogleAuthProvider.credential(
-                            accessToken: googleAuthAgain.accessToken,
-                            idToken: googleAuthAgain.idToken,
-                        );
-                        // Call the reauth and link method from AuthService
-                        userFromAuthService = await authService.reauthenticateAndLinkCredential(e.email!, password, credentialToLink);
-                        if (userFromAuthService != null && !userFromAuthService.isAnonymous && mounted) {
-                            _showSnackBar("Google account successfully linked to ${userFromAuthService.email}.", ctx: context); // Use current context
-                        }
-                    } else {
-                         _showSnackBar("Could not re-obtain Google token for linking.", isError: true, ctx: context);
-                    }
-                } else {
-                    // User cancelled the Google Sign-In again
-                    _showSnackBar("Google account linking cancelled.", isError: false, ctx: context); // Not an error
-                }
-            } catch (linkError) { // Catch errors from reauthenticateAndLinkCredential
-                 _showSnackBar("Failed to link Google account: ${linkError.toString()}", isError: true, ctx: context);
+              final GoogleSignInAccount? googleUserAgain = await GoogleSignIn().signInSilently() ?? await GoogleSignIn().signIn();
+              if (googleUserAgain != null) {
+                  final GoogleSignInAuthentication googleAuthAgain = await googleUserAgain.authentication;
+                  if (googleAuthAgain.idToken != null) {
+                      final fb_auth.AuthCredential credentialToLink = fb_auth.GoogleAuthProvider.credential(
+                          accessToken: googleAuthAgain.accessToken,
+                          idToken: googleAuthAgain.idToken,
+                      );
+                      userFromAuthService = await authService.reauthenticateAndLinkCredential(e.email!, password, credentialToLink);
+                      if (userFromAuthService != null && !userFromAuthService.isAnonymous && mounted) {
+                          _showSnackBar("Google account successfully linked to ${userFromAuthService.email}.", ctx: context);
+                      }
+                  } else {
+                      _showSnackBar("Could not re-obtain Google token for linking.", isError: true, ctx: context);
+                  }
+              } else {
+                  _showSnackBar("Google account linking cancelled.", isError: false, ctx: context);
+              }
+            } catch (linkError) { 
+                _showSnackBar("Failed to link Google account: ${linkError.toString()}", isError: true, ctx: context);
             }
-          } else if (password != null && mounted) { // Empty password or cancelled dialog
+          } else if (password != null && mounted) { 
             _showSnackBar("Google account linking cancelled.", isError: false, ctx: context);
           }
-          // No password entered or dialog cancelled for password prompt
         } else {
-          // Handle other FirebaseAuthExceptions from Google Sign-In
           String errorMessage = "Google Sign-In Error: ${e.message ?? e.code}";
-          // You can add more specific messages for common error codes here
           if (e.code == 'network-request-failed') {
             errorMessage = "Network error. Please check your internet connection.";
           } else if (e.code == 'credential-already-in-use' || e.code == 'account-exists-with-different-credential'){
-             errorMessage = "This Google account is already linked to another user or a different sign-in method. Try signing in with that method or use a different Google Account.";
+              errorMessage = "This Google account is already linked to another user or a different sign-in method. Try signing in with that method or use a different Google Account.";
           }
           _showSnackBar(errorMessage, isError: true);
         }
       }
-    } catch (e) { // Catch generic exceptions
+    } catch (e) { 
       if (mounted) {
         _showSnackBar(e.toString(), isError: true);
       }
     } finally {
       if (mounted) {
-        // Use WidgetsBinding.instance.addPostFrameCallback to ensure setState is called after build phase
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             setState(() { _isAuthActionLoading = false; });
@@ -261,7 +246,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<String?> _promptForPassword(String email) async {
-    // This method remains the same
     final passwordController = TextEditingController();
     return showDialog<String>(
       context: context,
@@ -285,7 +269,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
-                Navigator.of(dialogContext).pop(null); // Return null if cancelled
+                Navigator.of(dialogContext).pop(null); 
               },
             ),
             TextButton(
@@ -301,7 +285,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _handleEmailPasswordAuth(AuthService authService) async {
-    // This method remains the same
     if (!_formKey.currentState!.validate()) return;
     if (!mounted) return;
     setState(() { _isAuthActionLoading = true; });
@@ -321,10 +304,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       }
       if (user != null && mounted) {
-        // Clear fields after successful auth
         _emailController.clear();
         _passwordController.clear();
-        // Potentially toggle _isSignUpMode back to false if it was true
         if (_isSignUpMode) {
           setState(() { _isSignUpMode = false; });
         }
@@ -349,17 +330,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) { _showSnackBar(e.toString(), isError: true); }
     } finally {
       if (mounted) {
-         WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) {
                 setState(() { _isAuthActionLoading = false; });
             }
-         });
+          });
       }
     }
   }
 
   Future<void> _handleSignOut(AuthService authService) async {
-    // This method remains the same
     if (!mounted) return;
     setState(() { _isAuthActionLoading = true; });
     try {
@@ -374,9 +354,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } finally {
       if (mounted) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-           if (mounted) {
-               setState(() { _isAuthActionLoading = false; });
-           }
+            if (mounted) {
+                setState(() { _isAuthActionLoading = false; });
+            }
         });
       }
     }
@@ -387,17 +367,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final themeProvider = Provider.of<ThemeProvider>(context); // listen: true for theme changes
     
     final authService = Provider.of<AuthService>(context, listen: false);
-    final appUser = Provider.of<AppUser?>(context);
+    final appUser = Provider.of<AppUser?>(context); 
 
-    // Define App Version ListTile here to easily move it
     Widget appVersionTile = ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       leading: const Icon(Icons.info_outline),
       title: const Text("App Version"),
-      subtitle: const Text(appVersion), // Consider making this dynamic if needed
+      subtitle: const Text(appVersion), 
       onTap: _onAppVersionTap,
     );
 
@@ -435,7 +414,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const Divider(indent: 8, endIndent: 8),
                 
-                // App Theme Section
+                // --- Community Prayers Section ---
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                  child: Text("Community Prayers", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold)),
+                ),
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  leading: Icon(Icons.playlist_add_check_circle_outlined, color: colorScheme.secondary),
+                  title: const Text('My Submitted Prayers'),
+                  subtitle: const Text('View prayers you submitted anonymously'),
+                  trailing: Icon(Icons.chevron_right, color: colorScheme.onSurfaceVariant),
+                  onTap: () {
+                    // Navigate to MyPrayerRequestsScreen using MaterialPageRoute
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MyPrayerRequestsScreen()),
+                    );
+                  },
+                ),
+                const Divider(indent: 8, endIndent: 8),
+                // --- End of Community Prayers Section ---
+
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                   child: Text("App Theme", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold)),
@@ -443,15 +443,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
                   leading: Icon(
-                    // Icon in leading can reflect current system actual brightness if mode is system
                     themeProvider.themeMode == ThemeMode.light ? Icons.light_mode_outlined
                         : themeProvider.themeMode == ThemeMode.dark ? Icons.dark_mode_outlined
-                        : (MediaQuery.platformBrightnessOf(context) == Brightness.dark ? Icons.brightness_auto_outlined // or dark_mode
-                            : Icons.brightness_auto_outlined), // or light_mode
-                    color: colorScheme.primary, // theme color for the icon
+                        : (MediaQuery.platformBrightnessOf(context) == Brightness.dark ? Icons.brightness_auto_outlined
+                            : Icons.brightness_auto_outlined),
+                    color: colorScheme.primary,
                   ),
                   title: const Text("Mood"),
-                  // MODIFIED Trailing for Theme Appearance
                   trailing: SegmentedButton<ThemeMode>(
                     segments: const <ButtonSegment<ThemeMode>>[
                       ButtonSegment<ThemeMode>(
@@ -466,55 +464,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       ButtonSegment<ThemeMode>(
                         value: ThemeMode.system,
-                        icon: Icon(Icons.phone_iphone),
+                        icon: Icon(Icons.phone_iphone), 
                         tooltip: "System Default",
                       ),
                     ],
                     selected: <ThemeMode>{themeProvider.themeMode},
                     onSelectionChanged: (Set<ThemeMode> newSelection) {
                       if (newSelection.isNotEmpty) {
-                        // No need to call setState here if ThemeProvider notifies listeners
-                        // and SettingsScreen rebuilds due to Provider.of<ThemeProvider>(context)
                         themeProvider.setThemeMode(newSelection.first);
                       }
                     },
-                    // Style the SegmentedButton to better fit the ListTile
                     style: SegmentedButton.styleFrom(
-                      // Adjust visual density if needed to make buttons smaller
                       visualDensity: VisualDensity.comfortable,
-                      // You might need to adjust tapTargetSize if they are too large
-                      // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                    showSelectedIcon: false, // Default is true, ensures selected icon is shown
-                    // multiSelectionEnabled: false, // Default for single choice behavior
+                    showSelectedIcon: false, 
                   ),
                 ),
                 const Divider(indent: 8, endIndent: 8),
 
-                // Reader Appearance Section
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                   child: Text("Reader Appearance", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold,)),
                 ),
-                // MODIFIED Font Size ListTile
                 ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0), // Adjusted padding
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                   title: Row(
                     children: <Widget>[
                       const Icon(Icons.format_size_rounded),
-                      const SizedBox(width: 16), // Spacing after icon
-                      Expanded( // Label takes available space before controls
+                      const SizedBox(width: 16), 
+                      Expanded(
                         child: Text("Font Size", style: textTheme.titleMedium),
                       ), 
                       IconButton(
                         icon: const Icon(Icons.remove_circle_outline_rounded),
                         tooltip: "Decrease font size",
                         onPressed: _fontSizeDelta > -4.0 ? () async { if (mounted) setState(() { _fontSizeDelta -= 1.0; }); await PrefsHelper.setReaderFontSizeDelta(_fontSizeDelta);} : null,
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust padding
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0), 
                         constraints: const BoxConstraints(),
                       ),
-                      Container( // Container to constrain text width and center it
-                        width: 50, // Adjust width as needed for "Aa (XX)"
+                      Container(
+                        width: 50, 
                         alignment: Alignment.center,
                         child: Text(
                           "Aa (${(_baseReaderFontSize + _fontSizeDelta).toStringAsFixed(0)})",
@@ -525,7 +514,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         icon: const Icon(Icons.add_circle_outline_rounded),
                         tooltip: "Increase font size",
                         onPressed: _fontSizeDelta < 6.0 ? () async { if (mounted) setState(() { _fontSizeDelta += 1.0; }); await PrefsHelper.setReaderFontSizeDelta(_fontSizeDelta);} : null,
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust padding
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0), 
                         constraints: const BoxConstraints(),
                       ),
                     ],
@@ -545,7 +534,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const Divider(indent: 8, endIndent: 8),
 
-                // Narration Voice Section
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                   child: Text("Narration Voice", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold,)),
@@ -557,30 +545,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       if (_availableAppTtsVoices.isEmpty) { return const ListTile( contentPadding: EdgeInsets.symmetric(horizontal: 20.0), leading: Icon(Icons.record_voice_over_outlined), title: Text("Narration Voice"), subtitle: Text("No voices available or API key issue."),); }
                       
                       AppTtsVoice? dropdownValue = currentSelectedVoice;
-                      if (currentSelectedVoice != null && !_availableAppTtsVoices.any((v) => v.name == currentSelectedVoice.name)) {
-                          dropdownValue = _availableAppTtsVoices.isNotEmpty ? _availableAppTtsVoices.firstWhere((v) => v.name == PrefsHelper.getSelectedVoiceName(), orElse: () => _availableAppTtsVoices.first) : null;
-                      } else if (currentSelectedVoice == null && _availableAppTtsVoices.isNotEmpty) {
-                          dropdownValue = _availableAppTtsVoices.firstWhere((v) => v.name == PrefsHelper.getSelectedVoiceName(), orElse: () => _availableAppTtsVoices.first);
+                      if (dropdownValue == null || !_availableAppTtsVoices.any((v) => v.name == dropdownValue?.name)) {
+                          String? preferredName = PrefsHelper.getSelectedVoiceName();
+                          dropdownValue = _availableAppTtsVoices.firstWhere(
+                              (v) => v.name == preferredName, 
+                              orElse: () => _availableAppTtsVoices.first 
+                          );
                       }
 
                       return ListTile(
                         contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
                         leading: const Icon(Icons.record_voice_over_outlined),
-                        // MODIFIED Trailing for Narration Voice Dropdown
-                        trailing: Container( // Wrap Dropdown in a Container or SizedBox to constrain its width
-                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75), // Max 50% of screen width
+                        title: const Text("Selected Voice"), 
+                        trailing: Container( 
+                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.55), 
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<AppTtsVoice>(
                               value: dropdownValue, 
-                              hint: const Text("Select", overflow: TextOverflow.ellipsis), // Short hint
-                              isExpanded: true, // Allows the dropdown to fill the constrained width
+                              hint: const Text("Select", overflow: TextOverflow.ellipsis), 
+                              isExpanded: true, 
                               items: _availableAppTtsVoices.map((AppTtsVoice voice) {
                                 return DropdownMenuItem<AppTtsVoice>(
                                   value: voice,
                                   child: Text( 
                                     voice.displayName, 
                                     style: textTheme.bodyMedium, 
-                                    overflow: TextOverflow.ellipsis, // Ellipsize long voice names
+                                    overflow: TextOverflow.ellipsis, 
                                   ),
                                 );
                               }).toList(),
@@ -597,18 +587,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const Divider(indent: 8, endIndent: 8),
 
-                // App Version moved here
                 appVersionTile,
                 const Divider(indent: 8, endIndent: 8),
 
-                // Developer Options (conditionally displayed)
                 if (_devOptionsEnabled) ...[ 
                   Padding(padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0), child: Text("Developer Options", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold,))),
                   ListTile(contentPadding: const EdgeInsets.symmetric(horizontal: 20.0), leading: const Icon(Icons.skip_next_outlined, color: Colors.orange), title: const Text("Force Next Devotional"), subtitle: const Text("Shows the next devotional on Home screen refresh."), onTap: _handleForceNextDevotional,),
                   ListTile(contentPadding: const EdgeInsets.symmetric(horizontal: 20.0), leading: const Icon(Icons.restart_alt_outlined, color: Colors.redAccent), title: const Text("Reset All Reading Plan Progress"), subtitle: const Text("Resets streaks and all daily reading progress."), onTap: _handleResetAllPlanProgress,),
-                  const Divider(indent: 8, endIndent: 8),
                   
-                  // --- SwitchListTile for Dev Premium ---
                   SwitchListTile(
                     title: const Text("Developer: Premium Enabled"),
                     subtitle: const Text("Simulates premium access for testing."),
@@ -621,6 +607,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _showSnackBar(
                         "Dev Premium ${newValue ? 'Enabled' : 'Disabled'}. Restart or re-navigate to see full effect.",
                       );
+                       final authService = Provider.of<AuthService>(context, listen: false);
+                       authService.triggerAppUserReFetch(); 
                     },
                     secondary: Icon(
                         _devPremiumEnabled ? Icons.workspace_premium_rounded : Icons.workspace_premium_outlined,

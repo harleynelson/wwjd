@@ -1,24 +1,37 @@
-// lib/home_screen.dart
+// File: lib/screens/home_screen.dart
+// Updated to include Prayer Wall navigation and necessary checks.
+
 import 'package:flutter/material.dart';
-import 'dart:math'; // For Random in _fetchCurrentStreak (if that logic remains)
-import 'package:provider/provider.dart'; // For ThemeProvider
+import 'dart:math'; // For Random in _fetchCurrentStreak (if that logic remains) - Not directly used in provided snippet but kept for context
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Added for User check
+
+// Existing imports from your file
 import 'package:wwjd_app/widgets/verse_of_the_day_card.dart';
 import 'package:wwjd_app/widgets/devotional_of_the_day_card.dart';
 import '../helpers/daily_devotions.dart';
 import '../helpers/database_helper.dart';
-import '../models/models.dart';
+import '../models/models.dart'; // This likely contains Flag, UserReadingProgress, Devotional
 import '../helpers/book_names.dart';
-import 'full_bible_reader_screen.dart';
-import 'favorites_screen.dart';
 import '../helpers/prefs_helper.dart';
 import '../dialogs/flag_selection_dialog.dart';
+import '../theme/app_colors.dart';
+import '../theme/theme_provider.dart';
+import '../models/reader_settings_enums.dart';
+
+// Screen imports
+import 'full_bible_reader_screen.dart';
+import 'favorites_screen.dart';
 import 'settings_screen.dart';
 import 'search_screen.dart';
 import 'reading_plans_list_screen.dart';
-import '../theme/app_colors.dart'; // For gradients if used directly
-import '../theme/theme_provider.dart'; // For theme toggling
-import '../models/reader_settings_enums.dart'; // For ReaderFontFamily
 
+// New Prayer Wall Screen Imports
+import 'prayer_wall_screen.dart';
+import 'submit_prayer_screen.dart';
+// import 'my_prayer_requests_screen.dart'; // This is usually accessed from Settings
+
+// VotDDataBundle class definition (ensure this is correctly placed or imported)
 class VotDDataBundle {
   final Map<String, dynamic>? verseData;
   final bool isFavorite;
@@ -43,8 +56,11 @@ class VotDDataBundle {
   }
 }
 
+
 class HomeScreen extends StatefulWidget {
+  static const routeName = '/home'; // Added for consistency
   const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -52,14 +68,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
+  // MINIMAL FIX: Initialize late Future variables with default completed Futures
+  // This prevents LateInitializationError when FutureBuilders access them initially.
   late Future<Devotional?> _devotionalFuture = Future.value(null);
-  late Future<VotDDataBundle> _votdFuture = Future.value(VotDDataBundle(verseData: null)); // Default empty bundle
+  late Future<VotDDataBundle> _votdFuture = Future.value(VotDDataBundle(verseData: null));
   late Future<int> _streakFuture = Future.value(0); // Default to 0 streak
-  List<Flag> _allAvailableFlags = [];
 
+  List<Flag> _allAvailableFlags = [];
   VotDDataBundle? _currentVotDDataBundle;
 
-  // Reader settings state for HomeScreen cards
   double _fontSizeDelta = 0.0;
   ReaderFontFamily _selectedFontFamily = ReaderFontFamily.systemDefault;
 
@@ -70,29 +87,33 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadReaderPreferencesAndAllData() async {
+    // It's good practice to check if mounted before async operations that might call setState
+    if (!mounted) return;
     await _loadReaderPreferences();
+    if (!mounted) return;
     await _loadAvailableFlags();
-    _assignFutures(); // Assign data futures after settings are loaded
+    if (!mounted) return;
+    
+    // Assign the actual data fetching futures. 
+    // These will replace the default Future.value() assignments.
+    _assignFutures(); 
+    
     if (mounted) {
-      // This setState ensures the build method runs once preferences are loaded,
-      // making them available to FutureBuilders immediately if they build synchronously
-      // or use these values in their initial loading widget.
-      setState(() {});
+      setState(() {
+        // This setState is to ensure the UI rebuilds after preferences are loaded
+        // and futures are re-assigned, so FutureBuilders pick up the new futures.
+      });
     }
   }
 
   Future<void> _loadReaderPreferences() async {
-    // No setState needed here if called before build or as part of a sequence
-    // that will eventually call setState.
-    // These values will be used by the build method.
     _fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
     _selectedFontFamily = PrefsHelper.getReaderFontFamily();
   }
 
   void _assignFutures() {
+    // These assignments will replace the initial Future.value() ones.
     _devotionalFuture = _fetchDevotionalOfTheDay();
-    // Initialize _votdFuture carefully. If _currentVotDDataBundle is null, fetch new.
-    // Otherwise, refresh its status.
     if (_currentVotDDataBundle == null || _currentVotDDataBundle!.verseData == null) {
       _votdFuture = _fetchNewRandomVotDBundle();
     } else {
@@ -107,7 +128,12 @@ class _HomeScreenState extends State<HomeScreen> {
       final List<Flag> visiblePrebuiltFlags = prebuiltFlags.where((f) => !hiddenIds.contains(f.id)).toList();
       final userFlagMaps = await _dbHelper.getUserFlags();
       final userFlags = userFlagMaps.map((map) => Flag.fromUserDbMap(map)).toList();
-      _allAvailableFlags = [...visiblePrebuiltFlags, ...userFlags]..sort((a, b) => a.name.compareTo(b.name));
+      if (!mounted) return;
+      // Only call setState if _allAvailableFlags directly influences the build method
+      // or if its change needs to trigger a rebuild for other reasons.
+      setState(() { 
+         _allAvailableFlags = [...visiblePrebuiltFlags, ...userFlags]..sort((a, b) => a.name.compareTo(b.name));
+      });
     } catch (e) {
       if(mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error loading flags: ${e.toString()}")));
     }
@@ -127,7 +153,6 @@ class _HomeScreenState extends State<HomeScreen> {
         if (isFavorite) {
           assignedFlagIds = await _dbHelper.getFlagIdsForFavorite(currentVotDVerseID);
         }
-        // Update _currentVotDDataBundle here as well
         _currentVotDDataBundle = VotDDataBundle(
             verseData: verseData,
             isFavorite: isFavorite,
@@ -138,13 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       print("Error fetching new random VotD bundle: $e");
     }
-    _currentVotDDataBundle = VotDDataBundle(verseData: null); // Ensure it's non-null
+    _currentVotDDataBundle = VotDDataBundle(verseData: null);
     return _currentVotDDataBundle!;
   }
 
   Future<VotDDataBundle> _refreshFavoriteStatusForCurrentVotD() async {
     if (_currentVotDDataBundle == null || _currentVotDDataBundle!.verseData == null) {
-      // This case should ideally be handled by fetching a new bundle if current is null
       return _fetchNewRandomVotDBundle();
     }
 
@@ -162,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return _currentVotDDataBundle!;
     } catch (e) {
       print("Error refreshing favorite status for VotD $verseID: $e");
-      return _currentVotDDataBundle!; // Return existing bundle on error
+      return _currentVotDDataBundle!;
     }
   }
 
@@ -179,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (todayDate.difference(lastCompletedDate).inDays > 1) {
             isValid = false;
           }
-        } else if (progress.streakCount > 0) { // Streak > 0 but no last completion date means streak is broken
+        } else if (progress.streakCount > 0) {
           isValid = false;
         }
         if (isValid && progress.streakCount > maxStreak) {
@@ -189,24 +213,21 @@ class _HomeScreenState extends State<HomeScreen> {
       return maxStreak;
     } catch (e) {
       print("Error fetching current streak: $e");
-      return 0;
+      return 0; // Return a default value on error
     }
   }
 
   Future<void> _refreshAllData() async {
-    // Reload preferences first, then other data
+    if (!mounted) return;
     await _loadReaderPreferences();
-    await _loadAvailableFlags();
-    if (mounted) {
-      setState(() {
-        // Re-assign futures to trigger FutureBuilders to re-fetch data
-        // Reset _currentVotDDataBundle to null to force _fetchNewRandomVotDBundle if desired,
-        // or handle refresh logic more granularly within _assignFutures or the fetch methods.
-        // For simplicity, let's ensure a fresh VotD if user pulls to refresh everything.
-        _currentVotDDataBundle = null;
-        _assignFutures();
-      });
-    }
+    if (!mounted) return;
+    await _loadAvailableFlags(); 
+    if (!mounted) return;
+    
+    setState(() {
+      _currentVotDDataBundle = null; 
+      _assignFutures(); 
+    });
   }
 
   Future<void> _toggleVotDFavorite(VotDDataBundle bundleToToggle) async {
@@ -224,9 +245,9 @@ class _HomeScreenState extends State<HomeScreen> {
         await _dbHelper.removeFavorite(verseID);
       }
       if (mounted) {
-        // Refresh the specific VotD bundle and trigger rebuild
-        _votdFuture = _refreshFavoriteStatusForCurrentVotD();
-        setState(() {}); // Rebuild to reflect the new future
+        setState(() {
+          _votdFuture = _refreshFavoriteStatusForCurrentVotD();
+        });
       }
     } catch (e) {
       if(mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error updating favorite: ${e.toString()}")));
@@ -234,87 +255,92 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _openFlagManagerForVotD(VotDDataBundle bundleForFlags) {
-     if (bundleForFlags.verseData == null || bundleForFlags.verseData![DatabaseHelper.bibleColVerseID] == null || !bundleForFlags.isFavorite) return;
+      if (bundleForFlags.verseData == null || bundleForFlags.verseData![DatabaseHelper.bibleColVerseID] == null || !bundleForFlags.isFavorite) return;
 
-     final String verseID = bundleForFlags.verseData![DatabaseHelper.bibleColVerseID];
-     String ref = "${getFullBookName(bundleForFlags.verseData![DatabaseHelper.bibleColBook] ?? "??")} ${bundleForFlags.verseData![DatabaseHelper.bibleColChapter]?.toString() ?? "?"}:${bundleForFlags.verseData![DatabaseHelper.bibleColStartVerse]?.toString() ?? "?"}";
+      final String verseID = bundleForFlags.verseData![DatabaseHelper.bibleColVerseID];
+      String ref = "${getFullBookName(bundleForFlags.verseData![DatabaseHelper.bibleColBook] ?? "??")} ${bundleForFlags.verseData![DatabaseHelper.bibleColChapter]?.toString() ?? "?"}:${bundleForFlags.verseData![DatabaseHelper.bibleColStartVerse]?.toString() ?? "?"}";
 
-     showDialog(
+      showDialog(
         context: context,
         builder: (_) => FlagSelectionDialog(
             verseRef: ref,
             initialSelectedFlagIds: bundleForFlags.assignedFlagIds,
             allAvailableFlags: _allAvailableFlags,
             onHideFlag: (flagId) async {
-                await PrefsHelper.hideFlagId(flagId);
-                await _loadAvailableFlags(); // Reload available flags
-                if (mounted) {
-                  _votdFuture = _refreshFavoriteStatusForCurrentVotD(); // Refresh VotD data
-                  setState(() {});
-                }
+              await PrefsHelper.hideFlagId(flagId);
+              await _loadAvailableFlags(); 
+              if (mounted) {
+                setState((){ 
+                   _votdFuture = _refreshFavoriteStatusForCurrentVotD(); 
+                });
+              }
             },
             onDeleteFlag: (flagId) async {
-                await _dbHelper.deleteUserFlag(flagId);
-                await _loadAvailableFlags();
-                if (mounted) {
-                  _votdFuture = _refreshFavoriteStatusForCurrentVotD();
-                  setState(() {});
-                }
+              await _dbHelper.deleteUserFlag(flagId);
+              await _loadAvailableFlags();
+              if (mounted) {
+                 setState((){
+                   _votdFuture = _refreshFavoriteStatusForCurrentVotD();
+                });
+              }
             },
             onAddNewFlag: (String newName) async {
-                 int newId = await _dbHelper.addUserFlag(newName);
-                 await _loadAvailableFlags();
-                 Flag? foundFlag;
-                 try {
-                    foundFlag = _allAvailableFlags.firstWhere((f) => f.id == newId);
-                 } catch (e) {
-                    print("Error finding newly added flag with ID $newId in _openFlagManagerForVotD: $e");
-                    foundFlag = null;
-                 }
-                 return foundFlag;
+              int newId = await _dbHelper.addUserFlag(newName);
+              await _loadAvailableFlags(); 
+              Flag? foundFlag;
+              try {
+                foundFlag = _allAvailableFlags.firstWhere((f) => f.id == newId);
+              } catch (e) {
+                print("Error finding newly added flag with ID $newId in _openFlagManagerForVotD: $e");
+                foundFlag = null;
+              }
+              return foundFlag;
             },
             onSave: (finalSelectedIds) async {
-                Set<int> initSet = bundleForFlags.assignedFlagIds.toSet();
-                Set<int> finalSet = finalSelectedIds.toSet();
-                for (int id in finalSet.difference(initSet)) {
-                  await _dbHelper.assignFlagToFavorite(verseID, id);
-                }
-                for (int id in initSet.difference(finalSet)) {
-                  await _dbHelper.removeFlagFromFavorite(verseID, id);
-                }
-                if (mounted) {
-                  _votdFuture = _refreshFavoriteStatusForCurrentVotD();
-                  setState(() {});
-                }
+              Set<int> initSet = bundleForFlags.assignedFlagIds.toSet();
+              Set<int> finalSet = finalSelectedIds.toSet();
+              for (int id in finalSet.difference(initSet)) {
+                await _dbHelper.assignFlagToFavorite(verseID, id);
+              }
+              for (int id in initSet.difference(finalSet)) {
+                await _dbHelper.removeFlagFromFavorite(verseID, id);
+              }
+              if (mounted) {
+                setState((){
+                   _votdFuture = _refreshFavoriteStatusForCurrentVotD();
+                });
+              }
             },
         ),
     ).then((_) {
-        // After dialog closes, ensure _allAvailableFlags is up-to-date
-        // as the dialog might have changed them (hide, delete, add).
-        // This is a good place for it if dialog changes flags that VotD might use.
-        _loadAvailableFlags();
-     });
+        if (mounted) {
+          _loadAvailableFlags(); 
+        }
+      });
   }
 
   Widget _buildStreakDisplay(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    // final colorScheme = Theme.of(context).colorScheme; // Not directly used in this version
-
     return FutureBuilder<int>(
-      future: _streakFuture,
+      future: _streakFuture, // This future is now initialized at declaration
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData && !snapshot.hasError) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
             child: Center(child: SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2.5))),
           );
         }
-        int streakCount = snapshot.data ?? 0;
+        
+        int streakCount = 0; 
+        if (snapshot.hasError) {
+          print("Error in _streakFuture FutureBuilder: ${snapshot.error}");
+        } else if (snapshot.hasData) {
+          streakCount = snapshot.data!;
+        }
 
         const String mainCtaText = "Guided Readings";
         const IconData mainCtaIcon = Icons.checklist_rtl_outlined;
-        // Text color for main CTA on its gradient - assuming light text for AppColors.sereneSkyGradient
-        final Color mainCtaTextColor = Colors.black.withOpacity(0.8); // Or a theme-aware color
+        final Color mainCtaTextColor = Colors.black.withOpacity(0.8);
 
         return Padding(
           padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
@@ -329,8 +355,8 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               child: Ink(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient( // This gradient is specific to this card
-                    colors: AppColors.sereneSkyGradient, // Example: [Color(0xFFA1C4FD), Color(0xFFC2E9FB)]
+                  gradient: LinearGradient(
+                    colors: AppColors.sereneSkyGradient,
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight,
                   ),
@@ -367,22 +393,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               "$streakCount Day Streak!",
                               style: textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black.withOpacity(0.85), // Ensure contrast on sereneSky
-                                    shadows: [ Shadow(blurRadius: 1.0, color: Colors.black.withOpacity(0.1), offset: const Offset(0.5, 0.5)) ]
-                                  ),
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black.withOpacity(0.85), 
+                                  shadows: [ Shadow(blurRadius: 1.0, color: Colors.black.withOpacity(0.1), offset: const Offset(0.5, 0.5)) ]
+                                ),
                             ),
                           ],
                         ),
                       ] else ...[
-                         Padding(
-                           padding: const EdgeInsets.only(top: 6.0),
-                           child: Text(
-                             "Start a plan to build your streak!",
-                             style: textTheme.bodyMedium?.copyWith(color: mainCtaTextColor.withOpacity(0.85)),
-                           ),
-                         )
-                      ]
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6.0),
+                            child: Text(
+                              "Start a plan to build your streak!",
+                              style: textTheme.bodyMedium?.copyWith(color: mainCtaTextColor.withOpacity(0.85)),
+                            ),
+                          )
+                        ]
                     ],
                   ),
                 ),
@@ -394,18 +420,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final Brightness currentBrightness = Theme.of(context).brightness;
+    final currentUser = Provider.of<User?>(context); 
 
     final Gradient lightGradient = LinearGradient(
       colors: [ Colors.deepPurple.shade100.withOpacity(0.6), Colors.purple.shade50.withOpacity(0.8), Colors.white, ],
       begin: Alignment.topLeft, end: Alignment.bottomRight, stops: const [0.0, 0.3, 1.0],
     );
     final Gradient darkGradient = LinearGradient(
-      colors: [ Colors.grey.shade800, Colors.grey.shade900, Colors.black ], // Darker, distinct from cards
+      colors: [ Colors.grey.shade800, Colors.grey.shade900, Colors.black ], 
       begin: Alignment.topLeft, end: Alignment.bottomRight, stops: const [0.0, 0.4, 1.0],
     );
 
@@ -416,20 +442,30 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              themeProvider.themeMode == ThemeMode.dark || (themeProvider.themeMode == ThemeMode.system && MediaQuery.of(context).platformBrightness == Brightness.dark)
-                  ? Icons.light_mode_outlined
-                  : Icons.dark_mode_outlined,
+              themeProvider.themeMode == ThemeMode.dark || (themeProvider.themeMode == ThemeMode.system && MediaQuery.platformBrightnessOf(context) == Brightness.dark)
+                  ? Icons.light_mode_outlined 
+                  : Icons.dark_mode_outlined,   
             ),
             tooltip: "Toggle Theme",
             onPressed: () {
-              themeProvider.toggleTheme();
+              ThemeMode currentEffectiveMode = themeProvider.themeMode;
+              if (currentEffectiveMode == ThemeMode.system) {
+                currentEffectiveMode = (MediaQuery.platformBrightnessOf(context) == Brightness.dark) 
+                                     ? ThemeMode.dark 
+                                     : ThemeMode.light;
+              }
+              if (currentEffectiveMode == ThemeMode.dark) {
+                themeProvider.setThemeMode(ThemeMode.light);
+              } else {
+                themeProvider.setThemeMode(ThemeMode.dark);
+              }
             },
           ),
           IconButton(
             icon: const Icon(Icons.settings_outlined),
             tooltip: "Settings",
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()),).then((_) => _refreshAllData());
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen())).then((_) => _refreshAllData());
             },
           ),
         ],
@@ -444,64 +480,81 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(16.0),
             children: <Widget>[
               _buildStreakDisplay(context),
+              
+              _buildNavigationButton(
+                context,
+                icon: Icons.forum_outlined, 
+                label: "Community Prayer Wall",
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const PrayerWallScreen()));
+                }
+              ),
+              const SizedBox(height: 16.0), 
+
               FutureBuilder<Devotional?>(
-                future: _devotionalFuture,
+                future: _devotionalFuture, 
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData && !snapshot.hasError) {
                     return DevotionalOfTheDayCard(
                         devotional: Devotional(title: "", coreMessage: "", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""),
                         isLoading: true,
-                        fontSizeDelta: _fontSizeDelta, // Pass loaded setting
-                        readerFontFamily: _selectedFontFamily, // Pass loaded setting
+                        fontSizeDelta: _fontSizeDelta, 
+                        readerFontFamily: _selectedFontFamily, 
                     );
                   }
-                  if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
-                    return DevotionalOfTheDayCard(
+                  if (snapshot.hasError) {
+                     print("Error in _devotionalFuture FutureBuilder: ${snapshot.error}");
+                     return DevotionalOfTheDayCard(
                         devotional: Devotional(title: "Error", coreMessage: "Could not load devotional.", scriptureFocus: "", scriptureReference: "", reflection: "Please try again later.", prayerDeclaration: ""),
                         isLoading: false,
-                        fontSizeDelta: _fontSizeDelta, // Pass loaded setting
-                        readerFontFamily: _selectedFontFamily, // Pass loaded setting
+                        fontSizeDelta: _fontSizeDelta, 
+                        readerFontFamily: _selectedFontFamily, 
                     );
                   }
+                  final devotionalData = snapshot.data; 
+                  if (devotionalData == null && snapshot.connectionState != ConnectionState.waiting) {
+                     return DevotionalOfTheDayCard( 
+                        devotional: Devotional(title: "Not Available", coreMessage: "Today's devotional is not available.", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""),
+                        isLoading: false,
+                        fontSizeDelta: _fontSizeDelta, 
+                        readerFontFamily: _selectedFontFamily, 
+                    );
+                  }
+                  
                   return DevotionalOfTheDayCard(
-                    devotional: snapshot.data!,
-                    isLoading: false,
+                    devotional: devotionalData ?? Devotional(title: "", coreMessage: "Loading...", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""), 
+                    isLoading: snapshot.connectionState == ConnectionState.waiting, 
                     enableCardAnimations: true,
                     speckCount: 15,
-                    fontSizeDelta: _fontSizeDelta, // Pass loaded setting
-                    readerFontFamily: _selectedFontFamily, // Pass loaded setting
+                    fontSizeDelta: _fontSizeDelta, 
+                    readerFontFamily: _selectedFontFamily, 
                   );
                 },
               ),
               const SizedBox(height: 20.0),
               FutureBuilder<VotDDataBundle>(
-                future: _votdFuture,
+                future: _votdFuture, 
                 builder: (context, snapshot) {
                   VotDDataBundle? bundleForDisplay;
-                  bool showAsLoading = true;
+                  bool showAsLoading = snapshot.connectionState == ConnectionState.waiting && 
+                                       (!snapshot.hasData || snapshot.data?.verseData == null) && 
+                                       (_currentVotDDataBundle == null || _currentVotDDataBundle!.verseData == null);
 
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    if (_currentVotDDataBundle != null && _currentVotDDataBundle!.verseData != null) {
-                      bundleForDisplay = _currentVotDDataBundle;
-                      showAsLoading = true;
-                    } else {
-                       return VerseOfTheDayCard(isLoading: true, verseText: "Loading...", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: true, speckCount: 10, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily);
-                    }
-                  } else if (snapshot.hasError) {
-                     return VerseOfTheDayCard(isLoading: false, verseText: "Could not load verse.", verseRef: "Error", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily);
-                  } else if (snapshot.hasData && snapshot.data!.verseData != null) {
-                    _currentVotDDataBundle = snapshot.data!;
+
+                  if (snapshot.hasData && snapshot.data!.verseData != null) {
+                    _currentVotDDataBundle = snapshot.data!; 
                     bundleForDisplay = _currentVotDDataBundle;
-                    showAsLoading = false;
                   } else if (_currentVotDDataBundle != null && _currentVotDDataBundle!.verseData != null) {
                     bundleForDisplay = _currentVotDDataBundle;
-                    showAsLoading = false;
-                  } else {
-                    return VerseOfTheDayCard(isLoading: false, verseText: "Verse not available.", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily);
+                  } else if (snapshot.hasError) {
+                      print("Error in _votdFuture FutureBuilder: ${snapshot.error}");
+                      return VerseOfTheDayCard(isLoading: false, verseText: "Could not load verse.", verseRef: "Error", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily);
+                  } else if (snapshot.connectionState != ConnectionState.waiting && (snapshot.data == null || snapshot.data!.verseData == null)) {
+                      return VerseOfTheDayCard(isLoading: false, verseText: "Verse not available.", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily);
                   }
-
+                 
                   if (bundleForDisplay == null || bundleForDisplay.verseData == null) {
-                     return VerseOfTheDayCard(isLoading: false, verseText: "Verse not available.", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily);
+                      return VerseOfTheDayCard(isLoading: true, verseText: "Loading...", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: true, speckCount: 10, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily);
                   }
 
                   final VotDDataBundle currentBundle = bundleForDisplay;
@@ -510,7 +563,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   String chapterStr = currentBundle.verseData![DatabaseHelper.bibleColChapter]?.toString() ?? "?";
                   String verseNum = currentBundle.verseData![DatabaseHelper.bibleColStartVerse]?.toString() ?? "?";
                   String votdRef = "${getFullBookName(bookAbbr)} $chapterStr:$verseNum";
-
+                  
                   List<String> flagNamesForVotD = [];
                   if (currentBundle.isFavorite && currentBundle.assignedFlagIds.isNotEmpty) {
                     flagNamesForVotD = currentBundle.assignedFlagIds.map((id) {
@@ -521,7 +574,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
 
                   return VerseOfTheDayCard(
-                    isLoading: showAsLoading,
+                    isLoading: showAsLoading, 
                     verseText: votdText,
                     verseRef: votdRef,
                     isFavorite: currentBundle.isFavorite,
@@ -541,6 +594,42 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildNavigationButton(context, icon: Icons.favorite_border_outlined, label: "My Favorites", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FavoritesScreen())).then((_) => _refreshAllData())),
               const SizedBox(height: 16.0),
               _buildNavigationButton(context, icon: Icons.search_outlined, label: "Search", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchScreen()))),
+              const SizedBox(height: 16.0), 
+              _buildNavigationButton(
+                context,
+                icon: Icons.add_comment_outlined, 
+                label: "Submit a Prayer",
+                onTap: () async { // Make onTap async
+                  if (currentUser == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please log in to submit a prayer.'))
+                    );
+                    return;
+                  }
+                  // Await the result from SubmitPrayerScreen
+                  final result = await Navigator.push<bool>( // Expect a boolean result
+                    context,
+                    MaterialPageRoute(builder: (context) => const SubmitPrayerScreen())
+                  );
+
+                  // Check if the widget is still mounted and if submission was successful
+                  if (result == true && mounted) { 
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('Prayer submitted for review! You could also visit the Prayer Wall to pray for others.'),
+                        duration: const Duration(seconds: 6), // Slightly longer for action
+                        action: SnackBarAction(
+                          label: 'View Wall',
+                          onPressed: () {
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => const PrayerWallScreen()));
+                          },
+                        ),
+                      ),
+                    );
+                  }
+                }
+              ),
+              const SizedBox(height: 16.0), 
             ],
           ),
         ),
@@ -549,17 +638,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildNavigationButton(BuildContext context, {required IconData icon, required String label, required VoidCallback onTap}) {
-    // This widget should also adapt to the app's theme (Light/Dark)
-    // For now, relying on default ListTile/Card theming from AppThemes.
+    final theme = Theme.of(context);
     return Card(
-      // Card color will come from AppThemes.lightTheme.cardTheme or AppThemes.darkTheme.cardTheme
-      // elevation: from cardTheme
-      // shape: from cardTheme
+      elevation: 2.0, 
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)), 
       child: ListTile(
-        leading: Icon(icon, size: 30 /*, color: from listTileTheme or colorScheme.primary */),
-        title: Text(label, style: Theme.of(context).textTheme.titleMedium), // Will use themed text color
-        trailing: Icon(Icons.arrow_forward_ios, size: 16 /*, color: from listTileTheme or onSurfaceVariant */),
+        leading: Icon(icon, size: 28, color: theme.colorScheme.primary), 
+        title: Text(label, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500)), 
+        trailing: Icon(Icons.arrow_forward_ios, size: 16, color: theme.colorScheme.onSurfaceVariant), 
         onTap: onTap,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), 
       ),
     );
   }

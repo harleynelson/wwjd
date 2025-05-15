@@ -13,25 +13,33 @@ dependencies:
   sqflite: ^2.3.2      # For SQLite database interaction
   path_provider: ^2.1.3 # To find the correct file system paths
   path: ^1.9.0         # For path manipulation
-  shared_preferences: ^2.2.3 # Add this line (use latest version)
   scrollable_positioned_list: ^0.3.8 # For scrollable list view
   cupertino_icons: ^1.0.6
-  intl: ^0.20.2
   share_plus: ^11.0.0 # For sharing content
   google_fonts: ^6.2.1 # For custom fonts
   provider: ^6.1.2 # For state management
   flutter_tts: ^4.2.2 # For text-to-speech functionality
   http: ^1.2.1 # Or latest version, for making API calls
   audioplayers: ^6.0.0 # Or latest version, for playing audio
+
+  # Firebase dependencies
   firebase_core: ^3.13.0 # For Firebase core functionality
   firebase_remote_config: ^5.4.3 # For remote configuration
   firebase_app_check: ^0.3.2+5 # For app check
   firebase_auth: ^5.5.3  # For Firebase authentication
   google_sign_in: ^6.3.0 # For Google Sign-In
+
   flutter_dotenv: ^5.2.1
   cloud_firestore: ^5.6.7 # For Firestore database
+
+  # UI
   cached_network_image: ^3.3.1  # For caching network images (mostly headers on reading plans)
   equatable: ^2.0.7 # For value equality
+
+  # Utility
+  uuid: ^4.4.0 # For generating unique IDs
+  intl: ^0.20.2 # For date formatting
+  shared_preferences: ^2.2.3 # For local storage
 
 dev_dependencies:
   flutter_test:

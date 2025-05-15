@@ -1,15 +1,16 @@
 // lib/main.dart
 // Path: lib/main.dart
-// Approximate line: 7, 14-22
+// Approximate line: 40 (MultiProvider setup)
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-// Remove dotenv import if no longer used for other keys
-// import 'package:flutter_dotenv/flutter_dotenv.dart'; 
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 
+// Existing imports
 import 'screens/home_screen.dart';
 import 'helpers/prefs_helper.dart';
 import 'theme/app_themes.dart';
@@ -18,61 +19,66 @@ import 'firebase_options.dart';
 import 'services/auth_service.dart';
 import 'models/app_user.dart';
 
+// New Prayer Wall Imports
+import 'services/prayer_service.dart';
+import 'screens/prayer_wall_screen.dart';
+import 'screens/submit_prayer_screen.dart';
+import 'screens/my_prayer_requests_screen.dart';
+import 'screens/settings_screen.dart';
+
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Removed: await dotenv.load(fileName: ".env"); 
+  // Removed: await dotenv.load(fileName: ".env");
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Initialize Firebase App Check
-  // Note: For web, you'd use ReCaptchaV3Provider.
-  // For debug builds, you might use AndroidProvider.debug or AppleProvider.debug initially.
-  // Ensure you have properly configured Play Integrity (Android) and App Attest/DeviceCheck (iOS) in the Firebase console.
   await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.playIntegrity, // Or AndroidProvider.debug for testing .. AndroidProvider.playIntegrity for release
-    appleProvider: AppleProvider.appAttest,       // Or AppleProvider.deviceCheck or AppleProvider.debug for testing
-    // webProvider: ReCaptchaV3Provider('YOUR_RECAPTCHA_V3_SITE_KEY'), // If using for web
+    androidProvider: AndroidProvider.playIntegrity,
+    appleProvider: AppleProvider.appAttest,
   );
 
-  // Initialize Firebase Remote Config
   final remoteConfig = FirebaseRemoteConfig.instance;
   await remoteConfig.setConfigSettings(RemoteConfigSettings(
-    fetchTimeout: const Duration(minutes: 1), // Timeout for fetching config
-    minimumFetchInterval: const Duration(hours: 1), // How often to fetch new config
+    fetchTimeout: const Duration(minutes: 1),
+    minimumFetchInterval: const Duration(hours: 1),
   ));
-  // Set default values (optional, but good practice)
   await remoteConfig.setDefaults(const {
-    "google_cloud_tts_api_key": "", // Default to empty if not found
+    "google_cloud_tts_api_key": "",
   });
-  // Fetch and activate the configuration
   try {
     await remoteConfig.fetchAndActivate();
     print("Remote Config fetched and activated successfully.");
-    // You can log the fetched key here for debugging if needed, but remove for production.
-    // print("Fetched API Key: ${remoteConfig.getString('google_cloud_tts_api_key')}");
   } catch (e) {
     print("Error fetching or activating Remote Config: $e");
-    // Handle error, maybe use a default/fallback or show an error message
   }
 
   await PrefsHelper.init();
-  final authService = AuthService();
+  final authService = AuthService(); // AuthService is instantiated here
   await authService.signInAnonymouslyIfNeeded();
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        Provider<AuthService>.value(value: authService),
+        // CORRECTED: Use ChangeNotifierProvider.value for an already instantiated ChangeNotifier
+        ChangeNotifierProvider<AuthService>.value(value: authService),
         StreamProvider<AppUser?>(
           create: (context) => authService.user,
-          initialData: authService.currentUser,
+          initialData: authService.currentUser, 
           catchError: (_, error) {
-            print("Error in auth stream: $error");
+            print("Error in AppUser stream provider: $error");
             return null;
           },
+        ),
+        StreamProvider<User?>(
+            create: (_) => FirebaseAuth.instance.authStateChanges(),
+            initialData: FirebaseAuth.instance.currentUser,
+        ),
+        Provider<PrayerService>(
+          create: (ctx) => PrayerService(),
         ),
       ],
       child: const WWJDApp(),
@@ -93,6 +99,16 @@ class WWJDApp extends StatelessWidget {
       themeMode: themeProvider.themeMode,
       home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
+      // Removed routes map to stick to MaterialPageRoute navigation
+      onGenerateRoute: (settings) {
+        print('Attempted to navigate to undefined named route: ${settings.name}');
+        return MaterialPageRoute(
+          builder: (ctx) => Scaffold(
+            appBar: AppBar(title: const Text('Page Not Found')),
+            body: Center(child: Text('The page "${settings.name}" could not be found.')),
+          ),
+        );
+      },
     );
   }
 }
