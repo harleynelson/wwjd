@@ -21,9 +21,9 @@ import 'models/app_user.dart';
 
 // New Prayer Wall Imports
 import 'services/prayer_service.dart';
-import 'screens/prayer_wall_screen.dart';
-import 'screens/submit_prayer_screen.dart';
-import 'screens/my_prayer_requests_screen.dart';
+import 'screens/prayer_wall/prayer_wall_screen.dart';
+import 'screens/prayer_wall/submit_prayer_screen.dart';
+import 'screens/prayer_wall/my_prayer_requests_screen.dart';
 import 'screens/settings_screen.dart';
 
 

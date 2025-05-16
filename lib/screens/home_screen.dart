@@ -24,11 +24,11 @@ import 'full_bible_reader_screen.dart';
 import 'favorites_screen.dart';
 import 'settings_screen.dart';
 import 'search_screen.dart';
-import 'reading_plans_list_screen.dart';
+import 'reading_plans/reading_plans_list_screen.dart';
 
 // New Prayer Wall Screen Imports
-import 'prayer_wall_screen.dart';
-import 'submit_prayer_screen.dart';
+import 'prayer_wall/prayer_wall_screen.dart';
+import 'prayer_wall/submit_prayer_screen.dart';
 // import 'my_prayer_requests_screen.dart'; // This is usually accessed from Settings
 
 // VotDDataBundle class definition (ensure this is correctly placed or imported)

@@ -1,27 +1,28 @@
-// File: lib/widgets/prayer_request_card.dart
-// Path: lib/widgets/prayer_request_card.dart
-// Approximate line: 11 (Significant changes, simplifying the card)
-// Note: This is a significant simplification. If the old PrayerRequestCard is needed elsewhere,
-// consider creating a new widget e.g., `river_prayer_item.dart`
+// File: lib/widgets/prayer_wall/prayer_request_card.dart
+// Path: lib/widgets/prayer_wall/prayer_request_card.dart
+// Entire RiverPrayerItem widget updated for new look and shorter height.
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // For date formatting (though not used in simplified card)
-import 'package:provider/provider.dart'; // To access PrayerService (for report)
+import 'dart:math'; // For random gradient alignment in RiverPrayerItem
 
-import '../models/prayer_request_model.dart';
-import '../services/prayer_service.dart';
-// We will create a placeholder report dialog
-import '../dialogs/prayer_report_dialog.dart';
+// Provider and Intl are for the original PrayerRequestCard, not directly used in RiverPrayerItem
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 
-// --- This is the NEW Simplified Prayer Item for the River ---
+import '../../models/prayer_request_model.dart';
+import '../../services/prayer_service.dart'; // Used by original PrayerRequestCard
+import '../../dialogs/prayer_report_dialog.dart'; // Used by original PrayerRequestCard
+
+
+// --- Updated RiverPrayerItem ---
 class RiverPrayerItem extends StatelessWidget {
   final PrayerRequest prayerRequest;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
-  final Animation<double>? animation; 
+  final Animation<double>? animation;
 
-  const RiverPrayerItem({
+  RiverPrayerItem({
     Key? key,
     required this.prayerRequest,
     required this.onTap,
@@ -29,43 +30,67 @@ class RiverPrayerItem extends StatelessWidget {
     this.animation,
   }) : super(key: key);
 
+  // Helper for random gradient alignment
+  final Random _random = Random();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
+    // Assuming PrayerWallScreen now forces a dark background,
+    // these colors are chosen for good visibility on a dark theme.
 
-    // Softer background, maybe a very subtle gradient or slightly more transparent
-    final cardBackgroundColor = isDarkMode 
-        ? Colors.white.withOpacity(0.08) 
-        : theme.colorScheme.primaryContainer.withOpacity(0.25);
-    
-    final cardTextColor = isDarkMode
-        ? Colors.grey.shade300
-        : theme.colorScheme.onSurface.withOpacity(0.85);
+    final List<Color> cardGradientColors = [
+      Colors.lightBlue.shade300.withOpacity(0.15),
+      Colors.purple.shade300.withOpacity(0.20),
+      Colors.teal.shade300.withOpacity(0.15),
+    ];
+
+    final cardTextColor = Colors.white.withOpacity(0.9);
+
+    final prayerTextStyle = theme.textTheme.bodyMedium?.copyWith(
+      color: cardTextColor,
+      height: 1.35, // Slightly reduced line height for shorter cards
+      fontSize: (theme.textTheme.bodyMedium?.fontSize ?? 14) * 0.92, // Slightly smaller font
+      shadows: [
+        Shadow(
+          blurRadius: 8.0,
+          color: Colors.cyanAccent.withOpacity(0.5),
+          offset: const Offset(0, 0),
+        ),
+        Shadow(
+          blurRadius: 4.0,
+          color: Colors.white.withOpacity(0.3),
+          offset: const Offset(0, 0),
+        ),
+      ],
+    );
 
     Widget item = Container(
-      margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 6.0), // Slightly adjusted margin
+      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0), // Reduced margins
       decoration: BoxDecoration(
-        // Subtle gradient for depth
         gradient: LinearGradient(
-          colors: [
-            cardBackgroundColor,
-            cardBackgroundColor.withOpacity(0.7),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          colors: cardGradientColors,
+          begin: Alignment(_random.nextDouble() * 2 - 1, _random.nextDouble() * 2 - 1),
+          end: Alignment(_random.nextDouble() * 2 - 1, _random.nextDouble() * 2 - 1),
+          stops: const [0.0, 0.5, 1.0],
         ),
-        borderRadius: BorderRadius.circular(10), // Slightly more rounded
+        borderRadius: BorderRadius.circular(14), // Softer rounding
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03), // Even softer shadow
-            blurRadius: 5,
-            offset: const Offset(0, 2),
+            color: Colors.blue.shade200.withOpacity(0.30),
+            blurRadius: 10,
+            spreadRadius: 0.5,
+            offset: const Offset(0, 0),
+          ),
+           BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 2,
+            offset: const Offset(1, 1),
           )
         ],
-        border: Border.all( // Optional: very subtle border
-          color: theme.colorScheme.outline.withOpacity(0.1),
-          width: 0.5,
+        border: Border.all(
+          color: Colors.white.withOpacity(0.20),
+          width: 0.6,
         )
       ),
       child: Material(
@@ -73,21 +98,19 @@ class RiverPrayerItem extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           onLongPress: onLongPress,
-          splashColor: theme.colorScheme.primary.withOpacity(0.15),
-          highlightColor: theme.colorScheme.primary.withOpacity(0.08),
-          borderRadius: BorderRadius.circular(10),
-          child: Padding( // Moved padding inside InkWell's child
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10), // Adjusted padding
-            child: Text(
-              prayerRequest.prayerText,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: cardTextColor,
-                height: 1.45, // Slightly more line spacing
-                fontSize: (theme.textTheme.bodyMedium?.fontSize ?? 14) * 0.95, // Slightly smaller text
+          splashColor: Colors.lightBlue.withOpacity(0.3),
+          highlightColor: Colors.lightBlue.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(14),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10), // Reduced vertical padding
+            child: Center(
+              child: Text(
+                prayerRequest.prayerText,
+                style: prayerTextStyle,
+                textAlign: TextAlign.center,
+                maxLines: 3, // Reduced maxLines to make cards shorter
+                overflow: TextOverflow.ellipsis,
               ),
-              textAlign: TextAlign.center,
-              maxLines: 3, 
-              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),
@@ -96,12 +119,12 @@ class RiverPrayerItem extends StatelessWidget {
 
     if (animation != null) {
       return FadeTransition(
-        opacity: Tween<double>(begin: 0.3, end: 1.0).animate( // Start more faded
+        opacity: Tween<double>(begin: 0.4, end: 1.0).animate(
           CurvedAnimation(parent: animation!, curve: Curves.easeInSine)
         ),
-        child: ScaleTransition( // Add a subtle scale transition
-          scale: Tween<double>(begin: 0.95, end: 1.0).animate(
-            CurvedAnimation(parent: animation!, curve: Curves.easeOutCubic)
+        child: ScaleTransition(
+          scale: Tween<double>(begin: 0.92, end: 1.0).animate(
+            CurvedAnimation(parent: animation!, curve: Curves.easeOutExpo)
           ),
           child: item,
         )
@@ -111,8 +134,9 @@ class RiverPrayerItem extends StatelessWidget {
   }
 }
 
+
 // --- Original PrayerRequestCard - Kept for reference or if needed elsewhere ---
-// --- You might choose to delete this or move its contents if it's fully replaced ---
+// (No changes to this part for the current request)
 class PrayerRequestCard extends StatefulWidget {
   final PrayerRequest prayerRequest;
   final String? currentUserId;
@@ -134,27 +158,23 @@ class _PrayerRequestCardState extends State<PrayerRequestCard> {
 
 
   void _showReportDialog(BuildContext context) {
-     // This now calls the separate dialog function
     showPrayerReportDialog(
       context: context,
       prayerId: widget.prayerRequest.prayerId,
       currentUserId: widget.currentUserId,
       onSubmitReport: (reason) async {
-        if (widget.currentUserId == null) return false; // Should be handled by dialog too
+        if (widget.currentUserId == null) return false;
 
-        // The actual reporting logic is now inside the dialog or its callback
-        // This state's role is just to manage its own loading indicator if any
         if (mounted) setState(() => _isProcessingReportAction = true);
-        
+
         final success = await Provider.of<PrayerService>(context, listen: false)
             .reportPrayer(widget.prayerRequest.prayerId, reason);
-        
+
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(success ? 'Prayer reported for review.' : 'Failed to report prayer. You may have already reported it.')),
           );
           setState(() => _isProcessingReportAction = false);
-          // UI update to show "reported" could happen here if success
         }
         return success;
       }
@@ -200,9 +220,6 @@ class _PrayerRequestCardState extends State<PrayerRequestCard> {
     final theme = Theme.of(context);
     final String formattedTimestamp = DateFormat.yMMMd().add_jm().format(widget.prayerRequest.timestamp.toDate());
 
-    // THIS IS THE ORIGINAL CARD LAYOUT
-    // It's kept here if you need it for 'My Submitted Prayers' or elsewhere.
-    // For the new "River of Prayers", the `RiverPrayerItem` above is intended.
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       elevation: 2,

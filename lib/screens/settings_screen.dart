@@ -22,7 +22,7 @@ import 'package:wwjd_app/widgets/account_section.dart';
 import 'package:wwjd_app/config/constants.dart';
 
 // Import for "My Submitted Prayers" screen
-import 'my_prayer_requests_screen.dart'; // Ensure this path is correct
+import 'prayer_wall/my_prayer_requests_screen.dart'; // Ensure this path is correct
 
 class SettingsScreen extends StatefulWidget {
   // static const routeName = '/settings'; // Keep if you use named routes for other parts

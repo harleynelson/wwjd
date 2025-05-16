@@ -8,7 +8,7 @@ import '../helpers/database_helper.dart';
 import '../helpers/book_names.dart';
 import '../models/reader_settings_enums.dart';
 import '../helpers/prefs_helper.dart';
-import '../widgets/reader_settings_bottom_sheet.dart';
+import '../widgets/reading_plans/reader_settings_bottom_sheet.dart';
 import '../widgets/verse_list_item.dart';
 import '../widgets/verse_actions_bottom_sheet.dart';
 import '../dialogs/flag_selection_dialog.dart';

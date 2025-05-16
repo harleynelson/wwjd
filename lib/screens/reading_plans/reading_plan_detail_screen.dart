@@ -1,13 +1,13 @@
 // lib/screens/reading_plan_detail_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../models/models.dart';
-import '../helpers/database_helper.dart';
+import '../../models/models.dart';
+import '../../helpers/database_helper.dart';
 // import '../helpers/ui_helpers.dart'; // No longer needed if we pass the gradient
-import '../models/reader_settings_enums.dart';
-import '../helpers/prefs_helper.dart';
-import '../theme/app_colors.dart'; // For fallback or default if needed
-import 'daily_reading_screen.dart';
+import '../../models/reader_settings_enums.dart';
+import '../../helpers/prefs_helper.dart';
+import '../../theme/app_colors.dart'; // For fallback or default if needed
+import '../daily_reading_screen.dart';
 
 class ReadingPlanDetailScreen extends StatefulWidget {
   final ReadingPlan plan;

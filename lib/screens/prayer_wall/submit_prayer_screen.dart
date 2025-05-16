@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // To access PrayerService and AppUser.
 import 'package:shared_preferences/shared_preferences.dart'; // To save anonymous ID locally.
 
-import '../services/prayer_service.dart'; // Service for prayer operations.
-import '../widgets/prayer_form.dart'; // Reusable prayer input form.
-import '../dialogs/confirm_age_dialog.dart'; // Dialog for age confirmation.
-import '../dialogs/prayer_status_dialog.dart'; // Dialog for showing submission status.
-import '../models/app_user.dart'; // To check if AppUser is loaded.
+import '../../services/prayer_service.dart'; // Service for prayer operations.
+import '../../widgets/prayer_wall/prayer_form.dart'; // Reusable prayer input form.
+import '../../dialogs/confirm_age_dialog.dart'; // Dialog for age confirmation.
+import '../../dialogs/prayer_status_dialog.dart'; // Dialog for showing submission status.
+import '../../models/app_user.dart'; // To check if AppUser is loaded.
 
 class SubmitPrayerScreen extends StatefulWidget {
   static const routeName = '/submit-prayer'; // Route name for navigation.

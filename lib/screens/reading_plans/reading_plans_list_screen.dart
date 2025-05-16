@@ -5,13 +5,13 @@
 import 'package:flutter/material.dart';
 import 'dart:math'; // For randomizing 'Other Plans'
 import 'package:cloud_firestore/cloud_firestore.dart'; // Added for Firebase
-import '../models/models.dart';
-import '../services/reading_plan_service.dart';
-import '../helpers/database_helper.dart';
-import '../widgets/reading_plan_list_item.dart';
+import '../../models/models.dart';
+import '../../services/reading_plan_service.dart';
+import '../../helpers/database_helper.dart';
+import '../../widgets/reading_plans/reading_plan_list_item.dart';
 import 'reading_plan_detail_screen.dart';
-import '../theme/app_colors.dart';
-import '../helpers/prefs_helper.dart';
+import '../../theme/app_colors.dart';
+import '../../helpers/prefs_helper.dart';
 
 class ReadingPlansListScreen extends StatefulWidget {
   const ReadingPlansListScreen({super.key});

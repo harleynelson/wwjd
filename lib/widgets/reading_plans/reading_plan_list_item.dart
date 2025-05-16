@@ -3,8 +3,8 @@
 // This is the version consistent with your initially uploaded ReadingPlansListScreen
 
 import 'package:flutter/material.dart';
-import '../models/models.dart'; // For ReadingPlan and UserReadingProgress
-import '../theme/app_colors.dart'; // For AppColors.getReadingPlanGradient
+import '../../models/models.dart'; // For ReadingPlan and UserReadingProgress
+import '../../theme/app_colors.dart'; // For AppColors.getReadingPlanGradient
 
 class ReadingPlanListItem extends StatelessWidget {
   final ReadingPlan plan;

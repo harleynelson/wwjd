@@ -8,9 +8,9 @@ import 'package:provider/provider.dart'; // To access PrayerService and User str
 import 'package:shared_preferences/shared_preferences.dart'; // To store/retrieve anonymous ID locally.
 import 'package:firebase_auth/firebase_auth.dart'; // To get current Firebase User.
 
-import '../models/prayer_request_model.dart'; // Data model for prayer requests.
-import '../services/prayer_service.dart'; // Service for fetching user's prayers.
-import '../widgets/prayer_request_card.dart'; // Reusable widget to display each prayer.
+import '../../models/prayer_request_model.dart'; // Data model for prayer requests.
+import '../../services/prayer_service.dart'; // Service for fetching user's prayers.
+import '../../widgets/prayer_wall/prayer_request_card.dart'; // Reusable widget to display each prayer.
 
 class MyPrayerRequestsScreen extends StatefulWidget {
   static const routeName = '/my-prayers'; // Route name for navigation.
