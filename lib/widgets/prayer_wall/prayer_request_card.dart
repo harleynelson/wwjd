@@ -1,6 +1,6 @@
 // File: lib/widgets/prayer_wall/prayer_request_card.dart
 // Path: lib/widgets/prayer_wall/prayer_request_card.dart
-// Entire RiverPrayerItem widget updated for new look and shorter height.
+// Entire RiverPrayerItem widget updated for new look and shorter height AND to handle exit animation.
 
 import 'package:flutter/material.dart';
 import 'dart:math'; // For random gradient alignment in RiverPrayerItem
@@ -16,28 +16,79 @@ import '../../dialogs/prayer_report_dialog.dart'; // Used by original PrayerRequ
 
 
 // --- Updated RiverPrayerItem ---
-class RiverPrayerItem extends StatelessWidget {
+class RiverPrayerItem extends StatefulWidget {
   final PrayerRequest prayerRequest;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
-  final Animation<double>? animation;
+  final Animation<double>? animation; // For list add/remove
+  final bool playExitAnimation; // New: To trigger exit animation
 
-  RiverPrayerItem({
+  const RiverPrayerItem({
     Key? key,
     required this.prayerRequest,
     required this.onTap,
     required this.onLongPress,
     this.animation,
+    this.playExitAnimation = false, // Default to false
   }) : super(key: key);
 
-  // Helper for random gradient alignment
+  @override
+  State<RiverPrayerItem> createState() => _RiverPrayerItemState();
+}
+
+class _RiverPrayerItemState extends State<RiverPrayerItem> with SingleTickerProviderStateMixin {
   final Random _random = Random();
+  late AnimationController _exitAnimationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _opacityAnimation;
+  bool _isAnimatingExit = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _exitAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 350), // Duration of shrink/fade
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(parent: _exitAnimationController, curve: Curves.easeOutQuint)
+    );
+    _opacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(parent: _exitAnimationController, curve: Curves.easeOut)
+    );
+
+    if (widget.playExitAnimation) {
+      _isAnimatingExit = true;
+      _exitAnimationController.forward();
+    }
+  }
+
+  @override
+  void didUpdateWidget(RiverPrayerItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.playExitAnimation && !oldWidget.playExitAnimation && !_isAnimatingExit) {
+      setState(() {
+        _isAnimatingExit = true;
+      });
+      _exitAnimationController.forward(from: 0.0);
+    } else if (!widget.playExitAnimation && oldWidget.playExitAnimation && _isAnimatingExit) {
+      // This case might be needed if the parent could cancel the exit animation
+      // For now, we assume it plays to completion once triggered.
+      // If you need to revert, you might reset the controller or reverse it.
+      // _exitAnimationController.reset();
+      // _isAnimatingExit = false;
+    }
+  }
+
+  @override
+  void dispose() {
+    _exitAnimationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // Assuming PrayerWallScreen now forces a dark background,
-    // these colors are chosen for good visibility on a dark theme.
 
     final List<Color> cardGradientColors = [
       Colors.lightBlue.shade300.withOpacity(0.15),
@@ -49,8 +100,8 @@ class RiverPrayerItem extends StatelessWidget {
 
     final prayerTextStyle = theme.textTheme.bodyMedium?.copyWith(
       color: cardTextColor,
-      height: 1.35, // Slightly reduced line height for shorter cards
-      fontSize: (theme.textTheme.bodyMedium?.fontSize ?? 14) * 0.92, // Slightly smaller font
+      height: 1.35,
+      fontSize: (theme.textTheme.bodyMedium?.fontSize ?? 14) * 0.92,
       shadows: [
         Shadow(
           blurRadius: 8.0,
@@ -65,8 +116,8 @@ class RiverPrayerItem extends StatelessWidget {
       ],
     );
 
-    Widget item = Container(
-      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0), // Reduced margins
+    Widget cardContent = Container(
+      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: cardGradientColors,
@@ -74,7 +125,7 @@ class RiverPrayerItem extends StatelessWidget {
           end: Alignment(_random.nextDouble() * 2 - 1, _random.nextDouble() * 2 - 1),
           stops: const [0.0, 0.5, 1.0],
         ),
-        borderRadius: BorderRadius.circular(14), // Softer rounding
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
             color: Colors.blue.shade200.withOpacity(0.30),
@@ -96,19 +147,19 @@ class RiverPrayerItem extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: onTap,
-          onLongPress: onLongPress,
+          onTap: _isAnimatingExit ? null : widget.onTap, // Disable tap while animating out
+          onLongPress: _isAnimatingExit ? null : widget.onLongPress,
           splashColor: Colors.lightBlue.withOpacity(0.3),
           highlightColor: Colors.lightBlue.withOpacity(0.15),
           borderRadius: BorderRadius.circular(14),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10), // Reduced vertical padding
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             child: Center(
               child: Text(
-                prayerRequest.prayerText,
+                widget.prayerRequest.prayerText,
                 style: prayerTextStyle,
                 textAlign: TextAlign.center,
-                maxLines: 3, // Reduced maxLines to make cards shorter
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -117,20 +168,40 @@ class RiverPrayerItem extends StatelessWidget {
       ),
     );
 
-    if (animation != null) {
+    Widget animatedCard = cardContent;
+    // Apply exit animation if triggered
+    if (_isAnimatingExit) {
+      animatedCard = AnimatedBuilder(
+        animation: _exitAnimationController,
+        builder: (context, child) {
+          return Opacity(
+            opacity: _opacityAnimation.value,
+            child: Transform.scale(
+              scale: _scaleAnimation.value,
+              alignment: Alignment.center, // Shrink towards center
+              child: child,
+            ),
+          );
+        },
+        child: cardContent,
+      );
+    }
+
+    // Apply list add/remove animation if provided
+    if (widget.animation != null && !_isAnimatingExit) { // Don't apply list animation if exit animation is playing
       return FadeTransition(
         opacity: Tween<double>(begin: 0.4, end: 1.0).animate(
-          CurvedAnimation(parent: animation!, curve: Curves.easeInSine)
+          CurvedAnimation(parent: widget.animation!, curve: Curves.easeInSine)
         ),
         child: ScaleTransition(
           scale: Tween<double>(begin: 0.92, end: 1.0).animate(
-            CurvedAnimation(parent: animation!, curve: Curves.easeOutExpo)
+            CurvedAnimation(parent: widget.animation!, curve: Curves.easeOutExpo)
           ),
-          child: item,
+          child: animatedCard, // Use the potentially exit-animated card here
         )
       );
     }
-    return item;
+    return animatedCard; // Return the card, possibly wrapped in exit animation
   }
 }
 
