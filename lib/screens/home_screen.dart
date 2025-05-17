@@ -1,5 +1,6 @@
 // File: lib/screens/home_screen.dart
 // Updated to include Prayer Wall navigation and necessary checks.
+// Method: _buildStreakDisplay (updated part)
 
 import 'package:flutter/material.dart';
 import 'dart:math'; // For Random in _fetchCurrentStreak (if that logic remains) - Not directly used in provided snippet but kept for context
@@ -320,14 +321,23 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildStreakDisplay(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    const String mainCtaText = "Guided Readings";
+    const IconData mainCtaIcon = Icons.checklist_rtl_outlined;
+
     return FutureBuilder<int>(
-      future: _streakFuture, // This future is now initialized at declaration
+      future: _streakFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData && !snapshot.hasError) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Center(child: SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2.5))),
+          // Show a loading shimmer or placeholder
+          return Card(
+            elevation: 3,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+            clipBehavior: Clip.antiAlias,
+            child: SizedBox(
+              height: 120, // Approximate height of the card
+              child: Center(child: CircularProgressIndicator(color: theme.colorScheme.primary)),
+            ),
           );
         }
         
@@ -338,81 +348,97 @@ class _HomeScreenState extends State<HomeScreen> {
           streakCount = snapshot.data!;
         }
 
-        const String mainCtaText = "Guided Readings";
-        const IconData mainCtaIcon = Icons.checklist_rtl_outlined;
-        final Color mainCtaTextColor = Colors.black.withOpacity(0.8);
-
-        return Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
-          child: Card(
-            elevation: 3,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const ReadingPlansListScreen()))
-                    .then((_) => _refreshAllData());
-              },
-              child: Ink(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: AppColors.sereneSkyGradient,
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
+        return Card(
+          elevation: 3.0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+          clipBehavior: Clip.antiAlias,
+          margin: const EdgeInsets.only(top: 8.0, bottom: 16.0),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const ReadingPlansListScreen()))
+                  .then((_) => _refreshAllData());
+            },
+            child: Stack(
+              alignment: Alignment.bottomLeft,
+              children: [
+                Ink.image(
+                  image: const AssetImage('assets/images/home/home_reading_plan.png'), // Placeholder path
+                  height: 120, // Adjust height as needed
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.45), // Darken image for text visibility
+                    BlendMode.darken,
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(mainCtaIcon, color: mainCtaTextColor, size: 26),
-                              const SizedBox(width: 10.0),
-                              Text(mainCtaText, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: mainCtaTextColor)),
-                            ],
-                          ),
-                          Icon(Icons.arrow_forward_ios_rounded, size: 18, color: mainCtaTextColor.withOpacity(0.8))
+                Positioned.fill(
+                  child: Container(
+                     decoration: BoxDecoration(
+                      // Optional: Add a subtle gradient overlay from bottom to top for text readability
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black.withOpacity(0.6), // Darker at the bottom
+                          Colors.transparent, // Fades to transparent at the top
                         ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.center, // Adjusted end point
+                        stops: const [0.0, 0.8], // Adjust stops for gradient extent
                       ),
-                      if (streakCount > 0) ...[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-                          child: Divider(color: mainCtaTextColor.withOpacity(0.3), height: 1),
-                        ),
+                    ),
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(Icons.local_fire_department_rounded, color: Colors.redAccent.shade400, size: 20),
-                            const SizedBox(width: 6.0),
-                            Text(
-                              "$streakCount Day Streak!",
-                              style: textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black.withOpacity(0.85), 
-                                  shadows: [ Shadow(blurRadius: 1.0, color: Colors.black.withOpacity(0.1), offset: const Offset(0.5, 0.5)) ]
+                             Row(
+                              children: [
+                                Icon(mainCtaIcon, color: Colors.white.withOpacity(0.9), size: 24),
+                                const SizedBox(width: 8.0),
+                                Text(
+                                  mainCtaText,
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    shadows: [const Shadow(blurRadius: 1.0, color: Colors.black54, offset: Offset(1,1))],
+                                  ),
                                 ),
+                              ],
                             ),
+                             Icon(Icons.arrow_forward_ios_rounded, size: 18, color: Colors.white.withOpacity(0.8))
                           ],
                         ),
-                      ] else ...[
-                          Padding(
-                            padding: const EdgeInsets.only(top: 6.0),
-                            child: Text(
-                              "Start a plan to build your streak!",
-                              style: textTheme.bodyMedium?.copyWith(color: mainCtaTextColor.withOpacity(0.85)),
-                            ),
+                        const SizedBox(height: 4),
+                        if (streakCount > 0)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.local_fire_department_rounded, color: Colors.orangeAccent.shade100, size: 18),
+                              const SizedBox(width: 6.0),
+                              Text(
+                                "$streakCount Day Streak!",
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: Colors.white.withOpacity(0.95),
+                                  fontWeight: FontWeight.w600,
+                                  shadows: [const Shadow(blurRadius: 1.0, color: Colors.black38, offset: Offset(0.5,0.5))],
+                                ),
+                              ),
+                            ],
                           )
-                        ]
-                    ],
+                        else
+                          Text(
+                            "Start a plan to build your streak!",
+                             style: theme.textTheme.bodySmall?.copyWith(
+                                color: Colors.white.withOpacity(0.85),
+                                shadows: [const Shadow(blurRadius: 1.0, color: Colors.black38, offset: Offset(0.5,0.5))],
+                                ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         );
