@@ -1,17 +1,18 @@
 // lib/screens/reading_plans_list_screen.dart
 // Path: lib/screens/reading_plans_list_screen.dart
-// Approximate line: Entire File (Significant Changes)
+// Updated to use HorizontalReadingPlanSection widget.
 
 import 'package:flutter/material.dart';
-import 'dart:math'; // For randomizing 'Other Plans'
-import 'package:cloud_firestore/cloud_firestore.dart'; // Added for Firebase
-import '../../models/models.dart';
-import '../../services/reading_plan_service.dart';
-import '../../helpers/database_helper.dart';
-import '../../widgets/reading_plans/reading_plan_list_item.dart';
-import 'reading_plan_detail_screen.dart';
-import '../../theme/app_colors.dart';
-import '../../helpers/prefs_helper.dart';
+import 'dart:math'; 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../models/models.dart'; //
+import '../../services/reading_plan_service.dart'; //
+import '../../helpers/database_helper.dart'; //
+import '../../widgets/reading_plans/reading_plan_list_item.dart'; //
+import 'reading_plan_detail_screen.dart'; //
+import '../../theme/app_colors.dart'; //
+import '../../helpers/prefs_helper.dart'; //
+import '../../widgets/reading_plans/horizontal_reading_plan_section.dart'; // NEW IMPORT
 
 class ReadingPlansListScreen extends StatefulWidget {
   const ReadingPlansListScreen({super.key});
@@ -23,14 +24,14 @@ class ReadingPlansListScreen extends StatefulWidget {
 class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final ReadingPlanService _planService = ReadingPlanService();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance; // Added Firebase instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   List<ReadingPlan> _featuredPlans = [];
   Map<String, int> _featuredPlansOrder = {};
   List<ReadingPlan> _activePlans = [];
   List<ReadingPlan> _otherPlans = [];
 
-  Map<String, UserReadingProgress> _progressMap = {};
+  Map<String, UserReadingProgress?> _progressMap = {}; // Value can be nullable
   bool _isLoading = true;
   bool _devPremiumEnabled = false;
 
@@ -42,7 +43,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
     Alignment.bottomRight, Alignment.bottomCenter, Alignment.bottomLeft, Alignment.centerRight,
     Alignment.topRight, Alignment.center,
   ];
-  final Random _random = Random(); // For shuffling 'Other Plans'
+  final Random _random = Random();
 
   @override
   void initState() {
@@ -60,16 +61,15 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
     print("[ReadingPlansListScreen] Dev Premium Enabled: $_devPremiumEnabled");
 
     try {
-      // 1. Fetch Featured Plan IDs and Order from Firestore
       List<String> featuredPlanIdsFromFirestore = [];
-      Map<String, int> tempFeaturedPlansOrder = {}; // Use a temporary map for clarity
+      Map<String, int> tempFeaturedPlansOrder = {};
 
       try {
         print("[ReadingPlansListScreen] Fetching Featured_content from Firestore...");
         DocumentSnapshot featuredContentDoc = await _firestore
             .collection('app_settings')
             .doc('featured_content')
-            .get(const GetOptions(source: Source.serverAndCache)); // Try server first, then cache
+            .get(const GetOptions(source: Source.serverAndCache));
 
         if (featuredContentDoc.exists) {
           print("[ReadingPlansListScreen] Featured_content document found.");
@@ -82,7 +82,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
             final dynamicOrderMap = data['featuredPlansOrder'];
             if (dynamicOrderMap is Map) {
               tempFeaturedPlansOrder = dynamicOrderMap.map((key, value) {
-                int orderValue = 999; // Default if parsing fails or type is unexpected
+                int orderValue = 999;
                 if (value is int) {
                   orderValue = value;
                 } else if (value is String) {
@@ -96,7 +96,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
             } else {
               print("[ReadingPlansListScreen] featuredPlansOrder field is not a Map or is null.");
             }
-            _featuredPlansOrder = tempFeaturedPlansOrder; // Assign to state variable
+            _featuredPlansOrder = tempFeaturedPlansOrder;
           } else {
             print("[ReadingPlansListScreen] Featured_content data is null.");
           }
@@ -105,27 +105,22 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
         }
       } catch (e) {
         print("[ReadingPlansListScreen] Error fetching featured content from Firestore: $e");
-        // Continue without featured plans if Firestore fetch fails, lists will be empty
       }
 
-      // 2. Fetch All Plans (Bundled + Firebase if applicable by service)
       print("[ReadingPlansListScreen] Fetching all plans from ReadingPlanService...");
       List<ReadingPlan> allFetchedPlans = await _planService.getAllPlans(forceRefreshFirebase: forceRefresh);
       print("[ReadingPlansListScreen] Fetched ${allFetchedPlans.length} total plans from service.");
 
-      // 3. Fetch All Progress
       print("[ReadingPlansListScreen] Fetching all reading plan progresses from DB...");
       List<UserReadingProgress> allProgressList = await _dbHelper.getAllReadingPlanProgresses();
       _progressMap = {for (var p in allProgressList) p.planId: p};
       print("[ReadingPlansListScreen] Fetched progress for ${_progressMap.length} plans.");
 
-      // 4. Categorize Plans
       List<ReadingPlan> tempFeaturedPlans = [];
       List<ReadingPlan> tempActivePlans = [];
       List<ReadingPlan> tempOtherPlans = [];
       Set<String> processedPlanIds = {};
 
-      // Populate Featured Plans
       if (featuredPlanIdsFromFirestore.isNotEmpty) {
         print("[ReadingPlansListScreen] Processing ${featuredPlanIdsFromFirestore.length} featured plan IDs...");
         for (String id in featuredPlanIdsFromFirestore) {
@@ -135,7 +130,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
             processedPlanIds.add(id);
             print("[ReadingPlansListScreen] Found and added featured plan: ${plan.title} (ID: $id)");
           } catch (e) {
-            print("[ReadingPlansListScreen] Featured plan with ID '$id' NOT FOUND in allFetchedPlans. It may have failed to load or ID is incorrect.");
+            print("[ReadingPlansListScreen] Featured plan with ID '$id' NOT FOUND in allFetchedPlans.");
           }
         }
         tempFeaturedPlans.sort((a, b) {
@@ -149,15 +144,13 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
       _featuredPlans = tempFeaturedPlans;
       print("[ReadingPlansListScreen] Populated ${_featuredPlans.length} featured plans.");
 
-      // Populate Active Plans
       print("[ReadingPlansListScreen] Processing active plans...");
       for (var progress in allProgressList) {
-        // Find the plan details from allFetchedPlans
         ReadingPlan? planDetails;
         try {
           planDetails = allFetchedPlans.firstWhere((p) => p.id == progress.planId);
         } catch (e) {
-           print("[ReadingPlansListScreen] Plan details for active progress (ID: ${progress.planId}) not found in allFetchedPlans. Skipping.");
+           print("[ReadingPlansListScreen] Plan details for active progress (ID: ${progress.planId}) not found. Skipping.");
            continue;
         }
 
@@ -167,7 +160,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
             processedPlanIds.add(progress.planId);
             print("[ReadingPlansListScreen] Added active plan: ${planDetails.title} (ID: ${progress.planId})");
           } else {
-             print("[ReadingPlansListScreen] Plan ID ${progress.planId} is active but already processed (likely featured). Skipping for active list.");
+             print("[ReadingPlansListScreen] Plan ID ${progress.planId} is active but already processed. Skipping for active list.");
           }
         }
       }
@@ -175,14 +168,13 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
           DateTime? startDateA = _progressMap[a.id]?.startDate;
           DateTime? startDateB = _progressMap[b.id]?.startDate;
           if(startDateA != null && startDateB != null) {
-              return startDateB.compareTo(startDateA); // Most recent first
+              return startDateB.compareTo(startDateA);
           }
           return a.title.compareTo(b.title);
       });
       _activePlans = tempActivePlans;
       print("[ReadingPlansListScreen] Populated ${_activePlans.length} active plans.");
 
-      // Populate Other Plans
       print("[ReadingPlansListScreen] Processing other plans...");
       for (var plan in allFetchedPlans) {
         if (!processedPlanIds.contains(plan.id)) {
@@ -193,9 +185,9 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
       _otherPlans = tempOtherPlans;
       print("[ReadingPlansListScreen] Populated ${_otherPlans.length} other plans.");
 
-    } catch (e, s) { // Added stack trace
+    } catch (e, s) {
       print("[ReadingPlansListScreen] CRITICAL Error in _loadInitialData: $e");
-      print("[ReadingPlansListScreen] Stack Trace: $s"); // Log stack trace
+      print("[ReadingPlansListScreen] Stack Trace: $s");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Critical error loading reading plans: ${e.toString()}")));
@@ -237,60 +229,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
     }
   }
 
-  Widget _buildHorizontalPlanList(List<ReadingPlan> plans, String sectionTitle) {
-    if (plans.isEmpty) {
-      return const SizedBox.shrink(); // Don't show section if no plans
-    }
-
-    // Determine a fixed height for items in horizontal lists
-    // This ensures the horizontal list has a consistent child extent.
-    // This value might need adjustment based on your ReadingPlanListItem's content.
-    const double itemHeight = 240.0; // Approximate height of ReadingPlanListItem
-    const double itemWidth = 280.0; // Width for items in horizontal scroll
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 8.0),
-          child: Text(
-            sectionTitle,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
-        ),
-        SizedBox(
-          height: itemHeight, // Constrain the height of the horizontal ListView
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12.0), // Padding for the list itself
-            itemCount: plans.length,
-            itemBuilder: (context, index) {
-              final plan = plans[index];
-              final List<Color> gradient = AppColors.getReadingPlanGradient(index + (sectionTitle == "Featured Plans" ? 0 : _featuredPlans.length)); // Offset gradient index
-              final Alignment beginAlignment = _gradientAlignmentsBegin[(index + _featuredPlans.length) % _gradientAlignmentsBegin.length];
-              final Alignment endAlignment = _gradientAlignmentsEnd[(index + _featuredPlans.length) % _gradientAlignmentsEnd.length];
-              final bool isPlanEffectivelyLocked = plan.isPremium && !_devPremiumEnabled;
-
-              return Container(
-                width: itemWidth, // Fixed width for horizontal items
-                margin: const EdgeInsets.only(right: 12.0), // Space between items
-                child: ReadingPlanListItem(
-                  plan: plan,
-                  progress: _progressMap[plan.id],
-                  onTap: () => _navigateToPlanDetail(plan, gradient, beginAlignment, endAlignment),
-                  backgroundGradientColors: gradient,
-                  beginGradientAlignment: beginAlignment,
-                  endGradientAlignment: endAlignment,
-                  isPlanEffectivelyLocked: isPlanEffectivelyLocked,
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
+  // REMOVED _buildHorizontalPlanList method as it's now in HorizontalReadingPlanSection widget
 
   @override
   Widget build(BuildContext context) {
@@ -333,12 +272,25 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
                 )
               : RefreshIndicator(
                   onRefresh: () => _loadInitialData(forceRefresh: true),
-                  child: ListView( // Changed to ListView to accommodate multiple sections
+                  child: ListView(
                     children: [
-                      _buildHorizontalPlanList(_featuredPlans, "Featured Plans"),
-                      _buildHorizontalPlanList(_activePlans, "Active Plans"),
+                      HorizontalReadingPlanSection(
+                        sectionTitle: "Featured Plans",
+                        plans: _featuredPlans,
+                        progressMap: _progressMap,
+                        devPremiumEnabled: _devPremiumEnabled,
+                        onPlanTap: _navigateToPlanDetail,
+                        gradientIndexOffset: 0,
+                      ),
+                      HorizontalReadingPlanSection(
+                        sectionTitle: "Active Plans",
+                        plans: _activePlans,
+                        progressMap: _progressMap,
+                        devPremiumEnabled: _devPremiumEnabled,
+                        onPlanTap: _navigateToPlanDetail,
+                        gradientIndexOffset: _featuredPlans.length, // Offset to vary gradients
+                      ),
 
-                      // Section for "Other Plans" (vertically scrolling list)
                       if (_otherPlans.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 8.0),
@@ -348,8 +300,8 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
                           ),
                         ),
                       ListView.builder(
-                        shrinkWrap: true, // Important for nested ListViews
-                        physics: const NeverScrollableScrollPhysics(), // Disable scrolling for this inner list
+                        shrinkWrap: true, 
+                        physics: const NeverScrollableScrollPhysics(), 
                         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                         itemCount: _otherPlans.length,
                         itemBuilder: (context, index) {
@@ -359,7 +311,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
                           final Alignment endAlignment = _gradientAlignmentsEnd[(index + _featuredPlans.length + _activePlans.length) % _gradientAlignmentsEnd.length];
                           final bool isPlanEffectivelyLocked = plan.isPremium && !_devPremiumEnabled;
 
-                          return ReadingPlanListItem(
+                          return ReadingPlanListItem( //
                             plan: plan,
                             progress: _progressMap[plan.id],
                             onTap: () => _navigateToPlanDetail(plan, gradient, beginAlignment, endAlignment),
@@ -370,7 +322,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
                           );
                         },
                       ),
-                      const SizedBox(height: 20), // Padding at the bottom
+                      const SizedBox(height: 20), 
                     ],
                   ),
                 ),

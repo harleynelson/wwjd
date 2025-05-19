@@ -1,6 +1,6 @@
 // lib/screens/settings_screen.dart
 // Path: lib/screens/settings_screen.dart
-// Approximate line: 367 (Removed isAuthActionLoading from AccountSection call)
+// Updated to use AccountSectionWidget from its new location.
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +8,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 
-// Assuming your project structure, adjust paths if necessary
 import 'package:wwjd_app/helpers/database_helper.dart';
 import 'package:wwjd_app/helpers/prefs_helper.dart';
 import 'package:wwjd_app/models/reader_settings_enums.dart';
@@ -18,17 +17,14 @@ import 'package:wwjd_app/services/text_to_speech_service.dart';
 import 'package:wwjd_app/config/tts_voices.dart';
 import 'package:wwjd_app/services/auth_service.dart';
 import 'package:wwjd_app/models/app_user.dart';
-import 'package:wwjd_app/widgets/account_section.dart';
+// import 'package:wwjd_app/widgets/account_section.dart'; // Old import
+import 'package:wwjd_app/widgets/settings/account_section_widget.dart'; // NEW IMPORT
 import 'package:wwjd_app/config/constants.dart';
 
-// Import for "My Submitted Prayers" screen
-import 'prayer_wall/my_prayer_requests_screen.dart'; //
-
-// NEW IMPORT for the extracted dialog
+import 'prayer_wall/my_prayer_requests_screen.dart';
 import '../dialogs/password_prompt_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
-  // static const routeName = '/settings'; // Keep if you use named routes for other parts
   const SettingsScreen({super.key});
 
   @override
@@ -45,7 +41,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   ReaderThemeMode _selectedReaderTheme = ReaderThemeMode.light;
 
   bool _isLoadingSettings = true;
-  // bool _isAuthActionLoading = false; // This was for the general screen, AccountSection now has its own
 
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -58,7 +53,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   static const double _baseReaderFontSize = 18.0;
 
   bool _devPremiumEnabled = false;
-  bool _isGeneralAuthLoading = false; // New state for general auth actions like sign-in/sign-up
+  bool _isGeneralAuthLoading = false;
 
 
   @override
@@ -80,14 +75,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _isLoadingSettings = true;
     });
 
-    await _ttsService.ensureInitialized(); //
+    await _ttsService.ensureInitialized();
 
-    _fontSizeDelta = PrefsHelper.getReaderFontSizeDelta(); //
-    _selectedFontFamily = PrefsHelper.getReaderFontFamily(); //
-    _selectedReaderTheme = PrefsHelper.getReaderThemeMode(); //
+    _fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
+    _selectedFontFamily = PrefsHelper.getReaderFontFamily();
+    _selectedReaderTheme = PrefsHelper.getReaderThemeMode();
     _availableAppTtsVoices = _ttsService.getCuratedAppVoices();
-
-    _devPremiumEnabled = PrefsHelper.getDevPremiumEnabled(); //
+    _devPremiumEnabled = PrefsHelper.getDevPremiumEnabled();
 
     if (mounted) {
       setState(() {
@@ -130,7 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _handleForceNextDevotional() async {
-    await forceNextDevotional(); //
+    await forceNextDevotional();
     _showSnackBar("Next devotional will be shown on Home screen refresh.");
   }
 
@@ -156,7 +150,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (confirm == true) {
       try {
-        await _dbHelper.resetAllStreaksAndProgress(); //
+        await _dbHelper.resetAllStreaksAndProgress();
         _showSnackBar("All reading plan progress and streaks have been reset.");
       } catch (e) {
         _showSnackBar("Error resetting plan progress: ${e.toString()}",
@@ -167,7 +161,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _onAppVersionTap() {
     _devTapCount++;
-    if (_devTapCount >= 7 && !_devOptionsEnabled) { 
+    if (_devTapCount >= 7 && !_devOptionsEnabled) {
       if (mounted) {
         setState(() { _devOptionsEnabled = true; });
         _showSnackBar("Developer Options Enabled!");
@@ -183,7 +177,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _handleGoogleSignIn(AuthService authService) async {
     if (!mounted) return;
-    setState(() { _isGeneralAuthLoading = true; }); // Use general loading state
+    setState(() { _isGeneralAuthLoading = true; });
     AppUser? userFromAuthService;
     try {
       userFromAuthService = await authService.signInWithGoogle();
@@ -198,7 +192,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (e.code == 'link-google-to-email-erforderlich' && e.email != null) {
           final String? password = await showPasswordPromptDialog(context, e.email!);
           if (password != null && password.isNotEmpty && mounted) {
-            setState(() { _isGeneralAuthLoading = true; }); // Use general loading state
+            setState(() { _isGeneralAuthLoading = true; });
             try {
               final GoogleSignInAccount? googleUserAgain = await GoogleSignIn().signInSilently() ?? await GoogleSignIn().signIn();
               if (googleUserAgain != null) {
@@ -242,7 +236,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            setState(() { _isGeneralAuthLoading = false; }); // Use general loading state
+            setState(() { _isGeneralAuthLoading = false; });
           }
         });
       }
@@ -252,7 +246,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _handleEmailPasswordAuth(AuthService authService) async {
     if (!_formKey.currentState!.validate()) return;
     if (!mounted) return;
-    setState(() { _isGeneralAuthLoading = true; }); // Use general loading state
+    setState(() { _isGeneralAuthLoading = true; });
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
     AppUser? user;
@@ -297,7 +291,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) {
-                setState(() { _isGeneralAuthLoading = false; }); // Use general loading state
+                setState(() { _isGeneralAuthLoading = false; });
             }
           });
       }
@@ -306,7 +300,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _handleSignOut(AuthService authService) async {
     if (!mounted) return;
-    setState(() { _isGeneralAuthLoading = true; }); // Use general loading state
+    setState(() { _isGeneralAuthLoading = true; });
     try {
       await authService.signOut();
       if (mounted) {
@@ -320,7 +314,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) {
-                setState(() { _isGeneralAuthLoading = false; }); // Use general loading state
+                setState(() { _isGeneralAuthLoading = false; });
             }
         });
       }
@@ -332,7 +326,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final themeProvider = Provider.of<ThemeProvider>(context); 
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     final authService = Provider.of<AuthService>(context, listen: false);
     final appUser = Provider.of<AppUser?>(context);
@@ -341,7 +335,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       leading: const Icon(Icons.info_outline),
       title: const Text("App Version"),
-      subtitle: const Text(appVersion), //
+      subtitle: const Text(appVersion),
       onTap: _onAppVersionTap,
     );
 
@@ -359,10 +353,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Card(
                   margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   elevation: 1,
-                  child: AccountSection( //
-                    key: ValueKey('${appUser?.uid}_${appUser?.isAnonymous.toString()}'),
+                  child: AccountSectionWidget( // Using the new widget name
+                    key: ValueKey('${appUser?.uid}_${appUser?.isAnonymous.toString()}_${_isGeneralAuthLoading}'), // Added loading state to key
                     appUser: appUser,
-                    // isAuthActionLoading: _isGeneralAuthLoading, // Removed this parameter
                     onSignOut: () => _handleSignOut(authService),
                     onSignInWithGoogle: () => _handleGoogleSignIn(authService),
                     onSignInWithEmail: () => _handleEmailPasswordAuth(authService),
@@ -377,9 +370,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     passwordController: _passwordController,
                   ),
                 ),
+                if (_isGeneralAuthLoading) // Show loading indicator for the whole section if general auth is happening
+                    const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10.0),
+                        child: Center(child: CircularProgressIndicator()),
+                    ),
                 const Divider(indent: 8, endIndent: 8),
 
-                // --- Community Prayers Section ---
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                   child: Text("Community Prayers", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold)),
@@ -393,13 +390,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const MyPrayerRequestsScreen()), //
+                      MaterialPageRoute(builder: (context) => const MyPrayerRequestsScreen()),
                     );
                   },
                 ),
                 const Divider(indent: 8, endIndent: 8),
-                // --- End of Community Prayers Section ---
-
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                   child: Text("App Theme", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold)),
@@ -502,7 +497,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                   child: Text("Narration Voice", style: textTheme.titleSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold,)),
                 ),
-                ValueListenableBuilder<AppTtsVoice?>( //
+                ValueListenableBuilder<AppTtsVoice?>(
                     valueListenable: _ttsService.selectedAppVoiceNotifier,
                     builder: (context, currentSelectedVoice, child) {
                       if (_availableAppTtsVoices.isEmpty && _isLoadingSettings) { return const ListTile( contentPadding: EdgeInsets.symmetric(horizontal: 20.0), leading: Icon(Icons.record_voice_over_outlined), title: Text("Narration Voice"), subtitle: Text("Loading voice options..."),); }
@@ -510,7 +505,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                       AppTtsVoice? dropdownValue = currentSelectedVoice;
                       if (dropdownValue == null || !_availableAppTtsVoices.any((v) => v.name == dropdownValue?.name)) {
-                          String? preferredName = PrefsHelper.getSelectedVoiceName(); //
+                          String? preferredName = PrefsHelper.getSelectedVoiceName();
                           dropdownValue = _availableAppTtsVoices.firstWhere(
                               (v) => v.name == preferredName,
                               orElse: () => _availableAppTtsVoices.first
@@ -524,7 +519,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         trailing: Container(
                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.55),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton<AppTtsVoice>( //
+                            child: DropdownButton<AppTtsVoice>(
                               value: dropdownValue,
                               hint: const Text("Select", overflow: TextOverflow.ellipsis),
                               isExpanded: true,
@@ -567,7 +562,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       setState(() {
                         _devPremiumEnabled = newValue;
                       });
-                      await PrefsHelper.setDevPremiumEnabled(newValue); //
+                      await PrefsHelper.setDevPremiumEnabled(newValue);
                       _showSnackBar(
                         "Dev Premium ${newValue ? 'Enabled' : 'Disabled'}. Restart or re-navigate to see full effect.",
                       );

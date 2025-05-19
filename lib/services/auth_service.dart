@@ -1,18 +1,18 @@
 // File: lib/services/auth_service.dart
 // Path: lib/services/auth_service.dart
-// Approximate line: 230 (updated deleteCurrentUserAccount method)
+// Approximate line: 255 (new method: updateUserPassword)
 
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import '../models/app_user.dart'; //
-import '../helpers/prefs_helper.dart'; //
-import '../services/prayer_service.dart'; // Added for data cleanup
-import '../helpers/database_helper.dart'; // Added for data cleanup
-import 'package:provider/provider.dart'; // Added to potentially get PrayerService contextually
+import 'package:flutter/material.dart'; // Added for BuildContext
+import '../models/app_user.dart';
+import '../helpers/prefs_helper.dart';
+import '../services/prayer_service.dart';
+import '../helpers/database_helper.dart';
+import 'package:provider/provider.dart';
 
 class AuthService with ChangeNotifier {
   final fb_auth.FirebaseAuth _firebaseAuth = fb_auth.FirebaseAuth.instance;
@@ -24,10 +24,6 @@ class AuthService with ChangeNotifier {
   StreamSubscription? _firebaseAuthSubscription;
   AppUser? _currentAppUser;
 
-  // Provider for PrayerService, DatabaseHelper can be passed or accessed via context
-  // For simplicity in this direct call, we'll assume they might be available
-  // or could be passed to deleteCurrentUserAccount if not using Provider here.
-  // However, PrayerService is usually provided higher up. DatabaseHelper is a singleton.
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
 
@@ -43,14 +39,14 @@ class AuthService with ChangeNotifier {
     if (firebaseUser == null) {
       _currentAppUser = null;
     } else {
-      bool isDevPremium = PrefsHelper.getDevPremiumEnabled(); //
+      bool isDevPremium = PrefsHelper.getDevPremiumEnabled();
       bool finalPremiumStatus = isDevPremium;
 
       if (!isDevPremium) {
         // Placeholder for actual premium status check
       }
       
-      _currentAppUser = AppUser( //
+      _currentAppUser = AppUser(
         uid: firebaseUser.uid,
         isAnonymous: firebaseUser.isAnonymous,
         email: firebaseUser.email,
@@ -304,63 +300,78 @@ class AuthService with ChangeNotifier {
       return true;
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: Re-authentication failed: ${e.code} - ${e.message}");
-      throw e; 
+      throw e;
     } catch (e) {
       print("AuthService: Generic error during re-authentication: $e");
       throw Exception("An unexpected error occurred during re-authentication.");
     }
   }
 
-  Future<void> deleteCurrentUserAccount(BuildContext context) async { // Added BuildContext
+  Future<void> updateUserPassword(String currentPassword, String newPassword) async {
+    fb_auth.User? user = _firebaseAuth.currentUser;
+    if (user == null || user.email == null) {
+      print("AuthService: No user or user email for password update.");
+      throw Exception("User not found or email not available for password update.");
+    }
+    try {
+      fb_auth.AuthCredential credential = fb_auth.EmailAuthProvider.credential(
+        email: user.email!,
+        password: currentPassword,
+      );
+      // Re-authenticate the user with their current password
+      await user.reauthenticateWithCredential(credential);
+      print("AuthService: User re-authenticated successfully for password change.");
+      
+      // If re-authentication is successful, update the password
+      await user.updatePassword(newPassword);
+      print("AuthService: User password updated successfully.");
+    } on fb_auth.FirebaseAuthException catch (e) {
+      print("AuthService: Error updating password: ${e.code} - ${e.message}");
+      throw e; // Re-throw to be handled by UI
+    } catch (e) {
+      print("AuthService: Generic error updating password: $e");
+      throw Exception("An unexpected error occurred during password update.");
+    }
+  }
+
+  Future<void> deleteCurrentUserAccount(BuildContext context) async {
     fb_auth.User? user = _firebaseAuth.currentUser;
     if (user == null) {
       print("AuthService: No user to delete.");
       throw Exception("No user is currently signed in to delete.");
     }
     
-    String uid = user.uid; // Get UID before deletion
+    String uid = user.uid; 
     bool isAnonymousUser = user.isAnonymous;
 
     try {
-      // Perform data cleanup BEFORE deleting the Firebase Auth user.
-      if (!isAnonymousUser) { // Only perform detailed cleanup for non-anonymous users
+      if (!isAnonymousUser) { 
         print("AuthService: Starting data cleanup for user UID: $uid");
         
-        // Firestore data cleanup (PrayerService)
-        // It's safer to get PrayerService from context if available, or ensure it's properly injected.
-        // For this example, we'll assume it might need to be looked up or is already available.
-        // If AuthService is a singleton not managed by Provider, direct instantiation or injection is needed.
-        // If PrayerService itself needs context (like for _getOrCreateUserPrayerProfile for ITS OWN user),
-        // this context passed to deleteCurrentUserAccount could be used.
         final prayerService = Provider.of<PrayerService>(context, listen: false);
         await prayerService.deleteUserPrayerData(uid);
         print("AuthService: Firestore prayer data deleted for UID: $uid");
 
-        // Local SQLite data cleanup
         await _dbHelper.deleteAllUserLocalData();
         print("AuthService: Local SQLite data deleted for current user.");
 
-        // SharedPreferences cleanup for user-specific settings
-        await PrefsHelper.clearUserSpecificPreferences(); //
+        await PrefsHelper.clearUserSpecificPreferences();
         print("AuthService: User-specific SharedPreferences cleared.");
       } else {
-        print("AuthService: Skipping detailed data cleanup for anonymous user UID: $uid. Only Firebase Auth record will be deleted.");
-        // For anonymous users, you might still clear local SharedPreferences if they are tied to that anonymous session.
-        await PrefsHelper.clearUserSpecificPreferences(); //
-        await _dbHelper.deleteAllUserLocalData(); // Also clear local DB as anonymous user data is local to device.
+        print("AuthService: Skipping detailed Firestore data cleanup for anonymous user UID: $uid. Local data will be cleared.");
+        await PrefsHelper.clearUserSpecificPreferences();
+        await _dbHelper.deleteAllUserLocalData(); 
          print("AuthService: Cleared local SharedPreferences and SQLite data for anonymous user.");
       }
 
       await user.delete();
       print("AuthService: Firebase Auth User account deleted successfully (UID: $uid).");
-      // _onFirebaseUserChanged will be triggered, setting _currentAppUser to null,
-      // and then signInAnonymouslyIfNeeded will likely be called by the app's startup logic.
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: Error deleting user account: ${e.code} - ${e.message}");
       if (e.code == 'requires-recent-login') {
         print("AuthService: Account deletion requires recent login. Re-authentication needed.");
       }
-      throw e; 
+      throw e;
     } catch (e) {
       print("AuthService: Generic error deleting user account or cleaning up data: $e");
       throw Exception("An unexpected error occurred during account deletion: $e");
