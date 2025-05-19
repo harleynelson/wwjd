@@ -1,26 +1,27 @@
 // File: lib/screens/home_screen.dart
-// Corrected: Added declaration and initialization for _prayerStreakProfileFuture.
+// Path: lib/screens/home_screen.dart
+// Approximate line: 140 (build method) & removal of helper methods
 
 import 'dart:async'; // Added for StreamSubscription
 import 'package:flutter/material.dart';
-import 'dart:math'; 
+// import 'dart:math'; // No longer needed directly here if _buildPrayerWallPromoCard is extracted
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart'; 
+import 'package:firebase_auth/firebase_auth.dart';
 
 // Existing imports from your file
 import 'package:wwjd_app/widgets/verse_of_the_day_card.dart';
 import 'package:wwjd_app/widgets/devotional_of_the_day_card.dart';
 import '../helpers/daily_devotions.dart';
 import '../helpers/database_helper.dart';
-import '../models/models.dart'; 
+import '../models/models.dart';
 import '../helpers/book_names.dart';
 import '../helpers/prefs_helper.dart';
 import '../dialogs/flag_selection_dialog.dart';
 import '../models/user_prayer_profile_model.dart';
-import '../theme/app_colors.dart';
+// import '../theme/app_colors.dart'; // No longer directly used
 import '../theme/theme_provider.dart';
 import '../models/reader_settings_enums.dart';
-import '../services/prayer_service.dart'; // Added for UserPrayerProfile
+import '../services/prayer_service.dart';
 
 // Screen imports
 import 'full_bible_reader_screen.dart';
@@ -30,8 +31,13 @@ import 'search_screen.dart';
 import 'reading_plans/reading_plans_list_screen.dart';
 import 'prayer_wall/prayer_wall_screen.dart';
 
+// NEW WIDGET IMPORTS
+import '../widgets/home/reading_streak_card.dart';
+import '../widgets/home/prayer_wall_promo_card.dart';
+import '../widgets/home/home_navigation_button.dart';
 
-class VotDDataBundle { 
+
+class VotDDataBundle {
   final Map<String, dynamic>? verseData;
   final bool isFavorite;
   final List<int> assignedFlagIds;
@@ -57,7 +63,7 @@ class VotDDataBundle {
 
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/home'; 
+  static const routeName = '/home';
   const HomeScreen({super.key});
 
   @override
@@ -69,15 +75,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   late Future<Devotional?> _devotionalFuture = Future.value(null);
   late Future<VotDDataBundle> _votdFuture = Future.value(VotDDataBundle(verseData: null));
-  late Future<int> _readingStreakFuture = Future.value(0); 
-  late Future<UserPrayerProfile?> _prayerStreakProfileFuture = Future.value(null); // Declare and initialize
+  late Future<int> _readingStreakFuture = Future.value(0);
+  late Future<UserPrayerProfile?> _prayerStreakProfileFuture = Future.value(null);
 
   List<Flag> _allAvailableFlags = [];
   VotDDataBundle? _currentVotDDataBundle;
 
   double _fontSizeDelta = 0.0;
   ReaderFontFamily _selectedFontFamily = ReaderFontFamily.systemDefault;
-  StreamSubscription? _userAuthSubscription; 
+  StreamSubscription? _userAuthSubscription;
 
   @override
   void initState() {
@@ -106,15 +112,15 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!mounted) return;
     await _loadAvailableFlags();
     if (!mounted) return;
-    
-    _assignFutures(); 
-    
+
+    _assignFutures();
+
     if (mounted) {
       setState(() {});
     }
   }
 
-  Future<void> _loadReaderPreferences() async { 
+  Future<void> _loadReaderPreferences() async {
     _fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
     _selectedFontFamily = PrefsHelper.getReaderFontFamily();
   }
@@ -127,17 +133,17 @@ class _HomeScreenState extends State<HomeScreen> {
       _votdFuture = _refreshFavoriteStatusForCurrentVotD();
     }
     _readingStreakFuture = _fetchCurrentReadingStreak();
-    _prayerStreakProfileFuture = _fetchCurrentPrayerActivityStreak(); // Assign here
+    _prayerStreakProfileFuture = _fetchCurrentPrayerActivityStreak();
   }
 
-  Future<void> _loadAvailableFlags() async { 
+  Future<void> _loadAvailableFlags() async {
     try {
       final Set<int> hiddenIds = PrefsHelper.getHiddenFlagIds();
       final List<Flag> visiblePrebuiltFlags = prebuiltFlags.where((f) => !hiddenIds.contains(f.id)).toList();
       final userFlagMaps = await _dbHelper.getUserFlags();
       final userFlags = userFlagMaps.map((map) => Flag.fromUserDbMap(map)).toList();
       if (!mounted) return;
-      setState(() { 
+      setState(() {
          _allAvailableFlags = [...visiblePrebuiltFlags, ...userFlags]..sort((a, b) => a.name.compareTo(b.name));
       });
     } catch (e) {
@@ -145,11 +151,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<Devotional?> _fetchDevotionalOfTheDay() async { 
+  Future<Devotional?> _fetchDevotionalOfTheDay() async {
     return await getDevotionalOfTheDay();
   }
 
-  Future<VotDDataBundle> _fetchNewRandomVotDBundle() async { 
+  Future<VotDDataBundle> _fetchNewRandomVotDBundle() async {
      try {
       final verseData = await _dbHelper.getVerseOfTheDay();
       if (verseData != null && verseData[DatabaseHelper.bibleColVerseID] != null) {
@@ -165,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return _currentVotDDataBundle!;
   }
 
-  Future<VotDDataBundle> _refreshFavoriteStatusForCurrentVotD() async { 
+  Future<VotDDataBundle> _refreshFavoriteStatusForCurrentVotD() async {
     if (_currentVotDDataBundle == null || _currentVotDDataBundle!.verseData == null) { return _fetchNewRandomVotDBundle(); }
     final String verseID = _currentVotDDataBundle!.verseData![DatabaseHelper.bibleColVerseID];
     try {
@@ -177,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) { print("Error refreshing favorite status for VotD $verseID: $e"); return _currentVotDDataBundle!; }
   }
 
-  Future<int> _fetchCurrentReadingStreak() async { 
+  Future<int> _fetchCurrentReadingStreak() async {
     try {
       List<UserReadingProgress> activeProgresses = await _dbHelper.getActiveReadingPlanProgresses();
       int maxStreak = 0;
@@ -206,31 +212,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<UserPrayerProfile?> _fetchCurrentPrayerActivityStreak() async {
     final currentUser = Provider.of<User?>(context, listen: false);
-    if (currentUser == null) return null; 
-    
+    if (currentUser == null) return null;
+
     final prayerService = Provider.of<PrayerService>(context, listen: false);
     try {
       return await prayerService.getUserPrayerProfile(currentUser.uid);
     } catch (e) {
       print("Error fetching prayer streak profile on HomeScreen: $e");
-      return null; 
+      return null;
     }
   }
 
-  Future<void> _refreshAllData() async { 
+  Future<void> _refreshAllData() async {
     if (!mounted) return;
     await _loadReaderPreferences();
     if (!mounted) return;
-    await _loadAvailableFlags(); 
+    await _loadAvailableFlags();
     if (!mounted) return;
-    
+
     setState(() {
-      _currentVotDDataBundle = null; 
-      _assignFutures(); 
+      _currentVotDDataBundle = null;
+      _assignFutures();
     });
   }
 
-  Future<void> _toggleVotDFavorite(VotDDataBundle bundleToToggle) async { 
+  Future<void> _toggleVotDFavorite(VotDDataBundle bundleToToggle) async {
     if (bundleToToggle.verseData == null || bundleToToggle.verseData![DatabaseHelper.bibleColVerseID] == null) { return; }
     String verseID = bundleToToggle.verseData![DatabaseHelper.bibleColVerseID];
     Map<String, dynamic> verseDataMap = Map<String, dynamic>.from(bundleToToggle.verseData!);
@@ -241,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) { if(mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error updating favorite: ${e.toString()}"))); }
   }
 
-  void _openFlagManagerForVotD(VotDDataBundle bundleForFlags) { 
+  void _openFlagManagerForVotD(VotDDataBundle bundleForFlags) {
       if (bundleForFlags.verseData == null || bundleForFlags.verseData![DatabaseHelper.bibleColVerseID] == null || !bundleForFlags.isFavorite) return;
       final String verseID = bundleForFlags.verseData![DatabaseHelper.bibleColVerseID];
       String ref = "${getFullBookName(bundleForFlags.verseData![DatabaseHelper.bibleColBook] ?? "??")} ${bundleForFlags.verseData![DatabaseHelper.bibleColChapter]?.toString() ?? "?"}:${bundleForFlags.verseData![DatabaseHelper.bibleColStartVerse]?.toString() ?? "?"}";
@@ -253,53 +259,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ),).then((_) { if (mounted) { _loadAvailableFlags();  } });
   }
 
-  Widget _buildReadingStreakCard(BuildContext context) { 
-    final theme = Theme.of(context);
-    const String mainCtaText = "Guided Readings";
-    const IconData mainCtaIcon = Icons.checklist_rtl_outlined;
-
-    return FutureBuilder<int>(
-      future: _readingStreakFuture, 
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData && !snapshot.hasError) {
-          return Card( elevation: 3, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)), clipBehavior: Clip.antiAlias, child: SizedBox( height: 120, child: Center(child: CircularProgressIndicator(color: theme.colorScheme.primary)),),);
-        }
-        int streakCount = 0; 
-        if (snapshot.hasError) { print("Error in _readingStreakFuture FutureBuilder: ${snapshot.error}");
-        } else if (snapshot.hasData) { streakCount = snapshot.data!; }
-
-        return Card( elevation: 3.0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)), clipBehavior: Clip.antiAlias, margin: const EdgeInsets.only(top: 8.0, bottom: 16.0),
-          child: InkWell(
-            onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const ReadingPlansListScreen())).then((_) => _refreshAllData()); },
-            child: Stack( alignment: Alignment.bottomLeft,
-              children: [
-                Ink.image( image: const AssetImage('assets/images/home/home_reading_plan.png'),  height: 120,  fit: BoxFit.cover, colorFilter: ColorFilter.mode( Colors.black.withOpacity(0.45),  BlendMode.darken,),),
-                Positioned.fill(
-                  child: Container(
-                     decoration: BoxDecoration( gradient: LinearGradient( colors: [ Colors.black.withOpacity(0.6),  Colors.transparent,  ], begin: Alignment.bottomCenter, end: Alignment.center,  stops: const [0.0, 0.8], ),),
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column( mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                             Row( children: [ Icon(mainCtaIcon, color: Colors.white.withOpacity(0.9), size: 24), const SizedBox(width: 8.0), Text( mainCtaText, style: theme.textTheme.titleLarge?.copyWith( color: Colors.white, fontWeight: FontWeight.bold, shadows: [const Shadow(blurRadius: 1.0, color: Colors.black54, offset: Offset(1,1))],),),],),
-                             Icon(Icons.arrow_forward_ios_rounded, size: 18, color: Colors.white.withOpacity(0.8))
-                          ],),
-                        const SizedBox(height: 4),
-                        if (streakCount > 0)
-                          Row( mainAxisSize: MainAxisSize.min, children: [ Icon(Icons.local_fire_department_rounded, color: Colors.orangeAccent.shade100, size: 18), const SizedBox(width: 6.0), Text( "$streakCount Day Reading Streak!", style: theme.textTheme.bodyMedium?.copyWith( color: Colors.white.withOpacity(0.95), fontWeight: FontWeight.w600, shadows: [const Shadow(blurRadius: 1.0, color: Colors.black38, offset: Offset(0.5,0.5))],),),],)
-                        else
-                          Text( "Start a plan to build your streak!",  style: theme.textTheme.bodySmall?.copyWith( color: Colors.white.withOpacity(0.85), shadows: [const Shadow(blurRadius: 1.0, color: Colors.black38, offset: Offset(0.5,0.5))],),),
-                      ],),),),
-              ],),),);
-      },);
-  }
+  // REMOVED _buildReadingStreakCard, _buildPrayerWallPromoCard, and _buildNavigationButton methods
+  // They are now separate widgets.
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final Brightness currentBrightness = Theme.of(context).brightness;
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context); // theme variable can be obtained from context where needed
 
     final Gradient lightGradient = LinearGradient( colors: [ Colors.deepPurple.shade100.withOpacity(0.6), Colors.purple.shade50.withOpacity(0.8), Colors.white, ], begin: Alignment.topLeft, end: Alignment.bottomRight, stops: const [0.0, 0.3, 1.0],);
     final Gradient darkGradient = LinearGradient( colors: [ Colors.grey.shade800, Colors.grey.shade900, Colors.black ],  begin: Alignment.topLeft, end: Alignment.bottomRight, stops: const [0.0, 0.4, 1.0],);
@@ -308,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar( title: const Text('Wake up with Jesus'), centerTitle: true,
         actions: [
           IconButton( icon: Icon( themeProvider.themeMode == ThemeMode.dark || (themeProvider.themeMode == ThemeMode.system && MediaQuery.platformBrightnessOf(context) == Brightness.dark) ? Icons.light_mode_outlined  : Icons.dark_mode_outlined,    ), tooltip: "Toggle Theme",
-            onPressed: () { 
+            onPressed: () {
                 ThemeMode currentEffectiveMode = themeProvider.themeMode;
                 if (currentEffectiveMode == ThemeMode.system) { currentEffectiveMode = (MediaQuery.platformBrightnessOf(context) == Brightness.dark) ? ThemeMode.dark : ThemeMode.light; }
                 if (currentEffectiveMode == ThemeMode.dark) { themeProvider.setThemeMode(ThemeMode.light); } else { themeProvider.setThemeMode(ThemeMode.dark); }
@@ -319,17 +286,34 @@ class _HomeScreenState extends State<HomeScreen> {
         child: RefreshIndicator( onRefresh: _refreshAllData,
           child: ListView( padding: const EdgeInsets.all(16.0),
             children: <Widget>[
-              _buildReadingStreakCard(context), 
-              _buildPrayerWallPromoCard(context), 
-              const SizedBox(height: 16.0), 
-              FutureBuilder<Devotional?>( future: _devotionalFuture,  builder: (context, snapshot) { 
+              ReadingStreakCard(
+                readingStreakFuture: _readingStreakFuture,
+                onTap: () {
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ReadingPlansListScreen()))
+                      .then((_) => _refreshAllData());
+                },
+              ),
+              PrayerWallPromoCard(
+                prayerStreakProfileFuture: _prayerStreakProfileFuture,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const PrayerWallScreen()),
+                  ).then((_) => _refreshAllData());
+                },
+              ),
+              const SizedBox(height: 16.0),
+              FutureBuilder<Devotional?>( future: _devotionalFuture,  builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData && !snapshot.hasError) { return DevotionalOfTheDayCard( devotional: Devotional(title: "", coreMessage: "", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""), isLoading: true, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, ); }
                   if (snapshot.hasError) { print("Error in _devotionalFuture FutureBuilder: ${snapshot.error}"); return DevotionalOfTheDayCard( devotional: Devotional(title: "Error", coreMessage: "Could not load devotional.", scriptureFocus: "", scriptureReference: "", reflection: "Please try again later.", prayerDeclaration: ""), isLoading: false, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, );}
                   final devotionalData = snapshot.data;  if (devotionalData == null && snapshot.connectionState != ConnectionState.waiting) { return DevotionalOfTheDayCard(  devotional: Devotional(title: "Not Available", coreMessage: "Today's devotional is not available.", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""), isLoading: false, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, ); }
                   return DevotionalOfTheDayCard( devotional: devotionalData ?? Devotional(title: "", coreMessage: "Loading...", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""),  isLoading: snapshot.connectionState == ConnectionState.waiting,  enableCardAnimations: true, speckCount: 15, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily,  );
               },),
               const SizedBox(height: 20.0),
-              FutureBuilder<VotDDataBundle>( future: _votdFuture,  builder: (context, snapshot) { 
+              FutureBuilder<VotDDataBundle>( future: _votdFuture,  builder: (context, snapshot) {
                   VotDDataBundle? bundleForDisplay; bool showAsLoading = snapshot.connectionState == ConnectionState.waiting &&  (!snapshot.hasData || snapshot.data?.verseData == null) &&  (_currentVotDDataBundle == null || _currentVotDDataBundle!.verseData == null);
                   if (snapshot.hasData && snapshot.data!.verseData != null) { _currentVotDDataBundle = snapshot.data!;  bundleForDisplay = _currentVotDDataBundle; } else if (_currentVotDDataBundle != null && _currentVotDDataBundle!.verseData != null) { bundleForDisplay = _currentVotDDataBundle; } else if (snapshot.hasError) { print("Error in _votdFuture FutureBuilder: ${snapshot.error}"); return VerseOfTheDayCard(isLoading: false, verseText: "Could not load verse.", verseRef: "Error", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily); } else if (snapshot.connectionState != ConnectionState.waiting && (snapshot.data == null || snapshot.data!.verseData == null)) { return VerseOfTheDayCard(isLoading: false, verseText: "Verse not available.", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily); }
                   if (bundleForDisplay == null || bundleForDisplay.verseData == null) { return VerseOfTheDayCard(isLoading: true, verseText: "Loading...", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: true, speckCount: 10, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily); }
@@ -337,99 +321,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   return VerseOfTheDayCard( isLoading: showAsLoading,  verseText: votdText, verseRef: votdRef, isFavorite: currentBundle.isFavorite, assignedFlagNames: flagNamesForVotD, onToggleFavorite: () => _toggleVotDFavorite(currentBundle), onManageFlags: currentBundle.isFavorite ? () => _openFlagManagerForVotD(currentBundle) : null, enableCardAnimations: true, speckCount: 10, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily,);
               },),
               const SizedBox(height: 24.0),
-              _buildNavigationButton(context, icon: Icons.menu_book_outlined, label: "Read Full Bible", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FullBibleReaderScreen())).then((_) => _refreshAllData())),
+              HomeNavigationButton(icon: Icons.menu_book_outlined, label: "Read Full Bible", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FullBibleReaderScreen())).then((_) => _refreshAllData())),
               const SizedBox(height: 16.0),
-              _buildNavigationButton(context, icon: Icons.favorite_border_outlined, label: "My Favorites", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FavoritesScreen())).then((_) => _refreshAllData())),
+              HomeNavigationButton(icon: Icons.favorite_border_outlined, label: "My Favorites", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FavoritesScreen())).then((_) => _refreshAllData())),
               const SizedBox(height: 16.0),
-              _buildNavigationButton(context, icon: Icons.search_outlined, label: "Search", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchScreen()))),
-              const SizedBox(height: 16.0), 
-            ],),),),);
-  }
-
-  Widget _buildPrayerWallPromoCard(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Card(
-      elevation: 3.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-      clipBehavior: Clip.antiAlias, 
-      margin: const EdgeInsets.symmetric(vertical: 8.0), 
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const PrayerWallScreen()),
-          ).then((_) => _refreshAllData()); 
-        },
-        child: Stack(
-          alignment: Alignment.bottomLeft, 
-          children: [
-            Ink.image(
-              image: const AssetImage('assets/images/home/home_prayer_wall.png'), 
-              height: 180, 
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode( Colors.black.withOpacity(0.35), BlendMode.darken,),),
-            Positioned.fill(
-              child: Container(
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient( colors: [ Colors.black.withOpacity(0.6), Colors.black.withOpacity(0.0), ], begin: Alignment.bottomCenter, end: Alignment.topCenter, stops: const [0.0, 0.7], ),),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end, 
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text( "Community Prayer Wall", style: theme.textTheme.headlineSmall?.copyWith( color: Colors.white, fontWeight: FontWeight.bold, shadows: [ const Shadow(blurRadius: 2.0, color: Colors.black54, offset: Offset(1,1)),] ),),
-                    const SizedBox(height: 4),
-                    Text( "Share your requests & pray for others.", style: theme.textTheme.bodyMedium?.copyWith( color: Colors.white.withOpacity(0.9),  shadows: [ const Shadow(blurRadius: 1.0, color: Colors.black38, offset: Offset(1,1)),]),),
-                    const SizedBox(height: 8),
-                    // --- Prayer Streak Display ---
-                    FutureBuilder<UserPrayerProfile?>(
-                      future: _prayerStreakProfileFuture, // Corrected: This was the undefined identifier
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
-                          return const SizedBox(height: 18, child: Center(child: SizedBox(width:16, height:16, child: CircularProgressIndicator(strokeWidth: 1.5, valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),))));
-                        }
-                        final profile = snapshot.data;
-                        final streak = profile?.currentPrayerStreak ?? 0;
-                        final totalPrayersSent = profile?.totalPrayersSent ?? 0;
-                        
-                        if (totalPrayersSent == 0) {
-                           return Text(
-                             "Join the community in prayer!",
-                             style: theme.textTheme.bodySmall?.copyWith(color: Colors.white.withOpacity(0.75), fontStyle: FontStyle.italic),
-                           );
-                        }
-
-                        if (streak > 0) {
-                          return Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.local_fire_department_rounded, color: Colors.orangeAccent.shade100, size: 18),
-                              const SizedBox(width: 6.0),
-                              Text(
-                                "$streak Day Prayer Streak", 
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: Colors.white.withOpacity(0.95),
-                                  fontWeight: FontWeight.w600,
-                                  shadows: [const Shadow(blurRadius: 1.0, color: Colors.black38, offset: Offset(0.5,0.5))],
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-                        return Text(
-                          "Your prayers make a difference!",
-                           style: theme.textTheme.bodySmall?.copyWith(color: Colors.white.withOpacity(0.75), fontStyle: FontStyle.italic),
-                        );
-                      },
-                    ),
-                    // --- End Prayer Streak Display ---
-                  ],),),),
-          ],),),);
-  }
-
-  Widget _buildNavigationButton(BuildContext context, {required IconData icon, required String label, required VoidCallback onTap}) { 
-    final theme = Theme.of(context);
-    return Card( elevation: 2.0,  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),  child: ListTile( leading: Icon(icon, size: 28, color: theme.colorScheme.primary),  title: Text(label, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500)),  trailing: Icon(Icons.arrow_forward_ios, size: 16, color: theme.colorScheme.onSurfaceVariant),  onTap: onTap, contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),  ),);
+              HomeNavigationButton(icon: Icons.search_outlined, label: "Search", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchScreen()))),
+              const SizedBox(height: 16.0),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

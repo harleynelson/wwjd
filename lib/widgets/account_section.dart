@@ -1,10 +1,56 @@
 // lib/widgets/account_section.dart
+// Path: lib/widgets/account_section.dart
+// Approximate line: 85 (update _handleDeleteAccount to pass context)
 import 'package:flutter/material.dart';
 import 'package:wwjd_app/models/app_user.dart'; // Your AppUser model
+import 'package:wwjd_app/services/auth_service.dart'; // To call AuthService methods
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 
-class AccountSection extends StatelessWidget {
+// Dialog for re-authentication if needed for deletion
+Future<String?> _showReauthPasswordDialog(BuildContext context, String email) async {
+  final passwordController = TextEditingController();
+  return showDialog<String>(
+    context: context,
+    barrierDismissible: false, // User must interact
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: const Text('Re-authenticate to Delete Account'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('For security, please re-enter your password for $email to continue with account deletion.'),
+            const SizedBox(height: 16),
+            TextField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(labelText: 'Password', border: OutlineInputBorder()),
+              autofocus: true,
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(dialogContext).pop(null);
+            },
+          ),
+          TextButton(
+            child: const Text('Re-authenticate'),
+            onPressed: () {
+              Navigator.of(dialogContext).pop(passwordController.text);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
+class AccountSection extends StatefulWidget {
   final AppUser? appUser;
-  final bool isAuthActionLoading;
   final VoidCallback onSignInWithGoogle;
   final VoidCallback onSignInWithEmail;
   final VoidCallback onToggleSignUpMode;
@@ -15,9 +61,8 @@ class AccountSection extends StatelessWidget {
   final TextEditingController passwordController;
 
   const AccountSection({
-    super.key, // Changed from Key? key to super.key for modern Dart
+    super.key,
     required this.appUser,
-    required this.isAuthActionLoading,
     required this.onSignInWithGoogle,
     required this.onSignInWithEmail,
     required this.onToggleSignUpMode,
@@ -29,11 +74,130 @@ class AccountSection extends StatelessWidget {
   });
 
   @override
+  State<AccountSection> createState() => _AccountSectionState();
+}
+
+class _AccountSectionState extends State<AccountSection> {
+  bool _isProcessingAuthAction = false;
+
+  void _showSnackBar(BuildContext context, String message, {bool isError = false}) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Theme.of(context).colorScheme.error : Colors.green,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  Future<void> _handleForgotPassword(BuildContext context) async {
+    if (widget.emailController.text.trim().isEmpty || !widget.emailController.text.contains('@')) {
+      _showSnackBar(context, 'Please enter a valid email address to reset password.', isError: true);
+      return;
+    }
+    if (!mounted) return;
+    setState(() => _isProcessingAuthAction = true);
+    final authService = Provider.of<AuthService>(context, listen: false);
+    try {
+      await authService.sendPasswordResetEmail(widget.emailController.text.trim());
+      _showSnackBar(context, 'Password reset email sent to ${widget.emailController.text.trim()}. Please check your inbox (and spam folder).');
+    } on fb_auth.FirebaseAuthException catch (e) {
+      String errorMessage = "Could not send reset email. Please try again.";
+      if (e.code == 'user-not-found') {
+        errorMessage = "No account found for that email address.";
+      } else if (e.code == 'invalid-email') {
+        errorMessage = "The email address is not valid.";
+      }
+      _showSnackBar(context, errorMessage, isError: true);
+    } catch (e) {
+      _showSnackBar(context, "An unexpected error occurred: ${e.toString()}", isError: true);
+    } finally {
+      if (mounted) setState(() => _isProcessingAuthAction = false);
+    }
+  }
+
+  Future<void> _handleDeleteAccount(BuildContext context) async {
+    if (widget.appUser == null || widget.appUser!.isAnonymous) {
+      _showSnackBar(context, "Cannot delete an anonymous account directly using this flow.", isError: true);
+      // Consider providing an option to "Reset App Data" for anonymous users,
+      // which would clear local DB and SharedPreferences.
+      return;
+    }
+
+    final bool? confirmDelete = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text("Delete Account?"),
+        content: const Text(
+            "This action is permanent and cannot be undone. All your associated data (prayer profile, prayer interactions, local favorites, reading progress, and settings) will be removed. Are you sure you want to proceed?"),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: const Text("Cancel")),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text("Delete My Account", style: TextStyle(color: Theme.of(context).colorScheme.error)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmDelete != true) return;
+    if (!mounted) return;
+
+    setState(() => _isProcessingAuthAction = true);
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      // Pass context to deleteCurrentUserAccount
+      await authService.deleteCurrentUserAccount(context); 
+      _showSnackBar(context, "Account and associated data deleted successfully.");
+      // AuthStateChanges listener in AuthService should handle UI update (e.g., sign out).
+      // No need to explicitly call widget.onSignOut here as Firebase's user.delete() signs out.
+    } on fb_auth.FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      if (e.code == 'requires-recent-login') {
+        _showSnackBar(context, "Please re-authenticate to delete your account.", isError: true);
+        
+        final fb_auth.User? currentUser = fb_auth.FirebaseAuth.instance.currentUser;
+        bool isEmailProvider = currentUser?.providerData.any((userInfo) => userInfo.providerId == fb_auth.EmailAuthProvider.PROVIDER_ID) ?? false;
+
+        if (isEmailProvider && currentUser?.email != null) {
+            final String? password = await _showReauthPasswordDialog(context, currentUser!.email!);
+            if (password != null && password.isNotEmpty && mounted) {
+                try {
+                    await authService.reauthenticateUser(password);
+                    // If re-auth successful, try deleting again
+                    await authService.deleteCurrentUserAccount(context); 
+                    _showSnackBar(context, "Account re-authenticated and deleted successfully.");
+                } catch (reauthError) {
+                   if(mounted) _showSnackBar(context, "Re-authentication failed or deletion still problematic: ${reauthError.toString()}", isError: true);
+                }
+            } else {
+                 if(mounted) _showSnackBar(context, "Re-authentication cancelled.", isError: false);
+            }
+        } else {
+             if(mounted) _showSnackBar(context, "Re-authentication required. Please sign out and sign back in to delete your account if you used a social provider.", isError: true);
+        }
+
+      } else {
+        if(mounted) _showSnackBar(context, "Error deleting account: ${e.message ?? e.code}", isError: true);
+      }
+    } catch (e) {
+      if(mounted) _showSnackBar(context, "An unexpected error occurred: ${e.toString()}", isError: true);
+    } finally {
+      if (mounted) setState(() => _isProcessingAuthAction = false);
+    }
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    if (appUser != null && !appUser!.isAnonymous) {
+    if (widget.appUser != null && !widget.appUser!.isAnonymous) {
       // User is signed in and not anonymous
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,37 +205,47 @@ class AccountSection extends StatelessWidget {
           ListTile(
             leading: CircleAvatar(
               radius: 24,
-              backgroundImage: appUser!.photoURL != null && appUser!.photoURL!.isNotEmpty
-                  ? NetworkImage(appUser!.photoURL!)
+              backgroundImage: widget.appUser!.photoURL != null && widget.appUser!.photoURL!.isNotEmpty
+                  ? NetworkImage(widget.appUser!.photoURL!)
                   : null,
-              child: appUser!.photoURL == null || appUser!.photoURL!.isEmpty
+              child: widget.appUser!.photoURL == null || widget.appUser!.photoURL!.isEmpty
                   ? Icon(Icons.person_outline, size: 28, color: colorScheme.onPrimaryContainer)
                   : null,
               backgroundColor: colorScheme.primaryContainer,
             ),
-            title: Text(appUser!.displayName ?? appUser!.email ?? "User Account", style: textTheme.titleMedium),
-            subtitle: Text(appUser!.email ?? "UID: ${appUser!.uid}", style: textTheme.bodySmall),
+            title: Text(widget.appUser!.displayName ?? widget.appUser!.email ?? "User Account", style: textTheme.titleMedium),
+            subtitle: Text(widget.appUser!.email ?? "UID: ${widget.appUser!.uid}", style: textTheme.bodySmall),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                icon: const Icon(Icons.logout_rounded),
-                label: const Text("Sign Out"),
-                onPressed: isAuthActionLoading ? null : onSignOut,
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: colorScheme.error),
-                  foregroundColor: colorScheme.error,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Column( 
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.logout_rounded),
+                  label: const Text("Sign Out"),
+                  onPressed: _isProcessingAuthAction ? null : widget.onSignOut,
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: colorScheme.errorContainer), 
+                    foregroundColor: colorScheme.error,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
                 ),
-              ),
+                const SizedBox(height: 10),
+                TextButton.icon( 
+                  icon: Icon(Icons.delete_forever_outlined, color: colorScheme.error),
+                  label: Text("Delete My Account", style: TextStyle(color: colorScheme.error)),
+                  onPressed: _isProcessingAuthAction ? null : () => _handleDeleteAccount(context),
+                  style: TextButton.styleFrom(
+                     padding: const EdgeInsets.symmetric(vertical: 10),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       );
-    } else if (isAuthActionLoading) {
-      // Loading indicator
+    } else if (_isProcessingAuthAction) { 
       return const Center(child: Padding(
         padding: EdgeInsets.symmetric(vertical: 32.0),
         child: CircularProgressIndicator(),
@@ -84,11 +258,11 @@ class AccountSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ElevatedButton.icon(
-              icon: const Icon(Icons.login_rounded), // Placeholder, consider a Google specific icon
+              icon: const Icon(Icons.login_rounded),
               label: const Text("Sign in with Google"),
-              onPressed: onSignInWithGoogle,
+              onPressed: widget.onSignInWithGoogle,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent.shade700, // Example color
+                backgroundColor: Colors.blueAccent.shade700,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 12),
               ),
@@ -106,11 +280,11 @@ class AccountSection extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Form(
-              key: formKey,
+              key: widget.formKey,
               child: Column(
                 children: [
                   TextFormField(
-                    controller: emailController,
+                    controller: widget.emailController,
                     decoration: const InputDecoration(labelText: "Email", border: OutlineInputBorder(), prefixIcon: Icon(Icons.email_outlined)),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
@@ -121,24 +295,34 @@ class AccountSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
-                    controller: passwordController,
+                    controller: widget.passwordController,
                     decoration: const InputDecoration(labelText: "Password", border: OutlineInputBorder(), prefixIcon: Icon(Icons.lock_outline)),
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) return 'Please enter your password.';
-                      if (value.length < 6) return 'Password must be at least 6 characters.';
+                      if (widget.isSignUpMode && value.length < 6) return 'Password must be at least 6 characters for new accounts.';
                       return null;
                     },
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: onSignInWithEmail,
+                    onPressed: _isProcessingAuthAction ? null : widget.onSignInWithEmail, // Consider internal loading state here too if needed
                     style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 48)),
-                    child: Text(isSignUpMode ? "Create Account" : "Sign In with Email"),
+                    child: Text(widget.isSignUpMode ? "Create Account" : "Sign In with Email"),
                   ),
-                  TextButton(
-                    onPressed: onToggleSignUpMode,
-                    child: Text(isSignUpMode ? "Already have an account? Sign In" : "Don't have an account? Create one"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: _isProcessingAuthAction ? null : widget.onToggleSignUpMode,
+                        child: Text(widget.isSignUpMode ? "Already have an account? Sign In" : "Don't have an account? Create one"),
+                      ),
+                      if (!widget.isSignUpMode)
+                        TextButton(
+                          onPressed: _isProcessingAuthAction ? null : () => _handleForgotPassword(context),
+                          child: const Text("Forgot Password?"),
+                        ),
+                    ],
                   ),
                 ],
               ),

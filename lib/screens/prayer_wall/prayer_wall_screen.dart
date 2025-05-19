@@ -1,6 +1,7 @@
 // File: lib/screens/prayer_wall/prayer_wall_screen.dart
 // Path: lib/screens/prayer_wall/prayer_wall_screen.dart
-// Updated: Removed anonymous check for praying, refined streak display logic.
+// Updated: Removed _buildPrayerStreakDisplay method and uses the new PrayerStreakDisplay widget.
+// Updated: Import for RiverPrayerItem.
 
 import 'dart:async';
 import 'dart:math';
@@ -12,16 +13,18 @@ import 'package:intl/intl.dart'; // For formatting next available submission dat
 import '../../models/prayer_request_model.dart';
 import '../../models/user_prayer_profile_model.dart';
 import '../../services/prayer_service.dart';
-import '../../widgets/prayer_wall/prayer_request_card.dart';
+// import '../../widgets/prayer_wall/prayer_request_card.dart'; // RiverPrayerItem is no longer here
+import '../../widgets/prayer_wall/river_prayer_item.dart'; // MODIFIED IMPORT
 import '../../widgets/prayer_wall/well_of_hope_widget.dart';
 import '../../widgets/prayer_wall/animated_prayer_mote.dart';
+import '../../widgets/prayer_wall/prayer_streak_display.dart'; // NEW IMPORT
 import 'submit_prayer_screen.dart';
 import '../../dialogs/prayer_report_dialog.dart';
 
 class RiverPrayerVisual {
   final PrayerRequest prayer;
   final GlobalKey itemKey;
-  final Animation<double>? animation; 
+  final Animation<double>? animation;
 
   RiverPrayerVisual({required this.prayer, this.animation})
       : itemKey = GlobalKey();
@@ -68,7 +71,7 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
 
   PrayerMoteAnimation? _activeMoteAnimation;
   OverlayEntry? _moteOverlayEntry;
-  String? _animatingOutPrayerId; 
+  String? _animatingOutPrayerId;
 
   UserPrayerProfile? _currentUserPrayerProfile;
   bool _isLoadingStreak = true;
@@ -79,7 +82,7 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
   void initState() {
     super.initState();
     _pageController = PageController(
-      viewportFraction: 0.75, 
+      viewportFraction: 0.75,
       initialPage: _currentPage,
     );
     _pageController.addListener(_handlePageScroll);
@@ -101,7 +104,7 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
         }
       },
     );
-    
+
     _userAuthSubscription = FirebaseAuth.instance.authStateChanges().listen((user) {
       if (mounted) {
         bool userChanged = _currentUser?.uid != user?.uid;
@@ -120,14 +123,14 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
   Future<void> _fetchUserPrayerStreakData() async {
     if (!mounted) return;
     setState(() { _isLoadingStreak = true; });
-    
+
     if (_currentUser != null) { // Works for anonymous or logged-in users
       final prayerService = Provider.of<PrayerService>(context, listen: false);
       _currentUserPrayerProfile = await prayerService.getUserPrayerProfile(_currentUser!.uid);
     } else {
-      _currentUserPrayerProfile = null; 
+      _currentUserPrayerProfile = null;
     }
-    
+
     if (mounted) {
       setState(() { _isLoadingStreak = false; });
     }
@@ -159,7 +162,7 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
   @override
   void dispose() { // Unchanged (except added _userAuthSubscription.cancel())
     _prayerStreamSubscription?.cancel();
-    _userAuthSubscription?.cancel(); 
+    _userAuthSubscription?.cancel();
     _activeMoteAnimation?.controller.dispose();
     _moteOverlayEntry?.remove();
     _pageController.removeListener(_handlePageScroll);
@@ -173,7 +176,7 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
     if (!mounted || _riverPrayers.length <= 1) return;
     _autoCycleTimer = Timer.periodic(const Duration(seconds: 8), (timer) {
       if (!mounted || _isUserInteractingWithPage || !_pageController.hasClients || (_pageController.page != _pageController.page?.roundToDouble()) ) return;
-       if (_animatingOutPrayerId != null) return; 
+       if (_animatingOutPrayerId != null) return;
       _isPageAnimatingProgrammatically = true;
       int nextPage = _currentPage + 1;
       if (nextPage >= _riverPrayers.length) { nextPage = 0; }
@@ -183,7 +186,7 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
 
   void _resetAutoCycleTimer() { // Unchanged
     _autoCycleTimer?.cancel();
-    if(mounted && _riverPrayers.length > 1 && _animatingOutPrayerId == null) { 
+    if(mounted && _riverPrayers.length > 1 && _animatingOutPrayerId == null) {
         _startAutoCycleTimer();
     }
   }
@@ -193,7 +196,7 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
      if (_animatingOutPrayerId != null) { return; }
     List<PrayerRequest> potentialPrayers = List.from(newPrayersFromStream);
     potentialPrayers.shuffle(_random);
-    Set<String> animatingPrayerIds = {}; 
+    Set<String> animatingPrayerIds = {};
     if (_activeMoteAnimation != null) { animatingPrayerIds.add(_activeMoteAnimation!.prayerId); }
     if(_animatingOutPrayerId != null) { animatingPrayerIds.add(_animatingOutPrayerId!); }
     final filteredPotentialPrayers = potentialPrayers.where((p) => !animatingPrayerIds.contains(p.prayerId)).toList();
@@ -214,11 +217,6 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
   void _handlePrayForRequest(RiverPrayerVisual riverPrayerVisual) {
     final prayerRequest = riverPrayerVisual.prayer;
     final prayerService = Provider.of<PrayerService>(context, listen: false);
-    
-    // Allow praying even if _currentUser is null (fully anonymous device, no Firebase anon UID yet)
-    // OR if user is a Firebase anonymous user, OR a fully signed-in user.
-    // PrayerService.incrementPrayerCount will handle based on _currentUser.uid (which will be an anon UID if applicable)
-    // The streak will only update if _currentUser.uid is available.
 
     if (_activeMoteAnimation != null || _animatingOutPrayerId != null) {
       print("Prayer animation already in progress. Please wait.");
@@ -231,14 +229,14 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
     setState(() {
        _animatingOutPrayerId = prayerRequest.prayerId;
        _activeMoteAnimation = PrayerMoteAnimation(
-        prayerId: prayerRequest.prayerId, 
+        prayerId: prayerRequest.prayerId,
         controller: AnimationController( duration: const Duration(milliseconds: 1200), vsync: this,),
-        startKey: riverPrayerVisual.itemKey, 
-        endKey: _wellOfHopeKey, 
+        startKey: riverPrayerVisual.itemKey,
+        endKey: _wellOfHopeKey,
       );
     });
 
-    _moteOverlayEntry = OverlayEntry(builder: (context) { /* ... Mote Overlay logic unchanged ... */ 
+    _moteOverlayEntry = OverlayEntry(builder: (context) {
         final startRenderBox = riverPrayerVisual.itemKey.currentContext?.findRenderObject() as RenderBox?;
         final endRenderBox = _wellOfHopeKey.currentContext?.findRenderObject() as RenderBox?;
         if (startRenderBox == null || !startRenderBox.hasSize || endRenderBox == null || !endRenderBox.hasSize) {
@@ -258,32 +256,31 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
       _activeMoteAnimation?.controller.dispose(); _activeMoteAnimation = null;
 
       final wellState = _wellOfHopeWidgetStateKey.currentState;
-      if (wellState != null) { /* ... Well absorption effect logic unchanged ... */ 
+      if (wellState != null) {
           final RenderBox? wellRenderBox = _wellOfHopeKey.currentContext?.findRenderObject() as RenderBox?;
           if (wellRenderBox != null && wellRenderBox.hasSize) { final wellCenterGlobal = wellRenderBox.localToGlobal(Offset(wellRenderBox.size.width /2, wellRenderBox.size.height /2)); (wellState as dynamic).triggerAbsorptionEffect(wellCenterGlobal); }
       }
-      
-      // PrayerService.incrementPrayerCount will now handle streak update if _currentUser is available
+
       bool incrementSuccess = await prayerService.incrementPrayerCount(prayerRequest.prayerId);
-      
-      if(incrementSuccess && mounted) { // Fetch streak data IF a user (anonymous or logged-in) context was available for the increment
+
+      if(incrementSuccess && mounted) {
          if (_currentUser != null) {
             await _fetchUserPrayerStreakData();
          }
       }
 
-      if(mounted){ /* ... rest of the UI update logic after mote animation unchanged ... */ 
+      if(mounted){
         int removedIndex = _riverPrayers.indexWhere((p) => p.prayer.prayerId == prayerRequest.prayerId);
         if (removedIndex != -1) {
-            _riverPrayers.removeAt(removedIndex); 
+            _riverPrayers.removeAt(removedIndex);
             if (_currentPage >= removedIndex && _currentPage > 0) { _currentPage = max(0, _currentPage - 1); }
              if (_riverPrayers.isEmpty) _currentPage = 0; else if (_currentPage >= _riverPrayers.length) _currentPage = max(0, _riverPrayers.length -1);
             setState(() { _animatingOutPrayerId = null; });
             WidgetsBinding.instance.addPostFrameCallback((_) { if (mounted && _pageController.hasClients) { int targetPage = _currentPage; if (_riverPrayers.isEmpty) targetPage = 0; else if (targetPage >= _riverPrayers.length) targetPage = max(0, _riverPrayers.length - 1); if(_riverPrayers.isNotEmpty && _pageController.page?.round() != targetPage) { _pageController.jumpToPage(targetPage); } else if (_riverPrayers.isEmpty && _pageController.page?.round() != 0) { } } });
         } else { setState(() { _animatingOutPrayerId = null; }); }
-        _isUserInteractingWithPage = false; _resetAutoCycleTimer(); 
+        _isUserInteractingWithPage = false; _resetAutoCycleTimer();
       }
-    }).catchError((e) { /* ... Error handling unchanged ... */ 
+    }).catchError((e) {
         print("Error during mote animation or post-animation: $e");
         if (mounted) { _moteOverlayEntry?.remove(); _moteOverlayEntry = null; _activeMoteAnimation?.controller.dispose(); _activeMoteAnimation = null; setState(() { _animatingOutPrayerId = null; });  _isUserInteractingWithPage = false; _resetAutoCycleTimer(); }
     });
@@ -313,82 +310,7 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
     ).then((_){ if (mounted && _isUserInteractingWithPage) {  _isUserInteractingWithPage = false; _resetAutoCycleTimer(); } else if (mounted) { _resetAutoCycleTimer();  } });
   }
 
-  Widget _buildPrayerStreakDisplay(BuildContext context) {
-    if (_isLoadingStreak) {
-      return const Padding( padding: EdgeInsets.all(8.0), child: Center(child: SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white70))),);
-    }
-    // Show streak if a profile exists (could be for an anonymous or logged-in user)
-    // Don't show if _currentUser is null (edge case, implies no user session at all)
-    if (_currentUser == null || _currentUserPrayerProfile == null) {
-      return Padding( // Show a generic encouragement if no user/profile to track streak for
-        padding: const EdgeInsets.only(top: 8.0, bottom: 0),
-        child: Text(
-          "Tap a prayer below to send support!",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white.withOpacity(0.6)),
-        ),
-      );
-    }
-
-    final streak = _currentUserPrayerProfile!.currentPrayerStreak;
-    final prayersToday = _currentUserPrayerProfile!.prayersSentOnStreakDay;
-    final totalPrayersSent = _currentUserPrayerProfile!.totalPrayersSent;
-
-    // If user has never prayed for anyone (totalPrayersSent is 0)
-    if (totalPrayersSent == 0) {
-       return Padding(
-         padding: const EdgeInsets.only(top: 8.0, bottom: 0),
-         child: Text(
-           "Tap a prayer below to send support and start your prayer streak!",
-           textAlign: TextAlign.center,
-           style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white.withOpacity(0.6)),
-         ),
-       );
-    }
-    
-    // If they have prayed before, show streak (even if current streak is 0)
-    if (streak > 0 || prayersToday > 0 || totalPrayersSent > 0) {
-      bool isTodayStreakDay = false;
-      if (_currentUserPrayerProfile?.lastPrayerStreakTimestamp != null) {
-          final lastStreakDate = _currentUserPrayerProfile!.lastPrayerStreakTimestamp!.toDate();
-          final nowDate = DateTime.now();
-          isTodayStreakDay = lastStreakDate.year == nowDate.year &&
-                             lastStreakDate.month == nowDate.month &&
-                             lastStreakDate.day == nowDate.day;
-      }
-
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.local_fire_department_rounded, color: streak > 0 ? Colors.orangeAccent.shade100 : Colors.white54, size: 22),
-            const SizedBox(width: 8),
-            Text(
-              "$streak Day Prayer Streak",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            if (prayersToday > 0 && isTodayStreakDay) ...[ 
-              const SizedBox(width: 4),
-              Text(
-                "($prayersToday today)",
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
-              ),
-            ]
-          ],
-        ),
-      );
-    }
-    // Fallback if conditions not met (e.g., data inconsistency, though unlikely with above logic)
-     return Padding(
-       padding: const EdgeInsets.only(top: 8.0, bottom: 0),
-       child: Text(
-         "Keep the prayers flowing to build your streak!",
-         textAlign: TextAlign.center,
-         style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white.withOpacity(0.6)),
-       ),
-     );
-  }
+  // REMOVED _buildPrayerStreakDisplay method. It's now a separate widget.
 
   @override
   Widget build(BuildContext context) {
@@ -401,44 +323,66 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
       body: Container(
         decoration: const BoxDecoration(gradient: darkScreenGradient),
         child: SafeArea(
-          bottom: false, 
+          bottom: false,
           child: Column(
             children: [
-              _buildPrayerStreakDisplay(context), 
+              // USE THE NEW WIDGET HERE
+              PrayerStreakDisplay(
+                isLoadingStreak: _isLoadingStreak,
+                currentUserPrayerProfile: _currentUserPrayerProfile,
+                isUserLoggedIn: _currentUser != null,
+              ),
               Expanded( flex: 2, child: WellOfHopeWidget(key: _wellOfHopeWidgetStateKey, wellKey: _wellOfHopeKey),),
               Expanded(
                 flex: 2,
-                child: Container( padding: const EdgeInsets.only(bottom: 8.0), 
-                  child: _riverPrayers.isEmpty && _animatingOutPrayerId == null 
+                child: Container( padding: const EdgeInsets.only(bottom: 8.0),
+                  child: _riverPrayers.isEmpty && _animatingOutPrayerId == null
                       ? Center( child: (_prayerStreamSubscription == null && _riverPrayers.isEmpty && !Provider.of<PrayerService>(context, listen:false).toString().contains("Instance")) ? const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white70)) : Column( mainAxisAlignment: MainAxisAlignment.center, children: [ Icon(Icons.water_drop_outlined, size: 48, color: Colors.white54), const SizedBox(height: 16), Text( "The river is quiet for now.\nNew prayers will appear here.", textAlign: TextAlign.center, style: theme.textTheme.titleMedium?.copyWith(color: Colors.white70), ), ], ),)
                       : Listener(
                            onPointerDown: (_) { if(mounted) { _isUserInteractingWithPage = true;  _autoCycleTimer?.cancel(); } },
                           child: PageView.builder( controller: _pageController, itemCount: _riverPrayers.length,
                             itemBuilder: (context, index) { if (index >= _riverPrayers.length) {  return const SizedBox.shrink(); } final riverPrayer = _riverPrayers[index];
                               return Center( child: ConstrainedBox( constraints: BoxConstraints( maxWidth: MediaQuery.of(context).size.width * 0.72,  minHeight: 60,  ),
-                                  child: Padding( padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0), 
-                                    child: RiverPrayerItem( key: riverPrayer.itemKey,  prayerRequest: riverPrayer.prayer, onTap: () => _handlePrayForRequest(riverPrayer), onLongPress: () => _handleReportPrayer(riverPrayer.prayer), animation: riverPrayer.animation,  playExitAnimation: _animatingOutPrayerId == riverPrayer.prayer.prayerId, ),),),);
-                            }, ),),),),
+                                  child: Padding( padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
+                                    child: RiverPrayerItem( // Ensure this uses the new import
+                                      key: riverPrayer.itemKey,
+                                      prayerRequest: riverPrayer.prayer,
+                                      onTap: () => _handlePrayForRequest(riverPrayer),
+                                      onLongPress: () => _handleReportPrayer(riverPrayer.prayer),
+                                      animation: riverPrayer.animation,
+                                      playExitAnimation: _animatingOutPrayerId == riverPrayer.prayer.prayerId,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                ),
+              ),
               Padding( padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 35.0), child: Text( _riverPrayers.isNotEmpty ? "Tap a prayer to send your support. Swipe to see more." : "Tap a prayer to send support.", textAlign: TextAlign.center, style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70),),),
-              const SizedBox(height: 70), 
-            ],),),),
+              const SizedBox(height: 70),
+            ],
+          ),
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding( padding: const EdgeInsets.only(bottom: 16.0), 
+      floatingActionButton: Padding( padding: const EdgeInsets.only(bottom: 16.0),
         child: FloatingActionButton.extended(
           onPressed: () {
-            // User doesn't need to be "fully" logged in to submit, AuthService ensures an anonymous user.
-            // The submitPrayer method in PrayerService handles limits.
-            _autoCycleTimer?.cancel(); _isUserInteractingWithPage = true; 
+            _autoCycleTimer?.cancel(); _isUserInteractingWithPage = true;
             Navigator.push( context, MaterialPageRoute(builder: (context) => const SubmitPrayerScreen()),
-            ).then((success) { // submit_prayer_screen now pops with bool
+            ).then((success) {
               if(mounted) { _isUserInteractingWithPage = false;  _resetAutoCycleTimer();
-                if (success == true) { // If a prayer was successfully submitted
-                  _fetchUserPrayerStreakData(); // Refresh streak data, as submission limit might have changed
+                if (success == true) {
+                  _fetchUserPrayerStreakData();
                 }
               }
             });
           },
           label: const Text("Share a Prayer"), icon: const Icon(Icons.add_comment_outlined), backgroundColor: theme.colorScheme.primary, foregroundColor: theme.colorScheme.onPrimary,
-        ),),);
+        ),
+      ),
+    );
   }
 }

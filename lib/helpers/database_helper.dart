@@ -1,13 +1,15 @@
 // lib/database_helper.dart
+// Path: lib/helpers/database_helper.dart
+// Approximate line: 200 (new method: deleteAllUserLocalData)
 import 'dart:io';
 import 'dart:math';
-import 'dart:convert'; 
+import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import '../models/models.dart'; 
-import 'reading_plans_data.dart'; 
+import '../models/models.dart'; //
+// import 'reading_plans_data.dart'; // No longer used
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -16,19 +18,18 @@ class DatabaseHelper {
 
   static Database? _database;
   static const String dbName = "wwjd_bible_free.sqlite";
-  static const int _dbVersion = 3; 
+  static const int _dbVersion = 3;
 
-  // Table and Column constants (ensure all are defined as before)
   static const String bibleTableName = "engfbv_vpl";
   static const String bibleColBook = "book";
-  static const String bibleColCanonOrder = "canon_order"; 
+  static const String bibleColCanonOrder = "canon_order";
   static const String bibleColChapter = "chapter";
   static const String bibleColStartVerse = "startVerse";
   static const String bibleColVerseText = "verseText";
-  static const String bibleColVerseID = "verseID"; 
+  static const String bibleColVerseID = "verseID";
 
   static const String favTableName = "favorites";
-  static const String favColVerseID = "verseID"; 
+  static const String favColVerseID = "verseID";
   static const String favColBookAbbr = "book_abbr";
   static const String favColChapter = "chapter";
   static const String favColVerseNumber = "verse_number";
@@ -36,21 +37,21 @@ class DatabaseHelper {
   static const String favColCreatedAt = "created_at";
 
   static const String flagsTableName = "user_flags";
-  static const String flagsColId = "flag_id"; 
-  static const String flagsColName = "flag_name"; 
+  static const String flagsColId = "flag_id";
+  static const String flagsColName = "flag_name";
 
   static const String favFlagsTableName = "favorite_flags";
-  static const String favFlagsColFavVerseID = "favorite_verseID"; 
-  static const String favFlagsColFlagID = "flag_id";          
+  static const String favFlagsColFavVerseID = "favorite_verseID";
+  static const String favFlagsColFlagID = "flag_id";
 
   static const String progressTableName = "user_reading_progress";
-  static const String progressColPlanId = "plan_id"; 
-  static const String progressColCurrentDay = "current_day"; 
-  static const String progressColCompletedDaysJson = "completed_days_json"; 
-  static const String progressColStartDate = "start_date"; 
-  static const String progressColLastCompletionDate = "last_completion_date"; 
-  static const String progressColStreakCount = "streak_count"; 
-  static const String progressColIsActive = "is_active"; 
+  static const String progressColPlanId = "plan_id";
+  static const String progressColCurrentDay = "current_day";
+  static const String progressColCompletedDaysJson = "completed_days_json";
+  static const String progressColStartDate = "start_date";
+  static const String progressColLastCompletionDate = "last_completion_date";
+  static const String progressColStreakCount = "streak_count";
+  static const String progressColIsActive = "is_active";
 
 
   static String encodeJson(Map<dynamic, dynamic> map) {
@@ -62,7 +63,7 @@ class DatabaseHelper {
       return json.decode(jsonString);
     } catch (e) {
       print("Error decoding JSON: $jsonString, Error: $e");
-      return {}; 
+      return {};
     }
   }
 
@@ -73,7 +74,6 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    // ... (initDatabase logic as before)
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, dbName);
     bool dbExists = await databaseExists(path);
@@ -82,13 +82,13 @@ class DatabaseHelper {
       print("Database does not exist. Copying from assets...");
       try {
         await Directory(dirname(path)).create(recursive: true);
-        ByteData data = await rootBundle.load(join("assets/database", dbName));
+        ByteData data = await rootBundle.load(join("assets/database", dbName)); //
         List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
         await File(path).writeAsBytes(bytes, flush: true);
         print("Database copied from assets.");
       } catch (e) {
         print("Error copying database from assets: $e");
-        rethrow; 
+        rethrow;
       }
     } else {
       print("Opening existing database at $path.");
@@ -97,7 +97,6 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreateDB(Database db, int version) async {
-    // ... (_onCreateDB logic as before, ensuring all tables are created IF NOT EXISTS)
     print("onCreateDB: Creating app-specific tables for version $version...");
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $favTableName (
@@ -122,7 +121,6 @@ class DatabaseHelper {
   }
 
   Future<void> _createProgressTable(Database db) async {
-    // ... (_createProgressTable logic as before)
      await db.execute('''
       CREATE TABLE IF NOT EXISTS $progressTableName (
         $progressColPlanId TEXT PRIMARY KEY, 
@@ -138,7 +136,6 @@ class DatabaseHelper {
   }
 
   Future<void> _onUpgradeDB(Database db, int oldVersion, int newVersion) async {
-    // ... (_onUpgradeDB logic as before)
     print("onUpgradeDB: Upgrading database from version $oldVersion to $newVersion...");
     if (oldVersion < 2) {
       await db.execute('CREATE TABLE IF NOT EXISTS $favTableName ($favColVerseID TEXT PRIMARY KEY, $favColBookAbbr TEXT NOT NULL, $favColChapter TEXT NOT NULL, $favColVerseNumber TEXT NOT NULL, $favColVerseText TEXT NOT NULL, $favColCreatedAt TEXT NOT NULL)');
@@ -152,8 +149,6 @@ class DatabaseHelper {
     }
   }
 
-  // --- Bible Data Methods ---
-  // ... (getBookAbbreviations, getChaptersForBook, getVersesForChapter, getVerseOfTheDay, getVersesForPassage - keep as before)
   Future<List<Map<String, dynamic>>> getBookAbbreviations() async {
     final db = await database;
     return await db.rawQuery('SELECT DISTINCT $bibleColBook, MIN($bibleColCanonOrder) as c_order FROM $bibleTableName GROUP BY $bibleColBook ORDER BY c_order');
@@ -177,7 +172,7 @@ class DatabaseHelper {
     }
     return null;
   }
-   Future<List<Verse>> getVersesForPassage(BiblePassagePointer passage) async {
+   Future<List<Verse>> getVersesForPassage(BiblePassagePointer passage) async { //
     final db = await database;
     List<Map<String, dynamic>> maps = [];
     if (passage.startChapter == passage.endChapter) {
@@ -189,8 +184,6 @@ class DatabaseHelper {
     return maps.map((map) => Verse( verseID: map[bibleColVerseID] as String?, bookAbbr: map[bibleColBook] as String?, chapter: map[bibleColChapter]?.toString(), verseNumber: map[bibleColStartVerse].toString(), text: map[bibleColVerseText] as String,)).toList();
   }
 
-  // --- Favorites Methods ---
-  // ... (addFavorite, removeFavorite, isFavorite, getFavoritedVerses, getFavoritedVersesFilteredByFlag - keep as before)
   Future<void> addFavorite(Map<String, dynamic> verseData) async {
     final db = await database;
     await db.insert(favTableName, {favColVerseID: verseData[bibleColVerseID], favColBookAbbr: verseData[bibleColBook], favColChapter: verseData[bibleColChapter].toString(), favColVerseNumber: verseData[bibleColStartVerse].toString(), favColVerseText: verseData[bibleColVerseText], favColCreatedAt: DateTime.now().toIso8601String(),}, conflictAlgorithm: ConflictAlgorithm.replace,);
@@ -215,8 +208,6 @@ class DatabaseHelper {
     return await db.rawQuery(query, [flagId]);
   }
 
-  // --- User Flag Methods ---
-  // ... (addUserFlag, getUserFlags, deleteUserFlag - keep as before)
   Future<int> addUserFlag(String flagName) async {
      final db = await database;
     try {
@@ -242,8 +233,6 @@ class DatabaseHelper {
     print("Deleted user flag with ID: $flagId and its associations.");
   }
 
-  // --- Favorite_Flag Junction Methods ---
-  // ... (assignFlagToFavorite, removeFlagFromFavorite, getFlagIdsForFavorite - keep as before)
   Future<void> assignFlagToFavorite(String verseID, int flagId) async {
      final db = await database;
     await db.insert( favFlagsTableName, {favFlagsColFavVerseID: verseID, favFlagsColFlagID: flagId}, conflictAlgorithm: ConflictAlgorithm.ignore,);
@@ -258,8 +247,6 @@ class DatabaseHelper {
     return maps.map((map) => map[favFlagsColFlagID] as int).toList();
   }
 
-  // --- Book Order Method ---
-  // ... (getBookAbbrToOrderMap - keep as before)
   Future<Map<String, String>> getBookAbbrToOrderMap() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT DISTINCT $bibleColBook, MIN($bibleColCanonOrder) as c_order FROM $bibleTableName GROUP BY $bibleColBook');
@@ -271,101 +258,78 @@ class DatabaseHelper {
     return bookOrderMap;
   }
 
-  // --- Search Verses Method ---
-  // ... (searchVerses - keep as before)
   Future<List<Map<String, dynamic>>> searchVerses(String query) async {
     if (query.trim().isEmpty) { return []; }
     final db = await database;
-    final String searchQuery = '%${query.trim()}%'; 
+    final String searchQuery = '%${query.trim()}%';
     final List<Map<String, dynamic>> maps = await db.query( bibleTableName, columns: [bibleColVerseID, bibleColBook, bibleColChapter, bibleColStartVerse, bibleColVerseText, bibleColCanonOrder], where: '$bibleColVerseText LIKE ?', whereArgs: [searchQuery], orderBy: '$bibleColCanonOrder ASC, CAST($bibleColChapter AS INTEGER) ASC, CAST($bibleColStartVerse AS INTEGER) ASC', limit: 100 );
     return maps;
   }
 
-  // --- Reading Plan Progress Methods ---
-  Future<void> saveReadingPlanProgress(UserReadingProgress progress) async { /* ... keep as before ... */ 
+  Future<void> saveReadingPlanProgress(UserReadingProgress progress) async { //
     final db = await database;
     await db.insert( progressTableName, progress.toMap(), conflictAlgorithm: ConflictAlgorithm.replace, );
   }
-  Future<UserReadingProgress?> getReadingPlanProgress(String planId) async { /* ... keep as before ... */ 
+  Future<UserReadingProgress?> getReadingPlanProgress(String planId) async { //
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query( progressTableName, where: '$progressColPlanId = ?', whereArgs: [planId], limit: 1,);
     if (maps.isNotEmpty) { return UserReadingProgress.fromMap(maps.first); }
     return null;
   }
-  Future<List<UserReadingProgress>> getAllReadingPlanProgresses() async { /* ... keep as before ... */ 
+  Future<List<UserReadingProgress>> getAllReadingPlanProgresses() async { //
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(progressTableName);
     return maps.map((map) => UserReadingProgress.fromMap(map)).toList();
   }
-  Future<List<UserReadingProgress>> getActiveReadingPlanProgresses() async { /* ... keep as before ... */ 
+  Future<List<UserReadingProgress>> getActiveReadingPlanProgresses() async { //
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query( progressTableName, where: '$progressColIsActive = ?', whereArgs: [1]);
     return maps.map((map) => UserReadingProgress.fromMap(map)).toList();
   }
-  Future<void> markReadingDayAsComplete(String planId, int dayNumberToComplete) async { 
+  Future<void> markReadingDayAsComplete(String planId, int dayNumberToComplete) async {
     final db = await database;
     UserReadingProgress? progress = await getReadingPlanProgress(planId);
-    if (progress == null) { 
+    if (progress == null) {
       print("Error: Could not find progress for planId $planId to mark day $dayNumberToComplete complete.");
-      // Optionally, create a new progress entry if it's truly missing and should exist
-      // For now, we'll just return if no progress is found.
-      return; 
+      return;
     }
-    DateTime now = DateTime.now(); 
+    DateTime now = DateTime.now();
     DateTime todayDateOnly = DateTime(now.year, now.month, now.day);
     
     progress.completedDays[dayNumberToComplete] = now;
     
-    // Ensure currentDayNumber advances correctly
-    if (dayNumberToComplete >= progress.currentDayNumber) { 
-      progress.currentDayNumber = dayNumberToComplete + 1; 
+    if (dayNumberToComplete >= progress.currentDayNumber) {
+      progress.currentDayNumber = dayNumberToComplete + 1;
     }
     
-    // Streak logic (remains the same)
     if (progress.lastCompletionDate != null) {
       DateTime lastCompletedDateOnly = DateTime( progress.lastCompletionDate!.year, progress.lastCompletionDate!.month, progress.lastCompletionDate!.day);
       int differenceInDays = todayDateOnly.difference(lastCompletedDateOnly).inDays;
-      if (differenceInDays == 1) { 
-        progress.streakCount++; 
-      } else if (differenceInDays > 1) { 
-        progress.streakCount = 1; // Reset streak if more than one day missed
+      if (differenceInDays == 1) {
+        progress.streakCount++;
+      } else if (differenceInDays > 1) {
+        progress.streakCount = 1; 
       } else if (differenceInDays == 0 && progress.streakCount == 0) {
-        // If completing another day on the same day and streak was 0, start streak at 1
         progress.streakCount = 1;
       }
-      // If differenceInDays is 0 and streakCount > 0, streak remains unchanged for multiple completions on the same day.
-    } else { 
-      // First ever completion for this plan progress
-      progress.streakCount = 1; 
+    } else {
+      progress.streakCount = 1;
     }
-    progress.lastCompletionDate = now; 
-
-    // REMOVED the check that used allReadingPlans:
-    // try {
-    //     final planDefinition = allReadingPlans.firstWhere((p) => p.id == planId); 
-    //     if (progress.completedDays.length >= planDefinition.durationDays) { 
-    //         print("Congratulations! Plan '$planId' fully completed."); 
-    //     }
-    // } catch (e) { 
-    //     print("Could not find plan definition for $planId to check for completion: $e"); 
-    // }
-    // The UI or ReadingPlanService can now be responsible for checking if 
-    // progress.completedDays.length >= plan.durationDays (where plan is the loaded ReadingPlan object)
+    progress.lastCompletionDate = now;
 
     await saveReadingPlanProgress(progress);
     print("Marked day $dayNumberToComplete for plan $planId as complete. Streak: ${progress.streakCount}. Current Day: ${progress.currentDayNumber}");
   }
 
-  Future<void> setPlanActivity(String planId, bool isActive) async { /* ... keep as before ... */ 
+  Future<void> setPlanActivity(String planId, bool isActive) async {
     UserReadingProgress? progress = await getReadingPlanProgress(planId);
     if (progress != null) { progress.isActive = isActive; await saveReadingPlanProgress(progress); }
   }
-  Future<void> deleteReadingPlanProgress(String planId) async { /* ... keep as before ... */ 
+  Future<void> deleteReadingPlanProgress(String planId) async {
     final db = await database;
     await db.delete( progressTableName, where: '$progressColPlanId = ?', whereArgs: [planId],);
   }
 
-  // --- MODIFIED: Method to reset all reading plan streaks AND progress ---
   Future<void> resetAllStreaksAndProgress() async {
     final db = await database;
     int count = await db.update(
@@ -373,14 +337,31 @@ class DatabaseHelper {
       {
         progressColStreakCount: 0,
         progressColLastCompletionDate: null,
-        progressColCurrentDay: 1, // Reset to Day 1
-        progressColCompletedDaysJson: encodeJson({}), // Clear completed days map
-        progressColIsActive: 1, // Mark as active to allow restart
-        progressColStartDate: DateTime.now().toIso8601String(), // Optionally reset start date
+        progressColCurrentDay: 1, 
+        progressColCompletedDaysJson: encodeJson({}), 
+        progressColIsActive: 1, 
+        progressColStartDate: DateTime.now().toIso8601String(), 
       },
-      // No 'where' clause, so it updates all rows
     );
     print("Reset streaks and progress for $count reading plan entries.");
   }
-  // --- END MODIFICATION ---
+
+  Future<void> deleteAllUserLocalData() async {
+    final db = await database;
+    try {
+      await db.transaction((txn) async {
+        // Order matters if there are foreign key constraints,
+        // but for simple deletion of all data, it's less critical.
+        // However, deleting from junction tables first is good practice.
+        await txn.delete(favFlagsTableName);
+        await txn.delete(flagsTableName);
+        await txn.delete(favTableName);
+        await txn.delete(progressTableName);
+      });
+      print("DatabaseHelper: All user-specific local data deleted (favorites, flags, progress).");
+    } catch (e) {
+      print("DatabaseHelper: Error deleting all user local data: $e");
+      throw Exception("Failed to delete local user data: $e");
+    }
+  }
 }

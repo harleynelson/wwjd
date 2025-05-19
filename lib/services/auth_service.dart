@@ -1,85 +1,71 @@
 // File: lib/services/auth_service.dart
 // Path: lib/services/auth_service.dart
-// Entire file updated to handle AppUser stream refresh for dev premium toggle.
+// Approximate line: 230 (updated deleteCurrentUserAccount method)
 
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart' as fb_auth; // Use alias
+import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/foundation.dart'; // For ChangeNotifier
-import 'package:flutter/services.dart'; // For PlatformException
-import '../models/app_user.dart'; // Your AppUser model
-import '../helpers/prefs_helper.dart'; // For Dev Premium Toggle
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import '../models/app_user.dart'; //
+import '../helpers/prefs_helper.dart'; //
+import '../services/prayer_service.dart'; // Added for data cleanup
+import '../helpers/database_helper.dart'; // Added for data cleanup
+import 'package:provider/provider.dart'; // Added to potentially get PrayerService contextually
 
-class AuthService with ChangeNotifier { // Made it a ChangeNotifier
+class AuthService with ChangeNotifier {
   final fb_auth.FirebaseAuth _firebaseAuth = fb_auth.FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    serverClientId: '854479366367-3b1c8qqmlrjahm2ic17jqqupe2k8u0ik.apps.googleusercontent.com', // YOUR WEB OAUTH CLIENT ID
+    serverClientId: '854479366367-3b1c8qqmlrjahm2ic17jqqupe2k8u0ik.apps.googleusercontent.com',
   );
 
-  // StreamController to manage the AppUser stream more directly
   final StreamController<AppUser?> _appUserStreamController = StreamController<AppUser?>.broadcast();
   StreamSubscription? _firebaseAuthSubscription;
-  AppUser? _currentAppUser; // Internal cache of the current AppUser
+  AppUser? _currentAppUser;
+
+  // Provider for PrayerService, DatabaseHelper can be passed or accessed via context
+  // For simplicity in this direct call, we'll assume they might be available
+  // or could be passed to deleteCurrentUserAccount if not using Provider here.
+  // However, PrayerService is usually provided higher up. DatabaseHelper is a singleton.
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+
 
   AuthService() {
-    // Listen to Firebase auth state changes to update our AppUser stream
     _firebaseAuthSubscription = _firebaseAuth.authStateChanges().listen(_onFirebaseUserChanged);
-    // Initialize with current user state
     _onFirebaseUserChanged(_firebaseAuth.currentUser);
   }
 
-  // The public stream for AppUser
   Stream<AppUser?> get user => _appUserStreamController.stream;
-
-  // Getter for the synchronously available current AppUser
   AppUser? get currentUser => _currentAppUser;
 
-  // Internal method to map Firebase user to AppUser and update stream
   Future<void> _onFirebaseUserChanged(fb_auth.User? firebaseUser) async {
     if (firebaseUser == null) {
       _currentAppUser = null;
     } else {
-      // Determine premium status
-      // 1. Check Dev Premium Toggle
-      bool isDevPremium = PrefsHelper.getDevPremiumEnabled();
+      bool isDevPremium = PrefsHelper.getDevPremiumEnabled(); //
       bool finalPremiumStatus = isDevPremium;
 
-      // 2. If Dev Premium is NOT enabled, you would check actual premium status
-      //    (e.g., from Firestore user document or custom claims).
-      //    This part needs to be implemented based on your app's premium logic.
       if (!isDevPremium) {
-        // Placeholder: Replace with your actual premium status check logic
-        // For example, fetch from Firestore:
-        // final userDoc = await FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).get();
-        // finalPremiumStatus = userDoc.exists && (userDoc.data()?['isPremium'] == true);
-        // Or from custom claims:
-        // final idTokenResult = await firebaseUser.getIdTokenResult(true); // Force refresh
-        // finalPremiumStatus = idTokenResult.claims?['premium'] == true;
-
-        // For now, if not dev premium, it defaults to false as per AppUser model
-        // (unless your AppUser model's default changes or you set it here).
-        // This part is crucial for real premium functionality.
-        // For this exercise, we'll rely on AppUser's default if dev toggle is off.
+        // Placeholder for actual premium status check
       }
       
-      _currentAppUser = AppUser(
+      _currentAppUser = AppUser( //
         uid: firebaseUser.uid,
         isAnonymous: firebaseUser.isAnonymous,
         email: firebaseUser.email,
         displayName: firebaseUser.displayName,
         photoURL: firebaseUser.photoURL,
-        isPremium: finalPremiumStatus, // Apply determined premium status
+        isPremium: finalPremiumStatus,
       );
     }
     _appUserStreamController.add(_currentAppUser);
-    notifyListeners(); // Notify if any part of UI listens to AuthService directly
+    notifyListeners();
     print("AuthService: AppUser updated. UID: ${_currentAppUser?.uid}, IsAnonymous: ${_currentAppUser?.isAnonymous}, IsPremium (effective): ${_currentAppUser?.isPremium}");
   }
 
-  /// Called by SettingsScreen when the dev premium toggle changes.
   Future<void> triggerAppUserReFetch() async {
     print("AuthService: triggerAppUserReFetch called due to dev premium toggle.");
-    // Re-evaluate the current Firebase user with potentially new PrefsHelper state
     await _onFirebaseUserChanged(_firebaseAuth.currentUser);
   }
 
@@ -88,9 +74,6 @@ class AuthService with ChangeNotifier { // Made it a ChangeNotifier
       try {
         print("AuthService: No current user. Attempting to sign in anonymously.");
         await _firebaseAuth.signInAnonymously();
-        // _onFirebaseUserChanged will be called by the authStateChanges listener
-        // and will update _currentAppUser and the stream.
-        // We return the _currentAppUser which should be updated by the listener.
         return _currentAppUser;
       } catch (e) {
         print("AuthService: Error signing in anonymously: $e");
@@ -100,9 +83,6 @@ class AuthService with ChangeNotifier { // Made it a ChangeNotifier
         return null;
       }
     }
-    // If user already exists, ensure _currentAppUser is up-to-date.
-    // This might be redundant if _onFirebaseUserChanged already ran at startup,
-    // but good for safety or if called before listener fires.
     if (_currentAppUser == null && _firebaseAuth.currentUser != null) {
         await _onFirebaseUserChanged(_firebaseAuth.currentUser);
     }
@@ -128,8 +108,7 @@ class AuthService with ChangeNotifier { // Made it a ChangeNotifier
           password: password,
         );
       }
-      // _onFirebaseUserChanged will handle mapping and stream update via listener.
-      return _currentAppUser; // Should be updated by the listener
+      return _currentAppUser;
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: FirebaseAuthException during Email/Password sign-up: ${e.code} - ${e.message}");
       throw e;
@@ -146,7 +125,6 @@ class AuthService with ChangeNotifier { // Made it a ChangeNotifier
         email: email,
         password: password,
       );
-      // _onFirebaseUserChanged will handle mapping and stream update.
       return _currentAppUser;
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: FirebaseAuthException during Email/Password sign-in: ${e.code} - ${e.message}");
@@ -154,6 +132,19 @@ class AuthService with ChangeNotifier { // Made it a ChangeNotifier
     } catch (e) {
       print("AuthService: Generic error during Email/Password sign-in: $e");
       throw Exception("An unexpected error occurred during sign-in.");
+    }
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      print("AuthService: Password reset email sent to $email");
+    } on fb_auth.FirebaseAuthException catch (e) {
+      print("AuthService: Error sending password reset email: ${e.code} - ${e.message}");
+      throw e;
+    } catch (e) {
+      print("AuthService: Generic error sending password reset email: $e");
+      throw Exception("An unexpected error occurred.");
     }
   }
 
@@ -236,15 +227,13 @@ class AuthService with ChangeNotifier { // Made it a ChangeNotifier
                   if (newDisplayName != firebaseUserToUpdate.displayName) await firebaseUserToUpdate.updateDisplayName(newDisplayName);
                   if (newPhotoURL != firebaseUserToUpdate.photoURL) await firebaseUserToUpdate.updatePhotoURL(newPhotoURL);
                   await firebaseUserToUpdate.reload();
-                  firebaseUserToUpdate = _firebaseAuth.currentUser; // Get the reloaded user
+                  firebaseUserToUpdate = _firebaseAuth.currentUser; 
               } catch (e) {
                   print("AuthService: Error updating profile or reloading: $e");
                   firebaseUserToUpdate = _firebaseAuth.currentUser ?? finalUserCredential?.user;
               }
           }
       }
-      // _onFirebaseUserChanged will be triggered by authStateChanges if linking/signing in was successful.
-      // So, _currentAppUser should reflect the latest state.
       return _currentAppUser;
 
     } on fb_auth.FirebaseAuthException catch (e) {
@@ -286,7 +275,6 @@ class AuthService with ChangeNotifier { // Made it a ChangeNotifier
       await currentUser.reauthenticateWithCredential(reauthCredential);
       print("AuthService: User re-authenticated.");
       await currentUser.linkWithCredential(newCredentialToLink);
-      // _onFirebaseUserChanged will handle mapping and stream update.
       return _currentAppUser;
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: Error re-auth/linking: ${e.code} - ${e.message}");
@@ -300,6 +288,85 @@ class AuthService with ChangeNotifier { // Made it a ChangeNotifier
     }
   }
 
+  Future<bool> reauthenticateUser(String password) async {
+    fb_auth.User? user = _firebaseAuth.currentUser;
+    if (user == null || user.email == null) {
+      print("AuthService: No user or user email for re-authentication.");
+      throw Exception("User not found or email not available for re-authentication.");
+    }
+    try {
+      fb_auth.AuthCredential credential = fb_auth.EmailAuthProvider.credential(
+        email: user.email!,
+        password: password,
+      );
+      await user.reauthenticateWithCredential(credential);
+      print("AuthService: User re-authenticated successfully.");
+      return true;
+    } on fb_auth.FirebaseAuthException catch (e) {
+      print("AuthService: Re-authentication failed: ${e.code} - ${e.message}");
+      throw e; 
+    } catch (e) {
+      print("AuthService: Generic error during re-authentication: $e");
+      throw Exception("An unexpected error occurred during re-authentication.");
+    }
+  }
+
+  Future<void> deleteCurrentUserAccount(BuildContext context) async { // Added BuildContext
+    fb_auth.User? user = _firebaseAuth.currentUser;
+    if (user == null) {
+      print("AuthService: No user to delete.");
+      throw Exception("No user is currently signed in to delete.");
+    }
+    
+    String uid = user.uid; // Get UID before deletion
+    bool isAnonymousUser = user.isAnonymous;
+
+    try {
+      // Perform data cleanup BEFORE deleting the Firebase Auth user.
+      if (!isAnonymousUser) { // Only perform detailed cleanup for non-anonymous users
+        print("AuthService: Starting data cleanup for user UID: $uid");
+        
+        // Firestore data cleanup (PrayerService)
+        // It's safer to get PrayerService from context if available, or ensure it's properly injected.
+        // For this example, we'll assume it might need to be looked up or is already available.
+        // If AuthService is a singleton not managed by Provider, direct instantiation or injection is needed.
+        // If PrayerService itself needs context (like for _getOrCreateUserPrayerProfile for ITS OWN user),
+        // this context passed to deleteCurrentUserAccount could be used.
+        final prayerService = Provider.of<PrayerService>(context, listen: false);
+        await prayerService.deleteUserPrayerData(uid);
+        print("AuthService: Firestore prayer data deleted for UID: $uid");
+
+        // Local SQLite data cleanup
+        await _dbHelper.deleteAllUserLocalData();
+        print("AuthService: Local SQLite data deleted for current user.");
+
+        // SharedPreferences cleanup for user-specific settings
+        await PrefsHelper.clearUserSpecificPreferences(); //
+        print("AuthService: User-specific SharedPreferences cleared.");
+      } else {
+        print("AuthService: Skipping detailed data cleanup for anonymous user UID: $uid. Only Firebase Auth record will be deleted.");
+        // For anonymous users, you might still clear local SharedPreferences if they are tied to that anonymous session.
+        await PrefsHelper.clearUserSpecificPreferences(); //
+        await _dbHelper.deleteAllUserLocalData(); // Also clear local DB as anonymous user data is local to device.
+         print("AuthService: Cleared local SharedPreferences and SQLite data for anonymous user.");
+      }
+
+      await user.delete();
+      print("AuthService: Firebase Auth User account deleted successfully (UID: $uid).");
+      // _onFirebaseUserChanged will be triggered, setting _currentAppUser to null,
+      // and then signInAnonymouslyIfNeeded will likely be called by the app's startup logic.
+    } on fb_auth.FirebaseAuthException catch (e) {
+      print("AuthService: Error deleting user account: ${e.code} - ${e.message}");
+      if (e.code == 'requires-recent-login') {
+        print("AuthService: Account deletion requires recent login. Re-authentication needed.");
+      }
+      throw e; 
+    } catch (e) {
+      print("AuthService: Generic error deleting user account or cleaning up data: $e");
+      throw Exception("An unexpected error occurred during account deletion: $e");
+    }
+  }
+
   Future<void> signOut() async {
     try {
       final String? oldUid = _firebaseAuth.currentUser?.uid;
@@ -309,22 +376,17 @@ class AuthService with ChangeNotifier { // Made it a ChangeNotifier
         await _googleSignIn.signOut();
         print("AuthService: Signed out from Google.");
       }
-      await _firebaseAuth.signOut(); 
+      await _firebaseAuth.signOut();
       print("AuthService: Signed out from Firebase (Old UID: $oldUid, WasAnonymous: $wasAnonymousBeforeSignOut).");
-      // _onFirebaseUserChanged will be called by the listener, setting _currentAppUser to null.
     } catch (e) {
       print("AuthService: Error signing out: $e");
-      // Even on error, try to ensure local state reflects signed out.
-      // _currentAppUser = null; // This will be handled by _onFirebaseUserChanged if signOut succeeds
-      // _appUserStreamController.add(null);
-      // notifyListeners();
     }
   }
 
   @override
   void dispose() {
-    _firebaseAuthSubscription?.cancel(); // Cancel the Firebase auth listener
-    _appUserStreamController.close();    // Close the stream controller
+    _firebaseAuthSubscription?.cancel();
+    _appUserStreamController.close();
     super.dispose();
   }
 }
