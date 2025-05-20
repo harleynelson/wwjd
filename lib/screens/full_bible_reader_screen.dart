@@ -1,19 +1,21 @@
 // lib/screens/full_bible_reader_screen.dart
 // Path: lib/screens/full_bible_reader_screen.dart
+// Updated to support visual switch between Prose and Verse-by-Verse views.
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart'; // No longer needed directly
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import '../helpers/database_helper.dart';
-import '../models/models.dart';
-import '../helpers/book_names.dart';
-import '../helpers/prefs_helper.dart';
-import '../dialogs/flag_selection_dialog.dart';
-import '../widgets/verse_list_item.dart';
-import '../widgets/verse_actions_bottom_sheet.dart';
-import '../models/reader_settings_enums.dart';
-import '../widgets/reading_plans/reader_settings_bottom_sheet.dart';
+import 'package:wwjd_app/helpers/database_helper.dart';
+import 'package:wwjd_app/models/models.dart';
+import 'package:wwjd_app/helpers/book_names.dart';
+import 'package:wwjd_app/helpers/prefs_helper.dart';
+import 'package:wwjd_app/dialogs/flag_selection_dialog.dart';
+import 'package:wwjd_app/widgets/verse_list_item.dart';
+import 'package:wwjd_app/widgets/verse_actions_bottom_sheet.dart';
+import 'package:wwjd_app/models/reader_settings_enums.dart';
+import 'package:wwjd_app/widgets/reading_plans/reader_settings_bottom_sheet.dart';
+import 'package:wwjd_app/helpers/reader_theme_helper.dart';
 
 enum BibleReaderView { books, chapters, verses }
 
@@ -60,7 +62,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   late double _fontSizeDelta;
   late ReaderFontFamily _selectedFontFamily;
   late ReaderThemeMode _selectedReaderTheme;
-  late ReaderViewMode _selectedReaderViewMode; // <<< ADDED
+  late ReaderViewMode _selectedReaderViewMode;
 
   static const double _baseVerseFontSize = 18.0;
   static const double _baseVerseNumberFontSize = 12.0;
@@ -68,18 +70,17 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   @override
   void initState() {
     super.initState();
-    _loadReaderPreferences(); // Now calls the consolidated method
+    _loadReaderPreferences();
     _loadInitialData();
   }
 
-  // MODIFIED to load all preferences
   Future<void> _loadReaderPreferences() async {
     if (!mounted) return;
     setState(() {
       _fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
       _selectedFontFamily = PrefsHelper.getReaderFontFamily();
       _selectedReaderTheme = PrefsHelper.getReaderThemeMode();
-      _selectedReaderViewMode = PrefsHelper.getReaderViewMode(); // <<< LOAD PREFERENCE
+      _selectedReaderViewMode = PrefsHelper.getReaderViewMode();
     });
   }
 
@@ -100,7 +101,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
           _selectedChapter = widget.targetChapter!;
           _currentView = BibleReaderView.verses;
           _appBarTitle = "${_selectedBook!.fullName} ${_selectedChapter!}";
-          _isLoading = true;
+          _isLoading = true; 
         });
         await _loadData(book: _selectedBook, chapter: _selectedChapter);
       } else {
@@ -191,8 +192,8 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         _selectedChapter = chapter;
         _currentView = BibleReaderView.verses;
         _appBarTitle = "${book.fullName} $chapter";
-        if (_chapters.isEmpty || _chapters.first.split(' ').first != book.abbreviation) {
-            _chapters = await _dbHelper.getChaptersForBook(book.abbreviation);
+        if (_chapters.isEmpty || _chapters.first.split(' ').first != book.abbreviation) { 
+             _chapters = await _dbHelper.getChaptersForBook(book.abbreviation);
         }
         _currentChapterIndex = _chapters.indexOf(chapter);
 
@@ -220,7 +221,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
   }
 
   void _scrollToTargetVerse(String? targetVerseNumToScroll) {
-    if (targetVerseNumToScroll == null || _verses.isEmpty || !_itemScrollController.isAttached) {
+    if (_selectedReaderViewMode != ReaderViewMode.verseByVerse || targetVerseNumToScroll == null || _verses.isEmpty || !_itemScrollController.isAttached) {
       if (targetVerseNumToScroll != null) {
           setState(() { _initialScrollDone = true; });
       }
@@ -306,81 +307,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
       }
       names.sort(); return names;
   }
-
-  TextStyle _getTextStyleForFontFamily(ReaderFontFamily family, double baseSize, FontWeight fontWeight) {
-    double currentSize = baseSize + _fontSizeDelta;
-    switch (family) {
-      case ReaderFontFamily.serif:
-        return GoogleFonts.notoSerif(fontSize: currentSize, fontWeight: fontWeight);
-      case ReaderFontFamily.sansSerif:
-        return GoogleFonts.roboto(fontSize: currentSize, fontWeight: fontWeight);
-      case ReaderFontFamily.systemDefault:
-      default:
-        return TextStyle(fontSize: currentSize, fontWeight: fontWeight);
-    }
-  }
-
-  Color _getReaderBackgroundColor() {
-    switch (_selectedReaderTheme) {
-      case ReaderThemeMode.dark:
-        return Colors.black87;
-      case ReaderThemeMode.sepia:
-        return const Color(0xFFFBF0D9);
-      case ReaderThemeMode.light:
-      default:
-        return Colors.white;
-    }
-  }
-
-  Color _getReaderTextColor() {
-    switch (_selectedReaderTheme) {
-      case ReaderThemeMode.dark:
-        return Colors.grey.shade300;
-      case ReaderThemeMode.sepia:
-        return Colors.brown.shade800;
-      case ReaderThemeMode.light:
-      default:
-        return Colors.black87;
-    }
-  }
-
-  Color _getReaderVerseNumberColor() {
-     switch (_selectedReaderTheme) {
-      case ReaderThemeMode.dark:
-        return Colors.tealAccent.shade100.withOpacity(0.8);
-      case ReaderThemeMode.sepia:
-        return Colors.brown.withOpacity(0.8);
-      case ReaderThemeMode.light:
-      default:
-        return Theme.of(context).colorScheme.primary.withOpacity(0.8);
-    }
-  }
-  Color _getReaderBottomAppBarColor(BuildContext context) {
-    final bool isMaterial3 = Theme.of(context).useMaterial3;
-    switch (_selectedReaderTheme) {
-      case ReaderThemeMode.dark:
-        return const Color(0xFF2D2D2D);
-      case ReaderThemeMode.sepia:
-        return isMaterial3 ? Color.lerp(const Color(0xFFFBF0D9), Colors.black, 0.3)! : Colors.brown.shade800;
-      case ReaderThemeMode.light:
-      default:
-        return isMaterial3 ? Theme.of(context).colorScheme.surfaceContainer.withOpacity(0.9) : Colors.grey.shade200;
-    }
-  }
-
-  Color _getReaderBottomAppBarIconColor(BuildContext context) {
-    final ThemeData currentTheme = Theme.of(context);
-    switch (_selectedReaderTheme) {
-      case ReaderThemeMode.dark:
-        return Colors.grey.shade400;
-      case ReaderThemeMode.sepia:
-        return const Color(0xFFFBF0D9).withOpacity(0.8);
-      case ReaderThemeMode.light:
-      default:
-        return currentTheme.colorScheme.onSurfaceVariant;
-    }
-  }
-
+  
   void _openReaderSettings() {
     showModalBottomSheet(
       context: context,
@@ -390,24 +317,23 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
           initialFontSizeDelta: _fontSizeDelta,
           initialFontFamily: _selectedFontFamily,
           initialThemeMode: _selectedReaderTheme,
-          initialReaderViewMode: _selectedReaderViewMode, // <<< PASS CURRENT
-          onSettingsChanged: (newDelta, newFamily, newMode, newViewMode) async { // <<< RECEIVE newViewMode
+          initialReaderViewMode: _selectedReaderViewMode,
+          onSettingsChanged: (newDelta, newFamily, newMode, newViewMode) async {
             setState(() {
               _fontSizeDelta = newDelta;
               _selectedFontFamily = newFamily;
               _selectedReaderTheme = newMode;
-              _selectedReaderViewMode = newViewMode; // <<< SET STATE
+              _selectedReaderViewMode = newViewMode;
             });
             await PrefsHelper.setReaderFontSizeDelta(newDelta);
             await PrefsHelper.setReaderFontFamily(newFamily);
             await PrefsHelper.setReaderThemeMode(newMode);
-            await PrefsHelper.setReaderViewMode(newViewMode); // <<< SAVE PREFERENCE
+            await PrefsHelper.setReaderViewMode(newViewMode);
           },
         );
       },
     );
   }
-
 
   void _goToPreviousChapter() {
     if (_selectedBook == null || _selectedChapter == null || _currentChapterIndex <= 0) {
@@ -457,33 +383,24 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
 
 
   Widget _buildBody() {
-    // NOTE: FullBibleReaderScreen currently always displays verse-by-verse
-    // using VerseListItem. Implementing a "prose" style here would require
-    // a significant change to how this list is built, potentially replacing
-    // ScrollablePositionedList with a different widget or fundamentally
-    // changing VerseListItem for prose mode.
-    // For now, this screen will respect and save the ReaderViewMode setting,
-    // but it won't visually change its layout based on it.
-    // The DailyReadingScreen is where the visual switch for ReaderViewMode is implemented.
-
     if (_isLoading) { return const Center(child: CircularProgressIndicator()); }
 
-    Color readerBackgroundColor = _getReaderBackgroundColor();
-    Color readerTextColor = _getReaderTextColor();
-    Color readerVerseNumberColor = _getReaderVerseNumberColor();
+    Color readerBackgroundColor = ReaderThemeHelper.getBackgroundColor(_selectedReaderTheme);
+    Color readerTextColor = ReaderThemeHelper.getTextColor(_selectedReaderTheme);
+    Color readerVerseNumberColor = ReaderThemeHelper.getSecondaryAccentColor(_selectedReaderTheme, context);
+    Color? readerHighlightColor = (_selectedReaderTheme == ReaderThemeMode.dark) 
+                                  ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3) 
+                                  : Theme.of(context).colorScheme.primaryContainer.withOpacity(0.4);
 
-    Color readerFavoriteIconColor = (_selectedReaderTheme == ReaderThemeMode.dark) ? Colors.grey.shade400 : Theme.of(context).colorScheme.outline;
-    Color readerFlagManageButtonColor = (_selectedReaderTheme == ReaderThemeMode.dark) ? Colors.cyanAccent.shade200 : Theme.of(context).colorScheme.primary;
-    Color readerFlagChipBgColor = (_selectedReaderTheme == ReaderThemeMode.dark) ? Colors.grey.shade700.withOpacity(0.6) : Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.6);
-    Color readerFlagChipBorderColor = (_selectedReaderTheme == ReaderThemeMode.dark) ? Colors.grey.shade600 : Theme.of(context).colorScheme.secondaryContainer;
-    Color readerDividerColor = (_selectedReaderTheme == ReaderThemeMode.dark) ? Colors.grey.shade700 : Theme.of(context).colorScheme.outlineVariant.withOpacity(0.5);
-    Color? readerHighlightColor = (_selectedReaderTheme == ReaderThemeMode.dark) ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3) : Theme.of(context).colorScheme.primaryContainer.withOpacity(0.4);
+    TextStyle currentVerseTextStyle = ReaderThemeHelper.getTextStyle(fontFamily: _selectedFontFamily, baseSize: _baseVerseFontSize, fontWeight: FontWeight.normal, color: readerTextColor, fontSizeDelta: _fontSizeDelta, height: 1.6);
+    TextStyle currentVerseNumberStyle = ReaderThemeHelper.getTextStyle(fontFamily: _selectedFontFamily, baseSize: _baseVerseNumberFontSize, fontWeight: FontWeight.bold, color: readerVerseNumberColor, fontSizeDelta: _fontSizeDelta);
+    TextStyle currentFlagChipStyle = ReaderThemeHelper.getTextStyle(fontFamily: _selectedFontFamily, baseSize: 10.0, fontWeight: FontWeight.normal, color: (_selectedReaderTheme == ReaderThemeMode.dark) ? Colors.grey.shade300 : Theme.of(context).colorScheme.onSecondaryContainer, fontSizeDelta: _fontSizeDelta);
 
-
-    TextStyle currentVerseTextStyle = _getTextStyleForFontFamily(_selectedFontFamily, _baseVerseFontSize, FontWeight.normal).copyWith(color: readerTextColor, height: 1.6);
-    TextStyle currentVerseNumberStyle = _getTextStyleForFontFamily(_selectedFontFamily, _baseVerseNumberFontSize, FontWeight.bold).copyWith(color: readerVerseNumberColor);
-    TextStyle currentFlagChipStyle = _getTextStyleForFontFamily(_selectedFontFamily, 10.0, FontWeight.normal).copyWith(color: (_selectedReaderTheme == ReaderThemeMode.dark) ? Colors.grey.shade300 : Theme.of(context).colorScheme.onSecondaryContainer);
-
+    Color favIconColor = ReaderThemeHelper.getVerseListItemFavoriteIconColor(_selectedReaderTheme, context);
+    Color flagManageBtnColor = ReaderThemeHelper.getVerseListItemFlagManageButtonColor(_selectedReaderTheme, context);
+    Color flagChipBgColor = ReaderThemeHelper.getVerseListItemFlagChipBackgroundColor(_selectedReaderTheme, context);
+    Color flagChipBorderColor = ReaderThemeHelper.getVerseListItemFlagChipBorderColor(_selectedReaderTheme, context);
+    Color divColor = ReaderThemeHelper.getVerseListItemDividerColor(_selectedReaderTheme, context);
 
     switch (_currentView) {
       case BibleReaderView.books:
@@ -508,6 +425,75 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         );
       case BibleReaderView.verses:
         if (_verses.isEmpty) return const Center(child: Text("No verses found for this chapter."));
+        
+        Widget verseDisplayWidget;
+        if (_selectedReaderViewMode == ReaderViewMode.prose) {
+          verseDisplayWidget = SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: SelectableText.rich(
+              TextSpan(
+                children: _verses.map((verse) {
+                  return TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "${verse.verseNumber} ",
+                        style: currentVerseNumberStyle,
+                      ),
+                      TextSpan(
+                        text: "${verse.text} ",
+                        style: currentVerseTextStyle,
+                      ),
+                    ],
+                  );
+                }).toList(),
+              ),
+              textAlign: TextAlign.justify,
+            ),
+          );
+        } else { // Default to verseByVerse
+          verseDisplayWidget = ScrollablePositionedList.builder(
+            itemScrollController: _itemScrollController,
+            itemPositionsListener: _itemPositionsListener,
+            itemCount: _verses.length,
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0),
+            itemBuilder: (context, index) {
+              final verse = _verses[index];
+              final bool isFavorite = _favoritedVerseIdsInChapter.contains(verse.verseID);
+              final List<String> flagNames = _getFlagNamesForVerse(verse.verseID ?? "");
+              final bool shouldHighlight = verse.verseNumber == _verseToHighlight;
+
+              return VerseListItem(
+                verse: verse,
+                isFavorite: isFavorite,
+                assignedFlagNames: flagNames,
+                isHighlighted: shouldHighlight,
+                onToggleFavorite: () => _toggleFavorite(verse),
+                onManageFlags: () => _openFlagManagerForVerse(verse),
+                onVerseTap: () {
+                  final String bookName = getFullBookName(verse.bookAbbr ?? "Unknown Book");
+                  showModalBottomSheet(context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
+                    builder: (BuildContext bContext) {
+                      return VerseActionsBottomSheet(verse: verse, isFavorite: isFavorite, assignedFlagNames: flagNames,
+                        onToggleFavorite: () { _toggleFavorite(verse); },
+                        onManageFlags: () { _openFlagManagerForVerse(verse); },
+                        fullBookName: bookName,
+                      );
+                    },);
+                },
+                verseTextStyle: currentVerseTextStyle,
+                verseNumberStyle: currentVerseNumberStyle,
+                flagChipStyle: currentFlagChipStyle,
+                favoriteIconColor: favIconColor,
+                flagManageButtonColor: flagManageBtnColor,
+                flagChipBackgroundColor: flagChipBgColor,
+                flagChipBorderColor: flagChipBorderColor,
+                dividerColor: divColor,
+                verseHighlightColor: readerHighlightColor,
+              );
+            },
+          );
+        }
+
         return GestureDetector(
           onHorizontalDragEnd: (details) {
             if (details.primaryVelocity == null) return;
@@ -519,47 +505,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
           },
           child: Container(
             color: readerBackgroundColor,
-            child: ScrollablePositionedList.builder(
-              itemScrollController: _itemScrollController,
-              itemPositionsListener: _itemPositionsListener,
-              itemCount: _verses.length,
-              padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 80.0),
-              itemBuilder: (context, index) {
-                final verse = _verses[index];
-                final bool isFavorite = _favoritedVerseIdsInChapter.contains(verse.verseID);
-                final List<String> flagNames = _getFlagNamesForVerse(verse.verseID ?? "");
-                final bool shouldHighlight = verse.verseNumber == _verseToHighlight;
-
-                return VerseListItem(
-                  verse: verse,
-                  isFavorite: isFavorite,
-                  assignedFlagNames: flagNames,
-                  isHighlighted: shouldHighlight,
-                  onToggleFavorite: () => _toggleFavorite(verse),
-                  onManageFlags: () => _openFlagManagerForVerse(verse),
-                  onVerseTap: () {
-                    final String bookName = getFullBookName(verse.bookAbbr ?? "Unknown Book");
-                    showModalBottomSheet(context: context, isScrollControlled: true, backgroundColor: Colors.transparent,
-                      builder: (BuildContext bContext) {
-                        return VerseActionsBottomSheet(verse: verse, isFavorite: isFavorite, assignedFlagNames: flagNames,
-                          onToggleFavorite: () { _toggleFavorite(verse); },
-                          onManageFlags: () { _openFlagManagerForVerse(verse); },
-                          fullBookName: bookName,
-                        );
-                      },);
-                  },
-                  verseTextStyle: currentVerseTextStyle,
-                  verseNumberStyle: currentVerseNumberStyle,
-                  flagChipStyle: currentFlagChipStyle,
-                  favoriteIconColor: readerFavoriteIconColor,
-                  flagManageButtonColor: readerFlagManageButtonColor,
-                  flagChipBackgroundColor: readerFlagChipBgColor,
-                  flagChipBorderColor: readerFlagChipBorderColor,
-                  dividerColor: readerDividerColor,
-                  verseHighlightColor: readerHighlightColor,
-                );
-              },
-            ),
+            child: verseDisplayWidget,
           ),
         );
     }
@@ -580,16 +526,27 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
         }
      }
 
-     Color bottomAppBarColor = _getReaderBottomAppBarColor(context);
-     Color bottomAppBarIconColor = _getReaderBottomAppBarIconColor(context);
-     TextStyle bottomAppBarTextStyle = Theme.of(context).textTheme.bodySmall!.copyWith(color: bottomAppBarIconColor.withOpacity(0.7));
+     Color bottomAppBarColor = ReaderThemeHelper.getBackgroundColor(_selectedReaderTheme);
+     if (_selectedReaderTheme == ReaderThemeMode.light) bottomAppBarColor = Theme.of(context).colorScheme.surfaceContainer.withOpacity(0.95);
+     else if (_selectedReaderTheme == ReaderThemeMode.dark) bottomAppBarColor = const Color(0xFF2D2D2D);
+     else if (_selectedReaderTheme == ReaderThemeMode.sepia) bottomAppBarColor = Color.lerp(const Color(0xFFFBF0D9), Colors.black, 0.15)!;
 
-     Color currentReaderBackgroundColor = _getReaderBackgroundColor();
+
+     Color bottomAppBarIconColor = _selectedReaderTheme == ReaderThemeMode.dark
+                                  ? Colors.grey.shade400
+                                  : _selectedReaderTheme == ReaderThemeMode.sepia
+                                      ? Colors.brown.shade700
+                                      : Theme.of(context).colorScheme.onSurfaceVariant;
+
+     TextStyle bottomAppBarTextStyle = Theme.of(context).textTheme.bodySmall!.copyWith(color: bottomAppBarIconColor.withOpacity(0.8));
+
+
+     Color currentScreenBackgroundColor = (_currentView == BibleReaderView.verses || (_isLoading && _currentView == BibleReaderView.chapters && _selectedChapter != null) )
+                        ? ReaderThemeHelper.getBackgroundColor(_selectedReaderTheme)
+                        : Theme.of(context).scaffoldBackgroundColor;
 
      return Scaffold(
-       backgroundColor: (_currentView == BibleReaderView.verses || (_isLoading && _currentView == BibleReaderView.chapters && _selectedChapter != null) )
-                        ? currentReaderBackgroundColor
-                        : Theme.of(context).scaffoldBackgroundColor,
+       backgroundColor: currentScreenBackgroundColor,
        appBar: AppBar(
          title: Text(_appBarTitle),
          leading: _currentView != BibleReaderView.books || Navigator.canPop(context) || (widget.targetBookAbbr != null)
@@ -620,7 +577,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
             child: SizedBox(
               height: 48.0,
               child: BottomAppBar(
-                color: Colors.transparent,
+                color: Colors.transparent, 
                 elevation: 0,
                 padding: EdgeInsets.zero,
                 child: Row(

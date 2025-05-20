@@ -1,6 +1,6 @@
 // lib/screens/reading_plans/reading_plan_detail_screen.dart
 // Path: lib/screens/reading_plans/reading_plan_detail_screen.dart
-// Ensures _buildActionButton is removed and ReadingPlanActionButton is used.
+// Updated to use ReadingDayListItem.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wwjd_app/models/models.dart';
@@ -8,7 +8,8 @@ import 'package:wwjd_app/helpers/database_helper.dart';
 import 'package:wwjd_app/models/reader_settings_enums.dart';
 import 'package:wwjd_app/helpers/prefs_helper.dart';
 import 'package:wwjd_app/screens/daily_reading_screen.dart';
-import 'package:wwjd_app/widgets/reading_plans/reading_plan_action_button.dart'; // Correct import
+import 'package:wwjd_app/widgets/reading_plans/reading_plan_action_button.dart';
+import 'package:wwjd_app/widgets/reading_plans/reading_day_list_item.dart'; // NEW IMPORT
 
 class ReadingPlanDetailScreen extends StatefulWidget {
   final ReadingPlan plan;
@@ -40,7 +41,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
   void initState() {
     super.initState();
     _progress = widget.initialProgress;
-    _devPremiumEnabled = PrefsHelper.getDevPremiumEnabled(); //
+    _devPremiumEnabled = PrefsHelper.getDevPremiumEnabled();
 
     if (_progress == null && widget.initialProgress == null) {
       _loadProgress();
@@ -82,13 +83,13 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
       currentDayNumber: 1,
       isActive: true,
     );
-    await _dbHelper.saveReadingPlanProgress(newProgress); //
+    await _dbHelper.saveReadingPlanProgress(newProgress);
     if (mounted) {
       setState(() {
         _progress = newProgress;
         _isLoadingProgress = false;
       });
-       Navigator.pop(context, true); 
+       Navigator.pop(context, true);
     }
   }
    Future<void> _restartPlan() async {
@@ -118,7 +119,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
             _progress = newProgress;
             _isLoadingProgress = false;
           });
-          Navigator.pop(context, true); 
+          Navigator.pop(context, true);
         }
       }
   }
@@ -146,7 +147,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
         )
       );
       if (confirmStart == true && !planRequiresPremiumAndNotOwned) {
-        await _startPlan(); 
+        await _startPlan();
         if (_progress != null && _progress!.isActive) {
            _navigateToDailyReading(day);
         }
@@ -157,14 +158,14 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
   }
 
   Future<void> _navigateToDailyReading(ReadingPlanDay day) async {
-    final ReaderThemeMode themeMode = PrefsHelper.getReaderThemeMode(); //
-    final double fontSizeDelta = PrefsHelper.getReaderFontSizeDelta(); //
-    final ReaderFontFamily fontFamily = PrefsHelper.getReaderFontFamily(); //
+    final ReaderThemeMode themeMode = PrefsHelper.getReaderThemeMode();
+    final double fontSizeDelta = PrefsHelper.getReaderFontSizeDelta();
+    final ReaderFontFamily fontFamily = PrefsHelper.getReaderFontFamily();
 
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => DailyReadingScreen( //
+        builder: (context) => DailyReadingScreen(
           planId: widget.plan.id,
           dayReading: day,
           planTitle: widget.plan.title,
@@ -176,7 +177,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
     );
 
     if (result == true && mounted) {
-      _loadProgress(); 
+      _loadProgress();
     }
   }
 
@@ -216,7 +217,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context, true); 
+        Navigator.pop(context, true);
         return false;
       },
       child: Scaffold(
@@ -309,7 +310,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
                       const SizedBox(height: 16.0),
                     ],
                     Center(
-                      child: ReadingPlanActionButton(
+                      child: ReadingPlanActionButton( // Using the extracted widget
                         isLoadingProgress: _isLoadingProgress,
                         progress: _progress,
                         plan: widget.plan,
@@ -332,26 +333,13 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
                   final day = widget.plan.dailyReadings[index];
                   bool isDayCompleted = _progress?.completedDays.containsKey(day.dayNumber) ?? false;
                   bool isCurrentActiveDay = _progress != null && _progress!.isActive && !isDayCompleted && _progress!.currentDayNumber == day.dayNumber;
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: isDayCompleted ? Colors.green.shade100 : (isCurrentActiveDay ? colorScheme.primaryContainer : colorScheme.surfaceVariant),
-                      child: isDayCompleted
-                          ? Icon(Icons.check_circle, color: Colors.green.shade700)
-                          : Text(
-                              day.dayNumber.toString(),
-                              style: TextStyle(
-                                fontWeight: isCurrentActiveDay ? FontWeight.bold : FontWeight.normal,
-                                color: isCurrentActiveDay ? colorScheme.onPrimaryContainer : null
-                              ),
-                            ),
-                    ),
-                    title: Text(day.title.isNotEmpty ? day.title : "Day ${day.dayNumber}", style: TextStyle(fontWeight: isCurrentActiveDay ? FontWeight.bold : FontWeight.normal)),
-                    subtitle: Text(day.passages.map((p) => p.displayText).join('; ')),
-                    trailing: isCurrentActiveDay && !isDayCompleted
-                        ? const Icon(Icons.arrow_forward_ios, size: 16)
-                        : (isDayCompleted ? null : Icon(Icons.circle_outlined, size:16, color: Colors.grey.shade400)),
+                  
+                  // Using the new ReadingDayListItem widget
+                  return ReadingDayListItem(
+                    day: day,
+                    isCompleted: isDayCompleted,
+                    isCurrentActiveDay: isCurrentActiveDay,
                     onTap: () => _handleDayTap(day),
-                    tileColor: isCurrentActiveDay ? colorScheme.primaryContainer.withOpacity(0.3) : null,
                   );
                 },
                 childCount: widget.plan.dailyReadings.length,

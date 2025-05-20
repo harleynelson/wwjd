@@ -1,28 +1,29 @@
 // lib/screens/daily_reading_screen.dart
 // Path: lib/screens/daily_reading_screen.dart
-// Confirmed: Uses InterspersedInsightWidget.
+// Updated to use ReaderThemeHelper for styling.
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart'; // No longer needed directly
 import 'package:wwjd_app/models/models.dart';
 import 'package:wwjd_app/helpers/database_helper.dart';
 import 'package:wwjd_app/helpers/book_names.dart';
 import 'package:wwjd_app/models/reader_settings_enums.dart';
 import 'package:wwjd_app/helpers/prefs_helper.dart';
 import 'package:wwjd_app/widgets/reading_plans/reader_settings_bottom_sheet.dart';
-import 'package:wwjd_app/widgets/verse_list_item.dart';
 import 'package:wwjd_app/widgets/verse_actions_bottom_sheet.dart';
 import 'package:wwjd_app/dialogs/flag_selection_dialog.dart';
 import 'package:wwjd_app/widgets/tts_play_button.dart';
 import 'package:wwjd_app/services/text_to_speech_service.dart';
-import 'package:wwjd_app/widgets/reading_plans/interspersed_insight_widget.dart'; // Ensure this is imported
+import 'package:wwjd_app/widgets/reading_plans/interspersed_insight_widget.dart';
+import 'package:wwjd_app/widgets/reading_plans/daily_reading_passage_display.dart';
+import 'package:wwjd_app/helpers/reader_theme_helper.dart'; // NEW IMPORT
 
 class DailyReadingScreen extends StatefulWidget {
   final String planId;
   final ReadingPlanDay dayReading;
   final String planTitle;
-  final ReaderThemeMode readerThemeMode;
-  final double fontSizeDelta;
-  final ReaderFontFamily readerFontFamily;
+  final ReaderThemeMode readerThemeMode; // Initial value
+  final double fontSizeDelta; // Initial value
+  final ReaderFontFamily readerFontFamily; // Initial value
 
   const DailyReadingScreen({
     super.key,
@@ -47,10 +48,13 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
   String _errorMessage = '';
   bool _isCompletedToday = false;
   late bool _userHasPremiumAccess;
+
+  // These will now hold the current state, initialized from widget params
   late double _currentFontSizeDelta;
   late ReaderFontFamily _currentReaderFontFamily;
   late ReaderThemeMode _currentReaderThemeMode;
   late ReaderViewMode _currentReaderViewMode;
+
   List<Flag> _allAvailableFlags = [];
   Map<String, bool> _isVerseFavoriteMap = {};
   Map<String, List<int>> _assignedFlagIdsMap = {};
@@ -65,7 +69,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     _currentFontSizeDelta = widget.fontSizeDelta;
     _currentReaderFontFamily = widget.readerFontFamily;
     _currentReaderThemeMode = widget.readerThemeMode;
-    _currentReaderViewMode = PrefsHelper.getReaderViewMode();
+    _currentReaderViewMode = PrefsHelper.getReaderViewMode(); // Keep loading this from Prefs
     _userHasPremiumAccess = PrefsHelper.getDevPremiumEnabled();
     _initializeScreenData();
   }
@@ -294,105 +298,9 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     );
   }
 
-  TextStyle _getTextStyle(
-    ReaderFontFamily family,
-    double baseSize,
-    FontWeight fontWeight,
-    Color color, {
-    double height = 1.5,
-    FontStyle? fontStyle,
-  }) {
-    double currentSize = baseSize + _currentFontSizeDelta;
-    TextStyle defaultStyle = TextStyle(
-        fontSize: currentSize,
-        fontWeight: fontWeight,
-        color: color,
-        height: height,
-        fontStyle: fontStyle,
-      );
-    switch (family) {
-      case ReaderFontFamily.serif:
-        return GoogleFonts.notoSerif(textStyle: defaultStyle);
-      case ReaderFontFamily.sansSerif:
-        return GoogleFonts.roboto(textStyle: defaultStyle);
-      case ReaderFontFamily.systemDefault:
-      default:
-        return defaultStyle;
-    }
-  }
-
-  Color _getBackgroundColor() {
-    switch (_currentReaderThemeMode) {
-      case ReaderThemeMode.dark:
-        return Colors.black87;
-      case ReaderThemeMode.sepia:
-        return const Color(0xFFFBF0D9);
-      case ReaderThemeMode.light:
-      default:
-        return Colors.white;
-    }
-  }
-
-  Color _getTextColor() {
-    switch (_currentReaderThemeMode) {
-      case ReaderThemeMode.dark:
-        return Colors.grey.shade300;
-      case ReaderThemeMode.sepia:
-        return Colors.brown.shade800;
-      case ReaderThemeMode.light:
-      default:
-        return Colors.black87;
-    }
-  }
-
-  Color _getAccentColor() {
-    switch (_currentReaderThemeMode) {
-      case ReaderThemeMode.dark:
-        return Colors.tealAccent.shade100;
-      case ReaderThemeMode.sepia:
-        return Colors.brown.shade800;
-      case ReaderThemeMode.light:
-      default:
-        final appPrimaryColor = Theme.of(context).colorScheme.primary;
-        return Color.lerp(appPrimaryColor, Colors.black, 0.6) ?? Colors.black.withOpacity(0.8);
-    }
-  }
-
-  Color _getSecondaryAccentColor() {
-    switch (_currentReaderThemeMode) {
-      case ReaderThemeMode.dark:
-        return Colors.cyanAccent.shade200.withOpacity(0.9);
-      case ReaderThemeMode.sepia:
-        return Colors.brown.shade700;
-      case ReaderThemeMode.light:
-      default:
-        return Colors.black.withOpacity(0.65);
-    }
-  }
-
-  Color _getReflectionBoxColor() {
-    switch (_currentReaderThemeMode) {
-      case ReaderThemeMode.dark:
-        return Colors.grey.shade800;
-      case ReaderThemeMode.sepia:
-        return const Color(0xFFEFEBE2);
-      case ReaderThemeMode.light:
-      default:
-        return Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5);
-    }
-  }
-
-  Color _getReflectionBoxBorderColor() {
-     switch (_currentReaderThemeMode) {
-      case ReaderThemeMode.dark:
-        return Colors.grey.shade700;
-      case ReaderThemeMode.sepia:
-        return Colors.brown.withOpacity(0.3);
-      case ReaderThemeMode.light:
-      default:
-        return Theme.of(context).colorScheme.outlineVariant;
-    }
-  }
+  // REMOVED: _getTextStyle, _getBackgroundColor, _getTextColor, _getAccentColor,
+  // _getSecondaryAccentColor, _getReflectionBoxColor, _getReflectionBoxBorderColor
+  // These will now be called from ReaderThemeHelper.
 
   void _openReaderSettings() {
     showModalBottomSheet(
@@ -470,130 +378,17 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     return sb.toString().trim();
   }
 
-  Widget _buildProseStylePassage(
-      BiblePassagePointer passagePtr,
-      List<Verse> verses,
-      TextStyle passageTitleStyle,
-      TextStyle verseNumberStyle,
-      TextStyle verseTextStyle,
-      Color textColor
-      ) {
-    if (verses.isEmpty && !_isLoadingVerses) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Text("No text found for ${passagePtr.displayText}.",
-            style: verseTextStyle.copyWith(
-                fontStyle: FontStyle.italic,
-                color: textColor.withOpacity(0.7))),
-      );
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: Text(
-            "${getFullBookName(passagePtr.bookAbbr)} ${passagePtr.displayText.replaceFirst(RegExp(r'^[A-Za-z\s]+'), '').trim()}",
-            style: passageTitleStyle,
-          ),
-        ),
-        SelectableText.rich(
-          TextSpan(
-            children: verses.map((verse) {
-              return TextSpan(
-                children: [
-                  TextSpan(
-                    text: "${verse.verseNumber} ",
-                    style: verseNumberStyle,
-                  ),
-                  TextSpan(
-                    text: "${verse.text} ",
-                    style: verseTextStyle,
-                  ),
-                ],
-              );
-            }).toList(),
-          ),
-          textAlign: TextAlign.justify,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildVerseByVerseStylePassage(
-      BiblePassagePointer passagePtr,
-      List<Verse> verses,
-      TextStyle passageTitleStyle,
-      Color currentTextColor,
-      Color currentSecondaryAccentColor
-  ) {
-     List<Widget> passageWidgets = [];
-      passageWidgets.add(
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0, bottom: 4.0),
-          child: Text(
-            "${getFullBookName(passagePtr.bookAbbr)} ${passagePtr.displayText.replaceFirst(RegExp(r'^[A-Za-z\s]+'), '').trim()}",
-            style: passageTitleStyle,
-          ),
-        ),
-      );
-
-      if (verses.isEmpty && !_isLoadingVerses) {
-        passageWidgets.add(
-           Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, left: 4.0),
-              child: Text("No text found for ${passagePtr.displayText}.",
-                          style: _getTextStyle(_currentReaderFontFamily, _baseVerseFontSize, FontWeight.normal, currentTextColor, fontStyle: FontStyle.italic).copyWith(color: currentTextColor.withOpacity(0.7))),
-           )
-        );
-      } else {
-        for (var verse in verses) {
-          bool isFavorite = _isVerseFavoriteMap[verse.verseID] ?? false;
-          List<String> flagNames = _getFlagNamesForVerseId(verse.verseID);
-
-          TextStyle vTextStyle = _getTextStyle(_currentReaderFontFamily, _baseVerseFontSize, FontWeight.normal, _getTextColor(), height: 1.6);
-          TextStyle vNumStyle = _getTextStyle(_currentReaderFontFamily, _baseDailyReaderVerseNumberFontSize, FontWeight.bold, currentSecondaryAccentColor, height: 1.6);
-          TextStyle fChipStyle = _getTextStyle(_currentReaderFontFamily, 10.0, FontWeight.normal, (_currentReaderThemeMode == ReaderThemeMode.dark) ? Colors.grey.shade300 : Theme.of(context).colorScheme.onSecondaryContainer);
-          Color favIconColor = (_currentReaderThemeMode == ReaderThemeMode.dark) ? Colors.grey.shade400 : Theme.of(context).colorScheme.outline;
-          Color flagManageBtnColor = (_currentReaderThemeMode == ReaderThemeMode.dark) ? Colors.cyanAccent.shade200 : Theme.of(context).colorScheme.primary;
-          Color flagChipBg = (_currentReaderThemeMode == ReaderThemeMode.dark) ? Colors.grey.shade700.withOpacity(0.6) : Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.6);
-          Color flagChipBorder = (_currentReaderThemeMode == ReaderThemeMode.dark) ? Colors.grey.shade600 : Theme.of(context).colorScheme.secondaryContainer;
-          Color divColor = (_currentReaderThemeMode == ReaderThemeMode.dark) ? Colors.grey.shade700 : Theme.of(context).colorScheme.outlineVariant.withOpacity(0.5);
-
-          passageWidgets.add(
-            VerseListItem(
-              verse: verse,
-              isFavorite: isFavorite,
-              assignedFlagNames: flagNames,
-              onToggleFavorite: () => _toggleFavoriteForVerse(verse),
-              onManageFlags: () => _manageFlagsForVerse(verse),
-              onVerseTap: () => _showActionsForVerse(verse),
-              verseTextStyle: vTextStyle,
-              verseNumberStyle: vNumStyle,
-              flagChipStyle: fChipStyle,
-              favoriteIconColor: favIconColor,
-              flagManageButtonColor: flagManageBtnColor,
-              flagChipBackgroundColor: flagChipBg,
-              flagChipBorderColor: flagChipBorder,
-              dividerColor: divColor,
-            ),
-          );
-        }
-      }
-      passageWidgets.add(const SizedBox(height: 8.0));
-      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: passageWidgets);
-  }
 
   @override
   Widget build(BuildContext context) {
-    final Color currentBackgroundColor = _getBackgroundColor();
-    final Color currentTextColor = _getTextColor();
-    final Color currentAccentColor = _getAccentColor();
-    final Color currentSecondaryAccentColor = _getSecondaryAccentColor();
+    // Use ReaderThemeHelper for theme-dependent values
+    final Color currentBackgroundColor = ReaderThemeHelper.getBackgroundColor(_currentReaderThemeMode);
+    final Color currentTextColor = ReaderThemeHelper.getTextColor(_currentReaderThemeMode);
+    final Color currentAccentColor = ReaderThemeHelper.getAccentColor(_currentReaderThemeMode, context);
+    final Color currentSecondaryAccentColor = ReaderThemeHelper.getSecondaryAccentColor(_currentReaderThemeMode, context);
+    final Color pronouncedReflectionBoxColor = ReaderThemeHelper.getReflectionBoxColor(_currentReaderThemeMode, context);
+    final Color pronouncedReflectionBoxBorderColor = ReaderThemeHelper.getReflectionBoxBorderColor(_currentReaderThemeMode, context);
     
-    final Color pronouncedReflectionBoxColor = _getReflectionBoxColor();
-    final Color pronouncedReflectionBoxBorderColor = _getReflectionBoxBorderColor();
-
     Color subtleInsightBackgroundColor;
     switch (_currentReaderThemeMode) {
       case ReaderThemeMode.dark:
@@ -610,19 +405,41 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
 
     final TextTheme appTextTheme = Theme.of(context).textTheme;
 
-    final TextStyle passageTitleStyle = _getTextStyle(_currentReaderFontFamily, _basePassageTitleFontSize, FontWeight.bold, currentAccentColor);
-    final TextStyle reflectionPromptTitleStyle = _getTextStyle(_currentReaderFontFamily, 16.0, FontWeight.bold, currentTextColor);
-    final TextStyle reflectionPromptTextStyle = _getTextStyle(
-        _currentReaderFontFamily,
-        16.0,
-        FontWeight.normal,
-        currentTextColor,
+    final TextStyle passageTitleStyle = ReaderThemeHelper.getTextStyle(
+        fontFamily: _currentReaderFontFamily,
+        baseSize: _basePassageTitleFontSize,
+        fontWeight: FontWeight.bold,
+        color: currentAccentColor,
+        fontSizeDelta: _currentFontSizeDelta);
+    final TextStyle reflectionPromptTitleStyle = ReaderThemeHelper.getTextStyle(
+        fontFamily: _currentReaderFontFamily,
+        baseSize: 16.0,
+        fontWeight: FontWeight.bold,
+        color: currentTextColor,
+        fontSizeDelta: _currentFontSizeDelta);
+    final TextStyle reflectionPromptTextStyle = ReaderThemeHelper.getTextStyle(
+        fontFamily: _currentReaderFontFamily,
+        baseSize: 16.0,
+        fontWeight: FontWeight.normal,
+        color: currentTextColor,
+        fontSizeDelta: _currentFontSizeDelta,
         height: 1.5,
-        fontStyle: FontStyle.italic
-    );
+        fontStyle: FontStyle.italic);
     
     final appBarIconColor = Theme.of(context).appBarTheme.foregroundColor ?? 
                             (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black54);
+
+    // Styles for VerseListItem to be passed to DailyReadingPassageDisplay
+    final TextStyle vTextStyle = ReaderThemeHelper.getTextStyle(fontFamily:_currentReaderFontFamily, baseSize: _baseVerseFontSize, fontWeight: FontWeight.normal, color: currentTextColor, fontSizeDelta: _currentFontSizeDelta, height: 1.6);
+    final TextStyle vNumStyle = ReaderThemeHelper.getTextStyle(fontFamily: _currentReaderFontFamily, baseSize: _baseDailyReaderVerseNumberFontSize, fontWeight: FontWeight.bold, color: currentSecondaryAccentColor, fontSizeDelta: _currentFontSizeDelta, height: 1.6);
+    final TextStyle fChipStyle = ReaderThemeHelper.getTextStyle(fontFamily: _currentReaderFontFamily, baseSize: 10.0, fontWeight: FontWeight.normal, color: (_currentReaderThemeMode == ReaderThemeMode.dark) ? Colors.grey.shade300 : Theme.of(context).colorScheme.onSecondaryContainer, fontSizeDelta: _currentFontSizeDelta);
+    
+    final Color favIconColor = ReaderThemeHelper.getVerseListItemFavoriteIconColor(_currentReaderThemeMode, context);
+    final Color flagManageBtnColor = ReaderThemeHelper.getVerseListItemFlagManageButtonColor(_currentReaderThemeMode, context);
+    final Color flagChipBg = ReaderThemeHelper.getVerseListItemFlagChipBackgroundColor(_currentReaderThemeMode, context);
+    final Color flagChipBorder = ReaderThemeHelper.getVerseListItemFlagChipBorderColor(_currentReaderThemeMode, context);
+    final Color divColor = ReaderThemeHelper.getVerseListItemDividerColor(_currentReaderThemeMode, context);
+
 
     List<Widget> contentWidgets = [];
     if (!_isLoadingVerses && _passageVerses.isNotEmpty) {
@@ -645,23 +462,31 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
         final passagePtr = widget.dayReading.passages[i];
         final versesForPassage = _passageVerses[passagePtr] ?? [];
 
-        if (_currentReaderViewMode == ReaderViewMode.prose) {
-          contentWidgets.add(_buildProseStylePassage(
-              passagePtr, versesForPassage, passageTitleStyle,
-              _getTextStyle(_currentReaderFontFamily, _baseDailyReaderVerseNumberFontSize, FontWeight.bold, currentSecondaryAccentColor, height: 1.6),
-              _getTextStyle(_currentReaderFontFamily, _baseVerseFontSize, FontWeight.normal, currentTextColor, height: 1.6),
-              currentTextColor
-            ));
-          if (widget.dayReading.interspersedInsights.where((insight) => insight.afterPassageIndex == i).isEmpty && i < widget.dayReading.passages.length -1) {
-             contentWidgets.add(Padding(
-               padding: const EdgeInsets.symmetric(vertical: 10.0),
-               child: Divider(color: currentTextColor.withOpacity(0.15), height: 1, thickness: 0.5),
-             ));
-          }
-        } else {
-          contentWidgets.add(_buildVerseByVerseStylePassage(
-              passagePtr, versesForPassage, passageTitleStyle, currentTextColor, currentSecondaryAccentColor));
-        }
+        contentWidgets.add(
+          DailyReadingPassageDisplay(
+            passagePointer: passagePtr,
+            verses: versesForPassage,
+            viewMode: _currentReaderViewMode,
+            isLoading: _isLoadingVerses,
+            passageTitleStyle: passageTitleStyle,
+            verseTextStyle: vTextStyle, 
+            verseNumberStyle: vNumStyle,
+            textColor: currentTextColor,
+            isVerseFavoriteMap: _isVerseFavoriteMap,
+            assignedFlagIdsMap: _assignedFlagIdsMap,
+            allAvailableFlags: _allAvailableFlags,
+            onToggleFavorite: _toggleFavoriteForVerse,
+            onManageFlags: _manageFlagsForVerse,
+            onVerseTap: _showActionsForVerse,
+            readerThemeMode: _currentReaderThemeMode,
+            flagChipBackgroundColor: flagChipBg,
+            flagChipBorderColor: flagChipBorder,
+            dividerColor: divColor,
+            favoriteIconColor: favIconColor,
+            flagManageButtonColor: flagManageBtnColor,
+            flagChipStyle: fChipStyle,
+          )
+        );
 
         widget.dayReading.interspersedInsights
             .where((insight) => insight.afterPassageIndex == i)
@@ -751,10 +576,14 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
                         ),
                         label: Text(
                             _isCompletedToday ? "Day Completed" : "Mark as Complete",
-                            style: _getTextStyle(ReaderFontFamily.systemDefault, 16, FontWeight.bold,
-                                    _isCompletedToday
+                            style: ReaderThemeHelper.getTextStyle( // Using helper
+                                fontFamily: ReaderFontFamily.systemDefault, 
+                                baseSize: 16, 
+                                fontWeight: FontWeight.bold, 
+                                color: _isCompletedToday
                                         ? (currentBackgroundColor.computeLuminance() > 0.5 ? Colors.black87 : Colors.white)
-                                        : (currentAccentColor.computeLuminance() > 0.5 ? Colors.black87 : Colors.white)
+                                        : (currentAccentColor.computeLuminance() > 0.5 ? Colors.black87 : Colors.white),
+                                fontSizeDelta: _currentFontSizeDelta 
                             )
                         ),
                         style: ElevatedButton.styleFrom(
