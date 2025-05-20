@@ -1,18 +1,18 @@
 // File: lib/services/auth_service.dart
 // Path: lib/services/auth_service.dart
-// Approximate line: 255 (new method: updateUserPassword)
+// Approximate line: 45 (add updateUserPremiumStatus), modified _onFirebaseUserChanged slightly
 
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/material.dart'; // Added for BuildContext
+import 'package:flutter/material.dart'; 
 import '../models/app_user.dart';
 import '../helpers/prefs_helper.dart';
-import '../services/prayer_service.dart';
+import '../services/prayer_service.dart'; // Assuming it's used for data deletion context
 import '../helpers/database_helper.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart'; // For context in deleteUserPrayerData
 
 class AuthService with ChangeNotifier {
   final fb_auth.FirebaseAuth _firebaseAuth = fb_auth.FirebaseAuth.instance;
@@ -28,23 +28,32 @@ class AuthService with ChangeNotifier {
 
 
   AuthService() {
-    _firebaseAuthSubscription = _firebaseAuth.authStateChanges().listen(_onFirebaseUserChanged);
-    _onFirebaseUserChanged(_firebaseAuth.currentUser);
+    _firebaseAuthSubscription = _firebaseAuth.authStateChanges().listen(_onFirebaseUserChangedFromFirebaseAuth);
+    _onFirebaseUserChangedFromFirebaseAuth(_firebaseAuth.currentUser);
   }
 
   Stream<AppUser?> get user => _appUserStreamController.stream;
   AppUser? get currentUser => _currentAppUser;
 
-  Future<void> _onFirebaseUserChanged(fb_auth.User? firebaseUser) async {
+  // Renamed to avoid confusion with the one that takes AppUser
+  Future<void> _onFirebaseUserChangedFromFirebaseAuth(fb_auth.User? firebaseUser) async {
+    await _updateAppUserFromFirebaseUser(firebaseUser);
+  }
+
+  Future<void> _updateAppUserFromFirebaseUser(fb_auth.User? firebaseUser, {bool? forcePremiumStatus}) async {
     if (firebaseUser == null) {
       _currentAppUser = null;
     } else {
+      // Determine effective premium status
       bool isDevPremium = PrefsHelper.getDevPremiumEnabled();
-      bool finalPremiumStatus = isDevPremium;
+      bool actualPremiumFromSource = forcePremiumStatus ?? _currentAppUser?.isPremium ?? false; // Use forced, then current, then false
 
-      if (!isDevPremium) {
-        // Placeholder for actual premium status check
-      }
+      // If not forcing, and not dev premium, check a persistent source (e.g., Firestore profile)
+      // This part would be more robust with a dedicated method to fetch premium status from Firestore
+      // For now, if forcePremiumStatus is null, we rely on dev settings or existing _currentAppUser state.
+      // A more complete solution would fetch from Firestore here if forcePremiumStatus is null.
+      
+      bool finalPremiumStatus = isDevPremium || actualPremiumFromSource;
       
       _currentAppUser = AppUser(
         uid: firebaseUser.uid,
@@ -52,7 +61,7 @@ class AuthService with ChangeNotifier {
         email: firebaseUser.email,
         displayName: firebaseUser.displayName,
         photoURL: firebaseUser.photoURL,
-        isPremium: finalPremiumStatus,
+        isPremium: finalPremiumStatus, // Use the determined final status
       );
     }
     _appUserStreamController.add(_currentAppUser);
@@ -60,9 +69,24 @@ class AuthService with ChangeNotifier {
     print("AuthService: AppUser updated. UID: ${_currentAppUser?.uid}, IsAnonymous: ${_currentAppUser?.isAnonymous}, IsPremium (effective): ${_currentAppUser?.isPremium}");
   }
 
+
   Future<void> triggerAppUserReFetch() async {
-    print("AuthService: triggerAppUserReFetch called due to dev premium toggle.");
-    await _onFirebaseUserChanged(_firebaseAuth.currentUser);
+    print("AuthService: triggerAppUserReFetch called.");
+    // This will re-evaluate premium status based on PrefsHelper.getDevPremiumEnabled()
+    // and the existing _currentAppUser.isPremium (if any).
+    await _updateAppUserFromFirebaseUser(_firebaseAuth.currentUser);
+  }
+
+  // --- NEW METHOD to specifically update premium status ---
+  Future<void> updateUserPremiumStatus(bool newPremiumStatus) async {
+    print("AuthService: Updating premium status to $newPremiumStatus for UID: ${_firebaseAuth.currentUser?.uid}");
+    if (_firebaseAuth.currentUser != null) {
+      // Here, you would ideally also update this status persistently in your backend (e.g., Firestore user profile)
+      // For example:
+      // await FirebaseFirestore.instance.collection('userPrayerProfiles').doc(_firebaseAuth.currentUser!.uid).set({'isPremium': newPremiumStatus}, SetOptions(merge: true));
+      // Then, re-fetch or update the AppUser model:
+      await _updateAppUserFromFirebaseUser(_firebaseAuth.currentUser, forcePremiumStatus: newPremiumStatus);
+    }
   }
 
   Future<AppUser?> signInAnonymouslyIfNeeded() async {
@@ -70,7 +94,8 @@ class AuthService with ChangeNotifier {
       try {
         print("AuthService: No current user. Attempting to sign in anonymously.");
         await _firebaseAuth.signInAnonymously();
-        return _currentAppUser;
+        // _onFirebaseUserChangedFromFirebaseAuth will be called by the authStateChanges listener
+        return _currentAppUser; 
       } catch (e) {
         print("AuthService: Error signing in anonymously: $e");
         _currentAppUser = null;
@@ -79,8 +104,9 @@ class AuthService with ChangeNotifier {
         return null;
       }
     }
+    // If firebaseUser exists but _currentAppUser is somehow null, refresh it
     if (_currentAppUser == null && _firebaseAuth.currentUser != null) {
-        await _onFirebaseUserChanged(_firebaseAuth.currentUser);
+        await _onFirebaseUserChangedFromFirebaseAuth(_firebaseAuth.currentUser);
     }
     return _currentAppUser;
   }
@@ -97,14 +123,16 @@ class AuthService with ChangeNotifier {
       if (currentFbUser != null && currentFbUser.isAnonymous) {
         print("AuthService: Attempting to link anonymous user with Email/Password.");
         userCredential = await currentFbUser.linkWithCredential(credential);
+        // _onFirebaseUserChangedFromFirebaseAuth will be called by the authStateChanges listener
       } else {
         print("AuthService: Attempting to create new Email/Password account.");
         userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
+        // _onFirebaseUserChangedFromFirebaseAuth will be called by the authStateChanges listener
       }
-      return _currentAppUser;
+      return _currentAppUser; // Return the AppUser shaped by the listener
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: FirebaseAuthException during Email/Password sign-up: ${e.code} - ${e.message}");
       throw e;
@@ -121,6 +149,7 @@ class AuthService with ChangeNotifier {
         email: email,
         password: password,
       );
+      // _onFirebaseUserChangedFromFirebaseAuth will be called by the authStateChanges listener
       return _currentAppUser;
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: FirebaseAuthException during Email/Password sign-in: ${e.code} - ${e.message}");
@@ -189,12 +218,12 @@ class AuthService with ChangeNotifier {
           } else if (linkError.code == 'account-exists-with-different-credential') {
             print("AuthService: Linking failed ('account-exists-with-different-credential').");
             throw fb_auth.FirebaseAuthException( 
-              code: 'link-google-to-email-erforderlich',
-              message: linkError.message ?? 'This Google account\'s email is already used.',
-              email: googleUserAccount.email,
+              code: 'link-google-to-email-erforderlich', // Custom code to identify this specific scenario
+              message: linkError.message ?? 'This Google account\'s email is already used by an existing WWJD account. Please sign in with your email and password, then link Google from settings if desired.',
+              email: googleUserAccount.email, // Pass the email for potential re-auth flow
             );
           } else {
-            throw linkError;
+            throw linkError; // Re-throw other linking errors
           }
         }
       } else {
@@ -202,7 +231,10 @@ class AuthService with ChangeNotifier {
         finalUserCredential = await _firebaseAuth.signInWithCredential(credential);
       }
       
-      fb_auth.User? firebaseUserToUpdate = finalUserCredential?.user;
+      // After linking or signing in, the authStateChanges listener will call _onFirebaseUserChangedFromFirebaseAuth
+      // which updates _currentAppUser.
+      // We can ensure profile info is up-to-date here if needed.
+      fb_auth.User? firebaseUserToUpdate = finalUserCredential?.user ?? _firebaseAuth.currentUser;
       if (firebaseUserToUpdate != null && googleUserAccount != null) {
           bool profileNeedsUpdate = false;
           String? newDisplayName = firebaseUserToUpdate.displayName;
@@ -222,11 +254,12 @@ class AuthService with ChangeNotifier {
                   print("AuthService: Updating Firebase profile. Name: $newDisplayName, Photo: $newPhotoURL");
                   if (newDisplayName != firebaseUserToUpdate.displayName) await firebaseUserToUpdate.updateDisplayName(newDisplayName);
                   if (newPhotoURL != firebaseUserToUpdate.photoURL) await firebaseUserToUpdate.updatePhotoURL(newPhotoURL);
-                  await firebaseUserToUpdate.reload();
-                  firebaseUserToUpdate = _firebaseAuth.currentUser; 
+                  await firebaseUserToUpdate.reload(); 
+                  // Trigger our AppUser update after reload
+                  await _onFirebaseUserChangedFromFirebaseAuth(_firebaseAuth.currentUser);
               } catch (e) {
                   print("AuthService: Error updating profile or reloading: $e");
-                  firebaseUserToUpdate = _firebaseAuth.currentUser ?? finalUserCredential?.user;
+                  await _onFirebaseUserChangedFromFirebaseAuth(_firebaseAuth.currentUser); // Still try to update AppUser
               }
           }
       }
@@ -234,9 +267,9 @@ class AuthService with ChangeNotifier {
 
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: FirebaseAuthException during Google sign-in: (Code: ${e.code}) - ${e.message}");
-      if (e.code == 'link-google-to-email-erforderlich') throw e;
+      if (e.code == 'link-google-to-email-erforderlich') throw e; // Propagate this specific error
       String uiMessage = e.message ?? "An error occurred during Google Sign-In.";
-      if (e.code == 'network-request-failed') uiMessage = 'Network error.';
+      if (e.code == 'network-request-failed') uiMessage = 'Network error. Please check your internet connection.';
       else if (e.code == 'credential-already-in-use' || e.code == 'account-exists-with-different-credential') {
         uiMessage = 'This Google account is already associated with another profile.';
       }
@@ -245,9 +278,9 @@ class AuthService with ChangeNotifier {
         print("AuthService: PlatformException Google: (Code: ${e.code}) - ${e.message}");
         String uiMessage = "Google Sign-In failed.";
         if (e.code == "sign_in_failed" || e.code == "google_sign_in_failed") {
-            if (e.message?.contains(" ApiException: 10") ?? false) uiMessage = "Google Sign-In config error (10).";
-            else if (e.message?.contains(" ApiException: 12500") ?? false) uiMessage = "Google Sign-In issue (12500).";
-            else if (e.message?.contains(" ApiException: 12501") ?? false) { print("AuthService: Google Sign-In cancelled (12501)."); return null; }
+            if (e.message?.contains(" ApiException: 10") ?? false) uiMessage = "Google Sign-In config error (10). Check SHA-1 fingerprints and API console setup.";
+            else if (e.message?.contains(" ApiException: 12500") ?? false) uiMessage = "Google Sign-In issue (12500). Update Google Play Services or try again.";
+            else if (e.message?.contains(" ApiException: 12501") ?? false) { print("AuthService: Google Sign-In cancelled (12501)."); return null; } // User cancelled
             else if (e.message?.contains("NetworkError") ?? false) uiMessage = "Network error with Google Sign-In.";
             else uiMessage = "Error with Google Sign-In. (Code: ${e.code})";
         }
@@ -271,6 +304,7 @@ class AuthService with ChangeNotifier {
       await currentUser.reauthenticateWithCredential(reauthCredential);
       print("AuthService: User re-authenticated.");
       await currentUser.linkWithCredential(newCredentialToLink);
+      // _onFirebaseUserChangedFromFirebaseAuth will be called by the authStateChanges listener
       return _currentAppUser;
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: Error re-auth/linking: ${e.code} - ${e.message}");
@@ -318,23 +352,21 @@ class AuthService with ChangeNotifier {
         email: user.email!,
         password: currentPassword,
       );
-      // Re-authenticate the user with their current password
       await user.reauthenticateWithCredential(credential);
       print("AuthService: User re-authenticated successfully for password change.");
       
-      // If re-authentication is successful, update the password
       await user.updatePassword(newPassword);
       print("AuthService: User password updated successfully.");
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: Error updating password: ${e.code} - ${e.message}");
-      throw e; // Re-throw to be handled by UI
+      throw e; 
     } catch (e) {
       print("AuthService: Generic error updating password: $e");
       throw Exception("An unexpected error occurred during password update.");
     }
   }
 
-  Future<void> deleteCurrentUserAccount(BuildContext context) async {
+  Future<void> deleteCurrentUserAccount(BuildContext context) async { // Added BuildContext
     fb_auth.User? user = _firebaseAuth.currentUser;
     if (user == null) {
       print("AuthService: No user to delete.");
@@ -348,6 +380,10 @@ class AuthService with ChangeNotifier {
       if (!isAnonymousUser) { 
         print("AuthService: Starting data cleanup for user UID: $uid");
         
+        // Use Provider.of with listen:false if calling from a service like this,
+        // or ensure PrayerService is passed if context isn't available/appropriate.
+        // For simplicity here, assuming context might be available from where this is called.
+        // If not, PrayerService instance would need to be passed or obtained differently.
         final prayerService = Provider.of<PrayerService>(context, listen: false);
         await prayerService.deleteUserPrayerData(uid);
         print("AuthService: Firestore prayer data deleted for UID: $uid");
@@ -366,6 +402,7 @@ class AuthService with ChangeNotifier {
 
       await user.delete();
       print("AuthService: Firebase Auth User account deleted successfully (UID: $uid).");
+      // The authStateChanges listener will handle setting _currentAppUser to null.
     } on fb_auth.FirebaseAuthException catch (e) {
       print("AuthService: Error deleting user account: ${e.code} - ${e.message}");
       if (e.code == 'requires-recent-login') {
@@ -389,6 +426,9 @@ class AuthService with ChangeNotifier {
       }
       await _firebaseAuth.signOut();
       print("AuthService: Signed out from Firebase (Old UID: $oldUid, WasAnonymous: $wasAnonymousBeforeSignOut).");
+      // The authStateChanges listener will handle setting _currentAppUser to null.
+      // If you need to ensure an anonymous user is signed back in immediately:
+      // await signInAnonymouslyIfNeeded(); 
     } catch (e) {
       print("AuthService: Error signing out: $e");
     }

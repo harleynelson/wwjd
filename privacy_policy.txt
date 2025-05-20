@@ -1,0 +1,75 @@
+PRIVACY POLICY
+Last Updated: May 20, 2025
+
+This Privacy Policy describes how the "WWJ App" (the "App") collects, uses, and shares your information.
+
+1.  INFORMATION WE COLLECT
+    The App collects various types of information, including:
+
+    a.  Personal Information (when you choose to provide it):
+        * Account Information: If you choose to sign in with Email/Password or Google Sign-In, we collect your email address, display name, and profile picture (if provided by Google). Your Firebase User ID (UID) is also collected to manage your account and associated data.
+        * No Direct Collection of Sensitive Personal Data: The App does not directly collect highly sensitive personal information such as health data, financial data, or precise location information.
+
+    b.  Usage Data & App Activity:
+        * Favorites and Flags: We store your favorited Bible verses and any custom flags you assign to them locally on your device in an SQLite database. This data is associated with your anonymous or logged-in user ID to enable syncing and recovery if you use a non-anonymous account.
+        * Reading Progress: Your progress on reading plans (current day, completed days, streak count, start and last completion dates) is stored locally on your device in an SQLite database. This data is also associated with your user ID.
+        * App Preferences: Your reader settings (font size, font family, theme mode, view mode) and selected text-to-speech voice preferences are stored locally using SharedPreferences.
+        * Anonymous User Identifiers: When you use the App, particularly for prayer wall features, we generate a unique, anonymous ID for your device or user session. This ID is used to track your prayer submissions without revealing your identity on the public prayer wall. It is stored locally (SharedPreferences) and in our database (Firestore) if you interact with prayer features.
+        * General App Usage: We use Firebase Analytics to collect anonymous, aggregated data about how the App is used (e.g., screens visited, features accessed) to improve functionality and user experience. This data is generally not linked to your personal identity.
+
+    c.  User-Generated Content (Prayer Wall):
+        * Prayer Requests: If you submit a prayer request, the text of your prayer is collected and stored in our Firestore database. While your prayer is displayed anonymously on the public wall, it is linked to your anonymous submitter ID internally for moderation and for you to track its status. We do NOT collect or store any other personal identifiers (like your real name, email, or precise location) with your prayer request if you choose the anonymous submission option.
+        * Optional Location Approximation: You may optionally provide a coarse-grained location (e.g., "Global", "North America") with your prayer request. This is entirely optional and not linked to your precise location.
+        * Prayer Interactions: When you tap "Pray for this" on a prayer, we record this interaction (prayer ID, your user ID, timestamp) in Firestore to increment the public prayer count and track your personal prayer streak. If you report a prayer, we record the prayer ID, your user ID, timestamp, and an optional reason you provide.
+
+    d.  Third-Party Service Data:
+        * Google Cloud Text-to-Speech: When you use Text-to-Speech (TTS), the text content is sent to Google's Text-to-Speech API for synthesis. Google's privacy policy applies to their handling of this data. We receive the synthesized audio back. We use a Firebase Remote Config key to access this service, which is securely managed and not directly exposed in the client.
+        * Firebase: As we use Firebase for authentication, database (Firestore), remote configuration, and analytics, Firebase collects data as described in their privacy policy.
+        * Google Sign-In: If you use Google Sign-In, Google handles the authentication process and shares limited profile information (email, display name, photo URL) with us.
+        * In-App Purchases (Planned): If in-app purchases are implemented, transaction data will be processed by Apple App Store or Google Play Store, subject to their respective privacy policies.
+
+2.  HOW WE USE YOUR INFORMATION
+    We use the collected information for the following purposes:
+
+    * To provide and maintain the App's functionality: This includes delivering daily devotionals, Bible verses, managing your favorites, tracking reading plan progress, and operating the Community Prayer Wall.
+    * To personalize your experience: We use reader settings (font size, theme, etc.) to customize your Bible reading experience.
+    * To enable prayer wall features: To process anonymous prayer submissions, display approved prayers publicly, allow users to "pray for" requests, track prayer counts, and moderate content.
+    * To improve the App: We use aggregated usage data to understand how the App is used, identify areas for improvement, and develop new features.
+    * To manage user accounts: If you sign in with an email/password or Google account, your information is used to manage your account, link anonymous data (favorites, reading progress, anonymous prayer ID) to your persistent account, and provide account recovery options.
+    * For Text-to-Speech: To convert text content (Bible verses, devotionals, reading plan content) into audio for playback.
+    * For Security and Moderation: To protect the App and its users, including reviewing prayer requests for appropriateness and handling reports of inappropriate content on the Prayer Wall.
+    * For Communication: To send you essential service-related communications (e.g., password reset emails).
+
+3.  HOW WE SHARE YOUR INFORMATION
+    We do not sell your personal information to third parties. We may share your information in limited circumstances:
+
+    * With Service Providers: We use third-party services (e.g., Firebase, Google Cloud Text-to-Speech, Google Sign-In) to operate and improve the App. These providers may have access to your information only to perform their services for us and are obligated not to disclose or use it for any other purpose.
+    * For Legal Reasons: We may disclose your information if required to do so by law or in the good faith belief that such action is necessary to comply with legal obligations, protect the rights or property of the App, or ensure the safety of our users or the public.
+    * Anonymous Prayer Content: Prayer requests submitted to the Community Prayer Wall are displayed publicly on the wall, but they are designed to be anonymous to other users. Only the prayer text, prayer count, and optional general location are visible. Your anonymous submitter ID is not displayed publicly.
+    * With Your Consent: We may share your information with third parties when we have your explicit consent to do so.
+
+4.  DATA RETENTION
+    We retain your personal information and usage data for as long as necessary to provide the App's services and fulfill the purposes outlined in this Privacy Policy, or as required by law.
+    * Account data: Retained as long as your account is active.
+    * Anonymous prayer submissions: Stored in Firestore indefinitely unless rejected by moderation or explicitly requested for deletion (if linked to a non-anonymous user who deletes their account).
+    * Local data (favorites, reading progress, preferences): Retained on your device unless the App is uninstalled or you manually clear its data, or you explicitly delete your account (for non-anonymous users, this data is also cleared from local storage during the account deletion process).
+
+5.  DATA SECURITY
+    We implement reasonable security measures to protect your information from unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security.
+
+6.  YOUR CHOICES AND RIGHTS
+    * Account Information: You can update your email or display name through your device's account settings (if applicable) or directly within the App's settings if we provide such functionality.
+    * Signing Out: You can sign out of your account at any time via the App's settings.
+    * Account Deletion: If you have a non-anonymous (email/password or Google) account, you can request to delete your account from within the App's settings. This will delete your account and associated data (prayer profile, prayer interactions, local favorites, reading progress, and settings). Anonymous accounts are tied to device installations and data may be removed by uninstalling the app and clearing app data.
+    * Local Data: You can manage or delete your local data (favorites, flags, reading progress) through the App's features or by clearing the App's data via your device settings.
+    * Anonymous Prayer ID: You can manage the anonymous ID used for tracking your prayers by entering it on the "My Submitted Prayers" screen. You can clear a locally saved ID, but the prayer requests themselves will remain in the database unless explicitly deleted as part of an account deletion for a non-anonymous user, or by moderation.
+    * Marketing Communications: The App does not currently send marketing communications.
+
+7.  CHILDREN'S PRIVACY
+    The App is not intended for use by children under the age of 13. We do not knowingly collect personal information from children under 13. The Prayer Wall feature includes an age confirmation step requiring users to confirm they are 13 years or older before submitting a prayer. If we become aware that we have inadvertently collected personal information from a child under 13, we will take steps to delete such information from our records.
+
+8.  CHANGES TO THIS PRIVACY POLICY
+    We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page within the App or through other appropriate means. You are advised to review this Privacy Policy periodically for any changes.
+
+9.  CONTACT US
+    If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at: privacy@alpentor.com
