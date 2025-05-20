@@ -1,4 +1,6 @@
-// lib/book_names.dart
+// File: lib/helpers/book_names.dart
+// Path: lib/helpers/book_names.dart
+// Updated: Added bookNameToAbbr function.
 
 const Map<String, String> bookCodeToFullName = {
   "GEN": "Genesis", "EXO": "Exodus", "LEV": "Leviticus", "NUM": "Numbers",
@@ -19,9 +21,28 @@ const Map<String, String> bookCodeToFullName = {
   "HEB": "Hebrews", "JAS": "James", "1PE": "1 Peter", "2PE": "2 Peter",
   "1JN": "1 John", "2JN": "2 John", "3JN": "3 John", "JUD": "Jude",
   "REV": "Revelation"
-  // Add any other books if your VPL file contains them (e.g., Apocrypha)
 };
 
 String getFullBookName(String bookCode) {
   return bookCodeToFullName[bookCode.toUpperCase()] ?? bookCode;
+}
+
+// --- NEW FUNCTION ---
+// Function to get abbreviation from full book name (simple reverse lookup)
+// This is a basic implementation and might need to be more robust
+// for variations in full book names (e.g., "Song of Songs" vs "Song of Solomon").
+String bookNameToAbbr(String fullName) {
+  final upperFullName = fullName.trim().toUpperCase();
+  for (var entry in bookCodeToFullName.entries) {
+    if (entry.value.toUpperCase() == upperFullName) {
+      return entry.key;
+    }
+  }
+  // Fallback for common variations like "Psalms" vs "Psalm"
+  if (upperFullName == "PSALM"){
+    return "PSA";
+  }
+  // More sophisticated matching could be added here if needed
+  print("Warning: Abbreviation not found for book name '$fullName'. Returning empty string.");
+  return ""; // Return empty or a placeholder if not found
 }

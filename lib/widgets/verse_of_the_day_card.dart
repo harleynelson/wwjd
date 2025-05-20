@@ -1,4 +1,7 @@
-// lib/widgets/verse_of_the_day_card.dart
+// File: lib/widgets/verse_of_the_day_card.dart
+// Path: lib/widgets/verse_of_the_day_card.dart
+// Approximate line: 20 (add onShareAsImage), 83 (add IconButton)
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // For custom fonts
 import 'animated_religious_background_card.dart';
@@ -13,17 +16,16 @@ class VerseOfTheDayCard extends StatelessWidget {
   final List<String> assignedFlagNames;
   final VoidCallback? onToggleFavorite;
   final VoidCallback? onManageFlags;
+  final VoidCallback? onShareAsImage; // <<< NEW CALLBACK
   final bool enableCardAnimations;
   final int speckCount;
 
-  // --- NEW: Font settings parameters ---
   final double fontSizeDelta;
   final ReaderFontFamily readerFontFamily;
 
-  // Base font sizes
   static const double _baseVerseTextFontSize = 17.0;
   static const double _baseVerseRefFontSize = 12.0;
-  static const double _baseLabelFontSize = 12.0; // For "Verse of the Day" label
+  static const double _baseLabelFontSize = 12.0;
   static const double _baseFlagChipFontSize = 10.0;
   static const double _baseManageFlagsButtonFontSize = 12.0;
 
@@ -36,14 +38,13 @@ class VerseOfTheDayCard extends StatelessWidget {
     required this.assignedFlagNames,
     this.onToggleFavorite,
     this.onManageFlags,
+    this.onShareAsImage, // <<< NEW PARAMETER
     this.enableCardAnimations = true,
     this.speckCount = 3,
-    // --- NEW: Initialize font settings ---
     this.fontSizeDelta = 0.0,
     this.readerFontFamily = ReaderFontFamily.systemDefault,
   });
 
-  // Helper to get text style based on reader settings
   TextStyle _getTextStyle(
       ReaderFontFamily family, double baseSize, FontWeight fontWeight, Color color,
       {FontStyle? fontStyle, double? letterSpacing, double? height}) {
@@ -70,21 +71,14 @@ class VerseOfTheDayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Use explicit dark text colors as this card has a fixed light gradient background
     final Color primaryDarkTextOnCard = Colors.black.withOpacity(0.87); 
     final Color secondaryDarkTextOnCard = Colors.black.withOpacity(0.65); 
-    
-    // For the verse reference, ensure it's a dark, contrasting color.
-    // A dark teal or a color derived from primaryDarkTextOnCard works well.
     final Color accentColorForRefOnCard = Color.lerp(primaryDarkTextOnCard, Colors.teal.shade800, 0.4) ?? Colors.teal.shade800;
-
     final Color flagChipDarkTextColor = Colors.black.withOpacity(0.75);
-    // Button text color for "Manage Flags" - can use the same dark accent or primary dark text
     final Color manageFlagsDarkButtonTextColor = accentColorForRefOnCard; 
-
     final Color favoriteIconColorOnCard = isFavorite ? Colors.redAccent.shade400 : Colors.grey.shade700;
-    // Use the new dark accent for the flag button icon as well
     final Color flagButtonIconColorOnCard = accentColorForRefOnCard; 
+    final Color shareIconColorOnCard = accentColorForRefOnCard; // Using accent color for share icon
 
 
     final TextStyle votdLabelStyle = _getTextStyle(
@@ -118,6 +112,18 @@ class VerseOfTheDayCard extends StatelessWidget {
             children: [
               Text("Verse of the Day", style: votdLabelStyle),
               const Spacer(),
+              if (!isLoading && onShareAsImage != null) // <<< ADDED SHARE BUTTON
+                IconButton(
+                  icon: Icon(
+                    Icons.image_outlined, // Or Icons.share_outlined if preferred for general share
+                    color: shareIconColorOnCard,
+                    size: 24, // Slightly smaller than favorite
+                  ),
+                  padding: const EdgeInsets.only(left: 8, right: 4), // Adjust padding
+                  constraints: const BoxConstraints(),
+                  tooltip: "Create Shareable Image",
+                  onPressed: onShareAsImage,
+                ),
               if (!isLoading && onToggleFavorite != null)
                 IconButton(
                   icon: Icon(
@@ -131,15 +137,13 @@ class VerseOfTheDayCard extends StatelessWidget {
                   onPressed: onToggleFavorite,
                 )
               else if (isLoading)
-                const SizedBox(width: 28, height: 28),
+                const SizedBox(width: 28 + 24 + 12, height: 28), // Space for both icons
             ],
           ),
           const SizedBox(height: 12.0),
           isLoading
               ? Center(child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  // Use a theme-aware progress indicator for the loading state if needed,
-                  // but here the whole card has a loading state.
                   child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary.withOpacity(0.7)), 
                 ))
               : SelectableText(
@@ -165,8 +169,7 @@ class VerseOfTheDayCard extends StatelessWidget {
                   visualDensity: VisualDensity.compact,
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  // Chip background can be light/neutral if text is dark and the card is light
-                  backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.8), // A bit more distinct
+                  backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.8), 
                   side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.6)),
                 )).toList(),
               ),
@@ -195,7 +198,7 @@ class VerseOfTheDayCard extends StatelessWidget {
 
     if (isLoading) {
       return SizedBox(
-        height: 180,
+        height: 180, // Adjust height if needed based on content
         child: AnimatedReligiousBackgroundCard(
           gradientColors: AppColors.loadingPlaceholderGradient,
           enableGodRays: false,

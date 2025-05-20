@@ -1,14 +1,12 @@
 // File: lib/screens/home_screen.dart
 // Path: lib/screens/home_screen.dart
-// Approximate line: 140 (build method) & removal of helper methods
+// Approximate line: 15 (add import), 175 & 195 (add callbacks)
 
-import 'dart:async'; // Added for StreamSubscription
+import 'dart:async'; 
 import 'package:flutter/material.dart';
-// import 'dart:math'; // No longer needed directly here if _buildPrayerWallPromoCard is extracted
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// Existing imports from your file
 import 'package:wwjd_app/widgets/verse_of_the_day_card.dart';
 import 'package:wwjd_app/widgets/devotional_of_the_day_card.dart';
 import '../helpers/daily_devotions.dart';
@@ -18,10 +16,10 @@ import '../helpers/book_names.dart';
 import '../helpers/prefs_helper.dart';
 import '../dialogs/flag_selection_dialog.dart';
 import '../models/user_prayer_profile_model.dart';
-// import '../theme/app_colors.dart'; // No longer directly used
 import '../theme/theme_provider.dart';
 import '../models/reader_settings_enums.dart';
 import '../services/prayer_service.dart';
+import '../screens/verse_image_generator_screen.dart'; // <<< NEW IMPORT
 
 // Screen imports
 import 'full_bible_reader_screen.dart';
@@ -31,7 +29,6 @@ import 'search_screen.dart';
 import 'reading_plans/reading_plans_list_screen.dart';
 import 'prayer_wall/prayer_wall_screen.dart';
 
-// NEW WIDGET IMPORTS
 import '../widgets/home/reading_streak_card.dart';
 import '../widgets/home/prayer_wall_promo_card.dart';
 import '../widgets/home/home_navigation_button.dart';
@@ -92,10 +89,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _userAuthSubscription = FirebaseAuth.instance.authStateChanges().listen((user) {
       if (mounted) {
-        setState(() {
-          _prayerStreakProfileFuture = _fetchCurrentPrayerActivityStreak();
-          _readingStreakFuture = _fetchCurrentReadingStreak();
-        });
+        // No need to call setState here if _assignFutures itself calls setState
+        // or if the FutureBuilders will naturally rebuild.
+        // However, if you want to ensure an immediate rebuild when auth changes,
+        // you might wrap _assignFutures in setState or call setState after it.
+        _assignFutures(); 
       }
     });
   }
@@ -113,11 +111,10 @@ class _HomeScreenState extends State<HomeScreen> {
     await _loadAvailableFlags();
     if (!mounted) return;
 
-    _assignFutures();
+    _assignFutures(); // This will set the futures
 
-    if (mounted) {
-      setState(() {});
-    }
+    // No need to call setState here if _assignFutures triggers rebuilds
+    // or if FutureBuilders handle it.
   }
 
   Future<void> _loadReaderPreferences() async {
@@ -126,29 +123,36 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _assignFutures() {
-    _devotionalFuture = _fetchDevotionalOfTheDay();
-    if (_currentVotDDataBundle == null || _currentVotDDataBundle!.verseData == null) {
-      _votdFuture = _fetchNewRandomVotDBundle();
-    } else {
-      _votdFuture = _refreshFavoriteStatusForCurrentVotD();
+    // Use setState to ensure FutureBuilders pick up the new Future instances
+    // This is crucial if you want the UI to show loading indicators again.
+    if (mounted) {
+      setState(() {
+        _devotionalFuture = _fetchDevotionalOfTheDay();
+        if (_currentVotDDataBundle == null || _currentVotDDataBundle!.verseData == null) {
+          _votdFuture = _fetchNewRandomVotDBundle();
+        } else {
+          _votdFuture = _refreshFavoriteStatusForCurrentVotD();
+        }
+        _readingStreakFuture = _fetchCurrentReadingStreak();
+        _prayerStreakProfileFuture = _fetchCurrentPrayerActivityStreak();
+      });
     }
-    _readingStreakFuture = _fetchCurrentReadingStreak();
-    _prayerStreakProfileFuture = _fetchCurrentPrayerActivityStreak();
   }
 
   Future<void> _loadAvailableFlags() async {
-    try {
-      final Set<int> hiddenIds = PrefsHelper.getHiddenFlagIds();
-      final List<Flag> visiblePrebuiltFlags = prebuiltFlags.where((f) => !hiddenIds.contains(f.id)).toList();
-      final userFlagMaps = await _dbHelper.getUserFlags();
-      final userFlags = userFlagMaps.map((map) => Flag.fromUserDbMap(map)).toList();
-      if (!mounted) return;
-      setState(() {
-         _allAvailableFlags = [...visiblePrebuiltFlags, ...userFlags]..sort((a, b) => a.name.compareTo(b.name));
-      });
-    } catch (e) {
-      if(mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error loading flags: ${e.toString()}")));
-    }
+     if (!mounted) return;
+     try {
+        final Set<int> hiddenIds = PrefsHelper.getHiddenFlagIds();
+        final List<Flag> visiblePrebuiltFlags = prebuiltFlags.where((f) => !hiddenIds.contains(f.id)).toList();
+        final userFlagMaps = await _dbHelper.getUserFlags();
+        final userFlags = userFlagMaps.map((map) => Flag.fromUserDbMap(map)).toList();
+        if (!mounted) return; // Check again before setState
+        setState(() {
+           _allAvailableFlags = [...visiblePrebuiltFlags, ...userFlags]..sort((a, b) => a.name.compareTo(b.name));
+        });
+     } catch (e) {
+        if(mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error loading flags: ${e.toString()}")));
+     }
   }
 
   Future<Devotional?> _fetchDevotionalOfTheDay() async {
@@ -231,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!mounted) return;
 
     setState(() {
-      _currentVotDDataBundle = null;
+      _currentVotDDataBundle = null; 
       _assignFutures();
     });
   }
@@ -258,15 +262,98 @@ class _HomeScreenState extends State<HomeScreen> {
             onSave: (finalSelectedIds) async { Set<int> initSet = bundleForFlags.assignedFlagIds.toSet(); Set<int> finalSet = finalSelectedIds.toSet(); for (int id in finalSet.difference(initSet)) { await _dbHelper.assignFlagToFavorite(verseID, id); } for (int id in initSet.difference(finalSet)) { await _dbHelper.removeFlagFromFavorite(verseID, id); } if (mounted) { setState((){ _votdFuture = _refreshFavoriteStatusForCurrentVotD(); }); } },
         ),).then((_) { if (mounted) { _loadAvailableFlags();  } });
   }
+  
+  // --- NEW: Navigate to Image Generator for Verse of the Day ---
+  void _shareVotDAsImage(VotDDataBundle? bundle) {
+    if (bundle?.verseData == null) return;
+    final verseData = bundle!.verseData!;
+    final String verseText = verseData[DatabaseHelper.bibleColVerseText] ?? "No text";
+    final String bookAbbr = verseData[DatabaseHelper.bibleColBook] ?? "";
+    final String chapter = verseData[DatabaseHelper.bibleColChapter]?.toString() ?? "";
+    final String verseNum = verseData[DatabaseHelper.bibleColStartVerse]?.toString() ?? "";
+    final String fullBookName = getFullBookName(bookAbbr);
+    final String reference = "$fullBookName $chapter:$verseNum";
 
-  // REMOVED _buildReadingStreakCard, _buildPrayerWallPromoCard, and _buildNavigationButton methods
-  // They are now separate widgets.
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VerseImageGeneratorScreen(
+          initialVerseText: verseText,
+          initialVerseReference: reference,
+          initialBookAbbr: bookAbbr,
+          initialChapter: chapter,
+          initialVerseNum: verseNum,
+        ),
+      ),
+    );
+  }
+
+  // --- NEW: Navigate to Image Generator for Devotional Scripture ---
+  void _shareDevotionalScriptureAsImage(Devotional? devotional) {
+    if (devotional == null || devotional.scriptureFocus.isEmpty) return;
+    
+    // Attempt to parse book, chapter, verse from scriptureReference
+    // This is a simple parser, might need to be more robust
+    String bookAbbr = "";
+    String chapter = "";
+    String verseNum = "";
+
+    // Example: "John 3:16 NIV" or "Psalm 23"
+    String ref = devotional.scriptureReference.trim();
+    // Remove version if present
+    final versions = ["NIV", "ESV", "KJV", "NKJV", "NLT", "MSG"];
+    for (var v in versions) {
+      if (ref.toUpperCase().endsWith(" $v")) {
+        ref = ref.substring(0, ref.length - (v.length + 1)).trim();
+        break;
+      }
+    }
+    
+    final parts = ref.split(' ');
+    if (parts.isNotEmpty) {
+      String potentialBookName = "";
+      int chapterVerseSplitIndex = -1;
+
+      for(int i=0; i<parts.length; ++i) {
+        if (RegExp(r'^\d+:\d+$').hasMatch(parts[i]) || RegExp(r'^\d+$').hasMatch(parts[i])) { // Chapter:Verse or just Chapter
+            chapterVerseSplitIndex = i;
+            break;
+        }
+        potentialBookName += (potentialBookName.isEmpty ? "" : " ") + parts[i];
+      }
+      
+      bookAbbr = bookNameToAbbr(potentialBookName); // You'll need a reverse lookup or smarter parsing
+
+      if(chapterVerseSplitIndex != -1 && chapterVerseSplitIndex < parts.length) {
+          final chapterVersePart = parts[chapterVerseSplitIndex];
+          final cvParts = chapterVersePart.split(':');
+          chapter = cvParts[0];
+          if (cvParts.length > 1) {
+              verseNum = cvParts[1].split('-')[0]; // Take first verse if it's a range
+          }
+      }
+    }
+
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VerseImageGeneratorScreen(
+          initialVerseText: devotional.scriptureFocus,
+          initialVerseReference: devotional.scriptureReference, // Pass the original full reference
+          initialBookAbbr: bookAbbr.isNotEmpty ? bookAbbr : null, // Pass parsed if available
+          initialChapter: chapter.isNotEmpty ? chapter : null,
+          initialVerseNum: verseNum.isNotEmpty ? verseNum : null,
+        ),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final Brightness currentBrightness = Theme.of(context).brightness;
-    // final theme = Theme.of(context); // theme variable can be obtained from context where needed
 
     final Gradient lightGradient = LinearGradient( colors: [ Colors.deepPurple.shade100.withOpacity(0.6), Colors.purple.shade50.withOpacity(0.8), Colors.white, ], begin: Alignment.topLeft, end: Alignment.bottomRight, stops: const [0.0, 0.3, 1.0],);
     final Gradient darkGradient = LinearGradient( colors: [ Colors.grey.shade800, Colors.grey.shade900, Colors.black ],  begin: Alignment.topLeft, end: Alignment.bottomRight, stops: const [0.0, 0.4, 1.0],);
@@ -310,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData && !snapshot.hasError) { return DevotionalOfTheDayCard( devotional: Devotional(title: "", coreMessage: "", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""), isLoading: true, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, ); }
                   if (snapshot.hasError) { print("Error in _devotionalFuture FutureBuilder: ${snapshot.error}"); return DevotionalOfTheDayCard( devotional: Devotional(title: "Error", coreMessage: "Could not load devotional.", scriptureFocus: "", scriptureReference: "", reflection: "Please try again later.", prayerDeclaration: ""), isLoading: false, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, );}
                   final devotionalData = snapshot.data;  if (devotionalData == null && snapshot.connectionState != ConnectionState.waiting) { return DevotionalOfTheDayCard(  devotional: Devotional(title: "Not Available", coreMessage: "Today's devotional is not available.", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""), isLoading: false, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, ); }
-                  return DevotionalOfTheDayCard( devotional: devotionalData ?? Devotional(title: "", coreMessage: "Loading...", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""),  isLoading: snapshot.connectionState == ConnectionState.waiting,  enableCardAnimations: true, speckCount: 15, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily,  );
+                  return DevotionalOfTheDayCard( devotional: devotionalData ?? Devotional(title: "", coreMessage: "Loading...", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""),  isLoading: snapshot.connectionState == ConnectionState.waiting,  enableCardAnimations: true, speckCount: 15, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, onShareScriptureAsImage: () => _shareDevotionalScriptureAsImage(devotionalData), ); // <<< ADDED CALLBACK
               },),
               const SizedBox(height: 20.0),
               FutureBuilder<VotDDataBundle>( future: _votdFuture,  builder: (context, snapshot) {
@@ -318,7 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (snapshot.hasData && snapshot.data!.verseData != null) { _currentVotDDataBundle = snapshot.data!;  bundleForDisplay = _currentVotDDataBundle; } else if (_currentVotDDataBundle != null && _currentVotDDataBundle!.verseData != null) { bundleForDisplay = _currentVotDDataBundle; } else if (snapshot.hasError) { print("Error in _votdFuture FutureBuilder: ${snapshot.error}"); return VerseOfTheDayCard(isLoading: false, verseText: "Could not load verse.", verseRef: "Error", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily); } else if (snapshot.connectionState != ConnectionState.waiting && (snapshot.data == null || snapshot.data!.verseData == null)) { return VerseOfTheDayCard(isLoading: false, verseText: "Verse not available.", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily); }
                   if (bundleForDisplay == null || bundleForDisplay.verseData == null) { return VerseOfTheDayCard(isLoading: true, verseText: "Loading...", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: true, speckCount: 10, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily); }
                   final VotDDataBundle currentBundle = bundleForDisplay; String votdText = currentBundle.verseData![DatabaseHelper.bibleColVerseText] ?? "Error: Text missing."; String bookAbbr = currentBundle.verseData![DatabaseHelper.bibleColBook] ?? "??"; String chapterStr = currentBundle.verseData![DatabaseHelper.bibleColChapter]?.toString() ?? "?"; String verseNum = currentBundle.verseData![DatabaseHelper.bibleColStartVerse]?.toString() ?? "?"; String votdRef = "${getFullBookName(bookAbbr)} $chapterStr:$verseNum"; List<String> flagNamesForVotD = []; if (currentBundle.isFavorite && currentBundle.assignedFlagIds.isNotEmpty) { flagNamesForVotD = currentBundle.assignedFlagIds.map((id) { final flag = _allAvailableFlags.firstWhere((f) => f.id == id, orElse: () => Flag(id: 0, name: "Unknown")); return flag.name; }).where((name) => name != "Unknown").toList(); flagNamesForVotD.sort(); }
-                  return VerseOfTheDayCard( isLoading: showAsLoading,  verseText: votdText, verseRef: votdRef, isFavorite: currentBundle.isFavorite, assignedFlagNames: flagNamesForVotD, onToggleFavorite: () => _toggleVotDFavorite(currentBundle), onManageFlags: currentBundle.isFavorite ? () => _openFlagManagerForVotD(currentBundle) : null, enableCardAnimations: true, speckCount: 10, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily,);
+                  return VerseOfTheDayCard( isLoading: showAsLoading,  verseText: votdText, verseRef: votdRef, isFavorite: currentBundle.isFavorite, assignedFlagNames: flagNamesForVotD, onToggleFavorite: () => _toggleVotDFavorite(currentBundle), onManageFlags: currentBundle.isFavorite ? () => _openFlagManagerForVotD(currentBundle) : null, enableCardAnimations: true, speckCount: 10, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily, onShareAsImage: () => _shareVotDAsImage(currentBundle),); // <<< ADDED CALLBACK
               },),
               const SizedBox(height: 24.0),
               HomeNavigationButton(icon: Icons.menu_book_outlined, label: "Read Full Bible", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FullBibleReaderScreen())).then((_) => _refreshAllData())),

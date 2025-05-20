@@ -1,5 +1,6 @@
-// lib/widgets/devotional_of_the_day_card.dart
+// File: lib/widgets/devotional_of_the_day_card.dart
 // Path: lib/widgets/devotional_of_the_day_card.dart
+// Approximate line: 17 (add onShareScriptureAsImage), 105 (add IconButton)
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,10 +9,7 @@ import 'animated_religious_background_card.dart';
 import '../theme/app_colors.dart';
 import '../models/reader_settings_enums.dart';
 import '../services/text_to_speech_service.dart';
-// --- NEW IMPORT ---
 import './tts_play_button.dart';
-// --- END NEW ---
-
 
 class DevotionalOfTheDayCard extends StatefulWidget {
   final Devotional devotional;
@@ -20,6 +18,7 @@ class DevotionalOfTheDayCard extends StatefulWidget {
   final int speckCount;
   final double fontSizeDelta;
   final ReaderFontFamily readerFontFamily;
+  final VoidCallback? onShareScriptureAsImage; // <<< NEW CALLBACK
 
   const DevotionalOfTheDayCard({
     super.key,
@@ -29,6 +28,7 @@ class DevotionalOfTheDayCard extends StatefulWidget {
     this.speckCount = 15,
     this.fontSizeDelta = 0.0,
     this.readerFontFamily = ReaderFontFamily.systemDefault,
+    this.onShareScriptureAsImage, // <<< NEW PARAMETER
   });
 
   @override
@@ -37,16 +37,14 @@ class DevotionalOfTheDayCard extends StatefulWidget {
 
 class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
   bool _isExpanded = false;
-  // TextToSpeechService instance is now managed by TtsPlayButton or used directly by speakScriptFunction
-  // final TextToSpeechService _ttsService = TextToSpeechService(); 
 
   static const double _baseTitleFontSize = 19.0;
   static const double _baseCoreMessageFontSize = 16.0;
-  static const double _baseScriptureFontSize = 15.0; // Was likely present
-  static const double _baseReflectionFontSize = 14.0; // <<< THIS WAS MISSING
-  static const double _baseDeclarationLabelFontSize = 14.0; // Ensure this is also present
-  static const double _baseDeclarationTextFontSize = 15.0; // Ensure this is also present
-  static const double _baseLabelFontSize = 12.0; // For "Daily Reflection" label
+  static const double _baseScriptureFontSize = 15.0;
+  static const double _baseReflectionFontSize = 14.0;
+  static const double _baseDeclarationLabelFontSize = 14.0;
+  static const double _baseDeclarationTextFontSize = 15.0;
+  static const double _baseLabelFontSize = 12.0;
 
   @override
   void initState() {
@@ -58,12 +56,10 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
     super.dispose();
   }
 
-  // This function will be passed to TtsPlayButton's speakScriptFunction
   Future<void> _speakDevotionalScriptCallback(TextToSpeechService service, Devotional scriptData) async {
     await service.speakDevotionalScript(scriptData);
   }
 
-  // Provider for the script data
   Future<Devotional?> _getDevotionalScriptDataProvider() async {
     if (widget.devotional.title == "No Devotional Available" ||
         widget.devotional.title == "Content Coming Soon" ||
@@ -112,6 +108,7 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
     final Color secondaryDarkTextOnCard = Colors.black.withOpacity(0.70);
     final Color accentColorForLinksAndRefsOnCard = Color.lerp(primaryDarkTextOnCard, Colors.indigo.shade700, 0.6) ?? Colors.indigo.shade700;
     final Color audioButtonColorForThisCard = accentColorForLinksAndRefsOnCard;
+    final Color shareIconColorOnCard = accentColorForLinksAndRefsOnCard; // Using accent color for share icon
 
     if (widget.isLoading) {
       return SizedBox(
@@ -159,37 +156,26 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
     final TextStyle titleStyle = _getTextStyle(widget.readerFontFamily, _baseTitleFontSize, FontWeight.bold, primaryDarkTextOnCard);
     final TextStyle coreMessageStyle = _getTextStyle(widget.readerFontFamily, _baseCoreMessageFontSize, FontWeight.w600, secondaryDarkTextOnCard, fontStyle: FontStyle.italic);
     
-    final TextStyle baseScriptureStyle = _getTextStyle(widget.readerFontFamily, 15.0, FontWeight.normal, primaryDarkTextOnCard, height: 1.5);
+    final TextStyle baseScriptureStyle = _getTextStyle(widget.readerFontFamily, _baseScriptureFontSize, FontWeight.normal, primaryDarkTextOnCard, height: 1.5);
     final TextStyle scriptureFocusItalicStyle = baseScriptureStyle.copyWith(fontStyle: FontStyle.italic);
-    final TextStyle scriptureRefStyle = _getTextStyle(widget.readerFontFamily, 15.0, FontWeight.bold, accentColorForLinksAndRefsOnCard, height: 1.5); 
+    final TextStyle scriptureRefStyle = _getTextStyle(widget.readerFontFamily, _baseScriptureFontSize, FontWeight.bold, accentColorForLinksAndRefsOnCard, height: 1.5); 
     
-    final TextStyle reflectionTextStyle = _getTextStyle(widget.readerFontFamily, 14.0, FontWeight.normal, secondaryDarkTextOnCard, height: 1.6);
-    final TextStyle declarationLabelStyle = _getTextStyle(widget.readerFontFamily, 14.0, FontWeight.bold, primaryDarkTextOnCard);
+    final TextStyle reflectionTextStyle = _getTextStyle(widget.readerFontFamily, _baseReflectionFontSize, FontWeight.normal, secondaryDarkTextOnCard, height: 1.6);
+    final TextStyle declarationLabelStyle = _getTextStyle(widget.readerFontFamily, _baseDeclarationLabelFontSize, FontWeight.bold, primaryDarkTextOnCard);
     
     final Color declarationTextColorOnCard = Color.lerp(primaryDarkTextOnCard, Colors.teal.shade800, 0.6) ?? Colors.teal.shade800;
-    final TextStyle declarationTextStyle = _getTextStyle(widget.readerFontFamily, 15.0, FontWeight.w500, declarationTextColorOnCard, fontStyle: FontStyle.italic);
+    final TextStyle declarationTextStyle = _getTextStyle(widget.readerFontFamily, _baseDeclarationTextFontSize, FontWeight.w500, declarationTextColorOnCard, fontStyle: FontStyle.italic);
     
     final TextStyle readMoreStyle = _getTextStyle(ReaderFontFamily.systemDefault, 14.0, FontWeight.bold, accentColorForLinksAndRefsOnCard);
 
-    // --- Define the subtle background for the declaration section ---
-    // This will be a slightly translucent white, overlaying the card's gradient.
     final BoxDecoration declarationSectionDecoration = BoxDecoration(
-      color: Colors.white.withOpacity(0.25), // Adjust opacity for desired subtlety
+      color: Colors.white.withOpacity(0.25), 
       borderRadius: BorderRadius.circular(12.0),
       border: Border.all(
-        color: Colors.white.withOpacity(0.5), // A very light border
+        color: Colors.white.withOpacity(0.5), 
         width: 0.5,
       ),
-      // Optional: Add a very subtle shadow for a slight lift
-      // boxShadow: [
-      //   BoxShadow(
-      //     color: Colors.black.withOpacity(0.05),
-      //     blurRadius: 4.0,
-      //     offset: Offset(0, 2),
-      //   ),
-      // ],
     );
-
 
     Widget devotionalContent = Material(
         type: MaterialType.transparency,
@@ -204,12 +190,29 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text("Daily Reflection", style: dailyReflectionLabelStyle),
-                  TtsPlayButton<Devotional>(
-                    scriptProvider: _getDevotionalScriptDataProvider,
-                    speakScriptFunction: _speakDevotionalScriptCallback,
-                    hasPremiumAccess: true, 
-                    isPremiumFeature: false,
-                    iconColor: audioButtonColorForThisCard,
+                  Row( // Group buttons
+                    children: [
+                      if (widget.onShareScriptureAsImage != null && widget.devotional.scriptureFocus.isNotEmpty)
+                        IconButton(
+                          icon: Icon(
+                            Icons.image_outlined,
+                            color: shareIconColorOnCard,
+                            size: 24,
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          constraints: const BoxConstraints(),
+                          tooltip: "Share Scripture as Image",
+                          onPressed: widget.onShareScriptureAsImage,
+                        ),
+                      TtsPlayButton<Devotional>(
+                        scriptProvider: _getDevotionalScriptDataProvider,
+                        speakScriptFunction: _speakDevotionalScriptCallback,
+                        hasPremiumAccess: true, 
+                        isPremiumFeature: false,
+                        iconColor: audioButtonColorForThisCard,
+                        iconSize: 26, // Adjusted size
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -240,7 +243,7 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
               ],
               AnimatedCrossFade(
                 firstChild: const SizedBox.shrink(),
-                secondChild: Column( // This is the Column for the expanded content
+                secondChild: Column( 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -250,20 +253,18 @@ class _DevotionalOfTheDayCardState extends State<DevotionalOfTheDayCard> {
                     const SizedBox(height: 16.0),
                     Divider(color: primaryDarkTextOnCard.withOpacity(0.2)),
                     const SizedBox(height: 12.0),
-                    // --- Apply new background to the declaration section ---
                     Container(
-                      padding: const EdgeInsets.all(16.0), // Internal padding for the declaration section
-                      decoration: declarationSectionDecoration, // Apply the new subtle background decoration
+                      padding: const EdgeInsets.all(16.0), 
+                      decoration: declarationSectionDecoration, 
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Today's Declaration:", style: declarationLabelStyle),
-                          const SizedBox(height: 10.0), // Increased space after label
+                          const SizedBox(height: 10.0), 
                           SelectableText(widget.devotional.prayerDeclaration, style: declarationTextStyle),
                         ],
                       ),
                     ),
-                    // --- End declaration section styling ---
                   ],
                 ),
                 crossFadeState: _isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,

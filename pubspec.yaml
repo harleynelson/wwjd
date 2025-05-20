@@ -40,6 +40,7 @@ dependencies:
   uuid: ^4.4.0 # For generating unique IDs
   intl: ^0.20.2 # For date formatting
   shared_preferences: ^2.2.3 # For local storage
+  flutter_colorpicker: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -53,4 +54,5 @@ flutter:
     - assets/database/wwjd_bible_free.sqlite # Correct path to your database
     - assets/images/reading_plan_headers/   # Reading plan header images
     - assets/images/home/              # Home screen images
+    - assets/images/backgrounds/      # Background images for exporting verses, etc...
     - assets/reading_plans/

@@ -1,17 +1,26 @@
 // File: lib/widgets/verse_actions_bottom_sheet.dart
+// Path: lib/widgets/verse_actions_bottom_sheet.dart
+// Updated: Entire file to ensure all parameters are correctly passed for image generator.
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For Clipboard
 import 'package:share_plus/share_plus.dart'; // For sharing
 import '../models/models.dart'; // For Verse
 import '../helpers/book_names.dart'; // For getFullBookName
+import '../screens/verse_image_generator_screen.dart';
 
 class VerseActionsBottomSheet extends StatelessWidget {
   final Verse verse;
   final bool isFavorite;
-  final List<String> assignedFlagNames; // For display if needed, or just for context
+  final List<String> assignedFlagNames;
   final VoidCallback onToggleFavorite;
   final VoidCallback onManageFlags;
-  final String fullBookName; // Pre-fetched full book name
+  final String fullBookName; // Already exists, good.
+  
+  // These are important for passing precise verse context to the image generator
+  final String? bookAbbr; 
+  final String? chapter;  
+  final String? verseNum; 
 
   const VerseActionsBottomSheet({
     super.key,
@@ -20,14 +29,17 @@ class VerseActionsBottomSheet extends StatelessWidget {
     required this.assignedFlagNames,
     required this.onToggleFavorite,
     required this.onManageFlags,
-    required this.fullBookName,
+    required this.fullBookName, // Keep this for display in the sheet itself
+    this.bookAbbr, // For image generator
+    this.chapter,  // For image generator
+    this.verseNum, // For image generator
   });
 
   Future<void> _copyVerse(BuildContext context, Verse verseToCopy, String bookName) async {
     final String reference = "$bookName ${verseToCopy.chapter}:${verseToCopy.verseNumber}";
     final String textToCopy = '"${verseToCopy.text}" - $reference';
     await Clipboard.setData(ClipboardData(text: textToCopy));
-    Navigator.pop(context); // Close the bottom sheet
+    Navigator.pop(context); 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Verse copied to clipboard!'),
@@ -41,9 +53,26 @@ class VerseActionsBottomSheet extends StatelessWidget {
 
   Future<void> _shareVerse(BuildContext context, Verse verseToShare, String bookName) async {
     final String reference = "$bookName ${verseToShare.chapter}:${verseToShare.verseNumber}";
-    final String textToShare = '"${verseToShare.text}" - $reference\n\nShared from Wake up With Jesus Daily';
-    Navigator.pop(context); // Close bottom sheet BEFORE sharing to avoid context issues on some platforms
+    final String textToShare = '"${verseToShare.text}" - $reference\n\nShared from WWJD App'; // App name added
+    Navigator.pop(context); 
     await Share.share(textToShare, subject: 'Bible Verse: $reference');
+  }
+
+  void _navigateToImageGenerator(BuildContext context) {
+    Navigator.pop(context); 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VerseImageGeneratorScreen(
+          initialVerseText: verse.text,
+          // Construct the reference string carefully for the generator screen title/default
+          initialVerseReference: "$fullBookName ${chapter ?? verse.chapter}:${verseNum ?? verse.verseNumber}",
+          initialBookAbbr: bookAbbr ?? verse.bookAbbr, 
+          initialChapter: chapter ?? verse.chapter,
+          initialVerseNum: verseNum ?? verse.verseNumber,
+        ),
+      ),
+    );
   }
 
   @override
@@ -52,18 +81,29 @@ class VerseActionsBottomSheet extends StatelessWidget {
     final ColorScheme colorScheme = theme.colorScheme;
     final TextTheme textTheme = theme.textTheme;
 
-    final String verseReference = "$fullBookName ${verse.chapter}:${verse.verseNumber}";
+    // Use the passed-in fullBookName, chapter, and verseNum if available for display,
+    // otherwise fallback to verse object's properties.
+    final String displayChapter = chapter ?? verse.chapter ?? "?";
+    final String displayVerseNum = verseNum ?? verse.verseNumber;
+    final String verseReferenceForDisplay = "$fullBookName $displayChapter:$displayVerseNum";
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
       decoration: BoxDecoration(
-        color: colorScheme.surface, // Or surfaceContainerLow for more depth
+        color: colorScheme.surfaceContainerLow, // Slightly different background for depth
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20.0),
           topRight: Radius.circular(20.0),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, -2),
+          )
+        ]
       ),
-      child: SafeArea( // Ensures content is not obscured by system intrusions
+      child: SafeArea( 
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +111,7 @@ class VerseActionsBottomSheet extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 12.0),
               child: Text(
-                verseReference,
+                verseReferenceForDisplay, // Use the potentially more accurate reference
                 style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
                 textAlign: TextAlign.center,
               ),
@@ -80,22 +120,16 @@ class VerseActionsBottomSheet extends StatelessWidget {
               leading: Icon(isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded, color: isFavorite ? Colors.red.shade400 : colorScheme.onSurfaceVariant),
               title: Text(isFavorite ? 'Remove from Favorites' : 'Add to Favorites'),
               onTap: () {
-                // Navigator.pop(context); // Close bottom sheet first
-                onToggleFavorite();
-                 // Optionally, keep sheet open or provide feedback. For now, callback handles UI update & sheet closing implicitly if screen rebuilds.
-                 // If the action itself should close the sheet, then call Navigator.pop(context) here.
-                 // Since _toggleFavorite in FullBibleReaderScreen causes a setState, it might rebuild and the sheet context might be lost.
-                 // It's often better to pop *after* the action if the action doesn't involve navigation or heavy async work that relies on the sheet's context.
-                 // However, for toggleFavorite, the parent screen will rebuild, so popping first is safer.
                 Navigator.pop(context);
+                onToggleFavorite();
               },
             ),
-            if (isFavorite) // Only show manage flags if it's a favorite
+            if (isFavorite) 
               ListTile(
                 leading: Icon(Icons.flag_outlined, color: colorScheme.onSurfaceVariant),
                 title: const Text('Manage Flags'),
                 onTap: () {
-                  Navigator.pop(context); // Close this sheet before opening dialog
+                  Navigator.pop(context); 
                   onManageFlags();
                 },
               ),
@@ -106,26 +140,14 @@ class VerseActionsBottomSheet extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(Icons.share_outlined, color: colorScheme.onSurfaceVariant),
-              title: const Text('Share Verse'),
+              title: const Text('Share Verse Text'),
               onTap: () => _shareVerse(context, verse, fullBookName),
             ),
-            // Potential future premium features:
-            // ListTile(
-            //   leading: Icon(Icons.edit_note_outlined, color: colorScheme.onSurfaceVariant),
-            //   title: Text('Add Note (Premium)'),
-            //   onTap: () {
-            //     Navigator.pop(context);
-            //     // TODO: Implement or show premium upsell for notes
-            //   },
-            // ),
-            // ListTile(
-            //   leading: Icon(Icons.menu_book_outlined, color: colorScheme.onSurfaceVariant),
-            //   title: Text('View Commentary (Premium)'),
-            //   onTap: () {
-            //     Navigator.pop(context);
-            //     // TODO: Implement or show premium upsell for commentary
-            //   },
-            // ),
+            ListTile(
+              leading: Icon(Icons.image_outlined, color: colorScheme.onSurfaceVariant),
+              title: const Text('Create Shareable Image'),
+              onTap: () => _navigateToImageGenerator(context),
+            ),
             const SizedBox(height: 8),
             Center(
               child: TextButton(
@@ -139,3 +161,4 @@ class VerseActionsBottomSheet extends StatelessWidget {
     );
   }
 }
+
