@@ -2,7 +2,7 @@ name: wwjd_app
 description: Wake up With Jesus app.
 publish_to: 'none' # Remove this line if you intend to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0' # Adjust SDK constraint as per your Flutter version
@@ -16,7 +16,7 @@ dependencies:
   scrollable_positioned_list: ^0.3.8 # For scrollable list view
   cupertino_icons: ^1.0.6
   share_plus: ^11.0.0 # For sharing content
-  google_fonts: ^6.2.1 # For custom fonts
+  google_fonts: ^7.0.2 # For custom fonts
   provider: ^6.1.2 # For state management
   flutter_tts: ^4.2.2 # For text-to-speech functionality
   http: ^1.2.1 # Or latest version, for making API calls

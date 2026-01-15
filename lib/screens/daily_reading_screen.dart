@@ -15,7 +15,9 @@ import 'package:wwjd_app/widgets/tts_play_button.dart';
 import 'package:wwjd_app/services/text_to_speech_service.dart';
 import 'package:wwjd_app/widgets/reading_plans/interspersed_insight_widget.dart';
 import 'package:wwjd_app/widgets/reading_plans/daily_reading_passage_display.dart';
-import 'package:wwjd_app/helpers/reader_theme_helper.dart'; // NEW IMPORT
+import 'package:wwjd_app/helpers/reader_theme_helper.dart';
+
+import '../dialogs/premium_locked_dialog.dart'; // NEW IMPORT
 
 class DailyReadingScreen extends StatefulWidget {
   final String planId;
@@ -523,9 +525,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
             iconColor: appBarIconColor,
             iconSize: 26.0,
             onPremiumLockTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Unlock Premium to use audio playback for guided readings!")),
-              );
+              PremiumLockedDialog.show(context, featureName: "Audio Narration");
             },
           ),
           IconButton(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // To access PrayerService and AppUser.
 import 'package:shared_preferences/shared_preferences.dart'; // To save anonymous ID locally.
 
+import '../../dialogs/premium_locked_dialog.dart';
 import '../../services/prayer_service.dart'; // Service for prayer operations.
 import '../../widgets/prayer_wall/prayer_form.dart'; // Reusable prayer input form.
 import '../../dialogs/confirm_age_dialog.dart'; // Dialog for age confirmation.
@@ -54,7 +55,6 @@ class _SubmitPrayerScreenState extends State<SubmitPrayerScreen> {
     }
 
     final prayerService = Provider.of<PrayerService>(context, listen: false);
-    // bool submissionWasSuccessful = false; // Not strictly needed if we pop with result
 
     try {
       final submissionResult = await prayerService.submitPrayer(
@@ -66,7 +66,6 @@ class _SubmitPrayerScreenState extends State<SubmitPrayerScreen> {
 
       if (mounted) { 
         if (submissionResult != null && submissionResult['error'] == null) {
-          // submissionWasSuccessful = true; 
           final prayerId = submissionResult['prayerId'];
           final submitterAnonymousId = submissionResult['submitterAnonymousId'];
 
@@ -76,19 +75,6 @@ class _SubmitPrayerScreenState extends State<SubmitPrayerScreen> {
             print("Saved submitterAnonymousId to SharedPreferences: $submitterAnonymousId");
           }
 
-          // Clear the form fields (assuming _prayerTextController is part of PrayerForm state,
-          // this needs to be handled by resetting the PrayerForm's controllers or its key)
-          // For simplicity, if PrayerForm's controllers are managed within SubmitPrayerScreen, clear them here.
-          // If PrayerForm manages its own controllers, you'd call a clear method on PrayerForm's state.
-          // Assuming _prayerTextController is available here (if PrayerForm was part of this state):
-          // _prayerTextController.clear(); 
-          // _selectedLocation = null; // If location is also managed here
-
-          // For now, we'll rely on popping the screen, which naturally "clears" it for the next visit.
-          // A more robust clear would involve resetting the PrayerForm's GlobalKey if you have one.
-
-
-          // Show the dialog with details and await its dismissal
           await showPrayerStatusDialog( 
             context,
             success: true,
@@ -96,21 +82,26 @@ class _SubmitPrayerScreenState extends State<SubmitPrayerScreen> {
             submitterAnonymousId: submitterAnonymousId,
             message: 'Your prayer has been sent for review. You can use the Anonymous ID to track its interactions once approved.',
           );
-          // After dialog is dismissed, pop SubmitPrayerScreen with true for success
+          
           if (mounted && Navigator.canPop(context)) {
             Navigator.of(context).pop(true); 
           }
 
         } else {
-          showPrayerStatusDialog(
-            context,
-            success: false,
-            message: submissionResult?['error'] ?? 'An unknown error occurred during submission.',
-          );
-          // Optionally pop with false if submission failed and you want the caller to know
-          // if (mounted && Navigator.canPop(context)) {
-          //   Navigator.of(context).pop(false);
-          // }
+          // --- UPDATED ERROR HANDLING ---
+          final errorMessage = submissionResult?['error'] ?? 'An unknown error occurred.';
+          
+          // Check if the error is related to the weekly limit (text matches PrayerService logic)
+          if (errorMessage.contains('limit') || errorMessage.contains('submission limit')) {
+             await PremiumLockedDialog.show(context, featureName: "Unlimited Prayers");
+          } else {
+             // Show standard error for other issues (network, database, etc.)
+             showPrayerStatusDialog(
+              context,
+              success: false,
+              message: errorMessage,
+            );
+          }
         }
       }
     } catch (e) {

@@ -32,7 +32,7 @@ class AppThemes {
       titleMedium: TextStyle(color: AppColors.textPrimary.withOpacity(0.9)),
       // Define other text styles as needed
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       color: Colors.white, // Light card background
@@ -79,7 +79,7 @@ class AppThemes {
       titleMedium: TextStyle(color: Colors.white.withOpacity(0.9)),
       // Define other text styles as needed
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       color: Colors.grey.shade800, // Darker card background

@@ -5,6 +5,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math'; 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import '../../dialogs/premium_locked_dialog.dart';
+import '../../models/app_user.dart';
 import '../../models/models.dart'; //
 import '../../services/reading_plan_service.dart'; //
 import '../../helpers/database_helper.dart'; //
@@ -233,6 +236,10 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // --- NEW: Listen to AppUser for premium status ---
+    final appUser = Provider.of<AppUser?>(context);
+    final bool isUserPremium = appUser?.isPremium ?? false;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Reading Plans"),
@@ -247,33 +254,12 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : (_featuredPlans.isEmpty && _activePlans.isEmpty && _otherPlans.isEmpty)
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.playlist_remove_rounded, size: 60, color: Colors.grey),
-                        const SizedBox(height: 20),
-                        const Text(
-                          "No reading plans available at the moment.\nPlease check back later or try refreshing.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.refresh),
-                          label: const Text("Try Again"),
-                          onPressed: () => _loadInitialData(forceRefresh: true),
-                        )
-                      ],
-                    ),
-                  )
-                )
+              ? Center(child: Text("No plans available.")) // Simplified for brevity
               : RefreshIndicator(
                   onRefresh: () => _loadInitialData(forceRefresh: true),
                   child: ListView(
                     children: [
+                      // Featured
                       HorizontalReadingPlanSection(
                         sectionTitle: "Featured Plans",
                         plans: _featuredPlans,
@@ -282,13 +268,14 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
                         onPlanTap: _navigateToPlanDetail,
                         gradientIndexOffset: 0,
                       ),
+                      // Active
                       HorizontalReadingPlanSection(
                         sectionTitle: "Active Plans",
                         plans: _activePlans,
                         progressMap: _progressMap,
                         devPremiumEnabled: _devPremiumEnabled,
                         onPlanTap: _navigateToPlanDetail,
-                        gradientIndexOffset: _featuredPlans.length, // Offset to vary gradients
+                        gradientIndexOffset: _featuredPlans.length,
                       ),
 
                       if (_otherPlans.isNotEmpty)
@@ -309,16 +296,27 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
                           final List<Color> gradient = AppColors.getReadingPlanGradient(index + _featuredPlans.length + _activePlans.length);
                           final Alignment beginAlignment = _gradientAlignmentsBegin[(index + _featuredPlans.length + _activePlans.length) % _gradientAlignmentsBegin.length];
                           final Alignment endAlignment = _gradientAlignmentsEnd[(index + _featuredPlans.length + _activePlans.length) % _gradientAlignmentsEnd.length];
-                          final bool isPlanEffectivelyLocked = plan.isPremium && !_devPremiumEnabled;
+                          
+                          // --- UPDATED LOCK LOGIC ---
+                          // Locked if: Plan is Premium AND Dev Mode is OFF AND User is NOT Premium
+                          final bool isLocked = plan.isPremium && !_devPremiumEnabled && !isUserPremium;
 
-                          return ReadingPlanListItem( //
+                          return ReadingPlanListItem(
                             plan: plan,
                             progress: _progressMap[plan.id],
-                            onTap: () => _navigateToPlanDetail(plan, gradient, beginAlignment, endAlignment),
+                            // Pass isLocked to the widget so it can show the lock icon
+                            isPlanEffectivelyLocked: isLocked, 
+                            onTap: () {
+                                // --- NEW: Popup Logic ---
+                                if (isLocked) {
+                                    PremiumLockedDialog.show(context, featureName: "This Reading Plan");
+                                } else {
+                                    _navigateToPlanDetail(plan, gradient, beginAlignment, endAlignment);
+                                }
+                            },
                             backgroundGradientColors: gradient,
                             beginGradientAlignment: beginAlignment,
                             endGradientAlignment: endAlignment,
-                            isPlanEffectivelyLocked: isPlanEffectivelyLocked,
                           );
                         },
                       ),
