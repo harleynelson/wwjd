@@ -1,7 +1,9 @@
 // File: lib/widgets/home/prayer_wall_promo_card.dart
 // Path: lib/widgets/home/prayer_wall_promo_card.dart
 import 'package:flutter/material.dart';
-import '../../models/user_prayer_profile_model.dart'; // For UserPrayerProfile
+import 'package:provider/provider.dart'; // Added for Provider
+import '../../models/user_prayer_profile_model.dart';
+import '../../services/prayer_service.dart'; // Added for PrayerService
 
 class PrayerWallPromoCard extends StatelessWidget {
   final Future<UserPrayerProfile?> prayerStreakProfileFuture;
@@ -16,6 +18,8 @@ class PrayerWallPromoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // Get the service to fetch the goal
+    final prayerService = Provider.of<PrayerService>(context, listen: false);
 
     return Card(
       elevation: 3.0,
@@ -30,7 +34,7 @@ class PrayerWallPromoCard extends StatelessWidget {
             Ink.image(
               image:
                   const AssetImage('assets/images/home/home_prayer_wall.png'),
-              height: 180,
+              height: 220, // Increased height slightly to accommodate the goal
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.35),
@@ -43,12 +47,12 @@ class PrayerWallPromoCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.black.withOpacity(0.6),
+                      Colors.black.withOpacity(0.8), // Darkened slightly for readability
                       Colors.black.withOpacity(0.0),
                     ],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    stops: const [0.0, 0.7],
+                    stops: const [0.0, 0.8],
                   ),
                 ),
                 child: Column(
@@ -81,7 +85,66 @@ class PrayerWallPromoCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    
+                    const SizedBox(height: 12),
+                    
+                    // --- Community Prayer Goal Section (Merged) ---
+                    StreamBuilder<Map<String, dynamic>>(
+                      stream: prayerService.getGlobalPrayerGoal(),
+                      builder: (context, snapshot) {
+                        int current = 7430;
+                        int target = 10000;
+                        String label = "Prayers for Peace";
+
+                        if (snapshot.hasData) {
+                          current = snapshot.data!['current'] ?? current;
+                          target = snapshot.data!['target'] ?? target;
+                          label = snapshot.data!['label'] ?? label;
+                        }
+
+                        double progress = (current / target).clamp(0.0, 1.0);
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  label,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: Colors.white.withOpacity(0.9),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "$current / $target",
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: Colors.orangeAccent.shade100,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: LinearProgressIndicator(
+                                value: progress,
+                                minHeight: 6,
+                                backgroundColor: Colors.white24,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.orangeAccent.shade100),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    // --- End Community Goal ---
+
+                    const SizedBox(height: 12),
+                    
                     // --- Prayer Streak Display ---
                     FutureBuilder<UserPrayerProfile?>(
                       future: prayerStreakProfileFuture,

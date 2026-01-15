@@ -22,6 +22,7 @@ import '../services/prayer_service.dart';
 import '../screens/verse_image_generator_screen.dart'; // <<< NEW IMPORT
 
 // Screen imports
+import '../widgets/home/community_prayer_goal_widget.dart';
 import 'full_bible_reader_screen.dart';
 import 'favorites_screen.dart';
 import 'settings_screen.dart';
@@ -96,6 +97,34 @@ class _HomeScreenState extends State<HomeScreen> {
         _assignFutures(); 
       }
     });
+
+    // Check for Prayer Echoes shortly after load
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkForEchoes();
+    });
+  }
+
+  Future<void> _checkForEchoes() async {
+    final prayerService = Provider.of<PrayerService>(context, listen: false);
+    String? echoMessage = await prayerService.checkForNewPrayerEcho(context);
+    
+    if (echoMessage != null && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.favorite, color: Colors.pinkAccent, size: 20),
+              const SizedBox(width: 12),
+              Expanded(child: Text(echoMessage)),
+            ],
+          ),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Colors.grey.shade900,
+          duration: const Duration(seconds: 5),
+        )
+      );
+    }
   }
 
   @override
@@ -373,6 +402,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: RefreshIndicator( onRefresh: _refreshAllData,
           child: ListView( padding: const EdgeInsets.all(16.0),
             children: <Widget>[
+              
               ReadingStreakCard(
                 readingStreakFuture: _readingStreakFuture,
                 onTap: () {
@@ -397,7 +427,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData && !snapshot.hasError) { return DevotionalOfTheDayCard( devotional: Devotional(title: "", coreMessage: "", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""), isLoading: true, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, ); }
                   if (snapshot.hasError) { print("Error in _devotionalFuture FutureBuilder: ${snapshot.error}"); return DevotionalOfTheDayCard( devotional: Devotional(title: "Error", coreMessage: "Could not load devotional.", scriptureFocus: "", scriptureReference: "", reflection: "Please try again later.", prayerDeclaration: ""), isLoading: false, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, );}
                   final devotionalData = snapshot.data;  if (devotionalData == null && snapshot.connectionState != ConnectionState.waiting) { return DevotionalOfTheDayCard(  devotional: Devotional(title: "Not Available", coreMessage: "Today's devotional is not available.", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""), isLoading: false, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, ); }
-                  return DevotionalOfTheDayCard( devotional: devotionalData ?? Devotional(title: "", coreMessage: "Loading...", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""),  isLoading: snapshot.connectionState == ConnectionState.waiting,  enableCardAnimations: true, speckCount: 15, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, onShareScriptureAsImage: () => _shareDevotionalScriptureAsImage(devotionalData), ); // <<< ADDED CALLBACK
+                  return DevotionalOfTheDayCard( devotional: devotionalData ?? Devotional(title: "", coreMessage: "Loading...", scriptureFocus: "", scriptureReference: "", reflection: "", prayerDeclaration: ""),  isLoading: snapshot.connectionState == ConnectionState.waiting,  enableCardAnimations: true, speckCount: 15, fontSizeDelta: _fontSizeDelta,  readerFontFamily: _selectedFontFamily, onShareScriptureAsImage: () => _shareDevotionalScriptureAsImage(devotionalData), ); 
               },),
               const SizedBox(height: 20.0),
               FutureBuilder<VotDDataBundle>( future: _votdFuture,  builder: (context, snapshot) {
@@ -405,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (snapshot.hasData && snapshot.data!.verseData != null) { _currentVotDDataBundle = snapshot.data!;  bundleForDisplay = _currentVotDDataBundle; } else if (_currentVotDDataBundle != null && _currentVotDDataBundle!.verseData != null) { bundleForDisplay = _currentVotDDataBundle; } else if (snapshot.hasError) { print("Error in _votdFuture FutureBuilder: ${snapshot.error}"); return VerseOfTheDayCard(isLoading: false, verseText: "Could not load verse.", verseRef: "Error", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily); } else if (snapshot.connectionState != ConnectionState.waiting && (snapshot.data == null || snapshot.data!.verseData == null)) { return VerseOfTheDayCard(isLoading: false, verseText: "Verse not available.", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: false, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily); }
                   if (bundleForDisplay == null || bundleForDisplay.verseData == null) { return VerseOfTheDayCard(isLoading: true, verseText: "Loading...", verseRef: "", isFavorite: false, assignedFlagNames: const [], enableCardAnimations: true, speckCount: 10, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily); }
                   final VotDDataBundle currentBundle = bundleForDisplay; String votdText = currentBundle.verseData![DatabaseHelper.bibleColVerseText] ?? "Error: Text missing."; String bookAbbr = currentBundle.verseData![DatabaseHelper.bibleColBook] ?? "??"; String chapterStr = currentBundle.verseData![DatabaseHelper.bibleColChapter]?.toString() ?? "?"; String verseNum = currentBundle.verseData![DatabaseHelper.bibleColStartVerse]?.toString() ?? "?"; String votdRef = "${getFullBookName(bookAbbr)} $chapterStr:$verseNum"; List<String> flagNamesForVotD = []; if (currentBundle.isFavorite && currentBundle.assignedFlagIds.isNotEmpty) { flagNamesForVotD = currentBundle.assignedFlagIds.map((id) { final flag = _allAvailableFlags.firstWhere((f) => f.id == id, orElse: () => Flag(id: 0, name: "Unknown")); return flag.name; }).where((name) => name != "Unknown").toList(); flagNamesForVotD.sort(); }
-                  return VerseOfTheDayCard( isLoading: showAsLoading,  verseText: votdText, verseRef: votdRef, isFavorite: currentBundle.isFavorite, assignedFlagNames: flagNamesForVotD, onToggleFavorite: () => _toggleVotDFavorite(currentBundle), onManageFlags: currentBundle.isFavorite ? () => _openFlagManagerForVotD(currentBundle) : null, enableCardAnimations: true, speckCount: 10, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily, onShareAsImage: () => _shareVotDAsImage(currentBundle),); // <<< ADDED CALLBACK
+                  return VerseOfTheDayCard( isLoading: showAsLoading,  verseText: votdText, verseRef: votdRef, isFavorite: currentBundle.isFavorite, assignedFlagNames: flagNamesForVotD, onToggleFavorite: () => _toggleVotDFavorite(currentBundle), onManageFlags: currentBundle.isFavorite ? () => _openFlagManagerForVotD(currentBundle) : null, enableCardAnimations: true, speckCount: 10, fontSizeDelta: _fontSizeDelta, readerFontFamily: _selectedFontFamily, onShareAsImage: () => _shareVotDAsImage(currentBundle),);
               },),
               const SizedBox(height: 24.0),
               HomeNavigationButton(icon: Icons.menu_book_outlined, label: "Read Full Bible", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FullBibleReaderScreen())).then((_) => _refreshAllData())),

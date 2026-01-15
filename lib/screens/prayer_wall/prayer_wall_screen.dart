@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart'; // For formatting next available submission date
 
@@ -223,6 +224,9 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
       return;
     }
 
+    // 1. Initial Tactile Feedback: User tapped "Pray"
+    HapticFeedback.lightImpact(); 
+
     _autoCycleTimer?.cancel();
     _isUserInteractingWithPage = true;
 
@@ -237,11 +241,12 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
     });
 
     _moteOverlayEntry = OverlayEntry(builder: (context) {
+        // ... (Overlay builder code remains the same)
         final startRenderBox = riverPrayerVisual.itemKey.currentContext?.findRenderObject() as RenderBox?;
         final endRenderBox = _wellOfHopeKey.currentContext?.findRenderObject() as RenderBox?;
         if (startRenderBox == null || !startRenderBox.hasSize || endRenderBox == null || !endRenderBox.hasSize) {
-            _activeMoteAnimation?.controller.dispose(); _activeMoteAnimation = null;
-            WidgetsBinding.instance.addPostFrameCallback((_) {  _moteOverlayEntry?.remove(); _moteOverlayEntry = null; if (mounted && _animatingOutPrayerId == prayerRequest.prayerId) { setState(() { _animatingOutPrayerId = null; });  } });
+             _activeMoteAnimation?.controller.dispose(); _activeMoteAnimation = null;
+             WidgetsBinding.instance.addPostFrameCallback((_) {  _moteOverlayEntry?.remove(); _moteOverlayEntry = null; if (mounted && _animatingOutPrayerId == prayerRequest.prayerId) { setState(() { _animatingOutPrayerId = null; });  } });
             return const SizedBox.shrink();
         }
         final startOffset = startRenderBox.localToGlobal(Offset.zero);
@@ -255,12 +260,16 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
       _moteOverlayEntry?.remove(); _moteOverlayEntry = null;
       _activeMoteAnimation?.controller.dispose(); _activeMoteAnimation = null;
 
+      // 2. Impact Tactile Feedback: Prayer "landed" in the well
+      HapticFeedback.mediumImpact();
+
       final wellState = _wellOfHopeWidgetStateKey.currentState;
       if (wellState != null) {
           final RenderBox? wellRenderBox = _wellOfHopeKey.currentContext?.findRenderObject() as RenderBox?;
           if (wellRenderBox != null && wellRenderBox.hasSize) { final wellCenterGlobal = wellRenderBox.localToGlobal(Offset(wellRenderBox.size.width /2, wellRenderBox.size.height /2)); (wellState as dynamic).triggerAbsorptionEffect(wellCenterGlobal); }
       }
 
+      // This call now works offline!
       bool incrementSuccess = await prayerService.incrementPrayerCount(prayerRequest.prayerId);
 
       if(incrementSuccess && mounted) {

@@ -1,19 +1,17 @@
 // File: lib/widgets/prayer_wall/river_prayer_item.dart
 // Path: lib/widgets/prayer_wall/river_prayer_item.dart
-// New file: Contains the RiverPrayerItem widget, moved from prayer_request_card.dart
 
 import 'package:flutter/material.dart';
-import 'dart:math'; // For random gradient alignment in RiverPrayerItem
+import 'dart:math'; 
 
 import '../../models/prayer_request_model.dart';
 
-// --- RiverPrayerItem ---
 class RiverPrayerItem extends StatefulWidget {
   final PrayerRequest prayerRequest;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
-  final Animation<double>? animation; // For list add/remove
-  final bool playExitAnimation; // New: To trigger exit animation
+  final Animation<double>? animation; 
+  final bool playExitAnimation; 
 
   const RiverPrayerItem({
     Key? key,
@@ -21,25 +19,31 @@ class RiverPrayerItem extends StatefulWidget {
     required this.onTap,
     required this.onLongPress,
     this.animation,
-    this.playExitAnimation = false, // Default to false
+    this.playExitAnimation = false, 
   }) : super(key: key);
 
   @override
   State<RiverPrayerItem> createState() => _RiverPrayerItemState();
 }
 
-class _RiverPrayerItemState extends State<RiverPrayerItem> with SingleTickerProviderStateMixin {
+class _RiverPrayerItemState extends State<RiverPrayerItem> with TickerProviderStateMixin { // Changed to TickerProviderStateMixin
   final Random _random = Random();
   late AnimationController _exitAnimationController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
+  
+  // NEW: Pulse Animation for "Sending" feel
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
+  late Animation<Color?> _glowColorAnimation;
+
   bool _isAnimatingExit = false;
 
   @override
   void initState() {
     super.initState();
     _exitAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 350), // Duration of shrink/fade
+      duration: const Duration(milliseconds: 350), 
       vsync: this,
     );
     _scaleAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
@@ -48,6 +52,19 @@ class _RiverPrayerItemState extends State<RiverPrayerItem> with SingleTickerProv
     _opacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(parent: _exitAnimationController, curve: Curves.easeOut)
     );
+    
+    // NEW: Initialize Pulse Controller
+    _pulseController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+    _pulseAnimation = Tween<double>(begin: 0.0, end: 12.0).animate( // Glow radius
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeOutQuad)
+    );
+    _glowColorAnimation = ColorTween(
+      begin: Colors.white.withOpacity(0.0), 
+      end: Colors.white.withOpacity(0.6)
+    ).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeOut));
 
     if (widget.playExitAnimation) {
       _isAnimatingExit = true;
@@ -63,16 +80,23 @@ class _RiverPrayerItemState extends State<RiverPrayerItem> with SingleTickerProv
         _isAnimatingExit = true;
       });
       _exitAnimationController.forward(from: 0.0);
-    } else if (!widget.playExitAnimation && oldWidget.playExitAnimation && _isAnimatingExit) {
-      // This case might be needed if the parent could cancel the exit animation
-      // For now, we assume it plays to completion once triggered.
     }
   }
 
   @override
   void dispose() {
     _exitAnimationController.dispose();
+    _pulseController.dispose(); // NEW: Dispose pulse
     super.dispose();
+  }
+
+  void _handleTap() {
+    if (_isAnimatingExit) return;
+    
+    // Trigger the "Holy Glow" effect
+    _pulseController.forward().then((_) => _pulseController.reverse());
+    
+    widget.onTap();
   }
 
   @override
@@ -97,46 +121,51 @@ class _RiverPrayerItemState extends State<RiverPrayerItem> with SingleTickerProv
           color: Colors.cyanAccent.withOpacity(0.5),
           offset: const Offset(0, 0),
         ),
-        Shadow(
-          blurRadius: 4.0,
-          color: Colors.white.withOpacity(0.3),
-          offset: const Offset(0, 0),
-        ),
       ],
     );
 
-    Widget cardContent = Container(
-      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: cardGradientColors,
-          begin: Alignment(_random.nextDouble() * 2 - 1, _random.nextDouble() * 2 - 1),
-          end: Alignment(_random.nextDouble() * 2 - 1, _random.nextDouble() * 2 - 1),
-          stops: const [0.0, 0.5, 1.0],
-        ),
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.blue.shade200.withOpacity(0.30),
-            blurRadius: 10,
-            spreadRadius: 0.5,
-            offset: const Offset(0, 0),
+    // NEW: Wrapped in AnimatedBuilder for the pulse glow
+    Widget cardContent = AnimatedBuilder(
+      animation: _pulseController,
+      builder: (context, child) {
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: cardGradientColors,
+              begin: Alignment(_random.nextDouble() * 2 - 1, _random.nextDouble() * 2 - 1),
+              end: Alignment(_random.nextDouble() * 2 - 1, _random.nextDouble() * 2 - 1),
+              stops: const [0.0, 0.5, 1.0],
+            ),
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.shade200.withOpacity(0.30),
+                blurRadius: 10,
+                spreadRadius: 0.5,
+                offset: const Offset(0, 0),
+              ),
+              // The "Holy Glow" Shadow
+              if (_pulseController.isAnimating)
+                BoxShadow(
+                  color: _glowColorAnimation.value ?? Colors.transparent,
+                  blurRadius: _pulseAnimation.value * 2,
+                  spreadRadius: _pulseAnimation.value,
+                ),
+            ],
+            border: Border.all(
+              // Border lights up too
+              color: Colors.white.withOpacity(0.20 + (_pulseController.value * 0.5)),
+              width: 0.6 + (_pulseController.value * 1.0),
+            )
           ),
-           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 2,
-            offset: const Offset(1, 1),
-          )
-        ],
-        border: Border.all(
-          color: Colors.white.withOpacity(0.20),
-          width: 0.6,
-        )
-      ),
+          child: child,
+        );
+      },
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: _isAnimatingExit ? null : widget.onTap, // Disable tap while animating out
+          onTap: _handleTap, // Use new handler
           onLongPress: _isAnimatingExit ? null : widget.onLongPress,
           splashColor: Colors.lightBlue.withOpacity(0.3),
           highlightColor: Colors.lightBlue.withOpacity(0.15),
@@ -158,7 +187,6 @@ class _RiverPrayerItemState extends State<RiverPrayerItem> with SingleTickerProv
     );
 
     Widget animatedCard = cardContent;
-    // Apply exit animation if triggered
     if (_isAnimatingExit) {
       animatedCard = AnimatedBuilder(
         animation: _exitAnimationController,
@@ -167,7 +195,7 @@ class _RiverPrayerItemState extends State<RiverPrayerItem> with SingleTickerProv
             opacity: _opacityAnimation.value,
             child: Transform.scale(
               scale: _scaleAnimation.value,
-              alignment: Alignment.center, // Shrink towards center
+              alignment: Alignment.center,
               child: child,
             ),
           );
@@ -176,8 +204,7 @@ class _RiverPrayerItemState extends State<RiverPrayerItem> with SingleTickerProv
       );
     }
 
-    // Apply list add/remove animation if provided
-    if (widget.animation != null && !_isAnimatingExit) { // Don't apply list animation if exit animation is playing
+    if (widget.animation != null && !_isAnimatingExit) {
       return FadeTransition(
         opacity: Tween<double>(begin: 0.4, end: 1.0).animate(
           CurvedAnimation(parent: widget.animation!, curve: Curves.easeInSine)
@@ -186,10 +213,10 @@ class _RiverPrayerItemState extends State<RiverPrayerItem> with SingleTickerProv
           scale: Tween<double>(begin: 0.92, end: 1.0).animate(
             CurvedAnimation(parent: widget.animation!, curve: Curves.easeOutExpo)
           ),
-          child: animatedCard, // Use the potentially exit-animated card here
+          child: animatedCard,
         )
       );
     }
-    return animatedCard; // Return the card, possibly wrapped in exit animation
+    return animatedCard;
   }
 }

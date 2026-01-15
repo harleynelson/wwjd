@@ -299,54 +299,50 @@ class PrayerService {
     }
     final String userId = _currentUser!.uid;
 
-    final QuerySnapshot<Map<String, dynamic>> interactionQuery = await _prayerInteractionsRef
-        .where('prayerId', isEqualTo: prayerId)
-        .where('userId', isEqualTo: userId) 
-        .where('interactionType', isEqualTo: InteractionType.prayed.name) //
-        .limit(1)
-        .get();
+    // OPTIMIZATION: Use a deterministic ID (userId_prayerId) for the interaction.
+    // This allows us to check for duplicates efficiently and prevents double-counting 
+    // if the user hits "Pray" multiple times while offline.
+    final String interactionDocId = '${userId}_$prayerId';
 
-    if (interactionQuery.docs.isNotEmpty) {
-      print("User $userId has already prayed for prayer $prayerId. Streak not incremented again for this specific prayer.");
+    // Check local cache/server for existing interaction to prevent duplicate increments
+    final DocumentSnapshot interactionSnap = await _prayerInteractionsRef.doc(interactionDocId).get();
+
+    if (interactionSnap.exists) {
+      print("User $userId has already prayed for prayer $prayerId. Streak not incremented.");
+      return false;
     }
 
+    // UPDATED: Use WriteBatch instead of runTransaction.
+    // Transactions require online connectivity. Batches work offline (optimistic UI).
+    WriteBatch batch = _firestore.batch();
 
-    return _firestore.runTransaction<bool>((transaction) async {
-      final DocumentReference<Map<String, dynamic>> prayerDocRef = _prayerRequestsRef.doc(prayerId);
-      final DocumentSnapshot<Map<String, dynamic>> prayerSnapshot = await transaction.get(prayerDocRef);
+    // 1. Increment the public prayer count atomically
+    final DocumentReference<Map<String, dynamic>> prayerDocRef = _prayerRequestsRef.doc(prayerId);
+    batch.update(prayerDocRef, {'prayerCount': FieldValue.increment(1)});
 
-      if (!prayerSnapshot.exists) {
-        throw Exception("Prayer with ID $prayerId does not exist!");
-      }
+    // 2. Create the interaction record (using deterministic ID)
+    final DocumentReference<Map<String, dynamic>> interactionDocRef = _prayerInteractionsRef.doc(interactionDocId);
+    final newInteraction = PrayerInteraction(
+      interactionId: interactionDocId,
+      prayerId: prayerId,
+      userId: userId,
+      interactionType: InteractionType.prayed,
+      timestamp: Timestamp.now(),
+    );
+    batch.set(interactionDocRef, newInteraction.toFirestore());
+
+    try {
+      await batch.commit();
+      print("Prayer count incremented successfully for $prayerId by user $userId (Offline/Online compatible).");
       
-      final Map<String, dynamic>? currentData = prayerSnapshot.data();
-      if (currentData == null) throw Exception("Prayer data is null for ID $prayerId!");
-
-      final int newPrayerCount = (currentData['prayerCount'] as int? ?? 0) + 1;
-      transaction.update(prayerDocRef, {'prayerCount': newPrayerCount});
-
-      if (interactionQuery.docs.isEmpty) {
-          final DocumentReference<Map<String, dynamic>> interactionDocRef = _prayerInteractionsRef.doc();
-          final newInteraction = PrayerInteraction( //
-            interactionId: interactionDocRef.id,
-            prayerId: prayerId,
-            userId: userId, 
-            interactionType: InteractionType.prayed, //
-            timestamp: Timestamp.now(),
-          );
-          transaction.set(interactionDocRef, newInteraction.toFirestore());
-      }
+      // Update streak asynchronously. This works offline too as it reads/writes to local cache first.
+      _updateUserPrayerActivityStreak(userId); 
+      
       return true;
-    }).then((success) async {
-      if (success) {
-        print("Prayer count incremented successfully for $prayerId by user $userId.");
-        await _updateUserPrayerActivityStreak(userId);
-      }
-      return success;
-    }).catchError((error) {
+    } catch (error) {
       print("Error incrementing prayer count for $prayerId: $error");
       return false;
-    });
+    }
   }
 
   Future<bool> reportPrayer(String prayerId, String reason) async {
@@ -355,51 +351,40 @@ class PrayerService {
       return false;
     }
     final String userId = _currentUser!.uid;
+    final String interactionDocId = '${userId}_${prayerId}_report'; // Deterministic ID for reports too
 
-    final QuerySnapshot<Map<String, dynamic>> interactionQuery = await _prayerInteractionsRef
-        .where('prayerId', isEqualTo: prayerId)
-        .where('userId', isEqualTo: userId)
-        .where('interactionType', isEqualTo: InteractionType.reported.name) //
-        .limit(1)
-        .get();
+    final DocumentSnapshot interactionSnap = await _prayerInteractionsRef.doc(interactionDocId).get();
 
-    if (interactionQuery.docs.isNotEmpty) {
+    if (interactionSnap.exists) {
       print("User $userId has already reported prayer $prayerId.");
       return false;
     }
-    
-    return _firestore.runTransaction<bool>((transaction) async {
-      final DocumentReference<Map<String, dynamic>> prayerDocRef = _prayerRequestsRef.doc(prayerId);
-      final DocumentSnapshot<Map<String, dynamic>> prayerSnapshot = await transaction.get(prayerDocRef);
 
-      if (!prayerSnapshot.exists) {
-        throw Exception("Prayer with ID $prayerId does not exist!");
-      }
-      
-      final Map<String, dynamic>? currentData = prayerSnapshot.data();
-      if (currentData == null) throw Exception("Prayer data is null for ID $prayerId!");
+    // Use WriteBatch for offline compatibility
+    WriteBatch batch = _firestore.batch();
 
-      final int newReportCount = (currentData['reportCount'] as int? ?? 0) + 1;
-      transaction.update(prayerDocRef, {'reportCount': newReportCount});
+    final DocumentReference<Map<String, dynamic>> prayerDocRef = _prayerRequestsRef.doc(prayerId);
+    batch.update(prayerDocRef, {'reportCount': FieldValue.increment(1)});
 
-      final DocumentReference<Map<String, dynamic>> interactionDocRef = _prayerInteractionsRef.doc();
-      final newInteraction = PrayerInteraction( //
-        interactionId: interactionDocRef.id,
-        prayerId: prayerId,
-        userId: userId,
-        interactionType: InteractionType.reported, //
-        timestamp: Timestamp.now(),
-        reportReason: reason.isNotEmpty ? reason : null,
-      );
-      transaction.set(interactionDocRef, newInteraction.toFirestore());
-      return true;
-    }).then((success) {
+    final DocumentReference<Map<String, dynamic>> interactionDocRef = _prayerInteractionsRef.doc(interactionDocId);
+    final newInteraction = PrayerInteraction(
+      interactionId: interactionDocId,
+      prayerId: prayerId,
+      userId: userId,
+      interactionType: InteractionType.reported,
+      timestamp: Timestamp.now(),
+      reportReason: reason.isNotEmpty ? reason : null,
+    );
+    batch.set(interactionDocRef, newInteraction.toFirestore());
+
+    try {
+      await batch.commit();
       print("Prayer $prayerId reported successfully by user $userId.");
-      return success;
-    }).catchError((error) {
+      return true;
+    } catch (error) {
       print("Error reporting prayer $prayerId: $error");
       return false;
-    });
+    }
   }
 
   Future<void> adminApprovePrayer(String prayerId, String adminUserId) async {
@@ -451,5 +436,36 @@ class PrayerService {
       // Optionally rethrow or handle more gracefully
       throw Exception("Failed to delete user's prayer data from Firestore: $e");
     }
+  }
+
+  // Stream for the Community Goal
+  Stream<Map<String, dynamic>> getGlobalPrayerGoal() {
+    // In a real app, this would listen to a single document: _firestore.collection('globalStats').doc('goals').snapshots();
+    // For now, we simulate a live counter for the "Mr. Rogers" living room feel.
+    return Stream.periodic(const Duration(seconds: 5), (count) {
+      // Simulate progress towards 10,000
+      int baseCount = 7430; 
+      return {
+        'target': 10000,
+        'current': baseCount + (count * 3), // Simulates live prayers coming in
+        'label': 'Prayers for Peace',
+      };
+    }).asBroadcastStream();
+  }
+
+  // Check for "Prayer Echoes" (Someone prayed for you)
+  // This would typically query _prayerInteractionsRef where prayerOwnerId == currentUserId
+  Future<String?> checkForNewPrayerEcho(BuildContext context) async {
+    if (_currentUser == null) return null;
+    
+    // MOCK: In a real app, check DB. 
+    // Here, we return a nice message occasionally to demo the feature.
+    bool hasEcho = DateTime.now().second % 10 == 0; // 1 in 10 chance on refresh
+    if (hasEcho) {
+      List<String> cities = ['Portland', 'Seoul', 'Lagos', 'London', 'Atlanta', 'Rio'];
+      String city = cities[DateTime.now().microsecond % cities.length];
+      return "Someone in $city just prayed for you.";
+    }
+    return null;
   }
 }

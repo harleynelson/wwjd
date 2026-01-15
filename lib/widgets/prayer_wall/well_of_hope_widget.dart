@@ -400,6 +400,7 @@ class _WellPainter extends CustomPainter {
 
     // --- Absorption Effect ---
     if (absorptionPoint != null) {
+      // 1. Initial Impact Flash
       if (absorptionImpactProgress > 0 && absorptionImpactProgress < 1.0) {
         double impactOpacity = sin(absorptionImpactProgress * pi); 
         final impactFlashPaint = Paint()
@@ -408,12 +409,23 @@ class _WellPainter extends CustomPainter {
         canvas.drawCircle(absorptionPoint!, radius * 0.05 + (radius * 0.1 * absorptionImpactProgress) , impactFlashPaint);
       }
 
+      // 2. Primary Ripple
       if (absorptionRippleProgress > 0 && absorptionRippleProgress < 1.0) {
         final ripplePaint = Paint()
           ..color = Colors.tealAccent.shade100.withOpacity(0.6 * (1.0 - absorptionRippleProgress)) 
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 2.5 * (1.0 - absorptionRippleProgress); 
-        canvas.drawCircle(absorptionPoint!, radius * 0.7 * absorptionRippleProgress, ripplePaint);
+          ..strokeWidth = 3.0 * (1.0 - absorptionRippleProgress); 
+        canvas.drawCircle(absorptionPoint!, radius * 0.8 * absorptionRippleProgress, ripplePaint);
+        
+        // 3. NEW: Secondary "Echo" Ripple (Follows the first one)
+        if (absorptionRippleProgress > 0.2) {
+             final secondaryProgress = (absorptionRippleProgress - 0.2) / 0.8;
+             final secondaryRipplePaint = Paint()
+              ..color = Colors.cyan.shade100.withOpacity(0.4 * (1.0 - secondaryProgress)) 
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 1.5 * (1.0 - secondaryProgress);
+             canvas.drawCircle(absorptionPoint!, radius * 0.7 * secondaryProgress, secondaryRipplePaint);
+        }
       }
     }
   }
