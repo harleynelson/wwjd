@@ -15,6 +15,7 @@ import '../../models/prayer_request_model.dart';
 import '../../models/user_prayer_profile_model.dart';
 import '../../services/prayer_service.dart';
 // import '../../widgets/prayer_wall/prayer_request_card.dart'; // RiverPrayerItem is no longer here
+import '../../widgets/prayer_wall/mystical_embers_background.dart';
 import '../../widgets/prayer_wall/river_prayer_item.dart'; // MODIFIED IMPORT
 import '../../widgets/prayer_wall/well_of_hope_widget.dart';
 import '../../widgets/prayer_wall/animated_prayer_mote.dart';
@@ -329,51 +330,63 @@ class _PrayerWallScreenState extends State<PrayerWallScreen> with TickerProvider
     return Scaffold(
       appBar: AppBar( title: Text('Prayer Wall of Hope', style: theme.appBarTheme.titleTextStyle?.copyWith(color: Colors.white)), elevation: 0, backgroundColor: Colors.transparent, iconTheme: IconThemeData(color: Colors.white.withOpacity(0.8)), actionsIconTheme: IconThemeData(color: Colors.white.withOpacity(0.8)),),
       extendBodyBehindAppBar: true,
-      body: Container(
-        decoration: const BoxDecoration(gradient: darkScreenGradient),
-        child: SafeArea(
-          bottom: false,
-          child: Column(
-            children: [
-              // USE THE NEW WIDGET HERE
-              PrayerStreakDisplay(
-                isLoadingStreak: _isLoadingStreak,
-                currentUserPrayerProfile: _currentUserPrayerProfile,
-                isUserLoggedIn: _currentUser != null,
-              ),
-              Expanded( flex: 2, child: WellOfHopeWidget(key: _wellOfHopeWidgetStateKey, wellKey: _wellOfHopeKey),),
-              Expanded(
-                flex: 2,
-                child: Container( padding: const EdgeInsets.only(bottom: 8.0),
-                  child: _riverPrayers.isEmpty && _animatingOutPrayerId == null
-                      ? Center( child: (_prayerStreamSubscription == null && _riverPrayers.isEmpty && !Provider.of<PrayerService>(context, listen:false).toString().contains("Instance")) ? const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white70)) : Column( mainAxisAlignment: MainAxisAlignment.center, children: [ Icon(Icons.water_drop_outlined, size: 48, color: Colors.white54), const SizedBox(height: 16), Text( "The river is quiet for now.\nNew prayers will appear here.", textAlign: TextAlign.center, style: theme.textTheme.titleMedium?.copyWith(color: Colors.white70), ), ], ),)
-                      : Listener(
-                           onPointerDown: (_) { if(mounted) { _isUserInteractingWithPage = true;  _autoCycleTimer?.cancel(); } },
-                          child: PageView.builder( controller: _pageController, itemCount: _riverPrayers.length,
-                            itemBuilder: (context, index) { if (index >= _riverPrayers.length) {  return const SizedBox.shrink(); } final riverPrayer = _riverPrayers[index];
-                              return Center( child: ConstrainedBox( constraints: BoxConstraints( maxWidth: MediaQuery.of(context).size.width * 0.72,  minHeight: 60,  ),
-                                  child: Padding( padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
-                                    child: RiverPrayerItem( // Ensure this uses the new import
-                                      key: riverPrayer.itemKey,
-                                      prayerRequest: riverPrayer.prayer,
-                                      onTap: () => _handlePrayForRequest(riverPrayer),
-                                      onLongPress: () => _handleReportPrayer(riverPrayer.prayer),
-                                      animation: riverPrayer.animation,
-                                      playExitAnimation: _animatingOutPrayerId == riverPrayer.prayer.prayerId,
+      // MODIFIED: Changed Container to Stack to layer the background effects
+      body: Stack(
+        children: [
+          // Layer 1: The Base Gradient
+          Container(
+            decoration: const BoxDecoration(gradient: darkScreenGradient),
+          ),
+          
+          // Layer 2: The Mystical Embers (New)
+          const Positioned.fill(
+            child: MysticalEmbersBackground(),
+          ),
+
+          // Layer 3: The Content (Existing SafeArea and Children)
+          SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                PrayerStreakDisplay(
+                  isLoadingStreak: _isLoadingStreak,
+                  currentUserPrayerProfile: _currentUserPrayerProfile,
+                  isUserLoggedIn: _currentUser != null,
+                ),
+                Expanded( flex: 2, child: WellOfHopeWidget(key: _wellOfHopeWidgetStateKey, wellKey: _wellOfHopeKey),),
+                Expanded(
+                  flex: 2,
+                  child: Container( padding: const EdgeInsets.only(bottom: 8.0),
+                    child: _riverPrayers.isEmpty && _animatingOutPrayerId == null
+                        ? Center( child: (_prayerStreamSubscription == null && _riverPrayers.isEmpty && !Provider.of<PrayerService>(context, listen:false).toString().contains("Instance")) ? const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white70)) : Column( mainAxisAlignment: MainAxisAlignment.center, children: [ Icon(Icons.water_drop_outlined, size: 48, color: Colors.white54), const SizedBox(height: 16), Text( "The river is quiet for now.\nNew prayers will appear here.", textAlign: TextAlign.center, style: theme.textTheme.titleMedium?.copyWith(color: Colors.white70), ), ], ),)
+                        : Listener(
+                             onPointerDown: (_) { if(mounted) { _isUserInteractingWithPage = true;  _autoCycleTimer?.cancel(); } },
+                            child: PageView.builder( controller: _pageController, itemCount: _riverPrayers.length,
+                              itemBuilder: (context, index) { if (index >= _riverPrayers.length) {  return const SizedBox.shrink(); } final riverPrayer = _riverPrayers[index];
+                                return Center( child: ConstrainedBox( constraints: BoxConstraints( maxWidth: MediaQuery.of(context).size.width * 0.72,  minHeight: 60,  ),
+                                    child: Padding( padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
+                                      child: RiverPrayerItem( 
+                                        key: riverPrayer.itemKey,
+                                        prayerRequest: riverPrayer.prayer,
+                                        onTap: () => _handlePrayForRequest(riverPrayer),
+                                        onLongPress: () => _handleReportPrayer(riverPrayer.prayer),
+                                        animation: riverPrayer.animation,
+                                        playExitAnimation: _animatingOutPrayerId == riverPrayer.prayer.prayerId,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
-                        ),
+                  ),
                 ),
-              ),
-              Padding( padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 35.0), child: Text( _riverPrayers.isNotEmpty ? "Tap a prayer to send your support. Swipe to see more." : "Tap a prayer to send support.", textAlign: TextAlign.center, style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70),),),
-              const SizedBox(height: 70),
-            ],
+                Padding( padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 35.0), child: Text( _riverPrayers.isNotEmpty ? "Tap a prayer to send your support. Swipe to see more." : "Tap a prayer to send support.", textAlign: TextAlign.center, style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70),),),
+                const SizedBox(height: 70),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding( padding: const EdgeInsets.only(bottom: 16.0),

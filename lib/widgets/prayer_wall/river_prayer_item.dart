@@ -1,222 +1,174 @@
 // File: lib/widgets/prayer_wall/river_prayer_item.dart
-// Path: lib/widgets/prayer_wall/river_prayer_item.dart
-
+import 'dart:ui'; // REQUIRED for ImageFilter
 import 'package:flutter/material.dart';
-import 'dart:math'; 
-
 import '../../models/prayer_request_model.dart';
 
 class RiverPrayerItem extends StatefulWidget {
   final PrayerRequest prayerRequest;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
-  final Animation<double>? animation; 
-  final bool playExitAnimation; 
+  final Animation<double>? animation;
+  final bool playExitAnimation;
 
   const RiverPrayerItem({
-    Key? key,
+    super.key,
     required this.prayerRequest,
     required this.onTap,
     required this.onLongPress,
     this.animation,
-    this.playExitAnimation = false, 
-  }) : super(key: key);
+    this.playExitAnimation = false,
+  });
 
   @override
   State<RiverPrayerItem> createState() => _RiverPrayerItemState();
 }
 
-class _RiverPrayerItemState extends State<RiverPrayerItem> with TickerProviderStateMixin { // Changed to TickerProviderStateMixin
-  final Random _random = Random();
-  late AnimationController _exitAnimationController;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _opacityAnimation;
-  
-  // NEW: Pulse Animation for "Sending" feel
-  late AnimationController _pulseController;
-  late Animation<double> _pulseAnimation;
-  late Animation<Color?> _glowColorAnimation;
-
-  bool _isAnimatingExit = false;
+class _RiverPrayerItemState extends State<RiverPrayerItem> with SingleTickerProviderStateMixin {
+  late AnimationController _breathingController;
+  late Animation<double> _breathingAnimation;
 
   @override
   void initState() {
     super.initState();
-    _exitAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 350), 
+    // Creates a subtle "living" pulse effect (breathing light)
+    _breathingController = AnimationController(
       vsync: this,
-    );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(parent: _exitAnimationController, curve: Curves.easeOutQuint)
-    );
-    _opacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(parent: _exitAnimationController, curve: Curves.easeOut)
-    );
-    
-    // NEW: Initialize Pulse Controller
-    _pulseController = AnimationController(
-      duration: const Duration(milliseconds: 600),
-      vsync: this,
-    );
-    _pulseAnimation = Tween<double>(begin: 0.0, end: 12.0).animate( // Glow radius
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeOutQuad)
-    );
-    _glowColorAnimation = ColorTween(
-      begin: Colors.white.withOpacity(0.0), 
-      end: Colors.white.withOpacity(0.6)
-    ).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeOut));
+      duration: const Duration(seconds: 4),
+    )..repeat(reverse: true);
 
-    if (widget.playExitAnimation) {
-      _isAnimatingExit = true;
-      _exitAnimationController.forward();
-    }
-  }
-
-  @override
-  void didUpdateWidget(RiverPrayerItem oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.playExitAnimation && !oldWidget.playExitAnimation && !_isAnimatingExit) {
-      setState(() {
-        _isAnimatingExit = true;
-      });
-      _exitAnimationController.forward(from: 0.0);
-    }
+    _breathingAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
+      CurvedAnimation(parent: _breathingController, curve: Curves.easeInOutSine),
+    );
   }
 
   @override
   void dispose() {
-    _exitAnimationController.dispose();
-    _pulseController.dispose(); // NEW: Dispose pulse
+    _breathingController.dispose();
     super.dispose();
-  }
-
-  void _handleTap() {
-    if (_isAnimatingExit) return;
-    
-    // Trigger the "Holy Glow" effect
-    _pulseController.forward().then((_) => _pulseController.reverse());
-    
-    widget.onTap();
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final double scale = widget.playExitAnimation ? 0.0 : 1.0;
 
-    final List<Color> cardGradientColors = [
-      Colors.lightBlue.shade300.withOpacity(0.15),
-      Colors.purple.shade300.withOpacity(0.20),
-      Colors.teal.shade300.withOpacity(0.15),
-    ];
-
-    final cardTextColor = Colors.white.withOpacity(0.9);
-
-    final prayerTextStyle = theme.textTheme.bodyMedium?.copyWith(
-      color: cardTextColor,
-      height: 1.35,
-      fontSize: (theme.textTheme.bodyMedium?.fontSize ?? 14) * 0.92,
-      shadows: [
-        Shadow(
-          blurRadius: 8.0,
-          color: Colors.cyanAccent.withOpacity(0.5),
-          offset: const Offset(0, 0),
-        ),
-      ],
-    );
-
-    // NEW: Wrapped in AnimatedBuilder for the pulse glow
-    Widget cardContent = AnimatedBuilder(
-      animation: _pulseController,
-      builder: (context, child) {
-        return Container(
-          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: cardGradientColors,
-              begin: Alignment(_random.nextDouble() * 2 - 1, _random.nextDouble() * 2 - 1),
-              end: Alignment(_random.nextDouble() * 2 - 1, _random.nextDouble() * 2 - 1),
-              stops: const [0.0, 0.5, 1.0],
-            ),
-            borderRadius: BorderRadius.circular(14),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blue.shade200.withOpacity(0.30),
-                blurRadius: 10,
-                spreadRadius: 0.5,
-                offset: const Offset(0, 0),
-              ),
-              // The "Holy Glow" Shadow
-              if (_pulseController.isAnimating)
-                BoxShadow(
-                  color: _glowColorAnimation.value ?? Colors.transparent,
-                  blurRadius: _pulseAnimation.value * 2,
-                  spreadRadius: _pulseAnimation.value,
+    return AnimatedScale(
+      scale: scale,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInBack,
+      child: GestureDetector(
+        onTap: widget.onTap,
+        onLongPress: widget.onLongPress,
+        child: AnimatedBuilder(
+          animation: _breathingAnimation,
+          builder: (context, child) {
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                // The "Lantern" Gradient
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    // Glassy dark top
+                    const Color(0xFF2C3E50).withOpacity(0.6),
+                    // Warm amber glow at the bottom (The "Flame")
+                    const Color(0xFFE67E22).withOpacity(0.5 * _breathingAnimation.value), 
+                  ],
+                  stops: const [0.3, 1.0],
                 ),
-            ],
-            border: Border.all(
-              // Border lights up too
-              color: Colors.white.withOpacity(0.20 + (_pulseController.value * 0.5)),
-              width: 0.6 + (_pulseController.value * 1.0),
-            )
-          ),
-          child: child,
-        );
-      },
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: _handleTap, // Use new handler
-          onLongPress: _isAnimatingExit ? null : widget.onLongPress,
-          splashColor: Colors.lightBlue.withOpacity(0.3),
-          highlightColor: Colors.lightBlue.withOpacity(0.15),
-          borderRadius: BorderRadius.circular(14),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            child: Center(
-              child: Text(
-                widget.prayerRequest.prayerText,
-                style: prayerTextStyle,
-                textAlign: TextAlign.center,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+                boxShadow: [
+                  // Outer Glow (Reflection on water)
+                  BoxShadow(
+                    color: const Color(0xFFE67E22).withOpacity(0.2 * _breathingAnimation.value),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 8),
+                  ),
+                  // Subtle rim shadow for depth
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                // A thin border to define the "glass" edge
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.15),
+                  width: 1.0,
+                ),
               ),
-            ),
-          ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: BackdropFilter(
+                  // FIXED: Added valid ImageFilter blur
+                  filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Icon or Symbol at top
+                        Icon(
+                          Icons.light_mode_outlined,
+                          color: const Color(0xFFFFD180).withOpacity(0.8),
+                          size: 28,
+                        ),
+                        const SizedBox(height: 16),
+                        
+                        // Prayer Text
+                        Text(
+                          widget.prayerRequest.prayerText,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: Colors.white.withOpacity(0.95),
+                            height: 1.5,
+                            fontSize: 18,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black.withOpacity(0.5),
+                                offset: const Offset(0, 2),
+                                blurRadius: 4,
+                              )
+                            ],
+                            fontFamily: 'Serif', 
+                          ),
+                          maxLines: 8,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        
+                        const SizedBox(height: 24),
+                        
+                        // "Tap to Pray" hint (subtle)
+                        AnimatedOpacity(
+                          opacity: widget.playExitAnimation ? 0.0 : 0.7,
+                          duration: const Duration(milliseconds: 200),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.touch_app, size: 16, color: Colors.white.withOpacity(0.6)),
+                              const SizedBox(width: 8),
+                              Text(
+                                "Tap to lift this prayer",
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 12,
+                                  letterSpacing: 1.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
-
-    Widget animatedCard = cardContent;
-    if (_isAnimatingExit) {
-      animatedCard = AnimatedBuilder(
-        animation: _exitAnimationController,
-        builder: (context, child) {
-          return Opacity(
-            opacity: _opacityAnimation.value,
-            child: Transform.scale(
-              scale: _scaleAnimation.value,
-              alignment: Alignment.center,
-              child: child,
-            ),
-          );
-        },
-        child: cardContent,
-      );
-    }
-
-    if (widget.animation != null && !_isAnimatingExit) {
-      return FadeTransition(
-        opacity: Tween<double>(begin: 0.4, end: 1.0).animate(
-          CurvedAnimation(parent: widget.animation!, curve: Curves.easeInSine)
-        ),
-        child: ScaleTransition(
-          scale: Tween<double>(begin: 0.92, end: 1.0).animate(
-            CurvedAnimation(parent: widget.animation!, curve: Curves.easeOutExpo)
-          ),
-          child: animatedCard,
-        )
-      );
-    }
-    return animatedCard;
   }
 }

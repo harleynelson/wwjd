@@ -37,7 +37,7 @@ val flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "
 android {
     namespace = "com.alpentor.wwjd" // Ensure this is your correct new package name
     compileSdk = 36 // Or use flutter.compileSdkVersion if defined by Flutter plugin
-    ndkVersion = "27.0.12077973" // As per your file, ensure this is intended
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

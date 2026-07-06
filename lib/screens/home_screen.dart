@@ -22,7 +22,6 @@ import '../services/prayer_service.dart';
 import '../screens/verse_image_generator_screen.dart'; // <<< NEW IMPORT
 
 // Screen imports
-import '../widgets/home/community_prayer_goal_widget.dart';
 import 'full_bible_reader_screen.dart';
 import 'favorites_screen.dart';
 import 'settings_screen.dart';
