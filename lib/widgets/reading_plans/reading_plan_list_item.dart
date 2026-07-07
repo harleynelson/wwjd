@@ -159,7 +159,7 @@ class ReadingPlanListItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -170,14 +170,14 @@ class ReadingPlanListItem extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 4.0),
+                  const SizedBox(height: 2.0),
                   Text(
                     plan.description,
                     style: textTheme.bodyMedium?.copyWith(color: textTheme.bodySmall?.color?.withOpacity(0.8)),
                     maxLines: 2, // Limit description lines in list view
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 8.0),
+                  const SizedBox(height: 6.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
