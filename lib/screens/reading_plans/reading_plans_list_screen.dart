@@ -1,6 +1,4 @@
 // lib/screens/reading_plans_list_screen.dart
-// Path: lib/screens/reading_plans_list_screen.dart
-// Updated to use HorizontalReadingPlanSection widget.
 
 import 'package:flutter/material.dart';
 import 'dart:math'; 
@@ -15,7 +13,7 @@ import '../../widgets/reading_plans/reading_plan_list_item.dart'; //
 import 'reading_plan_detail_screen.dart'; //
 import '../../theme/app_colors.dart'; //
 import '../../helpers/prefs_helper.dart'; //
-import '../../widgets/reading_plans/horizontal_reading_plan_section.dart'; // NEW IMPORT
+import '../../widgets/reading_plans/horizontal_reading_plan_section.dart';
 
 class ReadingPlansListScreen extends StatefulWidget {
   const ReadingPlansListScreen({super.key});
@@ -214,7 +212,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
   ) async {
     if (!mounted) return;
 
-    final result = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ReadingPlanDetailScreen(
@@ -227,16 +225,14 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
       ),
     );
 
-    if (result == true && mounted) {
+    if (mounted) {
       _loadInitialData(forceRefresh: true);
     }
   }
 
-  // REMOVED _buildHorizontalPlanList method as it's now in HorizontalReadingPlanSection widget
 
   @override
   Widget build(BuildContext context) {
-    // --- NEW: Listen to AppUser for premium status ---
     final appUser = Provider.of<AppUser?>(context);
     final bool isUserPremium = appUser?.isPremium ?? false;
 
@@ -297,7 +293,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
                           final Alignment beginAlignment = _gradientAlignmentsBegin[(index + _featuredPlans.length + _activePlans.length) % _gradientAlignmentsBegin.length];
                           final Alignment endAlignment = _gradientAlignmentsEnd[(index + _featuredPlans.length + _activePlans.length) % _gradientAlignmentsEnd.length];
                           
-                          // --- UPDATED LOCK LOGIC ---
+                          // --- LOCK LOGIC ---
                           // Locked if: Plan is Premium AND Dev Mode is OFF AND User is NOT Premium
                           final bool isLocked = plan.isPremium && !_devPremiumEnabled && !isUserPremium;
 
@@ -307,7 +303,7 @@ class _ReadingPlansListScreenState extends State<ReadingPlansListScreen> {
                             // Pass isLocked to the widget so it can show the lock icon
                             isPlanEffectivelyLocked: isLocked, 
                             onTap: () {
-                                // --- NEW: Popup Logic ---
+                                // --- Popup Logic ---
                                 if (isLocked) {
                                     PremiumLockedDialog.show(context, featureName: "This Reading Plan");
                                 } else {

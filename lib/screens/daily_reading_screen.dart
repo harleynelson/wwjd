@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:wwjd_app/models/models.dart';
 import 'package:wwjd_app/helpers/database_helper.dart';
 import 'package:wwjd_app/helpers/book_names.dart';
+import 'package:wwjd_app/services/reading_plan_service.dart';
 import 'package:wwjd_app/models/reader_settings_enums.dart';
 import 'package:wwjd_app/helpers/prefs_helper.dart';
 import 'package:wwjd_app/widgets/reading_plans/reader_settings_bottom_sheet.dart';
@@ -16,6 +17,12 @@ import 'package:wwjd_app/services/text_to_speech_service.dart';
 import 'package:wwjd_app/widgets/reading_plans/interspersed_insight_widget.dart';
 import 'package:wwjd_app/widgets/reading_plans/daily_reading_passage_display.dart';
 import 'package:wwjd_app/helpers/reader_theme_helper.dart';
+import 'package:wwjd_app/widgets/reading_plans/celebration_overlay.dart';
+import 'package:wwjd_app/widgets/reading_plans/plan_completion_dialog.dart';
+import 'package:wwjd_app/helpers/motivational_messages.dart';
+import 'package:provider/provider.dart';
+import 'package:wwjd_app/models/app_user.dart';
+import 'package:wwjd_app/screens/full_bible_reader_screen.dart';
 
 import '../dialogs/premium_locked_dialog.dart'; // NEW IMPORT
 
@@ -72,7 +79,7 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
     _currentReaderFontFamily = widget.readerFontFamily;
     _currentReaderThemeMode = widget.readerThemeMode;
     _currentReaderViewMode = PrefsHelper.getReaderViewMode(); // Keep loading this from Prefs
-    _userHasPremiumAccess = PrefsHelper.getDevPremiumEnabled();
+    _userHasPremiumAccess = PrefsHelper.getDevPremiumEnabled() || (Provider.of<AppUser?>(context, listen: false)?.isPremium ?? false);
     _initializeScreenData();
   }
 
@@ -152,14 +159,67 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
   Future<void> _markDayAsComplete() async {
     try {
       await _dbHelper.markReadingDayAsComplete(widget.planId, widget.dayReading.dayNumber);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar( SnackBar( content: Text("Day ${widget.dayReading.dayNumber} marked complete!"), backgroundColor: Colors.green,));
-        setState(() { _isCompletedToday = true; });
-        Navigator.pop(context, true);
+      if (!mounted) return;
+
+      setState(() { _isCompletedToday = true; });
+
+      // Check if this was the last day (plan completed)
+      final progress = await _dbHelper.getReadingPlanProgress(widget.planId);
+      final allPlans = await ReadingPlanService().getAllPlans();
+      ReadingPlan? currentPlan;
+      try {
+        currentPlan = allPlans.firstWhere((p) => p.id == widget.planId);
+      } catch (_) {}
+
+      final isPlanFinished = progress != null &&
+          currentPlan != null &&
+          progress.completedDays.length >= currentPlan.durationDays;
+
+      if (isPlanFinished) {
+        // Full plan completion celebration!
+        if (mounted) {
+          Navigator.pop(context, true); // Go back to detail screen first
+          Future.delayed(const Duration(milliseconds: 300), () {
+            if (mounted) {
+              PlanCompletionDialog.show(
+                context,
+                planTitle: currentPlan!.title,
+                totalDays: currentPlan!.durationDays,
+                streakCount: progress.streakCount,
+                onExploreMore: () {
+                  Navigator.pop(context, true); // pop detail screen to list
+                },
+                onRestart: () {
+                  // Pop back to detail screen — the user can restart from there
+                },
+              );
+            }
+          });
+        }
+      } else {
+        // Day completion celebration
+        final (title, subtitle) = MotivationalMessages.getDayCompletionMessage();
+        // Check streak milestones
+        final milestone = MotivationalMessages.getStreakMilestoneMessage(progress?.streakCount ?? 0);
+        final celebTitle = milestone?[0] ?? title;
+        final celebSubtitle = milestone?[1] ?? subtitle;
+
+        Navigator.pop(context, true); // Go back to detail screen first
+        Future.delayed(const Duration(milliseconds: 300), () {
+          if (mounted) {
+            CelebrationOverlay.show(
+              context,
+              title: celebTitle,
+              subtitle: celebSubtitle,
+            );
+          }
+        });
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Text("Error updating progress: ${e.toString()}")));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error updating progress: ${e.toString()}")),
+        );
       }
     }
   }
@@ -487,6 +547,21 @@ class _DailyReadingScreenState extends State<DailyReadingScreen> {
             favoriteIconColor: favIconColor,
             flagManageButtonColor: flagManageBtnColor,
             flagChipStyle: fChipStyle,
+            onPassageTitleTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => FullBibleReaderScreen(
+                    targetBookAbbr: passagePtr.bookAbbr,
+                    targetChapter: passagePtr.startChapter.toString(),
+                    targetVerseNumber: passagePtr.startVerse > 0
+                        ? passagePtr.startVerse.toString()
+                        : null,
+                    returnToPlanLabel: 'Back to Plan',
+                  ),
+                ),
+              );
+            },
           )
         );
 

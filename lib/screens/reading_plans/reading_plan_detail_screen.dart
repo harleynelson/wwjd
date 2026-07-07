@@ -89,7 +89,7 @@ class _ReadingPlanDetailScreenState extends State<ReadingPlanDetailScreen> {
         _progress = newProgress;
         _isLoadingProgress = false;
       });
-       Navigator.pop(context, true);
+      // Stay on the detail screen so the user sees the updated UI
     }
   }
    Future<void> _restartPlan() async {

@@ -30,6 +30,7 @@ class DailyReadingPassageDisplay extends StatelessWidget {
   final Color favoriteIconColor;
   final Color flagManageButtonColor;
   final TextStyle flagChipStyle;
+  final VoidCallback? onPassageTitleTap;
 
   const DailyReadingPassageDisplay({
     super.key,
@@ -54,7 +55,38 @@ class DailyReadingPassageDisplay extends StatelessWidget {
     required this.favoriteIconColor,
     required this.flagManageButtonColor,
     required this.flagChipStyle,
+    this.onPassageTitleTap,
   });
+
+  Widget _buildPassageTitle(BuildContext context) {
+    final String titleText =
+        "${getFullBookName(passagePointer.bookAbbr)} ${passagePointer.displayText.replaceFirst(RegExp(r'^[A-Za-z\s]+'), '').trim()}";
+
+    if (onPassageTitleTap == null) {
+      return Text(titleText, style: passageTitleStyle);
+    }
+
+    return InkWell(
+      onTap: onPassageTitleTap,
+      borderRadius: BorderRadius.circular(6),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: Text(titleText, style: passageTitleStyle),
+          ),
+          const SizedBox(width: 6),
+          Icon(
+            Icons.open_in_new_rounded,
+            size: passageTitleStyle.fontSize != null
+                ? passageTitleStyle.fontSize! * 0.8
+                : 14,
+            color: passageTitleStyle.color?.withOpacity(0.6),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildProseView(BuildContext context) {
     if (verses.isEmpty && !isLoading) {
@@ -71,10 +103,7 @@ class DailyReadingPassageDisplay extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: Text(
-            "${getFullBookName(passagePointer.bookAbbr)} ${passagePointer.displayText.replaceFirst(RegExp(r'^[A-Za-z\s]+'), '').trim()}",
-            style: passageTitleStyle,
-          ),
+          child: _buildPassageTitle(context),
         ),
         SelectableText.rich(
           TextSpan(
@@ -104,10 +133,7 @@ class DailyReadingPassageDisplay extends StatelessWidget {
     passageWidgets.add(
       Padding(
         padding: const EdgeInsets.only(top: 10.0, bottom: 4.0),
-        child: Text(
-          "${getFullBookName(passagePointer.bookAbbr)} ${passagePointer.displayText.replaceFirst(RegExp(r'^[A-Za-z\s]+'), '').trim()}",
-          style: passageTitleStyle,
-        ),
+        child: _buildPassageTitle(context),
       ),
     );
 

@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import '../../models/models.dart'; // For ReadingPlan and UserReadingProgress
 import '../../theme/app_colors.dart'; // For AppColors.getReadingPlanGradient
+import '../../helpers/motivational_messages.dart'; // For encouraging copy
 
 class ReadingPlanListItem extends StatelessWidget {
   final ReadingPlan plan;
@@ -33,8 +34,10 @@ class ReadingPlanListItem extends StatelessWidget {
 
     double progressValue = 0.0;
     String progressText = "Not Started"; // Default text
+    String? encouragingLabel; // Micro-encouragement pill
     bool isCompleted = false;
     int completedDaysCount = 0;
+    bool isInProgress = false;
 
     if (progress != null && progress!.isActive) {
       completedDaysCount = progress!.completedDays.length;
@@ -42,23 +45,35 @@ class ReadingPlanListItem extends StatelessWidget {
         progressValue = completedDaysCount / plan.durationDays;
       }
       if (completedDaysCount >= plan.durationDays) {
-        progressText = "Completed!";
+        progressText = "Completed! 🎉";
         isCompleted = true;
+        encouragingLabel = "Well done!";
       } else if (completedDaysCount > 0) {
+        final remaining = plan.durationDays - completedDaysCount;
         progressText = "$completedDaysCount / ${plan.durationDays} days";
+        isInProgress = true;
+        if (remaining <= 3) {
+          encouragingLabel = "Almost there! 🔥";
+        } else if (progressValue >= 0.5) {
+          encouragingLabel = "Over halfway! 💪";
+        } else if (progress!.streakCount >= 3) {
+          encouragingLabel = "${progress!.streakCount}-day streak! 🔥";
+        } else {
+          encouragingLabel = "Keep it up! 🌱";
+        }
       } else if (progress!.currentDayNumber > 1 && completedDaysCount == 0) {
          // Started but no days marked complete yet beyond day 1 not being the current
          progressText = "In Progress";
+         encouragingLabel = "Dive in! 📖";
       }
     } else if (progress != null && !progress!.isActive && progress!.completedDays.length >= plan.durationDays) {
-      // Case where plan was completed and then perhaps made inactive (though less common)
       progressValue = 1.0;
-      progressText = "Completed";
+      progressText = "Completed! 🎉";
       isCompleted = true;
+      encouragingLabel = "Well done!";
     } else if (isPlanEffectivelyLocked && progress == null) {
         progressText = "Premium Plan";
     }
-
 
     Widget headerBackground;
     if (plan.headerImageAssetPath != null && plan.headerImageAssetPath!.isNotEmpty) {
@@ -149,8 +164,8 @@ class ReadingPlanListItem extends StatelessWidget {
                           style: TextStyle(fontSize: 9, color: Colors.white, fontWeight: FontWeight.bold)
                         ),
                         backgroundColor: isPlanEffectivelyLocked
-                                          ? Colors.amber.shade700.withOpacity(0.7) 
-                                          : Colors.green.shade700.withOpacity(0.7), 
+                                          ? Colors.amber.shade700.withOpacity(0.7)
+                                          : Colors.green.shade700.withOpacity(0.7),
                         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                         visualDensity: VisualDensity.compact,
                       ),
@@ -163,12 +178,37 @@ class ReadingPlanListItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    plan.category,
-                    style: textTheme.bodySmall?.copyWith(
-                      color: colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        plan.category,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      if (encouragingLabel != null) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: isCompleted
+                                ? Colors.green.shade50
+                                : Colors.orange.shade50,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            encouragingLabel,
+                            style: textTheme.labelSmall?.copyWith(
+                              color: isCompleted
+                                  ? Colors.green.shade700
+                                  : Colors.orange.shade700,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                   const SizedBox(height: 2.0),
                   Text(
@@ -186,7 +226,7 @@ class ReadingPlanListItem extends StatelessWidget {
                         style: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        progressText, 
+                        progressText,
                         style: textTheme.labelLarge?.copyWith(
                           color: isCompleted ? Colors.green.shade700 : ( (progress != null && progress!.isActive) ? colorScheme.tertiary : colorScheme.onSurface.withOpacity(0.7) ),
                           fontWeight: FontWeight.bold,

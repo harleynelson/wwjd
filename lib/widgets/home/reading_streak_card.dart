@@ -1,6 +1,7 @@
 // File: lib/widgets/home/reading_streak_card.dart
 // Path: lib/widgets/home/reading_streak_card.dart
 import 'package:flutter/material.dart';
+import '../../helpers/motivational_messages.dart';
 
 class ReadingStreakCard extends StatelessWidget {
   final Future<int> readingStreakFuture;
@@ -15,8 +16,6 @@ class ReadingStreakCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    const String mainCtaText = "Guided Readings";
-    const IconData mainCtaIcon = Icons.checklist_rtl_outlined;
 
     return FutureBuilder<int>(
       future: readingStreakFuture,
@@ -43,6 +42,8 @@ class ReadingStreakCard extends StatelessWidget {
         } else if (snapshot.hasData) {
           streakCount = snapshot.data!;
         }
+
+        final encouragement = MotivationalMessages.getStreakEncouragement(streakCount);
 
         return Card(
           elevation: 3.0,
@@ -88,12 +89,11 @@ class ReadingStreakCard extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Icon(mainCtaIcon,
-                                    color: Colors.white.withOpacity(0.9),
-                                    size: 24),
+                                const Icon(Icons.menu_book_rounded,
+                                    color: Colors.white, size: 24),
                                 const SizedBox(width: 8.0),
                                 Text(
-                                  mainCtaText,
+                                  "Guided Readings",
                                   style: theme.textTheme.titleLarge?.copyWith(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -116,15 +116,14 @@ class ReadingStreakCard extends StatelessWidget {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.local_fire_department_rounded,
-                                  color: Colors.orangeAccent.shade100,
-                                  size: 18),
-                              const SizedBox(width: 6.0),
+                              const Icon(Icons.local_fire_department_rounded,
+                                  color: Colors.orangeAccent, size: 20),
+                              const SizedBox(width: 4.0),
                               Text(
-                                "$streakCount Day Reading Streak!",
+                                "$streakCount-Day Streak",
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: Colors.white.withOpacity(0.95),
-                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
                                   shadows: [
                                     const Shadow(
                                         blurRadius: 1.0,
@@ -133,11 +132,27 @@ class ReadingStreakCard extends StatelessWidget {
                                   ],
                                 ),
                               ),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Colors.orangeAccent.withOpacity(0.25),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  encouragement,
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: Colors.orangeAccent.shade100,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ],
                           )
                         else
                           Text(
-                            "Start a plan to build your streak!",
+                            "Start a plan and ignite your streak! 🔥",
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: Colors.white.withOpacity(0.85),
                               shadows: [

@@ -23,12 +23,14 @@ class FullBibleReaderScreen extends StatefulWidget {
   final String? targetBookAbbr;
   final String? targetChapter;
   final String? targetVerseNumber;
+  final String? returnToPlanLabel;
 
   const FullBibleReaderScreen({
     super.key,
     this.targetBookAbbr,
     this.targetChapter,
     this.targetVerseNumber,
+    this.returnToPlanLabel,
   });
 
   @override
@@ -206,8 +208,12 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
            WidgetsBinding.instance.addPostFrameCallback((_) {
              if (mounted) {
                _scrollToTargetVerse(widget.targetVerseNumber);
+               if (mounted) {
+                 setState(() { _isLoading = false; });
+               }
              }
            });
+          return; // Skip final _isLoading = false; scroll handles it
         }
       }
     } catch (e) {
@@ -239,7 +245,7 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
           }
         });
       });
-      _itemScrollController.scrollTo(index: index, duration: const Duration(milliseconds: 600), curve: Curves.easeInOutCubic, alignment: 0.1);
+      _itemScrollController.jumpTo(index: index, alignment: 0.1);
     } else {
          setState(() { _initialScrollDone = true; });
     }
@@ -553,6 +559,23 @@ class _FullBibleReaderScreenState extends State<FullBibleReaderScreen> {
            ? IconButton( icon: const Icon(Icons.arrow_back), onPressed: () { if (_currentView != BibleReaderView.books) { _goBack(); } else if (Navigator.canPop(context)){ Navigator.of(context).pop(); } },)
            : null,
          actions: [
+           if (widget.returnToPlanLabel != null && _currentView == BibleReaderView.verses)
+             Padding(
+               padding: const EdgeInsets.only(right: 4.0),
+               child: TextButton.icon(
+                 icon: const Icon(Icons.menu_book_outlined, size: 18),
+                 label: Text(
+                   widget.returnToPlanLabel!,
+                   style: const TextStyle(fontSize: 12),
+                 ),
+                 onPressed: () => Navigator.of(context).pop(),
+                 style: TextButton.styleFrom(
+                   foregroundColor: Theme.of(context).colorScheme.primary,
+                   padding: const EdgeInsets.symmetric(horizontal: 8),
+                   visualDensity: VisualDensity.compact,
+                 ),
+               ),
+             ),
            if (_currentView == BibleReaderView.verses)
              IconButton(
                icon: const Icon(Icons.tune_rounded),
