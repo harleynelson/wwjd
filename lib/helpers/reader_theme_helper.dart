@@ -1,5 +1,4 @@
 // File: lib/helpers/reader_theme_helper.dart
-// Path: lib/helpers/reader_theme_helper.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wwjd_app/models/reader_settings_enums.dart';
@@ -72,7 +71,6 @@ class ReaderThemeHelper {
   }
 
   static Color getSecondaryAccentColor(ReaderThemeMode themeMode, BuildContext context) {
-     // Added context although not used in current logic, for consistency if needed later
     switch (themeMode) {
       case ReaderThemeMode.dark:
         return Colors.cyanAccent.shade200.withOpacity(0.9);
@@ -108,7 +106,7 @@ class ReaderThemeHelper {
     }
   }
 
-  // Helper for VerseListItem specific colors, could be expanded
+  // VerseListItem specific colors
    static Color getVerseListItemFavoriteIconColor(ReaderThemeMode themeMode, BuildContext context) {
     return (themeMode == ReaderThemeMode.dark) ? Colors.grey.shade400 : Theme.of(context).colorScheme.outline;
   }

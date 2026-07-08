@@ -1,5 +1,4 @@
 // File: lib/dialogs/password_prompt_dialog.dart
-// Path: lib/dialogs/password_prompt_dialog.dart
 import 'package:flutter/material.dart';
 
 /// Shows a dialog to prompt the user for their password.

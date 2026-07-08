@@ -27,7 +27,6 @@ String getFullBookName(String bookCode) {
   return bookCodeToFullName[bookCode.toUpperCase()] ?? bookCode;
 }
 
-// --- NEW FUNCTION ---
 // Function to get abbreviation from full book name (simple reverse lookup)
 // This is a basic implementation and might need to be more robust
 // for variations in full book names (e.g., "Song of Songs" vs "Song of Solomon").

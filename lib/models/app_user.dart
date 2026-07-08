@@ -1,9 +1,4 @@
 // File: lib/models/app_user.dart
-// Path: lib/models/app_user.dart
-// Approximate line: 7 (add isPremium), 15 (add to constructor)
-
-// Ensure you have this class defined in your project.
-// If it's part of a larger models.dart, update it there.
 
 class AppUser {
   final String uid;
@@ -11,7 +6,7 @@ class AppUser {
   final String? email;
   final String? displayName;
   final String? photoURL;
-  final bool isPremium; // Added for premium status
+  final bool isPremium;
 
   AppUser({
     required this.uid,
@@ -19,10 +14,9 @@ class AppUser {
     this.email,
     this.displayName,
     this.photoURL,
-    this.isPremium = false, // Default to false
+    this.isPremium = false,
   });
 
-  // Optional: Add a copyWith method if you find it useful
   AppUser copyWith({
     String? uid,
     bool? isAnonymous,

@@ -8,21 +8,21 @@ class MotivationalMessages {
 
   // --- Day Completion Celebrations ---
   static const List<String> _dayCompletionTitles = [
-    'You\'re Growing! 🌱',
-    'Day Complete! ✨',
-    'Well Done! 🙌',
-    'Keep Going! 🔥',
-    'God Is Smiling! 😊',
-    'Another Step! 🕊️',
-    'Faithful & True! 💪',
-    'You Did It! 🎉',
-    'Growing in Grace! 🌿',
-    'Strength for Today! ⚡',
-    'Walking in Wisdom! 📖',
-    'Blessed & Refreshed! 💧',
-    'Light Breaking Through! ☀️',
-    'Anchored in Hope! ⚓',
-    'Spirit-Filled Moment! 🕯️',
+    'You\'re Growing!',
+    'Day Complete!',
+    'Well Done!',
+    'Keep Going!',
+    'God Is Smiling!',
+    'Another Step!',
+    'Faithful & True!',
+    'You Did It!',
+    'Growing in Grace!',
+    'Strength for Today!',
+    'Walking in Wisdom!',
+    'Blessed & Refreshed!',
+    'Light Breaking Through!',
+    'Anchored in Hope!',
+    'Spirit-Filled Moment!',
   ];
 
   static const List<String> _dayCompletionSubtitles = [
@@ -45,11 +45,11 @@ class MotivationalMessages {
 
   // --- Plan Completion Celebrations ---
   static const List<String> _planCompletionTitles = [
-    'Plan Completed! 🏆',
-    'Victory in the Word! 🎊',
-    'You Finished Strong! 💪',
-    'A New Chapter Begins! 📖',
-    'Transformed & Renewed! 🔥',
+    'Plan Completed!',
+    'Victory in the Word!',
+    'You Finished Strong!',
+    'A New Chapter Begins! ',
+    'Transformed & Renewed!',
   ];
 
   static const List<String> _planCompletionSubtitles = [
@@ -63,25 +63,25 @@ class MotivationalMessages {
   // --- Streak Milestones ---
   static const Map<int, List<String>> _streakMilestones = {
     3: [
-      '3-Day Streak! 🔥', 'You\'re building momentum! Three days in a row — that\'s how habits are born.',
+      '3-Day Streak!', 'You\'re building momentum! Three days in a row — that\'s how habits are born.',
     ],
     7: [
-      '1 Week Streak! 🎉', 'A full week in the Word! Research says it takes 21 days to form a habit — you\'re 1/3 of the way there!',
+      '1 Week Streak!', 'A full week in the Word! Research says it takes 21 days to form a habit — you\'re 1/3 of the way there!',
     ],
     14: [
-      '2 Week Streak! ⚡', 'Two weeks of daily reading! You\'re officially a consistent Bible reader. This is who you are now.',
+      '2 Week Streak!', 'Two weeks of daily reading! You\'re officially a consistent Bible reader. This is who you are now.',
     ],
     21: [
-      '21-Day Streak! 🏆', 'Three weeks! Science says the habit is formed. Your spirit says this is just the beginning.',
+      '21-Day Streak!', 'Three weeks! Science says the habit is formed. Your spirit says this is just the beginning.',
     ],
     30: [
-      '30-Day Streak! 👑', 'A WHOLE MONTH in God\'s Word! You\'re not just reading — you\'re being transformed. This is legendary.',
+      '30-Day Streak!', 'A WHOLE MONTH in God\'s Word! You\'re not just reading — you\'re being transformed. This is legendary.',
     ],
     60: [
-      '60-Day Streak! 🌟', 'Two months of daily devotion. Most people don\'t make it this far. You\'re not most people.',
+      '60-Day Streak!', 'Two months of daily devotion. Most people don\'t make it this far. You\'re not most people.',
     ],
     90: [
-      '90-Day Streak! 💎', 'Three months. A quarter of a year. You\'ve built something unshakeable. Keep shining!',
+      '90-Day Streak!', 'Three months. A quarter of a year. You\'ve built something unshakeable. Keep shining!',
     ],
   };
 
@@ -127,14 +127,14 @@ class MotivationalMessages {
 
   /// Returns streak-appropriate encouragement text.
   static String getStreakEncouragement(int streakCount) {
-    if (streakCount >= 90) return 'Unstoppable! 👑';
-    if (streakCount >= 60) return 'Legendary! 🌟';
-    if (streakCount >= 30) return 'On Fire! 🔥';
-    if (streakCount >= 21) return 'Habit Formed! 💪';
-    if (streakCount >= 14) return 'Momentum! ⚡';
-    if (streakCount >= 7) return 'Week Strong! 🎉';
-    if (streakCount >= 3) return 'Building! 🌱';
-    if (streakCount >= 1) return 'Day 1! 🚀';
-    return 'Start Your Streak! ✨';
+    if (streakCount >= 90) return 'Unstoppable!';
+    if (streakCount >= 60) return 'Legendary!';
+    if (streakCount >= 30) return 'On Fire!';
+    if (streakCount >= 21) return 'Habit Formed!';
+    if (streakCount >= 14) return 'Momentum!';
+    if (streakCount >= 7) return 'Week Strong!';
+    if (streakCount >= 3) return 'Building!';
+    if (streakCount >= 1) return 'Day 1!';
+    return 'Start Your Streak!';
   }
 }

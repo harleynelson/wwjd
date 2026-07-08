@@ -15,8 +15,16 @@
           "startChapter": 13,
           "startVerse": 1,
           "endChapter": 13,
+          "endVerse": 2,
+          "displayText": "Matthew 13:1-2"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 13,
+          "startVerse": 3,
+          "endChapter": 13,
           "endVerse": 9,
-          "displayText": "Matthew 13:1-9"
+          "displayText": "Matthew 13:3-9"
         },
         {
           "bookAbbr": "MAT",
@@ -24,36 +32,72 @@
           "startVerse": 18,
           "endChapter": 13,
           "endVerse": 23,
-          "displayText": "Matthew 13:18-23 (Explanation)"
+          "displayText": "Matthew 13:18-23"
         }
       ],
-      "reflectionPrompt": "Jesus describes different 'soils' that receive the seed differently (path, rocky ground, thorns, good soil). Which soil best describes your heart's receptiveness right now? What 'weeds' (worries, distractions) might be choking out growth?",
+      "reflectionPrompt": "Jesus describes four kinds of soil. Path, rocks, thorns, good dirt. Which one feels like your heart right now? And what's one weed you could pull this week?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Jesus walks out of the house and sits by the lake. The crowd is so big he has to get into a boat and teach from the water. There's something beautiful about that. The greatest teacher in history using a lake as his sound system and a boat as his pulpit. God doesn't need a stage. He just needs people willing to listen.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Jesus begins his parables by talking about how people *receive* his message. The focus isn't just on the sower or the seed, but on the condition of the 'soil'—our hearts and minds. It challenges us to consider: what prevents the message of goodness and truth from taking root and flourishing in our own lives?",
+          "text": "A farmer scatters seed. Some falls on the path and the birds eat it. Some falls on rocky ground, sprouts fast, but withers because it has no root. Some falls among thorns and gets choked out. Some falls on good soil and produces an incredible harvest. Jesus describes the story but doesn't explain it yet. He just lets it hang there. Sometimes the best teaching doesn't give you the answer right away. It makes you sit with the question.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Jesus explains that the seed is the message of the kingdom. The different soils are different hearts. Some people hear but don't understand, and it's snatched away. Some receive it with joy but have no depth. Some are choked by worry and money. But the good soil hears, understands, and produces a crop. Here's the thing: the sower didn't stop scattering seed just because some soil was bad. Keep sowing. The harvest isn't your job. The scattering is.",
           "attribution": null
         }
       ]
     },
     {
       "dayNumber": 2,
-      "title": "Mustard Seed & Yeast: Small Beginnings, Big Impact",
+      "title": "Mustard Seed and Yeast: Small Beginnings, Big Impact",
       "passages": [
         {
           "bookAbbr": "MAT",
           "startChapter": 13,
           "startVerse": 31,
           "endChapter": 13,
+          "endVerse": 31,
+          "displayText": "Matthew 13:31"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 13,
+          "startVerse": 32,
+          "endChapter": 13,
+          "endVerse": 32,
+          "displayText": "Matthew 13:32"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 13,
+          "startVerse": 33,
+          "endChapter": 13,
           "endVerse": 33,
-          "displayText": "Matthew 13:31-33"
+          "displayText": "Matthew 13:33"
         }
       ],
-      "reflectionPrompt": "The kingdom of heaven starts like a tiny mustard seed or hidden yeast. Where have you seen small, seemingly insignificant things lead to surprisingly large outcomes, either personally or in the world? How does this encourage your own small efforts?",
+      "reflectionPrompt": "A mustard seed is tiny. A pinch of yeast disappears into dough. Both change everything they touch. What small thing have you been discounting that might be exactly what God wants to use?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "In a world often impressed by size and spectacle, Jesus uses images of tiny seeds and hidden yeast to describe God's kingdom. It suggests that significant transformation often starts small, subtly, and grows unexpectedly. It's an encouragement not to despise small acts of kindness, justice, or faith.",
+          "text": "Jesus says the kingdom of heaven is like a mustard seed that a man planted in his field. That's the whole setup. A seed so small you could lose it in the palm of your hand. Jesus doesn't start with cathedrals or armies or political movements. He starts with something you can barely see. If you're waiting until you feel big enough or ready enough to make a difference, you'll wait forever.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "That tiny seed grows into a tree so large that birds come and perch in its branches. From microscopic to massive. From something you could sneeze away to something that shelters whole families of birds. Jesus is telling us that the kingdom doesn't arrive with fireworks and fanfare. It grows quietly, steadily, until one day you look up and realize something enormous has taken root right where you planted that tiny seed of faith.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then Jesus switches the image. The kingdom is like yeast that a woman works into a huge batch of dough until it's worked all through it. Yeast is hidden. You can't see it working. But you sure can see the results. The dough rises. It becomes bread. Your small acts of kindness, that decision to forgive, that prayer you barely managed to whisper. They're yeast. You may not see what they're doing right now, but something is rising.",
           "attribution": null
         }
       ]
@@ -67,15 +111,41 @@
           "startChapter": 20,
           "startVerse": 1,
           "endChapter": 20,
+          "endVerse": 7,
+          "displayText": "Matthew 20:1-7"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 20,
+          "startVerse": 8,
+          "endChapter": 20,
+          "endVerse": 12,
+          "displayText": "Matthew 20:8-12"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 20,
+          "startVerse": 13,
+          "endChapter": 20,
           "endVerse": 16,
-          "displayText": "Matthew 20:1-16"
+          "displayText": "Matthew 20:13-16"
         }
       ],
-      "reflectionPrompt": "The landowner's generosity seems unfair to the workers who started early. Does God's grace sometimes feel 'unfair' to you? How does this parable challenge your ideas about earning, deserving, and generosity?",
+      "reflectionPrompt": "The landowner paid everyone the same, whether they worked twelve hours or one. Be honest. Does that bother you? If so, what does that reaction tell you about how you understand grace?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This parable often rubs our sense of fairness the wrong way! Workers hired late receive the same pay as those who worked all day. It radically challenges a system based purely on merit or earning, highlighting God's surprising generosity and grace, which isn't limited by our human calculations of what's 'deserved'.",
+          "text": "A landowner goes out at dawn and hires workers for the standard daily wage. Then he goes out again at nine, noon, three, and even five in the afternoon. Each time he finds people standing around. Why are they still there? Because nobody hired them. The landowner isn't just looking for workers. He's noticing people who've been passed over all day. He keeps going back to the marketplace because he knows there are still people waiting.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Pay time arrives, and the landowner starts with the five o'clock crew. They get a full day's wage. The all-day workers see this and start doing the math in their heads. If those guys got a full day's pay, surely we're getting a bonus. But when they get to the front of the line, it's the same amount. And they lose it. Not because they were cheated. Because someone else got more than they deserved.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The landowner's answer cuts deep. 'I am not being unfair to you. Take your pay and go. Are you envious because I am generous?' There it is. The real issue isn't fairness. It's envy. Somebody else got grace you don't think they earned, and it bothers you. But here's the uncomfortable truth. If you're keeping score, you've already missed what grace is. Grace isn't fair. That's the whole point.",
           "attribution": null
         }
       ]
@@ -89,15 +159,41 @@
           "startChapter": 18,
           "startVerse": 9,
           "endChapter": 18,
+          "endVerse": 10,
+          "displayText": "Luke 18:9-10"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 18,
+          "startVerse": 11,
+          "endChapter": 18,
+          "endVerse": 12,
+          "displayText": "Luke 18:11-12"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 18,
+          "startVerse": 13,
+          "endChapter": 18,
           "endVerse": 14,
-          "displayText": "Luke 18:9-14"
+          "displayText": "Luke 18:13-14"
         }
       ],
-      "reflectionPrompt": "The Pharisee listed his accomplishments, while the tax collector simply asked for mercy. Which prayer posture feels more natural to you? How can self-awareness and humility open us up to connection with the Divine?",
+      "reflectionPrompt": "Two men walked into the temple. One was sure God was lucky to have him. The other couldn't even look up. Which one prays more like you do on a typical Tuesday?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Jesus contrasts two approaches to God: the self-congratulatory religious leader and the humble, repentant tax collector. Surprisingly, it's the one who acknowledges his need ('God, have mercy on me, a sinner') who goes home justified. This story turns religious expectations upside down, valuing honest humility over outward displays of piety.",
+          "text": "Luke tells us exactly why Jesus told this story. It was aimed at people who were confident in their own righteousness and looked down on everyone else. Ouch. That's a setup that should make us all a little nervous. Jesus notices the posture of people's hearts. And he knows that religious pride might be the most dangerous kind.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The Pharisee stands up and prays about himself. He thanks God that he's not like other people. Robbers, evildoers, adulterers. Or even like that tax collector over there. He fasts twice a week. He tithes on everything. Everything he says is technically true. He is morally upright. And his prayer never actually connects with God. It's just a mirror he's holding up to admire himself.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The tax collector stands at a distance. He won't even look up to heaven. He beats his chest and says, 'God, have mercy on me, a sinner.' That's it. Six words. No resume, no comparisons, no bargaining. Jesus says this man went home justified before God. Not the one with the perfect religious track record. The one who knew he had nothing to offer but his need. That's the gospel in one sentence.",
           "attribution": null
         }
       ]
@@ -111,15 +207,41 @@
           "startChapter": 18,
           "startVerse": 21,
           "endChapter": 18,
+          "endVerse": 22,
+          "displayText": "Matthew 18:21-22"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 18,
+          "startVerse": 23,
+          "endChapter": 18,
+          "endVerse": 30,
+          "displayText": "Matthew 18:23-30"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 18,
+          "startVerse": 31,
+          "endChapter": 18,
           "endVerse": 35,
-          "displayText": "Matthew 18:21-35"
+          "displayText": "Matthew 18:31-35"
         }
       ],
-      "reflectionPrompt": "The servant was forgiven a huge debt but wouldn't forgive a small one. How does reflecting on the mercy or grace you've received impact your willingness to forgive others? What makes forgiveness difficult, and what helps?",
+      "reflectionPrompt": "A servant is forgiven a debt so massive it would take multiple lifetimes to repay. Then he chokes a coworker over pocket change. Before you judge him, who are you holding a grudge against right now?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This challenging parable links the immense forgiveness we receive from God with our responsibility to forgive others. The servant, forgiven an unpayable debt, refuses to forgive a small debt owed to him. It starkly illustrates that truly experiencing and internalizing grace should transform how we treat others.",
+          "text": "Peter comes to Jesus with what he thinks is a generous question. How many times should I forgive? Seven times? The rabbis taught three. Peter doubled it and added one. He's probably expecting a compliment. Jesus says, 'Not seven times, but seventy-seven times.' In other words, stop counting. The moment you start keeping a ledger of forgiveness, you've missed the point.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus tells the story. A servant owes the king ten thousand talents. We're talking billions of dollars. An absurd, impossible amount. The king orders him sold, along with his family. The servant falls down and begs. The king doesn't just give him more time. He forgives the entire debt. Wipes it clean. That's the scale of what we're talking about when we talk about God's mercy. Not a payment plan. A clean slate.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "That same servant finds someone who owes him a hundred denarii, a few thousand dollars, real money but nothing compared to what he was just forgiven. He grabs the man by the throat and throws him in prison. When the king hears, he's furious. 'Shouldn't you have had mercy just as I had on you?' The servant is handed over to be tortured. Jesus ends with, 'This is how my heavenly Father will treat each of you unless you forgive your brother from your heart.' Mercy flows downhill. If it stops with you, something's broken.",
           "attribution": null
         }
       ]
@@ -133,15 +255,41 @@
           "startChapter": 25,
           "startVerse": 14,
           "endChapter": 25,
+          "endVerse": 18,
+          "displayText": "Matthew 25:14-18"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 25,
+          "startVerse": 19,
+          "endChapter": 25,
+          "endVerse": 23,
+          "displayText": "Matthew 25:19-23"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 25,
+          "startVerse": 24,
+          "endChapter": 25,
           "endVerse": 30,
-          "displayText": "Matthew 25:14-30"
+          "displayText": "Matthew 25:24-30"
         }
       ],
-      "reflectionPrompt": "The servants were entrusted with different amounts ('talents'). What unique gifts, skills, or resources have you been entrusted with? How can you actively use or invest them for positive impact, rather than 'burying' them out of fear or complacency?",
+      "reflectionPrompt": "Two servants invested what they were given. One buried it. The one who buried it wasn't dishonest. He was scared. What have you been sitting on because you're afraid of getting it wrong?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This parable isn't just about money; it's about stewarding whatever gifts, resources, or opportunities we've been given. The servants who use and multiply what they have are commended, while the one who buries his gift out of fear is rebuked. It challenges passivity and encourages faithful, active use of our potential for good.",
+          "text": "A man going on a journey entrusts his wealth to three servants. Five bags of gold to one, two to another, one to the third. Each according to his ability. The first two get to work immediately. They trade, they invest, they multiply. The third digs a hole and buries his in the ground. Right away you see the difference. Two are thinking about what the master wants. One is thinking about what he might lose.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The master returns. The first servant doubled his five bags. The second doubled his two. Both hear the same words: 'Well done, good and faithful servant. You have been faithful with a few things. I will put you in charge of many things. Come and share your master's happiness.' The reward isn't retirement on a beach. It's more trust and deeper relationship. Faithfulness opens doors, it doesn't close them.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The third servant steps forward and his first words are defensive: 'I knew you were a hard man.' He was afraid, so he hid the talent. He returns exactly what he was given and acts like he did the master a favor. The master calls him wicked and lazy. 'You could have at least put it in the bank.' The servant lost nothing, gained nothing, and lost everything. Fear dressed up as caution isn't wisdom. It's disobedience with a polite smile.",
           "attribution": null
         }
       ]
@@ -155,15 +303,41 @@
           "startChapter": 22,
           "startVerse": 1,
           "endChapter": 22,
+          "endVerse": 5,
+          "displayText": "Matthew 22:1-5"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 22,
+          "startVerse": 6,
+          "endChapter": 22,
+          "endVerse": 10,
+          "displayText": "Matthew 22:6-10"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 22,
+          "startVerse": 11,
+          "endChapter": 22,
           "endVerse": 14,
-          "displayText": "Matthew 22:1-14"
+          "displayText": "Matthew 22:11-14"
         }
       ],
-      "reflectionPrompt": "The original guests declined the invitation, so it was extended to unexpected people. Who are the 'unexpected guests' God might be inviting into community or relationship today? How can we ensure our communities are truly welcoming to all?",
+      "reflectionPrompt": "The original guests were too busy for the king's banquet, so the invitation went out to anyone on the street. Who's at the table in your version of God's kingdom that surprises you? And who's not there that you expected to see?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "When the invited guests make excuses and refuse to come to the king's banquet, the invitation is extended unexpectedly to anyone found in the streets, 'both good and bad.' This parable dramatically illustrates God's wide, inclusive welcome, often extended to those the 'insiders' might overlook or deem unworthy.",
+          "text": "A king throws a wedding banquet for his son. He sends servants to tell the invited guests that everything's ready. The food is prepared. The hall is set. And the guests refuse to come. Not because they can't. Because they won't. One goes to his field, another to his business. Their regular Tuesday was more important than the king's invitation. Makes you think about what you've turned down because it didn't fit your schedule.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The king is furious. Some guests even mistreated and killed his servants. He sends his army to deal with them. Then he tells his remaining servants to go to the street corners and invite anyone they find. 'Both good and bad.' The wedding hall fills up. Bankers next to beggars. Pious people next to people who haven't seen the inside of a synagogue in years. The kingdom isn't a gated community. It's a block party where everyone got the same invitation.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The king spots a man not wearing wedding clothes and has him thrown out into the darkness. This part is jarring. Everyone was invited, but showing up wasn't enough. You had to come properly dressed. The wedding clothes were traditionally provided by the host. Refusing to wear them was an insult. It was saying, 'I'll come, but on my terms.' Jesus ends with, 'Many are invited, but few are chosen.' The door is wide open. But you still have to walk through it the right way. Humbled. Grateful. Ready to celebrate someone else's joy.",
           "attribution": null
         }
       ]

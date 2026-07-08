@@ -16,7 +16,7 @@
           "startVerse": 6,
           "endChapter": 1,
           "endVerse": 8,
-          "displayText": "Genesis 1:6-8 (The Firmament)"
+          "displayText": "Genesis 1:6-8"
         },
         {
           "bookAbbr": "PSA",
@@ -24,19 +24,24 @@
           "startVerse": 1,
           "endChapter": 19,
           "endVerse": 6,
-          "displayText": "Psalm 19:1-6 (Sun's circuit)"
+          "displayText": "Psalm 19:1-6"
         }
       ],
-      "reflectionPrompt": "Ancient texts describe the cosmos based on their era's understanding (e.g., a solid dome, flat earth). How does recognizing the Bible's primary theological purpose, rather than as a science textbook, help us appreciate its message while embracing modern scientific discovery?",
+      "reflectionPrompt": "The Bible writers described the world the way they experienced it. A dome overhead holding back waters. The sun running its course. We know galaxies and gravity now, things they couldn't have imagined. Does that make their faith less real? Or does it make God big enough to meet people where they are?",
       "interspersedInsights": [
         {
-          "afterPassageIndex": -1,
-          "text": "Engaging with ancient texts often means encountering worldviews different from our own. It's an invitation to explore the primary purpose of these writings, which frequently focus on theological truths rather than precise scientific descriptions.",
+          "afterPassageIndex": 0,
+          "text": "Genesis describes a 'vault' or 'firmament' separating the waters above from the waters below. The ancient world pictured a solid dome with stars embedded in it. That's how they understood the sky. God didn't correct their cosmology. He worked within it. The point wasn't astrophysics. The point was that one Creator brought order out of chaos. That truth doesn't depend on having the right scientific model.",
           "attribution": null
         },
         {
           "afterPassageIndex": 0,
-          "text": "The imagery of a 'firmament' or a solid dome reflects common ancient Near Eastern understandings of the cosmos. This framework helped ancient peoples articulate a sense of divine order and structure in creation.",
+          "text": "When you read ancient texts, you're crossing a cultural bridge. The people who wrote Scripture were brilliant and inspired, but they weren't modern scientists. They used the language and concepts available to them. That doesn't make the Bible wrong. It makes it incarnational. God speaking through real people in real times and real places, using words they actually understood.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The psalmist says the heavens declare the glory of God and the skies proclaim the work of his hands. Day after day they pour forth speech. The psalmist wasn't doing astronomy. He was doing worship. He looked up and saw beauty and order and felt small in the best way. You can know about redshift and dark matter and still stand under the stars and feel exactly what he felt.",
           "attribution": null
         }
       ]
@@ -51,7 +56,7 @@
           "startVerse": 2,
           "endChapter": 21,
           "endVerse": 6,
-          "displayText": "Exodus 21:2-6 (Laws concerning Hebrew slaves)"
+          "displayText": "Exodus 21:2-6"
         },
         {
           "bookAbbr": "PHM",
@@ -59,19 +64,24 @@
           "startVerse": 8,
           "endChapter": 1,
           "endVerse": 17,
-          "displayText": "Philemon 1:8-17 (Paul's appeal for Onesimus)"
+          "displayText": "Philemon 1:8-17"
         }
       ],
-      "reflectionPrompt": "The Bible contains laws that regulated, but didn't abolish, slavery in ancient contexts. How can we reconcile this with a progressive ethic of liberation and equality? How does focusing on the Bible's overall trajectory towards justice and love help us interpret such passages today?",
+      "reflectionPrompt": "The Bible regulates slavery, gives rules for how to do it. It doesn't abolish it outright. And yet, the overall arc of Scripture, from Exodus to Philemon to the early abolitionists who were driven by their faith, bends toward freedom. What does it mean that the Bible sometimes meets people where they are instead of instantly erasing every injustice?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Confronting passages that regulate practices like slavery requires careful contextualization. These ancient legal codes often operated within existing societal structures, sometimes aiming to mitigate harshness rather than outright abolish common practices of the era.",
+          "text": "Exodus gives laws about Hebrew slaves. Six years of service, then freedom in the seventh. It's progress for its time. Setting limits, requiring release. But it's not abolition. The Bible doesn't always leap to the finish line. Sometimes it takes the first step and trusts that the logic of love will carry people the rest of the way. History shows it worked. Christians led the abolition movements because they finally caught up to where the arc was always pointing.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Reading these laws can feel uncomfortable. Good. It should. The fact that you're bothered by ancient slavery laws means your moral compass is working. The Spirit is still teaching, still leading, still pushing the people of God toward more justice, more freedom, more love. The Bible isn't a static rulebook. It's a living conversation between God and his people across history.",
           "attribution": null
         },
         {
           "afterPassageIndex": 1,
-          "text": "Paul's appeal for Onesimus, though not a direct condemnation of slavery as an institution, subtly introduces transformative principles of brotherhood and love in Christ that challenge the very underpinnings of such hierarchical systems.",
+          "text": "Paul writes to Philemon about Onesimus, a runaway slave. Paul doesn't say 'slavery is abolished.' But he does something more subversive. He sends Onesimus back not as a slave but as a 'dear brother.' He offers to pay any debt himself. He puts his own reputation on the line. When you read between the lines, the whole institution of slavery becomes impossible to maintain under the weight of that kind of love.",
           "attribution": null
         }
       ]
@@ -86,7 +96,7 @@
           "startVerse": 11,
           "endChapter": 2,
           "endVerse": 12,
-          "displayText": "1 Timothy 2:11-12 (Women to be silent)"
+          "displayText": "1 Timothy 2:11-12"
         },
         {
           "bookAbbr": "JDG",
@@ -94,15 +104,7 @@
           "startVerse": 4,
           "endChapter": 4,
           "endVerse": 5,
-          "displayText": "Judges 4:4-5 (Deborah as a leader)"
-        },
-        {
-          "bookAbbr": "ROM",
-          "startChapter": 16,
-          "startVerse": 1,
-          "endChapter": 16,
-          "endVerse": 2,
-          "displayText": "Romans 16:1-2 (Phoebe as a deacon/patron)"
+          "displayText": "Judges 4:4-5"
         },
         {
           "bookAbbr": "GAL",
@@ -110,19 +112,24 @@
           "startVerse": 28,
           "endChapter": 3,
           "endVerse": 28,
-          "displayText": "Galatians 3:28 (Neither male nor female in Christ)"
+          "displayText": "Galatians 3:28"
         }
       ],
-      "reflectionPrompt": "Some biblical texts reflect patriarchal norms of their time regarding women's roles, while others highlight women in significant leadership. How can understanding historical context and a broader theological vision of equality (e.g., Galatians 3:28) guide our interpretation and application?",
+      "reflectionPrompt": "One verse says women should be silent. Another shows Deborah leading a nation. Paul says there's no male or female in Christ. The Bible contains a conversation, not a monologue. Where do you see the trajectory heading, and are you walking in that direction?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Passages like this one in 1 Timothy are often understood by scholars as addressing specific situations within a particular early church community, rather than laying down universal rules for all time. Context is key to interpretation.",
+          "text": "Paul tells Timothy that a woman should learn in quietness and full submission, and that he doesn't permit a woman to teach or have authority over a man. Many scholars see this as addressing a specific situation in Ephesus, not a universal command for all time. The same Paul had women co-workers, women who taught, women who hosted churches. You have to read the whole story, not just one page.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Deborah was a prophetess and a judge over Israel. People came to her for decisions. She led a nation in a time when women weren't supposed to lead anything. She commanded a military general. And the Bible tells her story without a hint of disapproval. If God only used people who fit the cultural expectations of their time, half the heroes of the Bible wouldn't be in the book.",
           "attribution": null
         },
         {
           "afterPassageIndex": 2,
-          "text": "The presence of figures like Deborah, a judge and prophetess, and Phoebe, a recognized deacon and patron in the early church, alongside Paul's inclusive declaration in Galatians, offers a broader, more complex picture of women's roles and spiritual significance within the biblical tradition.",
+          "text": "There is neither Jew nor Gentile, neither slave nor free, neither male nor female, for you are all one in Christ Jesus. This is Paul's north star. Whatever else he wrote about specific church situations, this is the vision he was aiming at. Every divider that mattered in the ancient world gets erased at the foot of the cross. If your church doesn't look like that yet, keep going. The trajectory is clear.",
           "attribution": null
         }
       ]
@@ -137,7 +144,7 @@
           "startVerse": 20,
           "endChapter": 6,
           "endVerse": 21,
-          "displayText": "Joshua 6:20-21 (Fall of Jericho)"
+          "displayText": "Joshua 6:20-21"
         },
         {
           "bookAbbr": "DEU",
@@ -145,19 +152,32 @@
           "startVerse": 16,
           "endChapter": 20,
           "endVerse": 18,
-          "displayText": "Deuteronomy 20:16-18 (Commands to destroy nations)"
+          "displayText": "Deuteronomy 20:16-18"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 5,
+          "startVerse": 43,
+          "endChapter": 5,
+          "endVerse": 45,
+          "displayText": "Matthew 5:43-45"
         }
       ],
-      "reflectionPrompt": "Narratives of conquest and divinely sanctioned violence are among the most challenging in scripture. How might considering literary genre (e.g., ancient Near Eastern war rhetoric), historical context, and the evolving understanding of God's character (as revealed fully in Jesus) help us grapple with these texts responsibly?",
+      "reflectionPrompt": "How do you hold together a God who commands the destruction of cities and a Jesus who says love your enemies? Some people just pick one and ignore the other. That's easier, but it's not honest. Can you sit with the tension long enough to let God speak through it?",
       "interspersedInsights": [
         {
-          "afterPassageIndex": -1,
-          "text": "The conquest narratives are undeniably among the most ethically challenging texts. Approaching them requires acknowledging their difficulty and exploring various interpretive lenses, including historical context and the nature of ancient Near Eastern war accounts.",
+          "afterPassageIndex": 0,
+          "text": "The fall of Jericho is brutal. Every living thing destroyed. It's one of the hardest passages in the whole Bible to read with modern eyes. Some scholars suggest these accounts used the exaggerated war rhetoric common to ancient Near Eastern texts. Others see them as a later community trying to understand their history through the lens of divine purpose. Either way, you can't read Joshua and ignore Jesus. The full revelation of God is a person, not a battle plan.",
           "attribution": null
         },
         {
           "afterPassageIndex": 1,
-          "text": "Many theologians grapple with these texts by considering the progressive nature of revelation in scripture, culminating in the teachings of Jesus which emphasize love, even for enemies. This invites a critical reflection on how divine character is portrayed and understood across the biblical narrative.",
+          "text": "Deuteronomy commands total destruction of certain nations. Don't leave alive anything that breathes. If those words make you recoil, good. They should. Jesus said if you've seen him, you've seen the Father. The God who looks like Jesus doesn't fit neatly into these conquest narratives. That tension is real, and you don't have to resolve it today. Faith can handle unanswered questions.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "You have heard that it was said, 'Love your neighbor and hate your enemy.' But I tell you, love your enemies and pray for those who persecute you. Jesus stands on the mountain and rewrites the script. The trajectory of Scripture bends toward mercy. You can see it happening in real time. God's people heard one thing, then Jesus showed up and said, 'You've heard it said, but I say to you.' He's still saying that today.",
           "attribution": null
         }
       ]
@@ -172,14 +192,32 @@
           "startVerse": 30,
           "endChapter": 4,
           "endVerse": 32,
-          "displayText": "Mark 4:30-32 (Parable of the Mustard Seed)"
+          "displayText": "Mark 4:30-32"
+        },
+        {
+          "bookAbbr": "1CO",
+          "startChapter": 13,
+          "startVerse": 12,
+          "endChapter": 13,
+          "endVerse": 12,
+          "displayText": "1 Corinthians 13:12"
         }
       ],
-      "reflectionPrompt": "Jesus uses the mustard seed, described as 'smallest of all seeds' in its context, to illustrate a spiritual truth. Botanically, other seeds are smaller. How does understanding the use of common analogies and the primary teaching goal (rather than scientific precision) help us appreciate such parables? How can faith and reason coexist and enrich each other?",
+      "reflectionPrompt": "Jesus called the mustard seed the smallest of all seeds. Botanically, it's not. But that's not the point, and it never was. When have you gotten so hung up on a detail that you missed the bigger truth someone was trying to tell you?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Parables, like this one, often use common, everyday illustrations from their time to convey deeper spiritual truths. The emphasis is on the message—the expansive growth of the Kingdom from humble beginnings—rather than on literal, scientific precision regarding which seed is truly the smallest.",
+          "text": "The kingdom of God is like a mustard seed. The smallest seed you sow in your garden, yet it grows into the biggest plant, with branches big enough for birds to nest in. Jesus isn't teaching a botany class. He's painting a picture. The kingdom starts tiny. Almost invisible. But it grows. And grows. Until it shelters everyone who needs a home. That's the point. Don't miss the forest for the seed size.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Jesus used everyday examples his listeners understood. Farmers, seeds, soil, harvests. He didn't give them scientific taxonomy. He gave them truth wrapped in stories. The Bible is full of different kinds of writing: poetry, parable, history, law, letter. Reading a parable like it's a textbook is like reading a love letter like it's a lease agreement. You'll miss the whole point.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Now we see only a reflection as in a mirror. Then we shall see face to face. Now I know in part. Then I shall know fully. Paul admits he doesn't have it all figured out. None of us do. Faith isn't having all the answers. It's trusting the one who does. You can love Jesus with your whole heart and still have questions about Genesis and evolution and miracles. The two things aren't at war. They're just waiting for the day when the partial becomes complete.",
           "attribution": null
         }
       ]

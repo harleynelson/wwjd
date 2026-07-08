@@ -1,6 +1,6 @@
 {
   "id": "rp_biblical_silences_5day",
-  "title": "Biblical Silences & Modern Questions",
+  "title": "Biblical Silences and Modern Questions",
   "description": "Explore how ancient scriptures speak to (or are silent on) contemporary issues, inviting us to interpret principles of wisdom, love, and justice for today. A 5-day reflective journey.",
   "category": "Topical / Ethics",
   "headerImageAssetPath": "assets/images/reading_plan_headers/rp_biblical_silences_5day.png",
@@ -27,23 +27,28 @@
           "displayText": "James 1:5"
         }
       ],
-      "reflectionPrompt": "The Bible doesn't mention technologies like AI or stem cell research. How can principles of wisdom, stewardship (Genesis 1:28), and seeking understanding guide our approach to new ethical challenges?",
+      "reflectionPrompt": "The Bible doesn't mention AI or genetic engineering. It was written thousands of years before anyone imagined those things. But it does talk about wisdom and seeking understanding. When you're staring at a decision that has no clear 'biblical' answer, how do you find your way?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The pursuit of wisdom, as described here, is an active and earnest endeavor. It suggests that when facing new complexities, a foundational step is to deeply value and seek understanding and discernment.",
+          "text": "Proverbs says if you call out for insight and search for it like hidden treasure, you'll understand the fear of the Lord. Wisdom isn't a formula. It's a pursuit. You don't get it by memorizing a rule book. You get it by wanting it badly enough to go looking. The Bible doesn't answer every question, but it does teach you how to ask better ones.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "The Lord gives wisdom. From his mouth come knowledge and understanding. When you hit a question the Bible doesn't directly address, you don't have to panic. You have a source of wisdom bigger than any search engine. The same God who guided people through dilemmas they'd never faced before is still guiding today.",
           "attribution": null
         },
         {
           "afterPassageIndex": 1,
-          "text": "This invitation from James is a quiet reassurance: when faced with decisions, especially in uncharted territory, the resource of divine wisdom is generously available to those who sincerely ask.",
+          "text": "If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault. That's a promise you can take to the bank. You don't have to have it all figured out before you come to God. You come with your confusion and your uncertainty. And James says God won't roll his eyes at you. He'll give you what you need.",
           "attribution": null
         }
       ]
     },
     {
       "dayNumber": 2,
-      "title": "The Spirit of the Law: Love & Inclusion",
+      "title": "The Spirit of the Law: Love and Inclusion",
       "passages": [
         {
           "bookAbbr": "MAT",
@@ -70,21 +75,21 @@
           "displayText": "Romans 14:1-4"
         }
       ],
-      "reflectionPrompt": "Scripture contains varied passages regarding social inclusion. How do overarching commands to love God and neighbor, and statements about unity in Christ, inform our approach to those who have been historically marginalized (e.g., LGBTQ+ individuals, other communities)?",
+      "reflectionPrompt": "Jesus said everything hangs on two commands: love God and love your neighbor. That's the whole thing. When the Bible says things that are hard to reconcile with that, where do you start? Who in your life needs you to lead with love first and figure out the rest as you go?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Jesus centers the entire law on these two expressions of love. This suggests that love should be the primary lens through which we interpret all other teachings and interact with one another.",
+          "text": "Jesus takes the entire Old Testament law and boils it down to love. Love God with everything you've got, and love your neighbor as yourself. Not love your neighbor as long as they look like you or think like you or vote like you. Just love them. If an interpretation of Scripture leads you away from love, you might want to double-check your interpretation.",
           "attribution": null
         },
         {
           "afterPassageIndex": 1,
-          "text": "Paul's declaration here points towards a radical vision of unity that transcends common societal divisions. It invites reflection on how such a vision challenges us to foster belonging for everyone.",
+          "text": "There is neither Jew nor Gentile, neither slave nor free, neither male nor female, for you are all one in Christ Jesus. Paul takes every identity divider his culture had and says they don't hold up anymore. Not in Christ. The walls we build between people, nationality, economic status, gender, they crumble at the foot of the cross. What would it look like if your church actually lived like that was true?",
           "attribution": null
         },
         {
           "afterPassageIndex": 2,
-          "text": "The call to welcome others without passing judgment on disputable matters speaks to a posture of humility and grace in community, especially when navigating diverse perspectives.",
+          "text": "Paul tells the Romans to accept the one whose faith is weak, without quarreling over disputable matters. Who are you to judge someone else's servant? That's a posture of humility. You don't have to have a fully formed opinion on everything. You can hold your convictions and still make room at the table for people who see things differently. The table doesn't belong to you anyway. It belongs to God.",
           "attribution": null
         }
       ]
@@ -118,16 +123,21 @@
           "displayText": "Leviticus 25:23-24"
         }
       ],
-      "reflectionPrompt": "While the Bible doesn't use terms like 'climate change,' what responsibilities do its teachings on stewardship and the Earth being the Lord's imply for our environmental ethics today?",
+      "reflectionPrompt": "The Bible doesn't use words like 'carbon footprint' or 'climate change.' But it has a lot to say about whose the earth is and how we're supposed to treat it. If the land belongs to God and you're just a tenant, what does that mean for how you live on it?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This early instruction to 'work it and take care of it' frames humanity's relationship with the Earth not as one of sheer domination, but of responsible cultivation and preservation.",
+          "text": "God put the man in the garden to work it and take care of it. Before anything went wrong in the world, humans had a job. And the job description was tending the earth. Not exploiting it. Not using it up. Taking care of it. That's the original human vocation. Everything else. Your career, your hobbies, your retirement plan. It all fits inside that bigger calling.",
           "attribution": null
         },
         {
           "afterPassageIndex": 1,
-          "text": "The affirmation that the Earth belongs to God fundamentally shifts our perspective from ownership to stewardship, implying accountability for how we treat this shared inheritance.",
+          "text": "The earth is the Lord's and everything in it. You don't own the ground under your house. You don't own the air in your lungs. God does. That doesn't mean you can't enjoy it. It means you enjoy it like a guest at someone else's table. With gratitude, not entitlement. With care, not carelessness.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The land must not be sold permanently, because the land is mine and you reside in my land as foreigners and strangers. God tells Israel they don't own the land. They're guests. And he commands them to make sure the land can be redeemed, restored, returned. There's a built-in check against permanently exploiting resources. The earth isn't a possession. It's a trust.",
           "attribution": null
         }
       ]
@@ -142,7 +152,7 @@
           "startVerse": 23,
           "endChapter": 21,
           "endVerse": 25,
-          "displayText": "Exodus 21:23-25 ('An eye for an eye')"
+          "displayText": "Exodus 21:23-25"
         },
         {
           "bookAbbr": "MAT",
@@ -150,7 +160,7 @@
           "startVerse": 38,
           "endChapter": 5,
           "endVerse": 41,
-          "displayText": "Matthew 5:38-41 ('Turn the other cheek')"
+          "displayText": "Matthew 5:38-41"
         },
         {
           "bookAbbr": "ISA",
@@ -158,24 +168,24 @@
           "startVerse": 4,
           "endChapter": 2,
           "endVerse": 4,
-          "displayText": "Isaiah 2:4 ('Nation shall not lift up sword against nation')"
+          "displayText": "Isaiah 2:4"
         }
       ],
-      "reflectionPrompt": "The Bible presents a range of responses to conflict, from retributive justice to radical peacemaking. How do we discern a path forward when scriptures themselves seem to offer differing perspectives?",
+      "reflectionPrompt": "The Bible has 'an eye for an eye' and 'turn the other cheek' in the same book. Not because it's confused, but because it's honest about the tension. When you're hurt by someone, which voice are you more drawn to? The one that wants things to be fair, or the one that wants things to be made new?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The principle of 'an eye for an eye' in its original context was often about limiting retribution to proportionality, preventing escalating vengeance, rather than a mandate for personal revenge.",
+          "text": "An eye for an eye sounds harsh to modern ears, but in its original context it was actually about limiting revenge. You could only take an eye, not a life. It put a fence around retaliation. But even with that fence, it still keeps the cycle of hurt spinning. It's justice, but it's not healing.",
           "attribution": null
         },
         {
           "afterPassageIndex": 1,
-          "text": "Jesus' teaching here introduces a transformative ethic that moves beyond mere reciprocal justice towards non-retaliation and proactive peacemaking, challenging conventional responses to offense.",
+          "text": "Then Jesus comes along and says turn the other cheek, go the extra mile, give them your cloak too. He's not telling you to be a doormat. He's telling you to break the cycle. When someone slaps you and you turn the other cheek, you're not submitting. You're refusing to play the game. You're saying 'I won't become you.' That's not weakness. That's the hardest kind of strength there is.",
           "attribution": null
         },
         {
           "afterPassageIndex": 2,
-          "text": "This prophetic vision offers a powerful hope for ultimate global peace, where instruments of war are converted into tools of sustenance and cooperative living. It calls us to imagine and work towards such a future.",
+          "text": "Isaiah dreams of a day when nations beat their swords into plowshares and their spears into pruning hooks. Weapons become farm tools. Things that destroyed become things that grow food. Nation shall not lift up sword against nation, neither shall they learn war anymore. That's the direction God is moving history. Every peacemaker is pulling in that direction.",
           "attribution": null
         }
       ]
@@ -190,7 +200,7 @@
           "startVerse": 10,
           "endChapter": 8,
           "endVerse": 18,
-          "displayText": "1 Samuel 8:10-18 (Samuel's warning about a king)"
+          "displayText": "1 Samuel 8:10-18"
         },
         {
           "bookAbbr": "ROM",
@@ -198,7 +208,7 @@
           "startVerse": 1,
           "endChapter": 13,
           "endVerse": 2,
-          "displayText": "Romans 13:1-2 (Submit to governing authorities)"
+          "displayText": "Romans 13:1-2"
         },
         {
           "bookAbbr": "ACT",
@@ -206,19 +216,24 @@
           "startVerse": 29,
           "endChapter": 5,
           "endVerse": 29,
-          "displayText": "Acts 5:29 ('We must obey God rather than men')"
+          "displayText": "Acts 5:29"
         }
       ],
-      "reflectionPrompt": "Scripture offers varied perspectives on human governance. How do principles of justice, coupled with these texts, help us navigate our civic responsibilities and critique power structures today?",
+      "reflectionPrompt": "The Bible tells you to submit to authorities and also to obey God rather than humans. That's a tension, not a contradiction. Where in your own life have you had to weigh loyalty to the system against loyalty to your conscience?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Samuel's warning highlights the potential for human power structures to become oppressive, urging a degree of caution and a reminder of where ultimate allegiance lies.",
+          "text": "Israel wanted a king so they could be like all the other nations. Samuel warned them: a king will take your sons for his army, your daughters for his kitchen, your fields for his friends. Power concentrates. It always does. And the people insisted anyway. Sometimes the thing you think you want is the very thing that will undo you. It's worth asking whether the systems you're cheering for will actually serve the people you say you care about.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Paul says to submit to governing authorities because there is no authority except from God. That's a hard teaching, especially if you live under a corrupt or oppressive government. But it's also a reminder that human power is temporary and derivative. No leader sits in office without God's permission. That doesn't mean God approves of everything they do. It means even their authority is on loan.",
           "attribution": null
         },
         {
           "afterPassageIndex": 2,
-          "text": "The apostles' stance here underscores a crucial principle: while civic order is valued, allegiance to divine conscience and justice must take precedence when human laws conflict with fundamental moral truth.",
+          "text": "Peter and the apostles said, 'We must obey God rather than human beings.' They said it right after they'd been told by the authorities to stop talking about Jesus. There's a line. When human authority tells you to do something that contradicts God's heart for justice and love, you follow the higher authority. Knowing where that line is takes wisdom, prayer, and a community of people who'll be honest with you.",
           "attribution": null
         }
       ]

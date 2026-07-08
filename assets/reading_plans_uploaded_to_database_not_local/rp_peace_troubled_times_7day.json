@@ -13,17 +13,43 @@
         {
           "bookAbbr": "PHP",
           "startChapter": 4,
+          "startVerse": 4,
+          "endChapter": 4,
+          "endVerse": 5,
+          "displayText": "Philippians 4:4-5"
+        },
+        {
+          "bookAbbr": "PHP",
+          "startChapter": 4,
           "startVerse": 6,
           "endChapter": 4,
+          "endVerse": 6,
+          "displayText": "Philippians 4:6"
+        },
+        {
+          "bookAbbr": "PHP",
+          "startChapter": 4,
+          "startVerse": 7,
+          "endChapter": 4,
           "endVerse": 7,
-          "displayText": "Philippians 4:6-7"
+          "displayText": "Philippians 4:7"
         }
       ],
-      "reflectionPrompt": "What anxieties are you holding today? How can you practice prayer and gratitude to experience God's peace?",
+      "reflectionPrompt": "Paul says don't be anxious about anything, but pray about everything. What's the thing you've been carrying all week that you haven't actually talked to God about yet?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "It's remarkable how this passage links letting go of anxiety directly with prayer and thanksgiving. It suggests peace isn't just the absence of trouble, but an active presence found when we connect with God, even before circumstances change.",
+          "text": "Paul starts with something almost absurd: 'Rejoice in the Lord always. I will say it again: Rejoice.' He's writing this from a prison cell. Chains on his wrists, guards at the door, and he's talking about joy. Not happiness based on circumstances. Joy rooted in something deeper. He also says, 'Let your gentleness be evident to all.' Gentleness doesn't come from a stressed-out heart. It grows from a settled one.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Here is the core of it. 'Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.' Paul doesn't say pretend you're not anxious. He says bring it. All of it. Every worry. Every fear. And do it with thanksgiving. That last part is the trick. Gratitude doesn't wait for the answer. It shows up while you're still waiting.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "And then the promise: 'The peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.' This peace doesn't make sense on paper. It doesn't line up with the bank account or the diagnosis or the situation at work. It's a peace that stands guard. Like a soldier at the door of your heart. You might still have questions. But you won't be overcome by them.",
           "attribution": null
         }
       ]
@@ -45,15 +71,33 @@
           "startChapter": 13,
           "startVerse": 5,
           "endChapter": 13,
+          "endVerse": 5,
+          "displayText": "Hebrews 13:5"
+        },
+        {
+          "bookAbbr": "HEB",
+          "startChapter": 13,
+          "startVerse": 6,
+          "endChapter": 13,
           "endVerse": 6,
-          "displayText": "Hebrews 13:5-6"
+          "displayText": "Hebrews 13:6"
         }
       ],
-      "reflectionPrompt": "How does the assurance of God's presence bring you peace in times of fear or loneliness?",
+      "reflectionPrompt": "God says He will never leave you or forsake you. Never. Not when you mess up, not when you doubt, not when you wander. Does that promise feel true in your gut, or does it feel like something you know in your head but haven't really trusted?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Moses is handing over leadership to Joshua. The Israelites are about to enter the promised land without the only leader they've ever known. Moses tells them, 'Be strong and courageous. Do not be afraid. The Lord your God goes with you. He will never leave you nor forsake you.' These aren't just comforting words. They're battle orders. Courage isn't the absence of fear. It's believing Someone is with you in it.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "These promises, echoed across the Old and New Testaments, offer a bedrock assurance. The peace here comes from knowing we're not alone in our struggles; God's commitment to be with us is unwavering, a constant presence in uncertainty.",
+          "text": "The writer of Hebrews picks up the same promise hundreds of years later. 'God has said, Never will I leave you. Never will I forsake you.' The same God who walked with Moses and Joshua walks with you. Your circumstances are different but the promise hasn't changed one bit. The writer also warns about the love of money. Keep your lives free from it. Be content with what you have. Anxiety about stuff and anxiety about being alone often travel together.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then comes the response of faith: 'So we say with confidence, The Lord is my helper. I will not be afraid. What can mere mortals do to me?' Notice the progression. The promise is given, then it's spoken out loud. Faith isn't just believing quietly. It's declaring it, even when your feelings haven't caught up yet. Say it out loud. The Lord is my helper. I will not be afraid.",
           "attribution": null
         }
       ]
@@ -67,15 +111,41 @@
           "startChapter": 23,
           "startVerse": 1,
           "endChapter": 23,
+          "endVerse": 3,
+          "displayText": "Psalm 23:1-3"
+        },
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 23,
+          "startVerse": 4,
+          "endChapter": 23,
+          "endVerse": 4,
+          "displayText": "Psalm 23:4"
+        },
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 23,
+          "startVerse": 5,
+          "endChapter": 23,
           "endVerse": 6,
-          "displayText": "Psalm 23"
+          "displayText": "Psalm 23:5-6"
         }
       ],
-      "reflectionPrompt": "Which image or promise in Psalm 23 resonates most with your need for peace and guidance today?",
+      "reflectionPrompt": "Psalm 23 walks through green pastures, dark valleys, and a table set in the presence of enemies. Which part of that journey are you on right now?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Psalm 23 paints such a tender picture of constant care. Whether it's finding rest, navigating darkness ('the darkest valley'), or dwelling in safety, the core message is deep trust in a loving Guide whose presence itself brings profound peace.",
+          "text": "'The Lord is my shepherd, I lack nothing.' That's a bold way to start. Not 'I hope I'll have enough' or 'if things go well I'll be okay.' Just a statement of fact. He makes me lie down in green pastures. He leads me beside quiet waters. He refreshes my soul. Notice who's doing all the action. The shepherd. Your job isn't to manufacture peace. Your job is to follow the one who leads you to it.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "'Even though I walk through the darkest valley, I will fear no evil, for you are with me.' David doesn't say there won't be dark valleys. He just says he won't go through them alone. Your rod and your staff, they comfort me. The shepherd's tools are for protection and guidance. The rod fights off predators. The staff pulls wandering sheep back. Both are comforting when you trust the hand that holds them.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "'You prepare a table before me in the presence of my enemies.' This is wild. The shepherd doesn't just protect from enemies. He throws a dinner party right in front of them. It's an act of defiant peace. You anoint my head with oil. My cup overflows. Not just enough. Overflowing. And then the final promise: goodness and mercy will follow me all the days of my life, and I will dwell in the house of the Lord forever. That's not a maybe. That's a settled fact.",
           "attribution": null
         }
       ]
@@ -101,11 +171,16 @@
           "displayText": "John 14:27"
         }
       ],
-      "reflectionPrompt": "Jesus offers a peace different from the world's. What does this divine peace mean to you personally?",
+      "reflectionPrompt": "Jesus says He gives a peace the world can't give. The world offers distractions, numbing, busyness. Jesus offers something different. When's the last time you actually felt that kind of peace?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Jesus is hours away from being arrested. He knows what's coming. And what does He tell his friends? 'Do not let your hearts be troubled. You believe in God. Believe also in me.' He doesn't say there's nothing to be troubled about. There's plenty. He says don't let your hearts stay there. Then He talks about His Father's house having many rooms and going to prepare a place. The ultimate peace comes from knowing where you're headed. Home.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Jesus acknowledges the world offers a kind of 'peace,' often fleeting and based on circumstances. But the peace He gives is fundamentally different—an inner calm rooted in trust and His abiding presence, stable even amidst external turmoil.",
+          "text": "'Peace I leave with you. My peace I give you. I do not give to you as the world gives.' The world's peace is fragile. It depends on the stock market, your health, what people think of you. One bad phone call and it's gone. Jesus gives a different kind. A peace that holds steady when everything else is shaking. 'Do not let your hearts be troubled and do not be afraid.' He says it twice because we need to hear it twice. Maybe three times. Maybe every day.",
           "attribution": null
         }
       ]
@@ -125,22 +200,35 @@
         {
           "bookAbbr": "PSA",
           "startChapter": 46,
+          "startVerse": 4,
+          "endChapter": 46,
+          "endVerse": 7,
+          "displayText": "Psalm 46:4-7"
+        },
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 46,
           "startVerse": 10,
           "endChapter": 46,
           "endVerse": 10,
           "displayText": "Psalm 46:10"
         }
       ],
-      "reflectionPrompt": "How can being 'still' and knowing God is in control bring peace even when the 'earth gives way'?",
+      "reflectionPrompt": "'Be still and know that I am God.' Stillness doesn't come naturally to most of us. What would it look like for you to actually be still for ten minutes today? No phone, no noise, no agenda. Just quiet.",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This Psalm starts by grounding us in a powerful truth: even when everything feels like it's shaking, God remains a reliable source of strength and immediate help. Peace begins with remembering where our true security lies.",
+          "text": "'God is our refuge and strength, an ever-present help in trouble.' Not a distant help. Not a help you have to schedule an appointment for. Ever-present. Right here, right now. 'Therefore we will not fear, though the earth give way and the mountains fall into the heart of the sea.' The worst things you can imagine happening. Earthquakes. Mountains crumbling into the ocean. Even then. Especially then.",
           "attribution": null
         },
         {
           "afterPassageIndex": 1,
-          "text": "In the midst of dramatic descriptions of upheaval, the call to 'be still' is powerful. It suggests that consciously pausing and recognizing God's ultimate sovereignty allows us to find an anchor of peace—not by denying the chaos, but by knowing who holds us through it.",
+          "text": "The psalm shifts to a river whose streams make glad the city of God. In the middle of chaos, there's a river. Not an ocean of chaos. A river of gladness. God is in the midst of the city. It will not fall. Nations are in uproar. Kingdoms fall. But God lifts his voice and the earth melts. The same voice that spoke creation into existence is still speaking. And when He speaks, everything else goes quiet.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then comes the famous verse: 'Be still and know that I am God.' It's not a suggestion. It's a command wrapped in an invitation. Being still is an act of trust. It's saying, 'I'm going to stop striving for a minute because I believe you're actually in control.' The Hebrew word for 'be still' can also mean 'let go' or 'stop fighting.' Drop your shoulders. Unclench your jaw. The God who melts the earth with his voice has got this.",
           "attribution": null
         }
       ]
@@ -152,17 +240,30 @@
         {
           "bookAbbr": "1PE",
           "startChapter": 5,
-          "startVerse": 6,
+          "startVerse": 5,
+          "endChapter": 5,
+          "endVerse": 6,
+          "displayText": "1 Peter 5:5-6"
+        },
+        {
+          "bookAbbr": "1PE",
+          "startChapter": 5,
+          "startVerse": 7,
           "endChapter": 5,
           "endVerse": 7,
-          "displayText": "1 Peter 5:6-7"
+          "displayText": "1 Peter 5:7"
         }
       ],
-      "reflectionPrompt": "What specific anxieties can you consciously 'cast' on God today, trusting in His care for you?",
+      "reflectionPrompt": "'Cast all your anxiety on him because he cares for you.' What if you actually did that? Literally. Name the worry, picture yourself handing it over, and let it go. What's the first one you'd give Him?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Notice the connection Peter makes between humility ('Humble yourselves') and casting anxieties onto God. It suggests that letting go of our burdens involves the humble act of acknowledging we don't have to carry them alone, trusting instead in God's deep, personal care for us.",
+          "text": "Peter starts with humility. 'Clothe yourselves with humility toward one another, because God opposes the proud but shows favor to the humble. Humble yourselves, therefore, under God's mighty hand, that he may lift you up in due time.' There's a connection between pride and anxiety that we don't talk about much. Pride says, 'I have to handle this myself.' Humility says, 'I can't, and that's okay.' Humility is the doorway peace walks through.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "'Cast all your anxiety on him because he cares for you.' The word 'cast' is forceful. It's throwing something, not gently placing it. Imagine taking your worries and literally hurling them onto God's shoulders. He can take it. He wants to take it. And the reason isn't because you've earned it or been good enough. It's simply because He cares for you. That's the whole reason. You are cared for. Let that sink in.",
           "attribution": null
         }
       ]
@@ -188,11 +289,16 @@
           "displayText": "Isaiah 26:3"
         }
       ],
-      "reflectionPrompt": "How can cultivating other fruits of the Spirit (love, joy, patience) contribute to a deeper experience of peace?",
+      "reflectionPrompt": "Peace is a fruit, not a wage. It grows. You don't earn it. You cultivate it. Which fruit of the Spirit do you most need to water right now?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Paul lists the fruit of the Spirit: love, joy, peace, forbearance, kindness, goodness, faithfulness, gentleness, and self-control. Notice peace is third on the list, right after love and joy. These aren't separate things you pick and choose from. They grow together, like branches on the same tree. You can't have real peace without love, and you can't sustain joy without peace underneath it.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Peace is presented here both as a 'fruit'—something that grows organically within us through the Spirit's presence—and as a state maintained by keeping our minds focused steadfastly on God. It reminds us that inner peace is deeply connected to our spiritual posture and ongoing trust.",
+          "text": "Isaiah says, 'You will keep in perfect peace those whose minds are steadfast, because they trust in you.' Perfect peace. The Hebrew literally says 'peace peace.' Double peace. The kind that holds in both directions. And how does it come? A steadfast mind fixed on God. Not a mind that never wanders, but one that keeps coming back. The secret to peace isn't having no problems. It's having your mind anchored somewhere that problems can't reach.",
           "attribution": null
         }
       ]

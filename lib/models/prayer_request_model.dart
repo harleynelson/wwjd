@@ -5,39 +5,35 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Enum to represent the status of a prayer request.
 enum PrayerStatus {
-  pending,       // Prayer is awaiting admin approval.
-  approved,      // Prayer is approved and visible on the wall.
-  rejected,      // Prayer was rejected by an admin.
-  pendingReview, // Prayer was approved but later flagged and needs re-review.
+  pending,       // awaiting admin approval.
+  approved,      // approved and visible on the wall.
+  rejected,      // rejected by an admin.
+  pendingReview, // approved but later flagged and needs re-review.
 }
 
 class PrayerRequest {
   final String prayerId; // Unique ID for the prayer (document ID from Firestore).
   final String submitterAnonymousId; // Anonymous ID of the user who submitted the prayer.
-  final String prayerText; // The content of the prayer.
-  final Timestamp timestamp; // Timestamp of when the prayer was submitted.
-  PrayerStatus status; // Current status of the prayer (pending, approved, etc.).
-  final String? locationApproximation; // Optional, coarse-grained location (e.g., "USA", "Europe").
-  int prayerCount; // Number of times users have marked "Prayed for this".
-  int reportCount; // Number of times this prayer has been reported by other users.
+  final String prayerText; // content.
+  final Timestamp timestamp; // submitted.
+  PrayerStatus status; // status (pending, approved, etc.).
+  final String? locationApproximation; // Optional, coarse location (e.g., "USA", "Europe").
+  int prayerCount; // Number "Prayed for this".
+  int reportCount; // Number reported by other users.
   final String? approvedBy; // Optional: Admin user ID who approved the prayer.
-  final Timestamp? approvedAt; // Optional: Timestamp of when the prayer was approved.
-  // final String? actualUserId; // Consider if needed vs. submitterAnonymousId.
-                               // For true anonymity, avoid storing if possible,
-                               // or ensure strict rules if stored for backend logic.
+  final Timestamp? approvedAt; // Optional: approved.
 
   PrayerRequest({
     required this.prayerId,
     required this.submitterAnonymousId,
     required this.prayerText,
     required this.timestamp,
-    this.status = PrayerStatus.pending, // Default status is pending.
+    this.status = PrayerStatus.pending,
     this.locationApproximation,
-    this.prayerCount = 0, // Default prayer count is 0.
-    this.reportCount = 0, // Default report count is 0.
+    this.prayerCount = 0,
+    this.reportCount = 0,
     this.approvedBy,
     this.approvedAt,
-    // this.actualUserId,
   });
 
   // Factory constructor to create a PrayerRequest instance from a Firestore document.
@@ -54,7 +50,6 @@ class PrayerRequest {
       reportCount: data['reportCount'] as int? ?? 0,
       approvedBy: data['approvedBy'] as String?,
       approvedAt: data['approvedAt'] as Timestamp?,
-      // actualUserId: data['actualUserId'] as String?,
     );
   }
 
@@ -71,18 +66,17 @@ class PrayerRequest {
       'reportCount': reportCount,
       if (approvedBy != null) 'approvedBy': approvedBy,
       if (approvedAt != null) 'approvedAt': approvedAt,
-      // if (actualUserId != null) 'actualUserId': actualUserId,
     };
   }
 
-  // Helper method to parse the prayer status string from Firestore to the PrayerStatus enum.
+  // parse prayer status string from Firestore to the PrayerStatus enum.
   static PrayerStatus _parsePrayerStatus(String statusStr) {
     switch (statusStr.toLowerCase()) {
       case 'approved':
         return PrayerStatus.approved;
       case 'rejected':
         return PrayerStatus.rejected;
-      case 'pending_review': // Ensure Firestore uses this string if "pendingReview" is a status.
+      case 'pending_review':
         return PrayerStatus.pendingReview;
       case 'pending':
       default:

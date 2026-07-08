@@ -1,6 +1,4 @@
 // File: lib/dialogs/prayer_report_dialog.dart
-// Approximate line: 1
-// New File (or adapt if you have a generic report dialog)
 import 'package:flutter/material.dart';
 
 /// Shows a dialog for the user to confirm reporting a prayer and provide a reason.

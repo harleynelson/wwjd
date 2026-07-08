@@ -15,12 +15,44 @@
           "startChapter": 1,
           "startVerse": 1,
           "endChapter": 1,
+          "endVerse": 7,
+          "displayText": "Proverbs 1:1-7"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 1,
+          "startVerse": 8,
+          "endChapter": 1,
+          "endVerse": 19,
+          "displayText": "Proverbs 1:8-19"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 1,
+          "startVerse": 20,
+          "endChapter": 1,
           "endVerse": 33,
-          "displayText": "Proverbs 1"
+          "displayText": "Proverbs 1:20-33"
         }
       ],
-      "reflectionPrompt": "Where do you need to apply more wisdom in your life this week?",
-      "interspersedInsights": []
+      "reflectionPrompt": "When was the last time you ignored that little voice in your gut telling you something wasn't right? What would it look like to start listening today?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The whole book opens by telling you what wisdom is actually for. Not so you can win arguments or look smart. So you can live well. Make good calls. Treat people right. It's street smarts, not just book smarts. And the starting line? 'The fear of the Lord is the beginning of knowledge.' That's not being scared of God. That's standing in awe of something bigger than yourself, and letting that awe shape everything else.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Listen to the voices that love you. Your parents, your mentors, the people who've been around the block a few times. They see things you don't. And when the wrong crowd comes calling (and they will), remember: they're not offering you a shortcut. They're offering you a trap. Nobody sets out to ruin their life. They just take one small step in the wrong direction and keep walking.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Wisdom doesn't hide in a library somewhere. She's out in the streets, in the marketplace, at the busiest intersection in town. She's not hard to find. She's just easy to ignore. The question isn't whether wisdom is available. The question is whether you'll listen before the storm hits. If you keep brushing her off, someday you'll wish you hadn't.",
+          "attribution": null
+        }
+      ]
     },
     {
       "dayNumber": 2,
@@ -31,12 +63,44 @@
           "startChapter": 3,
           "startVerse": 1,
           "endChapter": 3,
+          "endVerse": 12,
+          "displayText": "Proverbs 3:1-12"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 3,
+          "startVerse": 13,
+          "endChapter": 3,
+          "endVerse": 20,
+          "displayText": "Proverbs 3:13-20"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 3,
+          "startVerse": 21,
+          "endChapter": 3,
           "endVerse": 35,
-          "displayText": "Proverbs 3"
+          "displayText": "Proverbs 3:21-35"
         }
       ],
-      "reflectionPrompt": "How can you cultivate trust and integrity in your relationships using today's reading?",
-      "interspersedInsights": []
+      "reflectionPrompt": "Where in your life are you leaning on your own understanding right now? What would it look like to trust a little more and control a little less?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "'Trust in the Lord with all your heart and lean not on your own understanding.' That's one of the most quoted verses in the whole Bible, and for good reason. Your own understanding is limited. It's like trying to navigate a city you've never been to without a map. But acknowledging God in all your ways? That's like having a local guide who knows every street, every shortcut, every dead end. You don't have to figure it all out. You just have to stay close to the one who already has.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Wisdom is worth more than silver or gold. That's not poetic exaggeration. Money can buy a house but not a home. It can buy a bed but not rest. It can fill your garage and still leave your heart empty. Wisdom gives you the kind of wealth that doesn't fluctuate with the stock market. Peace. Purpose. A life you don't need a vacation from.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "How you treat your neighbor is how you treat your wisdom. You don't withhold good from someone when it's in your power to help. You don't pick fights for no reason. You don't envy people who cut corners and seem to get ahead. That's not just being nice. That's being smart. Wisdom has a way of showing up in your relationships long before it shows up in your bank account.",
+          "attribution": null
+        }
+      ]
     },
     {
       "dayNumber": 3,
@@ -47,16 +111,48 @@
           "startChapter": 10,
           "startVerse": 1,
           "endChapter": 10,
-          "endVerse": 32,
-          "displayText": "Proverbs 10 (selections)"
+          "endVerse": 5,
+          "displayText": "Proverbs 10:1-5"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 10,
+          "startVerse": 11,
+          "endChapter": 10,
+          "endVerse": 14,
+          "displayText": "Proverbs 10:11-14"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 10,
+          "startVerse": 18,
+          "endChapter": 10,
+          "endVerse": 21,
+          "displayText": "Proverbs 10:18-21"
         }
       ],
-      "reflectionPrompt": "Reflect on the power of your words. How can you use them more wisely?",
-      "interspersedInsights": []
+      "reflectionPrompt": "Think about the last thing you said that you wish you could take back. What if you paused for just three seconds before speaking today? How might that change things?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Proverbs doesn't mess around when it comes to words. A wise kid brings joy to their parents. A lazy hand makes for poverty, a diligent hand brings wealth. None of this is complicated. But it's all real. Your choices, big and small, add up. The person you're becoming is built one decision at a time.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Hatred stirs up conflict. Love covers over all wrongs. You ever notice how one sharp word can wreck a whole evening, and one kind word can turn everything around? Your mouth has more power than you think. It can be a wrecking ball or a welcome mat. The choice is yours every single time you open it.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "When words are many, sin is not absent. That's a fancy way of saying: the more you talk, the more likely you are to say something dumb. The wise person holds their tongue. Not because they have nothing to say, but because they know not everything needs to be said. A well-timed silence can be louder than a speech.",
+          "attribution": null
+        }
+      ]
     },
     {
       "dayNumber": 4,
-      "title": "Wisdom in Work & Diligence",
+      "title": "Wisdom in Work and Diligence",
       "passages": [
         {
           "bookAbbr": "PRO",
@@ -83,8 +179,24 @@
           "displayText": "Proverbs 13:4"
         }
       ],
-      "reflectionPrompt": "What steps can you take to be more diligent and wise in your responsibilities?",
-      "interspersedInsights": []
+      "reflectionPrompt": "Where have you been hitting the snooze button on your own life? Not just in the mornings, but in the areas that actually matter. What's one thing you could do today that your future self would thank you for?",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "Go to the ant, you sluggard. Consider its ways and be wise. That's almost funny, isn't it? God tells you to take life lessons from a bug. The ant has no boss, no supervisor, yet it stores up food in summer. Nobody's standing over it with a clipboard. It just does the work because that's what needs doing. Imagine what your life would look like if you operated like that.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Diligent hands will rule. Laziness ends in slave labor. That's blunt, but it's true. The people who show up, who do the work even when nobody's watching, who keep going when everyone else has quit. Those are the ones who end up leading. Not because they're the smartest or the most talented. Because they're the most faithful.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "A sluggard's appetite is never filled, but the desires of the diligent are fully satisfied. You can want things all day long. Wanting doesn't get you anywhere. The person who actually gets up and does the thing? They're the one who goes to bed full. Not just full in their stomach. Full in their soul.",
+          "attribution": null
+        }
+      ]
     },
     {
       "dayNumber": 5,
@@ -105,10 +217,34 @@
           "endChapter": 14,
           "endVerse": 27,
           "displayText": "Proverbs 14:26-27"
+        },
+        {
+          "bookAbbr": "PRO",
+          "startChapter": 15,
+          "startVerse": 33,
+          "endChapter": 15,
+          "endVerse": 33,
+          "displayText": "Proverbs 15:33"
         }
       ],
-      "reflectionPrompt": "What does 'the fear of the Lord' mean to you in a practical sense?",
-      "interspersedInsights": []
+      "reflectionPrompt": "What does it look like in your actual, everyday life to live with a quiet reverence for God? Not just on Sunday morning, but on Tuesday afternoon when nobody's paying attention.",
+      "interspersedInsights": [
+        {
+          "afterPassageIndex": 0,
+          "text": "The fear of the Lord is the beginning of wisdom. We're back where we started, and that's the point. Everything in Proverbs circles around this one truth. It's not about being afraid of God like you'd be afraid of a thunderstorm. It's about recognizing there's something bigger than you, something sacred, something worth orienting your whole life around. And when you do that, everything else starts to make a little more sense.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Whoever fears the Lord has a secure fortress. And for their children it will be a refuge. The fear of the Lord is a fountain of life. Notice the words here: fortress, refuge, fountain of life. These aren't flimsy promises. They're anchors. When you build your life on reverence for God, you're not just helping yourself. You're building something your kids can run to when their own storms hit.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Wisdom's instruction is to fear the Lord, and humility comes before honor. You can chase recognition your whole life and never catch it. Or you can bow low, let go of the need to be seen as important, and find that honor has a way of finding you when you're not looking for it. That's the backwards economy of God's wisdom. The way up is down.",
+          "attribution": null
+        }
+      ]
     }
   ],
   "version": 1,

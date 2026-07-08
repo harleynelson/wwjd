@@ -27,11 +27,21 @@
           "displayText": "Genesis 1:1"
         }
       ],
-      "reflectionPrompt": "If the Earth and everything in it belongs to God, what responsibilities does this imply for us?",
+      "reflectionPrompt": "If the Earth and everything in it belongs to God, what does that do to how you think about the stuff you own? Your car, your house, that patch of grass out front. Who does it really belong to?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "The earth is the Lord's and everything in it. Not 'the earth belongs to whoever can pay for it.' Not 'the earth is ours to do whatever we want with.' The Lord's. Every mountain, every ocean, every acre of farmland and city block. You and I are guests here. Tenants, not owners. That changes how you walk on the ground beneath your feet.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "God founded the earth on the waters and established it. There's a sense of intentionality here. This wasn't a random cosmic accident. It was built. Designed. When you create something, you care about what happens to it. God hasn't checked out of his creation. He's still paying attention.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Starting with the understanding that the Earth isn't ultimately ours, but God's, changes everything. It shifts our perspective from one of entitlement to one of gratitude, from seeing ourselves as owners to seeing ourselves as responsible partners in caring for God's creation.",
+          "text": "In the beginning, God created the heavens and the earth. The very first thing the Bible tells you about God is that he's a creator. Before lawgiver, before judge, before savior. Creator. Making things is core to who God is. And if you're made in his image, then caring for what he made is core to who you are.",
           "attribution": null
         }
       ]
@@ -57,11 +67,21 @@
           "displayText": "Genesis 2:15"
         }
       ],
-      "reflectionPrompt": "What is the difference between 'dominion' as responsible stewardship versus exploitative domination of creation?",
+      "reflectionPrompt": "There's a difference between ruling over something like a tyrant and ruling over it like a gardener. Which one have you been? What would responsible stewardship look like in your actual life this week?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "God gives humans dominion over the earth. That word has been used to justify a lot of destruction over the years. But think about what dominion looks like when God does it. He serves. He provides. He lays down his life. That's the model. Dominion isn't a license to exploit. It's a call to care for something on behalf of the one who actually owns it.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Male and female, both in God's image, both given the same job. Rule over the fish, the birds, every living creature. This isn't about one gender dominating creation while the other watches. It's a shared responsibility. We're in this together, and the creation needs all of us paying attention.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Placed side-by-side, these verses help clarify our role. 'Dominion' seems less about unchecked power and more like the caring responsibility of a gardener. The specific instruction to 'work' and 'take care of' the garden points towards active cultivation and protection, not passive ownership or exploitation.",
+          "text": "God put the man in the garden to work it and take care of it. Before sin entered the picture, before anything went wrong, humans had a job. And the job was tending. Not strip-mining. Not clear-cutting. Tending. The first human vocation was environmental care. That should tell you something about how close this is to God's heart.",
           "attribution": null
         }
       ]
@@ -75,15 +95,33 @@
           "startChapter": 8,
           "startVerse": 19,
           "endChapter": 8,
+          "endVerse": 21,
+          "displayText": "Romans 8:19-21"
+        },
+        {
+          "bookAbbr": "ROM",
+          "startChapter": 8,
+          "startVerse": 22,
+          "endChapter": 8,
           "endVerse": 23,
-          "displayText": "Romans 8:19-23"
+          "displayText": "Romans 8:22-23"
         }
       ],
-      "reflectionPrompt": "In what ways do you see creation 'groaning' today? How does this motivate a desire for its renewal and our role in it?",
+      "reflectionPrompt": "Paul says creation is groaning like it's in labor. You don't groan like that unless something's wrong. Where do you hear creation groaning today? And what are you going to do about it?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Paul uses such powerful, empathetic language here – 'groaning as in the pains of childbirth.' It gives creation a voice, suggesting its suffering under brokenness is real and deeply felt. This passage connects creation's longing for renewal with our own hope, inviting us to listen and respond with care.",
+          "text": "Creation waits in eager expectation. That's a remarkable phrase. It's not indifferent. It's not just scenery. Creation itself is waiting for something. Waiting for God's children to step up. Waiting for redemption. The trees, the rivers, the soil. They're all leaning forward, hoping. What are they hoping you'll do?",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Creation was subjected to frustration, not by its own choice. That's the fall in a nutshell. Human sin didn't just break our relationship with God. It broke the ground under our feet. The good news is that the freedom and glory of God's children includes the liberation of creation itself. Your salvation and the planet's restoration are tied together.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "We know the whole creation has been groaning as in the pains of childbirth. Paul uses the image of labor pains. That's not a hopeless groan. That's the groan that comes right before new life. Something is being born. The pain is real, but it's not the end. And we groan too, waiting for adoption and redemption. You're not alone in that ache. Creation groans with you.",
           "attribution": null
         }
       ]
@@ -97,15 +135,33 @@
           "startChapter": 25,
           "startVerse": 1,
           "endChapter": 25,
+          "endVerse": 4,
+          "displayText": "Leviticus 25:1-4"
+        },
+        {
+          "bookAbbr": "LEV",
+          "startChapter": 25,
+          "startVerse": 5,
+          "endChapter": 25,
           "endVerse": 7,
-          "displayText": "Leviticus 25:1-7"
+          "displayText": "Leviticus 25:5-7"
         }
       ],
-      "reflectionPrompt": "The concept of Sabbath extended to the land, allowing it to rest and recover. How can we apply principles of rest and sustainability to our environment today?",
+      "reflectionPrompt": "God commanded the land itself to rest every seven years. We barely let ourselves rest, let alone the ground we depend on. What would it look like to build rhythms of rest and renewal into how you treat the world around you?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This idea of a Sabbath rest extending to the land itself is quite profound. It acknowledges that the Earth, like us, needs periods of recovery and renewal. It's a built-in limit on human exploitation, reminding us that sustainable rhythms, not constant productivity, are part of God's loving design for creation.",
+          "text": "God tells Moses that the land itself gets a Sabbath. Not just people. Not just animals. The dirt. For six years you plant and harvest. In the seventh year, you let it be. That's a built-in limit on human productivity. The economy doesn't get to run at full throttle forever. Even the ground needs a break. That's not bad for business. That's wisdom woven into the fabric of creation.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Think about what this command implies. God cares about soil health. About sustainable farming. About not grinding the land into dust for the sake of squeezing out one more harvest. These aren't modern environmental concerns. They're ancient biblical ones. The creator knows what his creation needs to thrive.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Whatever grows on its own during that Sabbath year is food for you, your servants, your animals, and even the wild creatures. God makes provision for everyone, including the wildlife. There's a generosity here. An ecosystem where humans aren't the only ones who matter. The land's rest becomes a table where everyone gets fed.",
           "attribution": null
         }
       ]
@@ -131,18 +187,28 @@
           "displayText": "Proverbs 6:6-8"
         }
       ],
-      "reflectionPrompt": "What lessons can we learn about diligence, interconnectedness, or God's providence by observing the natural world?",
+      "reflectionPrompt": "The Bible says you can learn from birds and ants and fish. When was the last time you actually paid attention to the natural world? Not as background scenery, but as a teacher. What might it be trying to tell you?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Ask the animals and they will teach you. The birds of the air will tell you. Speak to the earth and it will teach you. Job is basically saying: shut up and pay attention. The natural world has been taking notes on God longer than you've been alive. Every creature, every ecosystem, every season carries a lesson about who God is and how he works.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "In God's hand is the life of every creature and the breath of all mankind. Every living thing, from the whale to the honeybee, is held in God's hand. Not just human breath. All breath. That means the extinction of a species isn't just sad. It's sacred loss. Something God was holding slipped through our fingers.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Scripture encourages us to look closely at the natural world not just as a resource, but as a source of wisdom and revelation. From the diligence of the ant to the unspoken testimony of the birds and fish, creation itself reflects aspects of God's character and design, inviting us to observe, listen, and learn.",
+          "text": "Go to the ant, you sluggard. Consider its ways and be wise. The ant has no commander, no overseer, yet it stores provisions in summer. There's a work ethic written into creation. Preparation, diligence, community. The ant doesn't need a boss standing over it. It just does what needs doing. How much could we learn if we stopped long enough to watch?",
           "attribution": null
         }
       ]
     },
     {
       "dayNumber": 6,
-      "title": "Justice for the Earth and Poor",
+      "title": "Justice for the Earth and the Poor",
       "passages": [
         {
           "bookAbbr": "ISA",
@@ -151,13 +217,31 @@
           "endChapter": 24,
           "endVerse": 6,
           "displayText": "Isaiah 24:4-6"
+        },
+        {
+          "bookAbbr": "AMO",
+          "startChapter": 5,
+          "startVerse": 24,
+          "endChapter": 5,
+          "endVerse": 24,
+          "displayText": "Amos 5:24"
         }
       ],
-      "reflectionPrompt": "How are environmental degradation and social injustice often linked? Who is most affected by environmental damage?",
+      "reflectionPrompt": "Isaiah connects how we treat the earth with how we treat each other. They're not separate issues. Who suffers first when the environment gets wrecked? What does it mean that caring for creation and caring for the poor are the same conversation?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Isaiah draws a stark connection between breaking covenant—our relationship with God and ethical responsibilities—and the suffering of the land itself ('The earth mourns and withers'). It's a powerful reminder that environmental justice and social justice are often deeply linked; how we treat the planet frequently reflects how we treat its most vulnerable people.",
+          "text": "The earth mourns and withers. The world languishes. Isaiah draws a direct line between human disobedience and environmental decay. The land suffers because of broken covenants. When we break faith with God and with each other, the ground beneath us pays the price. Polluted water, toxic air, depleted soil. These aren't just policy problems. They're spiritual symptoms.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Isaiah says the inhabitants of the earth are burned up and very few are left. A curse consumes the earth. Those are hard words. But pay attention to who suffers most when creation is degraded. It's not the people with air conditioning and filtered water. It's the poor. The vulnerable. The ones who can't afford to move away from the factory fumes or the contaminated well. Environmental justice and social justice are the same justice.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Let justice roll on like a river, righteousness like a never-failing stream. Amos gives us the image of a river. Not a trickle. Not a one-time flood. A steady, ongoing flow of justice. Rivers sustain everything around them. They don't discriminate. They just bring life wherever they go. That's the kind of justice God wants. The kind that nourishes the land and everyone living on it.",
           "attribution": null
         }
       ]
@@ -183,11 +267,21 @@
           "displayText": "Isaiah 11:6-9"
         }
       ],
-      "reflectionPrompt": "Scripture offers a vision of a renewed heaven and earth. What is one practical step you can take this week to contribute to the healing and care of our planet?",
+      "reflectionPrompt": "God's endgame isn't destroying the earth. It's renewing it. New heaven, new earth. All things made new. What's one concrete thing you can do this week to start living like that future is already on its way?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Then I saw a new heaven and a new earth. Not a disembodied cloud realm. Not an escape from the physical world. A new earth. God doesn't give up on creation. He renews it. The first heaven and first earth passed away, and the sea was no more. Whatever has been broken, polluted, or destroyed. God's plan is to make it new. Not to toss it out and start over somewhere else.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "God will dwell with his people. He'll wipe every tear from their eyes. No more death, mourning, crying, or pain. The old order of things has passed away. And then God says, 'I am making everything new.' Present tense. He's already doing it. Every act of creation care, every choice to reduce waste, every step toward sustainability. You're not just being responsible. You're participating in what God is already doing.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "These beautiful visions point towards God's ultimate goal: not abandoning the world, but renewing and restoring *all* things—a new heaven and a new earth where peace and harmony reign. This ultimate hope fuels our present efforts, reminding us that our work towards healing and caring for creation aligns with God's loving, redemptive purpose for the future.",
+          "text": "The wolf will live with the lamb. The leopard will lie down with the goat. The calf and the lion will feed together, and a little child will lead them. Isaiah paints a picture of total harmony. Predator and prey at peace. The earth will be filled with the knowledge of the Lord as the waters cover the sea. That's where we're headed. Every small act of care for creation is a preview of that coming day.",
           "attribution": null
         }
       ]

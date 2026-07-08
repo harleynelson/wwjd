@@ -1,9 +1,6 @@
 // lib/models/models.dart
-// Path: lib/models/models.dart
-// Approximate line: Entire File (Significant Changes)
 
-import '../helpers/database_helper.dart'; // Needed for Flag.fromUserDbMap
-import 'dart:convert'; // Required for jsonEncode/Decode if used directly in models, though usually handled by serialization logic
+import '../helpers/database_helper.dart';
 
 class Book {
   final String abbreviation; // e.g., "GEN"

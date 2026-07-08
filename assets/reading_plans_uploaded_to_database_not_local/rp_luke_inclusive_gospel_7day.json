@@ -15,15 +15,41 @@
           "startChapter": 1,
           "startVerse": 46,
           "endChapter": 1,
+          "endVerse": 50,
+          "displayText": "Luke 1:46-50"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 1,
+          "startVerse": 51,
+          "endChapter": 1,
+          "endVerse": 53,
+          "displayText": "Luke 1:51-53"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 1,
+          "startVerse": 54,
+          "endChapter": 1,
           "endVerse": 55,
-          "displayText": "Luke 1:46-55 (The Magnificat)"
+          "displayText": "Luke 1:54-55"
         }
       ],
-      "reflectionPrompt": "Mary sings about God bringing down the powerful and lifting up the humble. Where do you see this kind of 'great reversal' needed in the world or in your own life today?",
+      "reflectionPrompt": "Mary sings about God flipping the whole script. The powerful brought down, the humble lifted up. Where in your life or in the world around you does this kind of reversal need to happen?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Mary's powerful song sets the stage for Luke's Gospel. It celebrates a God who notices the humble, lifts up the lowly, and challenges oppressive power structures. It's a radical vision of hope from the margins, reminding us that God's good news often starts where we least expect it.",
+          "text": "Mary starts by praising God for noticing her. A young woman, no status, no power, living in a town nobody talked about. And God sees her. Not because she earned it or climbed some ladder. Just because God notices the ones the world overlooks. That's where this whole story begins. Not in a palace. In the heart of a girl who knew she was small and believed God was big enough to care anyway.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Now the song takes a sharp turn. Mary starts talking about God scattering the proud, bringing down rulers, lifting up the humble, filling the hungry, sending the rich away empty. This isn't gentle poetry. This is a declaration that the way things are is not the way they'll stay. God's kingdom reverses every hierarchy we're used to. The bottom becomes the top. The hungry get fed first.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Mary ends by remembering God's promise to Abraham and his descendants forever. She's tying her own story into a much bigger one. The same God who made promises to an old nomad thousands of years ago is still at work, still faithful, still flipping expectations. And now that story includes a teenage girl from Nazareth. Your story is part of something bigger too. You just might not see the whole picture yet.",
           "attribution": null
         }
       ]
@@ -37,15 +63,41 @@
           "startChapter": 4,
           "startVerse": 16,
           "endChapter": 4,
+          "endVerse": 17,
+          "displayText": "Luke 4:16-17"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 4,
+          "startVerse": 18,
+          "endChapter": 4,
+          "endVerse": 19,
+          "displayText": "Luke 4:18-19"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 4,
+          "startVerse": 20,
+          "endChapter": 4,
           "endVerse": 21,
-          "displayText": "Luke 4:16-21"
+          "displayText": "Luke 4:20-21"
         }
       ],
-      "reflectionPrompt": "Jesus declared 'good news to the poor' as central to his purpose. What does 'good news' look like for those struggling economically or socially in our communities?",
+      "reflectionPrompt": "Jesus stood up in his hometown and laid out his whole mission statement. Good news to the poor, freedom for captives, sight for the blind. If that was his agenda, what does that say about what yours should look like?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "In his hometown synagogue, Jesus announces his mission by quoting Isaiah. He explicitly aligns himself with bringing good news to the poor, freedom for the oppressed, and sight for the blind. This defines his ministry from the start—one centered on liberation, healing, and justice.",
+          "text": "Jesus walks into the synagogue where he grew up, probably surrounded by people who watched him learn carpentry from Joseph. He stands up to read, and they hand him the scroll of Isaiah. He unrolls it, finds a specific passage, and reads. Every move is deliberate. This isn't random. He chose those words on purpose.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The words Jesus reads are explosive. Good news to the poor. Freedom for prisoners. Sight for the blind. Release for the oppressed. He's not talking about spiritual abstractions. These are real people with real bodies and real suffering. The kind of good news Jesus is announcing has dirt under its fingernails. It changes material conditions, not just feelings.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then Jesus rolls up the scroll, sits down, and every eye in the room is fixed on him. And he drops the bombshell: 'Today this scripture is fulfilled in your hearing.' He's not pointing to some distant future. He's saying it's happening right now, right here, with me. The waiting is over. God's rescue mission has a face and a name.",
           "attribution": null
         }
       ]
@@ -59,8 +111,16 @@
           "startChapter": 5,
           "startVerse": 1,
           "endChapter": 5,
+          "endVerse": 3,
+          "displayText": "Luke 5:1-3"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 5,
+          "startVerse": 4,
+          "endChapter": 5,
           "endVerse": 11,
-          "displayText": "Luke 5:1-11"
+          "displayText": "Luke 5:4-11"
         },
         {
           "bookAbbr": "LUK",
@@ -71,11 +131,21 @@
           "displayText": "Luke 5:27-32"
         }
       ],
-      "reflectionPrompt": "Jesus intentionally sought out those considered 'sinners' or outsiders by the religious establishment. Who might be the 'tax collectors' or 'sinners' our society marginalizes today, and how are we called to engage with them?",
+      "reflectionPrompt": "Jesus picked fishermen and a tax collector as his inner circle. Not the sharpest, not the holiest, not the most connected. Who are the people in your world that everyone else overlooks? What might God see in them that others miss?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Jesus is standing by the lake and the crowd is pressing in on him. So he hops into Simon's boat and asks him to push out a little from shore. He sits down and teaches the people from the boat. Notice the small detail. Jesus borrows what someone already has. He doesn't need a stage or a platform. He uses a fisherman's everyday work tool.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Jesus doesn't call the religious elite or the obviously 'qualified'. He calls ordinary fishermen and even a tax collector—someone viewed as a collaborator and sinner. His statement, 'I have not come to call the righteous, but sinners to repentance,' radically redefines who belongs in God's kingdom.",
+          "text": "Jesus tells Simon to put the nets out into deep water. Simon's tired. They fished all night and caught nothing. But he does it anyway. And the catch is so huge the nets start breaking. Simon falls to his knees, overwhelmed. He knows he's standing in front of something bigger than himself. Jesus tells him not to be afraid. From now on, he'll be fishing for people. Your ordinary skills, the things you're already good at, might be exactly what God wants to use.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then Jesus walks up to Levi, a tax collector sitting at his booth. Tax collectors were hated. They worked for the occupying Roman government. They got rich by overcharging their own people. And Jesus says two words: 'Follow me.' Levi leaves everything and throws a banquet. The religious leaders grumble about the company Jesus keeps. His response? 'I have not come to call the righteous, but sinners.' Nobody is too far gone for Jesus. Not even the person you think is the worst.",
           "attribution": null
         }
       ]
@@ -89,8 +159,16 @@
           "startChapter": 7,
           "startVerse": 1,
           "endChapter": 7,
+          "endVerse": 5,
+          "displayText": "Luke 7:1-5"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 7,
+          "startVerse": 6,
+          "endChapter": 7,
           "endVerse": 10,
-          "displayText": "Luke 7:1-10"
+          "displayText": "Luke 7:6-10"
         },
         {
           "bookAbbr": "LUK",
@@ -101,11 +179,21 @@
           "displayText": "Luke 7:11-17"
         }
       ],
-      "reflectionPrompt": "Jesus showed compassion to a Roman soldier and a grieving widow, crossing social barriers. What barriers (cultural, political, social) might prevent us from showing compassion today, and how can we overcome them?",
+      "reflectionPrompt": "Jesus helped a Roman officer's servant and then raised a widow's son. An outsider and a grieving woman. Who are the people you instinctively avoid or dismiss? What would it look like to cross that line?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "A Roman centurion sends Jewish elders to ask Jesus to heal his servant. This is already unusual. A Roman officer, part of the occupying force, asking a Jewish rabbi for help. But here's what's remarkable. The elders tell Jesus, 'This man deserves to have you do this. He loves our nation and built our synagogue.' An outsider who invested in the community. Sometimes the people you think are against you are actually for you.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Here, Jesus extends healing and compassion across significant social divides—to a Roman centurion (an outsider) and a grieving widow (vulnerable in that society). His actions demonstrate that God's care and power are not limited by ethnicity, social status, or circumstance.",
+          "text": "Jesus starts heading toward the centurion's house, but the centurion sends friends with a message: 'I don't deserve to have you under my roof. Just say the word and my servant will be healed.' This Roman officer gets something that even the religious insiders struggled with. He understands authority and he trusts Jesus has it. Jesus is amazed. He says, 'I have not found such great faith even in Israel.' Faith doesn't check your passport.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Right after this, Jesus walks into a funeral procession. A widow's only son has died. In that culture, a widow without a son had no safety net, no protection, no income. Jesus sees her and his heart goes out to her. He doesn't wait to be asked. He touches the coffin and tells the young man to get up. And he does. Jesus was always drawn to the ones whose pain ran deepest. He still is.",
           "attribution": null
         }
       ]
@@ -119,15 +207,41 @@
           "startChapter": 10,
           "startVerse": 25,
           "endChapter": 10,
+          "endVerse": 29,
+          "displayText": "Luke 10:25-29"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 10,
+          "startVerse": 30,
+          "endChapter": 10,
+          "endVerse": 35,
+          "displayText": "Luke 10:30-35"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 10,
+          "startVerse": 36,
+          "endChapter": 10,
           "endVerse": 37,
-          "displayText": "Luke 10:25-37"
+          "displayText": "Luke 10:36-37"
         }
       ],
-      "reflectionPrompt": "The Good Samaritan showed mercy when the religious figures passed by. What does this parable teach us about the difference between religious observance and genuine compassion? Who is the unexpected 'neighbor' in your life?",
+      "reflectionPrompt": "The religious professionals walked past. The outsider stopped. Who in your life have you been walking past? And who has been the unexpected Good Samaritan for you?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This famous parable flips the question 'Who is my neighbor?' to 'Who *acted* like a neighbor?' The hero is a Samaritan—despised by the religious establishment—who showed mercy. Jesus challenges us to define neighborliness not by affiliation, but by compassionate action, especially towards those different from us.",
+          "text": "An expert in the law stands up to test Jesus. He asks what he has to do to inherit eternal life. Jesus turns it back on him: what does the law say? The man answers perfectly. Love God and love your neighbor. But then he looks for a loophole. 'And who is my neighbor?' He wants Jesus to define the circle so he knows who he doesn't have to love. We all do this, don't we? Looking for the fine print.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus tells the story. A man gets beaten, robbed, and left half dead on the road. A priest sees him and crosses to the other side. A Levite, someone who served in the temple, does the same. Then a Samaritan comes along. Samaritans were despised. The audience would have expected him to be the villain. Instead, he's the one who stops. He bandages the man's wounds, puts him on his own donkey, pays for his care. Compassion doesn't check credentials.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Jesus asks the question that reframes everything: 'Which of these three was a neighbor?' The expert can't even say 'the Samaritan.' He just says, 'The one who had mercy.' Then Jesus tells him: 'Go and do likewise.' The question isn't who deserves your help. The question is whether you'll be the kind of person who helps. Full stop. No loopholes.",
           "attribution": null
         }
       ]
@@ -141,15 +255,41 @@
           "startChapter": 15,
           "startVerse": 11,
           "endChapter": 15,
+          "endVerse": 16,
+          "displayText": "Luke 15:11-16"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 15,
+          "startVerse": 17,
+          "endChapter": 15,
+          "endVerse": 24,
+          "displayText": "Luke 15:17-24"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 15,
+          "startVerse": 25,
+          "endChapter": 15,
           "endVerse": 32,
-          "displayText": "Luke 15:11-32 (The Prodigal Son)"
+          "displayText": "Luke 15:25-32"
         }
       ],
-      "reflectionPrompt": "The father's love extends to both the prodigal son and the resentful older brother. Which character do you relate to more in this story, and what does the father's response teach you about God's inclusive grace?",
+      "reflectionPrompt": "The father ran to meet the son who disgraced him. Which character in this story hits closest to home for you right now: the one who left, the one who stayed bitter, or the one who loved them both?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This story reveals the heart of a God who waits with open arms, ready to celebrate the return of the lost with extravagant grace. It challenges both the rebellious 'younger son' and the resentful 'older son,' inviting everyone into the Father's embrace, regardless of their past or their self-righteousness.",
+          "text": "A younger son demands his inheritance early. In that culture, this was basically saying, 'I wish you were dead.' And the father gives it to him. The son takes off, blows through everything, and ends up feeding pigs, starving, wishing he could eat what the pigs were eating. He hit absolute bottom. Sometimes that's exactly where you need to be before you're ready to come home.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The son rehearses his apology on the walk home. He's going to ask to be treated like a hired hand. But while he's still a long way off, the father sees him and runs. Middle Eastern patriarchs didn't run. It was considered undignified. This father doesn't care. He throws his arms around his son, won't even let him finish the speech, and throws a party. This is what God is like. No groveling required.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Now the older brother gets home from the fields and hears the music. He's furious. He's been working, obeying, doing everything right, and nobody ever threw him a party. The father goes out to him too. Same love, different conversation. 'You are always with me, and everything I have is yours.' The story ends without telling us what the older brother decided. Maybe because that part is up to you.",
           "attribution": null
         }
       ]
@@ -163,15 +303,41 @@
           "startChapter": 19,
           "startVerse": 1,
           "endChapter": 19,
+          "endVerse": 4,
+          "displayText": "Luke 19:1-4"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 19,
+          "startVerse": 5,
+          "endChapter": 19,
+          "endVerse": 7,
+          "displayText": "Luke 19:5-7"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 19,
+          "startVerse": 8,
+          "endChapter": 19,
           "endVerse": 10,
-          "displayText": "Luke 19:1-10"
+          "displayText": "Luke 19:8-10"
         }
       ],
-      "reflectionPrompt": "Jesus initiated the encounter with Zacchaeus, leading to transformation. How can actively seeking out and welcoming those often judged or excluded lead to positive change in their lives and ours?",
+      "reflectionPrompt": "Zacchaeus climbed a tree just to get a glimpse of Jesus, and Jesus saw him right back. Who in your life is waiting to be truly seen? And when were you last surprised by who showed up for you?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Jesus seeks out Zacchaeus, a wealthy but despised chief tax collector, initiating relationship despite public disapproval. This encounter leads to Zacchaeus's radical transformation and restitution. It's a beautiful picture of how being seen and welcomed by Jesus can inspire profound change and restoration.",
+          "text": "Zacchaeus is a chief tax collector and very wealthy. That means he got rich by squeezing his own people. Everyone hated him. But something in him wants to see Jesus. He's too short to see over the crowd, so he climbs a sycamore tree. Picture this wealthy, powerful man scrambling up a tree like a kid. There's something undignified about it, something almost desperate. Whatever was stirring in Zacchaeus, it was strong enough to make him look foolish.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus looks up into that tree and calls Zacchaeus by name. He invites himself over for dinner. The crowd mutters. Jesus is going to the house of a sinner. But notice: Jesus doesn't wait for Zacchaeus to clean up his act first. He doesn't give him a list of conditions. He just says, 'I must stay at your house today.' Relationship comes before reformation. Being welcomed is what makes change possible.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Something remarkable happens at that dinner table. Zacchaeus stands up and declares he's giving half his possessions to the poor and paying back anyone he cheated four times over. That's way beyond what the law required. Jesus didn't demand this. It bubbled up from inside Zacchaeus. Being seen and loved did what judgment never could. Jesus sums it up: 'The Son of Man came to seek and to save the lost.' That includes the ones everyone else has written off.",
           "attribution": null
         }
       ]

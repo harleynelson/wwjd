@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "rp_james_faith_works_5day",
   "title": "James: Faith That Works",
   "description": "Discover the practical wisdom of James, exploring how genuine faith translates into tangible actions like controlling speech, caring for the needy, and seeking wisdom in trials. (5 days)",
@@ -19,11 +19,21 @@
           "displayText": "James 1:2-8"
         }
       ],
-      "reflectionPrompt": "James encourages finding joy even in trials because they build perseverance. How can reframing challenges as opportunities for growth change your perspective? When facing difficulty, how easy or hard is it for you to ask for wisdom?",
+      "reflectionPrompt": "Consider it pure joy when you face trials. That's not what you expect to hear when life falls apart. But James isn't saying put on a fake smile. He's saying there's something happening in you that can't happen any other way. What trial are you in right now, and what might it be producing in you?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "James doesn't shy away from life's difficulties. He suggests that facing trials can actually develop perseverance and maturity. Notice the immediate link to wisdom – when facing challenges, we're invited to ask generously for guidance, trusting we'll receive it without judgment.",
+          "text": "Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds. James doesn't say if you face trials. He says whenever. Trials aren't an interruption to the Christian life. They're part of it. And the joy isn't about enjoying the pain. It's about what the pain produces. Perseverance. Maturity. Completeness. God uses hard things to make you whole.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "The testing of your faith produces perseverance. Let perseverance finish its work so that you may be mature and complete, not lacking anything. You don't get muscles without resistance. You don't get character without challenges. The trial you're in right now isn't just something to survive. It's something that's shaping you into who you're supposed to become.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you. James immediately connects trials with wisdom. When you don't know what to do, ask. God won't roll his eyes at you. He won't say 'I told you so.' He gives generously. But ask in faith without doubting. You've got to actually trust that he'll answer.",
           "attribution": null
         }
       ]
@@ -46,14 +56,24 @@
           "startVerse": 2,
           "endChapter": 3,
           "endVerse": 12,
-          "displayText": "James 3:2-12 (Focus on the power of the tongue)"
+          "displayText": "James 3:2-12"
         }
       ],
-      "reflectionPrompt": "Consider your communication patterns. In what situations could you practice being 'quicker to listen' and 'slower to speak'? How have you seen words build up or tear down relationships?",
+      "reflectionPrompt": "Quick to listen, slow to speak, slow to anger. Three simple rules that would save most relationships. Which one is hardest for you? And what would change if you actually practiced it today?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Everyone should be quick to listen, slow to speak, and slow to become angry. Human anger does not produce the righteousness that God desires. James cuts through all the communication advice ever written with one sentence. Before you respond, listen. Before you escalate, breathe. Your anger isn't doing God's work. It's just making noise.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "James places great emphasis on the power of our words. Being 'quick to listen, slow to speak and slow to become angry' is presented as practical wisdom. Chapter 3 uses vivid imagery (like a ship's rudder or a small spark) to show how much influence our tongue has, for good or ill.",
+          "text": "The tongue is a small part of the body but it makes great boasts. A tiny spark can set a great forest on fire. James compares the tongue to a ship's rudder, a horse's bit. Small thing, massive impact. Your words can burn down a relationship in seconds. Or they can build something that lasts a lifetime. The same mouth that praises God on Sunday can tear down your spouse on Monday. That shouldn't be.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "No human being can tame the tongue. It is a restless evil, full of deadly poison. With it we praise our Lord and Father, and with it we curse human beings made in God's likeness. Out of the same mouth come praise and cursing. James doesn't offer a three-step plan to fix your mouth. He says nobody can tame it. That's humbling. You'll never master your words through willpower alone. You need God to change you from the inside out.",
           "attribution": null
         }
       ]
@@ -68,7 +88,7 @@
           "startVerse": 22,
           "endChapter": 1,
           "endVerse": 27,
-          "displayText": "James 1:22-27 (Doers of the word)"
+          "displayText": "James 1:22-27"
         },
         {
           "bookAbbr": "JAS",
@@ -76,14 +96,24 @@
           "startVerse": 14,
           "endChapter": 2,
           "endVerse": 17,
-          "displayText": "James 2:14-17 (Faith without deeds is dead)"
+          "displayText": "James 2:14-17"
         }
       ],
-      "reflectionPrompt": "James challenges us to be 'doers of the word, and not hearers only.' What is one specific way you can put your beliefs or values into practice this week, particularly in caring for someone in need?",
+      "reflectionPrompt": "Don't just listen to the word. Do what it says. What's one thing you know you should do but have been putting off? Not because you don't believe it. Just because you haven't gotten around to it yet.",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Do not merely listen to the word and so deceive yourselves. Do what it says. James is blunt. Hearing without doing is self-deception. You can sit in church every week, nod at every sermon, underline every verse, and walk out exactly the same person. The word is a mirror. If you look at it, see the dirt on your face, and walk away without washing, what was the point of looking?",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Religion that God our Father accepts as pure and faultless is this: to look after orphans and widows in their distress and to keep oneself from being polluted by the world. That's it. Two things. Care for the vulnerable. And don't absorb the world's values. Not complicated. Just hard. James strips religion down to what actually matters. Not buildings or budgets or worship styles. People. Especially the people nobody else is looking after.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "This is a core theme for James: genuine faith isn't just about hearing or believing; it's about doing. He contrasts merely listening to the word with actively putting it into practice. True religion, he argues, involves tangible actions like caring for orphans and widows and keeping oneself ethically grounded.",
+          "text": "What good is it if someone claims to have faith but has no deeds? Can such faith save them? Suppose a brother or sister is without clothes and daily food. If you say 'Go in peace, keep warm and well fed' but do nothing about their physical needs, what good is it? Faith without deeds is dead. Words are cheap. A prayer without a helping hand is just noise. Real faith has hands and feet.",
           "attribution": null
         }
       ]
@@ -101,11 +131,21 @@
           "displayText": "James 2:1-9"
         }
       ],
-      "reflectionPrompt": "Think about your community or social circles. Are there subtle (or not-so-subtle) ways that favoritism based on wealth, status, or appearance shows up? How can you actively practice treating everyone with equal honor?",
+      "reflectionPrompt": "You see a rich person in fine clothes and a poor person in shabby clothes walk into the room. Who do you naturally gravitate toward? Be honest. James says that's favoritism and it's sin. What unconscious biases do you need to confess?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "James strongly condemns favoritism, especially based on wealth or status. He argues that showing partiality violates the core command to 'love your neighbor as yourself.' Genuine faith requires treating all people with equal dignity and respect, regardless of their appearance or social standing.",
+          "text": "Don't show favoritism. Suppose a man comes into your meeting wearing a gold ring and fine clothes, and a poor man in filthy old clothes. If you show special attention to the rich one and tell the poor one to stand over there or sit on the floor, have you not discriminated among yourselves? James paints a picture that's way too familiar. The wealthy get the VIP treatment. The poor get the floor.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Has not God chosen those who are poor in the eyes of the world to be rich in faith? Yet you have dishonored the poor. James flips the values of the world upside down. The people you're ignoring are the ones God chose. The people you're fawning over are the ones who drag you into court and blaspheme the name you claim. Check your guest list. Who's missing?",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "If you really keep the royal law found in Scripture, 'Love your neighbor as yourself,' you are doing right. But if you show favoritism, you sin. James connects partiality directly to the love command. You can't love your neighbor and rank them by net worth at the same time. The two things are incompatible. Every person who walks through your door carries the image of God. Treat them like it.",
           "attribution": null
         }
       ]
@@ -120,7 +160,7 @@
           "startVerse": 7,
           "endChapter": 5,
           "endVerse": 11,
-          "displayText": "James 5:7-11 (Patience in suffering)"
+          "displayText": "James 5:7-11"
         },
         {
           "bookAbbr": "JAS",
@@ -128,14 +168,24 @@
           "startVerse": 13,
           "endChapter": 5,
           "endVerse": 16,
-          "displayText": "James 5:13-16 (Prayer for the sick)"
+          "displayText": "James 5:13-16"
         }
       ],
-      "reflectionPrompt": "James encourages patience in hardship and persistent prayer. What situation currently requires patience from you? How can you incorporate prayer, both for yourself and others, more intentionally into your daily rhythm?",
+      "reflectionPrompt": "Be patient like a farmer waiting for the crop. You don't see anything happening underground, but something is growing. What situation are you in right now that needs patience? Can you trust that God is working even when you can't see it?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Be patient until the Lord's coming. See how the farmer waits for the land to yield its valuable crop, patiently waiting for the autumn and spring rains. You too, be patient. A farmer doesn't stand in the field yelling at the seeds to grow faster. He does the work, then he waits. He trusts the process. That's what patience looks like. Not passive resignation. Active trust while the seed does its thing underground.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Don't grumble against one another, brothers and sisters, or you will be judged. The Judge is standing at the door. James knows that waiting makes people cranky. When you're under pressure, you snap at the people closest to you. But he connects patience with how you treat each other. You can't claim to be waiting on God while running down the people God put in your life.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Concluding his letter, James circles back to perseverance, urging patience like a farmer waiting for rain. He then emphasizes the power of prayer in all circumstances—in trouble, happiness, or sickness. He encourages praying for one another, linking it to healing and restoration within the community.",
+          "text": "Is anyone among you in trouble? Let them pray. Is anyone happy? Let them sing songs of praise. Is anyone sick? Let them call the elders to pray over them. Confess your sins to each other and pray for each other so that you may be healed. The prayer of a righteous person is powerful and effective. James wraps up with prayer. Not theoretical prayer. Prayer in trouble, prayer in joy, prayer for healing. And notice: confess to each other. Healing happens in community, not isolation.",
           "attribution": null
         }
       ]

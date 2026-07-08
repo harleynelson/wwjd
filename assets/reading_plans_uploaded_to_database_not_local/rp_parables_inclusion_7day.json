@@ -8,22 +8,48 @@
   "dailyReadings": [
     {
       "dayNumber": 1,
-      "title": "The Lost Sheep & Lost Coin",
+      "title": "The Lost Sheep and Lost Coin",
       "passages": [
         {
           "bookAbbr": "LUK",
           "startChapter": 15,
           "startVerse": 1,
           "endChapter": 15,
+          "endVerse": 3,
+          "displayText": "Luke 15:1-3"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 15,
+          "startVerse": 4,
+          "endChapter": 15,
+          "endVerse": 7,
+          "displayText": "Luke 15:4-7"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 15,
+          "startVerse": 8,
+          "endChapter": 15,
           "endVerse": 10,
-          "displayText": "Luke 15:1-10"
+          "displayText": "Luke 15:8-10"
         }
       ],
-      "reflectionPrompt": "Who are the 'lost' or marginalized in our society that God actively seeks? How do these parables challenge our ideas of who 'belongs' and the effort we extend towards inclusion?",
+      "reflectionPrompt": "The shepherd left ninety-nine sheep to find one. The woman turned her house upside down for a single coin. What does that kind of searching tell you about how God feels about the people you might be tempted to give up on?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "These parables emphasize the immense value God places on each individual, especially those who might seem 'lost' or overlooked by society. The active seeking and joyous celebration highlight a divine compassion that leaves no one behind.",
+          "text": "The religious leaders are grumbling again. Jesus is welcoming sinners and eating with them. Let that sink in. The thing that bothered them most wasn't sin. It was grace. It was who Jesus chose to spend time with. If your faith makes you more concerned about who shouldn't be at the table than who isn't there yet, you might be missing the whole point.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "A shepherd with a hundred sheep leaves the ninety-nine to go after the one that wandered off. That makes no business sense. If you do the math, you risk the ninety-nine for the one. But love doesn't do math. When the shepherd finds that sheep, he throws it on his shoulders and calls his friends to celebrate. Heaven throws a party every time someone who was lost comes home.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "A woman with ten silver coins loses one. She lights a lamp, sweeps the house, and searches until she finds it. Then she calls her neighbors to celebrate. A single coin was that valuable to her. Jesus is saying something radical here. Every single person matters. Not just the impressive ones. Not just the ones who have it together. The ones the world counts as worthless? God counts them as priceless.",
           "attribution": null
         }
       ]
@@ -37,15 +63,41 @@
           "startChapter": 15,
           "startVerse": 11,
           "endChapter": 15,
+          "endVerse": 16,
+          "displayText": "Luke 15:11-16"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 15,
+          "startVerse": 17,
+          "endChapter": 15,
+          "endVerse": 24,
+          "displayText": "Luke 15:17-24"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 15,
+          "startVerse": 25,
+          "endChapter": 15,
           "endVerse": 32,
-          "displayText": "Luke 15:11-32"
+          "displayText": "Luke 15:25-32"
         }
       ],
-      "reflectionPrompt": "This parable highlights unconditional forgiveness but also the resentment of the 'insider.' How can we cultivate a heart that celebrates restoration rather than focusing on perceived fairness or personal merit?",
+      "reflectionPrompt": "The father ran to meet the son who humiliated him, and he went out to plead with the son who stayed bitter. Which one are you more like right now? And what would it take for you to walk through the door the Father is holding open?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This rich story explores not only the unconditional welcome offered to the repentant 'outsider' but also the challenge faced by the 'insider' to embrace such radical grace. It's a call to move beyond resentment and scorekeeping to joyful reconciliation.",
+          "text": "A son demands his inheritance while his father is still alive. In the ancient world, that was the ultimate insult. It was saying, 'I wish you were dead.' The father gives it to him anyway. The son burns through everything and ends up feeding pigs, so hungry he's eyeing their food. Rock bottom has a way of cutting through your pride. Sometimes you have to lose everything to remember what actually matters.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The son heads home rehearsing his apology. He's going to ask to be a servant. But while he's still a long way off, his father sees him and runs. Dignified Middle Eastern patriarchs didn't run. It was shameful. This father doesn't care. He wraps his arms around his son, cuts off the rehearsed speech, and throws a party. The son didn't even get to finish his apology. Grace interrupted him.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The older brother hears the music and gets angry. He's been working, obeying, never stepping out of line, and nobody threw him a party. He won't even call the prodigal his brother. He calls him 'this son of yours.' The father goes out to him with the same love. 'Everything I have is yours.' The story ends without telling us if the older brother went inside. Jesus leaves that question hanging. What would you do?",
           "attribution": null
         }
       ]
@@ -59,15 +111,41 @@
           "startChapter": 20,
           "startVerse": 1,
           "endChapter": 20,
+          "endVerse": 7,
+          "displayText": "Matthew 20:1-7"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 20,
+          "startVerse": 8,
+          "endChapter": 20,
+          "endVerse": 12,
+          "displayText": "Matthew 20:8-12"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 20,
+          "startVerse": 13,
+          "endChapter": 20,
           "endVerse": 16,
-          "displayText": "Matthew 20:1-16"
+          "displayText": "Matthew 20:13-16"
         }
       ],
-      "reflectionPrompt": "God's generosity can seem disruptive to our notions of fairness. How does this parable challenge our ideas about who 'deserves' blessing and the nature of divine grace?",
+      "reflectionPrompt": "The workers who showed up at 5 p.m. got the same pay as the ones who worked all day in the heat. That stings a little, doesn't it? When have you felt like God was being too generous with someone who didn't 'deserve' it? What does that reaction teach you about your own heart?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The landowner's seemingly 'unfair' generosity challenges our human tendency to compare and to base worthiness on effort or timing. This parable suggests that divine grace operates on principles beyond our conventional understanding of merit.",
+          "text": "A landowner goes out early in the morning to hire workers. He agrees on a fair wage. Then he goes out again at nine, noon, three, and even five in the afternoon, each time finding people standing around with nobody to hire them. He sends them all to his vineyard. At five o'clock there's barely an hour of daylight left, but he hires them anyway. He's not just looking for labor. He's looking for people who need a chance.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "When it's time to pay, the landowner starts with the last ones hired. They get a full day's wage. The workers who put in twelve hours of hard labor see this and their hopes shoot up. If those guys got a full day's pay, imagine what we'll get! But they get the exact same amount. And they're furious. The complaint isn't that they were cheated. It's that someone else got treated too well.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The landowner's response is gentle but firm: 'Friend, I am not being unfair to you. Didn't you agree to work for a denarius? Take your pay and go. I want to give the one who was hired last the same as I gave you.' Then the kicker: 'Are you envious because I am generous?' This parable pokes at something uncomfortable. Do you actually want justice, or do you just want to be ahead of the next person?",
           "attribution": null
         }
       ]
@@ -81,15 +159,41 @@
           "startChapter": 14,
           "startVerse": 15,
           "endChapter": 14,
+          "endVerse": 17,
+          "displayText": "Luke 14:15-17"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 14,
+          "startVerse": 18,
+          "endChapter": 14,
+          "endVerse": 20,
+          "displayText": "Luke 14:18-20"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 14,
+          "startVerse": 21,
+          "endChapter": 14,
           "endVerse": 24,
-          "displayText": "Luke 14:15-24"
+          "displayText": "Luke 14:21-24"
         }
       ],
-      "reflectionPrompt": "Those initially invited made excuses, so the invitation extended to the 'poor, crippled, blind, and lame.' Who is being invited into God's community today that conventional structures might overlook or exclude?",
+      "reflectionPrompt": "The invited guests all had excuses. So the host filled the banquet with people from the streets and alleys. If you were throwing a party that looked like God's kingdom, who would be on your guest list that you've been leaving off?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "When the initially invited guests make excuses, the invitation is extended to those on the fringes of society. This parable highlights the unexpected and inclusive nature of God's kingdom, often embracing those the 'establishment' might deem unworthy.",
+          "text": "Jesus is at a dinner party when someone says, 'Blessed is the one who will eat at the feast in the kingdom of God.' It sounds pious. Jesus responds with a story. A man is preparing a great banquet and sends his servant to tell the invited guests that everything is ready. The table is set. The food is hot. Come on over.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "One by one, the guests make excuses. I just bought a field and need to look at it. I bought five yoke of oxen and need to try them out. I just got married. These aren't emergencies. They're priorities. The things they own matter more than the relationship they're being offered. Ouch. How many times have your own excuses sounded exactly like this?",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The master gets angry. He tells the servant to go into the streets and alleys and bring in the poor, the crippled, the blind, and the lame. There's still room, so he sends the servant out again to the country roads. 'Compel them to come in, so that my house will be full.' God's banquet doesn't have a velvet rope. The people who thought they were too busy miss the party, and the ones who never expected an invitation get the best seats.",
           "attribution": null
         }
       ]
@@ -103,15 +207,41 @@
           "startChapter": 18,
           "startVerse": 21,
           "endChapter": 18,
+          "endVerse": 22,
+          "displayText": "Matthew 18:21-22"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 18,
+          "startVerse": 23,
+          "endChapter": 18,
+          "endVerse": 30,
+          "displayText": "Matthew 18:23-30"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 18,
+          "startVerse": 31,
+          "endChapter": 18,
           "endVerse": 35,
-          "displayText": "Matthew 18:21-35"
+          "displayText": "Matthew 18:31-35"
         }
       ],
-      "reflectionPrompt": "Having received boundless grace and forgiveness in our lives, how does withholding forgiveness from others obstruct the flow of divine love and reconciliation in our communities and personal relationships?",
+      "reflectionPrompt": "The servant was forgiven a debt equivalent to billions of dollars, then choked someone who owed him pocket change. Is there someone you're squeezing right now for a debt that, in the grand scheme of things, is pocket change compared to what you've been forgiven?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This parable starkly illustrates the disconnect between receiving immense forgiveness and failing to extend it to others. It suggests that our own experience of grace should fundamentally shape how we treat those who have wronged us.",
+          "text": "Peter asks Jesus how many times he should forgive someone. He throws out seven as a generous number. The rabbis taught three times was enough. Peter doubled it and added one. He's probably feeling pretty good about himself. Then Jesus says, 'Not seven times, but seventy-seven times.' Or some translations say seventy times seven. Either way, the point is the same: stop counting. Forgiveness isn't a math problem.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus tells a story about a servant who owes the king ten thousand bags of gold. We're talking billions of dollars in today's terms. An impossible debt. The king orders him and his whole family sold. The servant falls on his knees and begs for patience. The king does more than give him time. He cancels the entire debt. Just wipes it out. That's the kind of mercy we're talking about. Complete. Undeserved. Free.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "That same servant walks out and finds a fellow servant who owes him a hundred silver coins. A few thousand bucks. Nothing compared to what he was just forgiven. He grabs the guy by the throat and throws him in prison. When the king finds out, he's furious. 'Shouldn't you have had mercy on your fellow servant just as I had on you?' The king hands him over to be tortured. Jesus ends with a warning: this is how God will treat you if you don't forgive from your heart. Mercy received has to become mercy given, or it wasn't really received at all.",
           "attribution": null
         }
       ]
@@ -125,15 +255,41 @@
           "startChapter": 25,
           "startVerse": 14,
           "endChapter": 25,
+          "endVerse": 18,
+          "displayText": "Matthew 25:14-18"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 25,
+          "startVerse": 19,
+          "endChapter": 25,
+          "endVerse": 23,
+          "displayText": "Matthew 25:19-23"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 25,
+          "startVerse": 24,
+          "endChapter": 25,
           "endVerse": 30,
-          "displayText": "Matthew 25:14-30"
+          "displayText": "Matthew 25:24-30"
         }
       ],
-      "reflectionPrompt": "This parable can be understood as a call to utilize all our diverse gifts for positive impact. How can recognizing, cultivating, and employing these varied gifts build a more vibrant and inclusive community?",
+      "reflectionPrompt": "The third servant buried his talent in the ground because he was afraid. What gifts, skills, or opportunities have you been sitting on? What would it look like to dig them up and actually put them to work?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "While often interpreted regarding financial stewardship, this parable also speaks to the responsibility of using all God-given gifts and resources—time, abilities, opportunities—productively and faithfully, rather than out of fear or neglect.",
+          "text": "A man going on a journey entrusts his property to three servants. To one he gives five bags of gold, to another two, to another one. Each receives according to their ability. Right away we see something important. It's not about getting equal amounts. It's about what you do with what you're given. The first two immediately go to work and put the money to use. The third digs a hole and buries his.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The master returns and settles accounts. The first servant doubled his five bags to ten. The second doubled his two bags to four. Both hear the same words: 'Well done, good and faithful servant. You have been faithful with a few things. I will put you in charge of many things. Come and share your master's happiness.' Notice the reward isn't retirement. It's more responsibility and deeper relationship.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The third servant comes forward and his first words are, 'I knew you were a hard man.' He was afraid, so he buried the talent and played it safe. The master is furious. He calls him wicked and lazy. 'You could have at least put my money on deposit with the bankers.' The servant lost nothing, but he also gained nothing. Playing it safe isn't faithfulness. It's fear pretending to be wisdom. God doesn't give you gifts so you can protect them. He gives them so you can multiply them for others.",
           "attribution": null
         }
       ]
@@ -147,15 +303,41 @@
           "startChapter": 25,
           "startVerse": 31,
           "endChapter": 25,
+          "endVerse": 36,
+          "displayText": "Matthew 25:31-36"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 25,
+          "startVerse": 37,
+          "endChapter": 25,
+          "endVerse": 40,
+          "displayText": "Matthew 25:37-40"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 25,
+          "startVerse": 41,
+          "endChapter": 25,
           "endVerse": 46,
-          "displayText": "Matthew 25:31-46"
+          "displayText": "Matthew 25:41-46"
         }
       ],
-      "reflectionPrompt": "The ultimate standard for judgment in this parable is compassionate action towards the vulnerable. How does this radical call to identify with and serve the marginalized define true belonging and righteousness in God's eyes?",
+      "reflectionPrompt": "Jesus says whatever you did for the least of these, you did for him. Hungry, thirsty, stranger, naked, sick, imprisoned. Who comes to mind when you read that list? And what's one concrete thing you could do for them this week?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "In this powerful depiction of final judgment, the criteria for entering the kingdom are based on tangible acts of compassion towards those in need—the hungry, thirsty, stranger, naked, sick, and imprisoned. It implies that our treatment of the 'least of these' is a direct reflection of our relationship with the Divine.",
+          "text": "Jesus describes the Son of Man coming in glory, sitting on a throne, and separating people like a shepherd separates sheep from goats. This is a judgment scene, but pay attention to what the judgment is based on. It's not a theology quiz. It's not church attendance. It's not how many Bible verses you memorized. The criteria are stunningly practical. Did you feed the hungry? Give water to the thirsty? Welcome the stranger? Clothe the naked? Visit the sick and imprisoned?",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The righteous are confused. 'Lord, when did we see you hungry and feed you?' They don't remember doing these things. And Jesus says the line that reframes everything: 'Whatever you did for one of the least of these brothers and sisters of mine, you did for me.' Every act of kindness toward someone in need was an act of worship. Every sandwich given to a hungry person was given to Jesus himself.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then Jesus turns to the others. 'Depart from me. I was hungry and you gave me nothing to eat. I was a stranger and you did not invite me in.' They're shocked too. 'When did we see you?' And Jesus says, 'Whatever you did not do for one of the least of these, you did not do for me.' The sin wasn't doing something terrible. It was doing nothing. Walking past. Looking away. This parable is uncomfortable because it's so clear. Faith isn't just what you believe. It's what you do with your hands and your time and your front door.",
           "attribution": null
         }
       ]

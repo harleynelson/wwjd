@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "rp_isaiah_justice_hope_7day",
   "title": "Isaiah: Justice, Hope, and Comfort",
   "description": "Explore key passages from Isaiah, hearing his powerful calls for social justice, his breathtaking visions of peace, and his comforting words of hope for a broken people. (7 days)",
@@ -19,11 +19,21 @@
           "displayText": "Isaiah 1:11-17"
         }
       ],
-      "reflectionPrompt": "God prioritizes justice and defending the oppressed over religious sacrifices here. What does 'seeking justice' look like in our daily lives and communities today?",
+      "reflectionPrompt": "God says he's tired of your worship services if you're ignoring the people outside the doors. Stop doing wrong, learn to do right, seek justice. Where in your life is your religious practice disconnected from how you treat the people around you?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Isaiah starts with a powerful critique: God isn't impressed by religious rituals if they aren't accompanied by justice and compassion. The call is clear: 'Learn to do right; seek justice. Defend the oppressed. Take up the cause of the fatherless; plead the case of the widow.' True worship involves caring for the vulnerable.",
+          "text": "God doesn't mince words. 'The multitude of your sacrifices, what are they to me? I have more than enough of burnt offerings.' That's God talking to religious people doing religious things. And he's not impressed. He says their hands are full of blood. Their festivals make him weary. The disconnect between their worship and their justice is making God sick. That's not just Isaiah's message. That's a warning for anyone who separates Sunday from Monday.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Wash and make yourselves clean. Take your evil deeds out of my sight. Stop doing wrong. Learn to do right. Seek justice. Defend the oppressed. Take up the cause of the fatherless. Plead the case of the widow. There it is. The checklist of what God actually wants. Not more songs. Not more offerings. Justice. Protection for the vulnerable. Care for the marginalized. That's true worship.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Come now, let us settle the matter, says the Lord. Though your sins are like scarlet, they shall be as white as snow. Even here, in the middle of a fierce critique, God offers forgiveness. The goal isn't condemnation. The goal is restoration. You can turn. You can change. You can wash your hands and make them clean, not by hiding from the world's pain but by stepping into it.",
           "attribution": null
         }
       ]
@@ -38,14 +48,24 @@
           "startVerse": 1,
           "endChapter": 5,
           "endVerse": 7,
-          "displayText": "Isaiah 5:1-7 (Song of the Vineyard)"
+          "displayText": "Isaiah 5:1-7"
         }
       ],
-      "reflectionPrompt": "God looked for justice but saw bloodshed, for righteousness but heard cries of distress. Where do you see a similar gap between the hope for justice and the reality of suffering in the world?",
+      "reflectionPrompt": "God looked for justice but saw bloodshed. For righteousness but heard cries of distress. What does God see when he looks at your neighborhood, your city, your country? And what are you doing to help close the gap?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This poignant song uses the image of a vineyard carefully tended by God, which then yields only bad fruit. The 'bad fruit' is identified as bloodshed and distress instead of justice and righteousness. It's a lament over how God's hopes for a just society have been disappointed by injustice and oppression.",
+          "text": "Isaiah sings a love song about a vineyard. God planted it on a fertile hillside. He dug it up, cleared it of stones, planted the best vines. He built a watchtower and a winepress. He did everything right. And when he looked for good grapes, it yielded only bad fruit. 'What more could have been done for my vineyard?' That's God's heartbreak over a people he invested everything in.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Then Isaiah explains the metaphor. The vineyard is the house of Israel. The people of Judah are the vines. God looked for justice, but saw bloodshed. For righteousness, but heard cries of distress. In Hebrew, it's a wordplay: mishpat turned to mispach, tsedaqah turned to tse'aqah. Justice became bloodshed. Righteousness became a cry for help. That's what happens when God's people stop caring about what God cares about.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "God looked for justice. Not perfect theology. Not packed pews. Not impressive budgets. Justice. He looked for a society where the powerful don't crush the powerless, where the courts are fair, where the poor aren't cheated. And when he didn't find it, he didn't shrug. He wept. What would God find if he looked at your life today?",
           "attribution": null
         }
       ]
@@ -71,11 +91,21 @@
           "displayText": "Isaiah 11:1-9"
         }
       ],
-      "reflectionPrompt": "Isaiah envisions a world where weapons become tools for life and harmony replaces conflict. What does this vision of peace inspire in you? What small steps can contribute to such a future?",
+      "reflectionPrompt": "Swords into plowshares. Weapons become farm tools. The wolf and the lamb hanging out together. That's the future God has in mind. What's one small way you can start living like that future is already real?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "In the last days, the mountain of the Lord's temple will be established. All nations will stream to it. Many peoples will come and say, 'Come, let us go up to the mountain of the Lord.' Isaiah sees a future where God draws everyone, not just one nation. And what happens when they get there? They beat their swords into plowshares and their spears into pruning hooks. They stop learning war. That's the endgame. Not conquest. Conversion of the heart on a global scale.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Nation shall not lift up sword against nation. Neither shall they learn war anymore. Come, descendants of Jacob, let us walk in the light of the Lord. Isaiah doesn't just describe the future. He invites his people to start living it now. Walk in the light. Stop preparing for the next conflict. Start practicing peace. The vision isn't just something to wait for. It's something to start embodying.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Amidst critique, Isaiah offers breathtaking visions of a future transformed by God's peace. Nations converting weapons into farming tools, and natural enemies living in harmony—these images paint a powerful picture of shalom, a world restored to wholeness, justice, and right relationship.",
+          "text": "The wolf will live with the lamb. The leopard will lie down with the goat. The calf and the lion will feed together, and a little child will lead them. The cow will feed with the bear. The infant will play near the cobra's den. Nothing will harm or destroy on all my holy mountain. The earth will be filled with the knowledge of the Lord as the waters cover the sea. This isn't just peace between nations. It's peace between species. The whole creation healed. That's what's coming. And it starts with small choices toward peace today.",
           "attribution": null
         }
       ]
@@ -89,15 +119,33 @@
           "startChapter": 40,
           "startVerse": 1,
           "endChapter": 40,
+          "endVerse": 5,
+          "displayText": "Isaiah 40:1-5"
+        },
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 40,
+          "startVerse": 6,
+          "endChapter": 40,
           "endVerse": 11,
-          "displayText": "Isaiah 40:1-11"
+          "displayText": "Isaiah 40:6-11"
         }
       ],
-      "reflectionPrompt": "The call here is to 'speak tenderly' and offer comfort. Who in your life or community might need words of comfort and reassurance today? How can you be a voice of hope?",
+      "reflectionPrompt": "Comfort, comfort my people. Speak tenderly to Jerusalem. After all the judgment and hard words, God shifts to tenderness. Who in your life needs to hear a tender word from you today? Not a lecture. Not advice. Just comfort.",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This passage marks a shift, offering words of profound comfort and hope to a people feeling defeated and exiled. God speaks tenderly, promising restoration and gentle care, like a shepherd gathering lambs. It reminds us that even in difficult times, God's presence offers deep reassurance and strength.",
+          "text": "Isaiah 40 is a turning point. The first 39 chapters are heavy with judgment. And then this: 'Comfort, comfort my people, says your God. Speak tenderly to Jerusalem.' The same God who called out injustice now whispers tenderness. He says her hard service has been completed. Her sin has been paid for. There's a time for accountability. And there's a time for restoration. You need both.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "A voice of one calling: in the wilderness prepare the way for the Lord. Make straight in the desert a highway for our God. Every valley shall be raised up, every mountain made low. The rough ground shall become level. John the Baptist picks up these words in the Gospels. The message is the same: God is coming. Get ready. Clear the obstacles. Make a straight path.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "He tends his flock like a shepherd. He gathers the lambs in his arms and carries them close to his heart. He gently leads those that have young. After all the cosmic language about mountains and nations, Isaiah zooms in on a shepherd holding a lamb. That's who God is. Not just the one who levels mountains. The one who carries the tired ones, the small ones, the ones who can't keep up. If you're limping today, you're being carried.",
           "attribution": null
         }
       ]
@@ -111,15 +159,33 @@
           "startChapter": 55,
           "startVerse": 1,
           "endChapter": 55,
+          "endVerse": 3,
+          "displayText": "Isaiah 55:1-3"
+        },
+        {
+          "bookAbbr": "ISA",
+          "startChapter": 55,
+          "startVerse": 4,
+          "endChapter": 55,
           "endVerse": 7,
-          "displayText": "Isaiah 55:1-7"
+          "displayText": "Isaiah 55:4-7"
         }
       ],
-      "reflectionPrompt": "God offers satisfaction 'without money and without cost.' What things do we often chase after for fulfillment that ultimately don't satisfy? How can we accept God's free invitation to true life?",
+      "reflectionPrompt": "Come, all you who are thirsty, come to the waters. You who have no money, come, buy and eat. No money required. No prerequisites. Just come. What are you still trying to earn that God is already offering for free?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This beautiful invitation calls everyone who is thirsty and hungry to come freely and receive life-giving nourishment from God. It emphasizes that God's grace and sustenance are available to all, regardless of their ability to 'pay.' It's an open door to relationship and abundant life.",
+          "text": "Come, all you who are thirsty, come to the waters. And you who have no money, come, buy and eat. Come, buy wine and milk without money and without cost. This is an open invitation. No barriers, no price tag, no qualification needed. Thirsty? Come. Broke? Come. You don't need to clean yourself up first. You don't need to earn it. You just need to show up hungry.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Why spend money on what is not bread, and your labor on what does not satisfy? God asks a question that still cuts: what are you spending your life on that isn't actually feeding you? The promotion, the approval, the next purchase. It all promises satisfaction and delivers emptiness. Listen, listen to me, and eat what is good. There's real nourishment on offer. You just have to stop chasing the counterfeit.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Seek the Lord while he may be found. Call on him while he is near. Let the wicked forsake their ways. Let them turn to the Lord, and he will have mercy. To our God, for he will freely pardon. God's mercy isn't reluctant. He's not sitting there with crossed arms waiting for you to beg. He freely pardons. The door is open. Turn around and walk through it.",
           "attribution": null
         }
       ]
@@ -137,11 +203,21 @@
           "displayText": "Isaiah 53:3-7"
         }
       ],
-      "reflectionPrompt": "The servant suffers silently for the healing of others. How does this image challenge our understanding of strength, suffering, and bringing about positive change?",
+      "reflectionPrompt": "He was pierced for our transgressions. Crushed for our iniquities. The punishment that brought us peace was on him. What do you need to stop carrying today that he already took on his shoulders?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This passage describes a figure who suffers unjustly, bearing the pain and wrongdoing of others to bring about healing and peace. While Christians see this fulfilled in Jesus, the image itself speaks powerfully about redemptive suffering and finding meaning even in hardship borne for the sake of others.",
+          "text": "He was despised and rejected by mankind, a man of suffering, familiar with pain. Like one from whom people hide their faces. The servant isn't powerful. He's not impressive. He's the person you cross the street to avoid. And this, Isaiah says, is how God works. Not through strength we admire. Through suffering we'd rather not look at.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Surely he took up our pain and bore our suffering. We considered him punished by God, stricken, smitten, afflicted. But he was pierced for our transgressions. He was crushed for our iniquities. The punishment that brought us peace was on him. And by his wounds we are healed. Christians see Jesus in these words, and for good reason. Someone else took what we deserved. That's the heart of the gospel.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "He was oppressed and afflicted, yet he did not open his mouth. Like a lamb led to the slaughter, like a sheep before its shearers is silent. This isn't passive weakness. This is chosen restraint. Power that could have defended itself and chose not to. For you. Whatever guilt you're carrying, whatever shame keeps you up at night, it was already paid for. You don't have to pay for it again.",
           "attribution": null
         }
       ]
@@ -159,11 +235,21 @@
           "displayText": "Isaiah 65:17-25"
         }
       ],
-      "reflectionPrompt": "Isaiah paints a picture of God's ultimate future: a world of joy, justice, peace, and meaningful work. How does this vision of hope motivate you to live differently today?",
+      "reflectionPrompt": "God says he'll create new heavens and a new earth. The old troubles won't be remembered. People will build houses and live in them, plant vineyards and eat their fruit. No more tears, no more injustice. How does that hope fuel the way you live today?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Isaiah concludes with a stunning vision of complete renewal—a new creation where weeping, distress, and injustice are no more. People will enjoy the fruits of their labor, live long lives in peace, and experience deep harmony with God and each other. This ultimate hope fuels our present work for justice and restoration.",
+          "text": "I will create new heavens and a new earth. The former things will not be remembered, nor will they come to mind. God isn't going to patch up the old world. He's starting fresh. But notice: it's still heavens and earth. Not clouds and harps. A real, physical, renewed creation. The things that broke your heart in this life won't even be a memory in the next.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "They will build houses and dwell in them. They will plant vineyards and eat their fruit. No longer will they build houses and others live in them, or plant and others eat. This is economic justice. The laborer gets to enjoy the fruit of their own work. No more exploitation. No more working your whole life to make someone else rich. God cares about fair wages and secure housing.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Before they call I will answer. While they are still speaking I will hear. The wolf and the lamb will feed together. They will neither harm nor destroy on all my holy mountain. Intimacy with God. Peace in creation. Justice for all. This is where the whole story is headed. Every act of justice you do now, every step toward peace, every choice to care for the vulnerable, is a preview of that coming day.",
           "attribution": null
         }
       ]

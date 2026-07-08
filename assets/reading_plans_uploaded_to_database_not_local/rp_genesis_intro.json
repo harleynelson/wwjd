@@ -15,15 +15,54 @@
           "startChapter": 1,
           "startVerse": 1,
           "endChapter": 1,
+          "endVerse": 5,
+          "displayText": "Genesis 1:1-5"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 1,
+          "startVerse": 6,
+          "endChapter": 1,
+          "endVerse": 13,
+          "displayText": "Genesis 1:6-13"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 1,
+          "startVerse": 14,
+          "endChapter": 1,
+          "endVerse": 25,
+          "displayText": "Genesis 1:14-25"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 1,
+          "startVerse": 26,
+          "endChapter": 1,
           "endVerse": 31,
-          "displayText": "Genesis 1"
+          "displayText": "Genesis 1:26-31"
         }
       ],
-      "reflectionPrompt": "What aspect of God's creation amazes you the most today, and how does it speak to you about its Source?",
+      "reflectionPrompt": "Step outside for a minute today. Or just look out the window. What part of this world honestly blows your mind? What's it say to you about the one who made all of it?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The poetic rhythm of these verses paints a picture of order emerging from chaos, of intention and goodness in every act of creation. It invites us to see the world not as a random accident, but as a thoughtfully crafted space, brimming with potential and declared 'good'.",
+          "text": "Genesis 1 doesn't read like a science textbook, and that's okay. It reads like poetry. Out of the chaos and the dark and the formless mess, God speaks and things start taking shape. Light separates from dark. There's a rhythm to it, a kind of holy cadence that says this wasn't random. This was intentional.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Sky, land, seas, vegetation. God's building a home, layer by layer. Notice how many times it says 'and God saw that it was good.' Not 'adequate.' Not 'good enough for now.' Good. Before humans even showed up, the world was already worthy. You're living in something that was built with care.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Sun, moon, stars. And then the waters and skies 'teem with living creatures.' God doesn't just create. He fills. Every corner gets populated. It's abundance, not bare minimum. There's a generosity baked into the way this world was made.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 3,
+          "text": "And then humans. Not as an afterthought, but in God's own image. Whatever else that means, it means you carry something of the Creator in you. Male and female, both bearing that image. God looks at everything and calls it 'very good.' That's worth sitting with next time you're feeling small or insignificant.",
           "attribution": null
         }
       ]
@@ -37,15 +76,41 @@
           "startChapter": 2,
           "startVerse": 1,
           "endChapter": 2,
+          "endVerse": 7,
+          "displayText": "Genesis 2:1-7"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 2,
+          "startVerse": 8,
+          "endChapter": 2,
+          "endVerse": 17,
+          "displayText": "Genesis 2:8-17"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 2,
+          "startVerse": 18,
+          "endChapter": 2,
           "endVerse": 25,
-          "displayText": "Genesis 2"
+          "displayText": "Genesis 2:18-25"
         }
       ],
-      "reflectionPrompt": "Reflect on the concept of being 'made in God's image' and the idea of 'not good for man to be alone.' What does this suggest about our inherent relational nature and purpose?",
+      "reflectionPrompt": "God said it wasn't good for the man to be alone. And that was before anything had gone wrong. What does that tell you about how we're wired? Who are the people in your life you were never meant to do without?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This chapter offers a more intimate look at the creation of humanity and the beginnings of relationship—with the Creator, with the earth, and with each other. Notice the emphasis on companionship and the naming of creatures, suggesting a deep connection and responsibility.",
+          "text": "Chapter 2 zooms in. Slower, closer, more personal. God rests on the seventh day, then shapes the man out of dirt like a potter at the wheel, breathes into his lungs, and the guy comes alive. That's not factory production. That's craftsmanship.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "God plants a garden and puts the man in it, with purpose. 'Work it and take care of it.' The first human job wasn't scrolling or consuming. It was tending. You were made to participate, not just spectate. And then there's that one boundary: the tree of the knowledge of good and evil. Freedom, but not without limits. That's not control. That's love.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then God says the thing that echoes through the whole Bible: it's not good for the man to be alone. He brings the animals to Adam (who names them) but none of them are the partner he needs. So God makes the woman. Not an inferior copy. Bone of bone. In a world that can feel more connected but more lonely than ever, that ancient truth still holds up. We're meant for each other.",
           "attribution": null
         }
       ]
@@ -59,15 +124,41 @@
           "startChapter": 3,
           "startVerse": 1,
           "endChapter": 3,
+          "endVerse": 7,
+          "displayText": "Genesis 3:1-7"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 3,
+          "startVerse": 8,
+          "endChapter": 3,
+          "endVerse": 13,
+          "displayText": "Genesis 3:8-13"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 3,
+          "startVerse": 14,
+          "endChapter": 3,
           "endVerse": 24,
-          "displayText": "Genesis 3"
+          "displayText": "Genesis 3:14-24"
         }
       ],
-      "reflectionPrompt": "How does this story of 'the fall' resonate with your understanding of human struggles and the longing for restoration or grace in your own life?",
+      "reflectionPrompt": "We all know what it's like to blow it. To reach for something we shouldn't, then try to hide. Where in your life right now do you feel that tension? Where do you need to stop hiding and start hoping?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This narrative explores themes of choice, consequence, and the introduction of brokenness into the world. It's a story that has shaped much thought about human nature and our relationship with the divine. It also subtly introduces the idea of redemption, even amidst hardship.",
+          "text": "Everything was good, and then it wasn't. The serpent shows up with a question: 'Did God really say?' And that's how it always starts, isn't it? A small seed of doubt. A nudge toward what we know isn't good for us. This story is ancient, but it feels like it could've happened yesterday. They eat. Their eyes open. And the first thing they feel is shame.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "After they eat, what do they do? They hide. They cover up. They play the blame game. 'The woman you gave me.' 'The serpent tricked me.' Sound familiar? Nobody wants to own it. But here's the thing: God comes looking for them anyway. He doesn't wait for them to get their act together. He shows up and asks, 'Where are you?' That's the whole story right there.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "There are consequences. Real ones. But there's also a quiet thread of hope. Even as they're sent out of the garden, God makes them clothes. It's a small gesture, but it says something: you messed up, and I'm still taking care of you. That's not a license to keep messing up. It's grace you didn't earn and can't lose.",
           "attribution": null
         }
       ]
@@ -81,8 +172,16 @@
           "startChapter": 4,
           "startVerse": 1,
           "endChapter": 4,
+          "endVerse": 8,
+          "displayText": "Genesis 4:1-8"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 4,
+          "startVerse": 9,
+          "endChapter": 4,
           "endVerse": 16,
-          "displayText": "Genesis 4:1-16"
+          "displayText": "Genesis 4:9-16"
         },
         {
           "bookAbbr": "GEN",
@@ -93,16 +192,21 @@
           "displayText": "Genesis 6:9-22"
         }
       ],
-      "reflectionPrompt": "Consider the themes of human choice, its consequences, and the idea of finding favor or being called to a unique purpose even in challenging times.",
+      "reflectionPrompt": "Jealousy and anger are things everybody deals with. The question is what you do with them. And then there's Noah: one guy staying decent when everyone else went sideways. What does that look like in your own world?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The story of Cain and Abel introduces challenging themes of jealousy, anger, and the devastating consequences of unchecked negative emotions. It also shows, even in judgment, a measure of divine protection.",
+          "text": "Cain and Abel. First brothers, first murder. And it all starts with comparison. Cain's offering didn't get the response Abel's did, and instead of looking inward, he let the resentment curdle into rage. God even warns him: 'Sin is crouching at your door. You must rule over it.' That's real talk. The feeling isn't the sin. What you do with it is.",
           "attribution": null
         },
         {
           "afterPassageIndex": 1,
-          "text": "Amidst a world described as corrupt, Noah stands out for his righteousness. His story is one of heeding a difficult call and trusting in a divine plan for preservation, even when it seemed overwhelming.",
+          "text": "Even after Cain kills his brother, God doesn't wipe him out. He puts a mark on him for protection. It's mercy in the middle of the mess. Hard to wrap your head around, but that's how God operates. Justice and mercy tangled up together.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then you flip ahead to chapter 6 and it's like things went from bad to worse. 'Every inclination of the human heart was only evil.' But Noah found favor. One guy, going against the current. You don't have to be everybody. You just have to be the one who shows up and does the next right thing.",
           "attribution": null
         }
       ]
@@ -116,8 +220,16 @@
           "startChapter": 7,
           "startVerse": 1,
           "endChapter": 7,
+          "endVerse": 12,
+          "displayText": "Genesis 7:1-12"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 7,
+          "startVerse": 13,
+          "endChapter": 7,
           "endVerse": 24,
-          "displayText": "Genesis 7"
+          "displayText": "Genesis 7:13-24"
         },
         {
           "bookAbbr": "GEN",
@@ -125,19 +237,24 @@
           "startVerse": 1,
           "endChapter": 8,
           "endVerse": 22,
-          "displayText": "Genesis 8"
+          "displayText": "Genesis 8:1-22"
         }
       ],
-      "reflectionPrompt": "What does God's covenant with Noah, symbolized by the rainbow, reveal about the nature of divine promises and the hope for renewal after devastation?",
+      "reflectionPrompt": "Have you ever been through something that felt like a flood? Overwhelming, all-consuming, wiping everything clean? What got you through it? And when you came out the other side, what did you know about God that you didn't know before?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The flood narrative is a powerful and complex story of judgment and preservation. It speaks to the seriousness of human actions and the sweeping nature of divine response in ancient storytelling.",
+          "text": "The flood is heavy. There's no getting around that. But inside the story is Noah, doing exactly what God told him to do: building a boat in the desert while everyone else probably thought he'd lost his mind. That takes a certain kind of grit. Not flashy faith. Faith with calloused hands.",
           "attribution": null
         },
         {
           "afterPassageIndex": 1,
-          "text": "Emerging from the flood, there's a sense of a new beginning, culminating in a promise. The covenant symbolized by the rainbow is a profound statement of divine commitment to the earth and its inhabitants.",
+          "text": "The rain falls for forty days. Everything's wiped out. And then: 'God remembered Noah.' That's a beautiful phrase. Not that God forgot and suddenly recalled, but that God acted on Noah's behalf. In the middle of the storm, you're not forgotten either.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "When it's all over, God sets a rainbow in the sky. Not as a reminder for himself (like he might forget), but as a sign for us. A promise that things won't always end in destruction. That there's a new beginning on the other side of every flood. The rainbow's still showing up, by the way.",
           "attribution": null
         }
       ]
@@ -151,15 +268,41 @@
           "startChapter": 12,
           "startVerse": 1,
           "endChapter": 12,
+          "endVerse": 3,
+          "displayText": "Genesis 12:1-3"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 12,
+          "startVerse": 4,
+          "endChapter": 12,
+          "endVerse": 7,
+          "displayText": "Genesis 12:4-7"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 12,
+          "startVerse": 8,
+          "endChapter": 12,
           "endVerse": 9,
-          "displayText": "Genesis 12:1-9"
+          "displayText": "Genesis 12:8-9"
         }
       ],
-      "reflectionPrompt": "What does it mean to step out in faith when you feel a divine calling or a deep inner prompting, even if the path ahead isn't entirely clear?",
+      "reflectionPrompt": "God told Abram to leave everything familiar. Country, people, his dad's household. And just go. No map, no timeline. Have you ever felt that kind of nudge? What would it take for you to actually go?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Abram's call involves leaving the familiar and stepping into the unknown, based purely on a promise. This is a foundational story about faith as trust and obedience, even without all the answers.",
+          "text": "Abram was seventy-five years old when God said 'go.' Not exactly the age you'd expect for a fresh start. But that's the thing about God. He doesn't seem all that interested in your retirement timeline. Sometimes the biggest chapter starts when you thought you'd already written the last one.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "God's promise to Abram was outrageously big: 'I'll make you a great nation, I'll bless you, I'll make your name great, and through you all the families of the earth will be blessed.' Abram hadn't done anything yet. He was just willing to go. That's all faith is at the start. Willingness. So Abram went. Simple as that. He packed up his wife, his nephew Lot, all their stuff, and hit the road.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "When he got to Canaan, he built an altar. Not because he'd arrived, but because he was thankful to be on the journey. You don't have to wait until you get there to mark the moment. Pitch your tent, build your altar, and keep walking. God shows up along the way, not just at the destination.",
           "attribution": null
         }
       ]
@@ -173,15 +316,41 @@
           "startChapter": 15,
           "startVerse": 1,
           "endChapter": 15,
+          "endVerse": 6,
+          "displayText": "Genesis 15:1-6"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 15,
+          "startVerse": 7,
+          "endChapter": 15,
+          "endVerse": 12,
+          "displayText": "Genesis 15:7-12"
+        },
+        {
+          "bookAbbr": "GEN",
+          "startChapter": 15,
+          "startVerse": 13,
+          "endChapter": 15,
           "endVerse": 21,
-          "displayText": "Genesis 15"
+          "displayText": "Genesis 15:13-21"
         }
       ],
-      "reflectionPrompt": "Reflect on the nature of promises—both human and divine. How does the concept of covenant shape your understanding of relationship and commitment?",
+      "reflectionPrompt": "Abram was honest with God: 'What can you give me? I'm still childless.' He didn't pretend he wasn't doubting. When have you been real with God about your doubts, and what happened when you were?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This chapter deepens the covenant theme, with Abram expressing doubt and God providing reassurance through a powerful, symbolic ritual. It shows that even foundational figures of faith had moments of questioning.",
+          "text": "Abram's been on the road a while now and still no kid. He's not afraid to say it: 'God, you keep promising, but I've got nothing to show for it.' That's not lack of faith. That's honest faith. You can believe and still have questions. The two aren't enemies. And then that line: 'Abram believed the Lord, and he credited it to him as righteousness.' Not perfect behavior. Trust. That's it.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "God's response? He takes Abram outside and says, 'Look at the stars. Count them, if you can. That's how many descendants you'll have.' No defensiveness. No scolding. Just an invitation to look up and imagine something bigger. God doesn't just repeat the promise. He expands it. He gives Abram a visual he'll never forget.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then comes the covenant ceremony. Animals cut in half, a smoking firepot, a blazing torch. It's strange to modern eyes, but the point is unmistakable: God is making a binding promise, and he's the one walking through the pieces. This isn't a two-way deal where Abram has to hold up his end or it's off. God's putting his own name on the line. That's the kind of promise you can build a life on.",
           "attribution": null
         }
       ]

@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "rp_love_your_neighbor_7day",
   "title": "Love Your Neighbor: A Call to Compassion",
   "description": "Discover the radical call to love and compassion found in scripture. This 7-day plan explores how to extend empathy and justice to all.",
@@ -27,16 +27,21 @@
           "displayText": "Leviticus 19:18"
         }
       ],
-      "reflectionPrompt": "Who is your 'neighbor' in today's world? How can you show them love actively?",
+      "reflectionPrompt": "Love the Lord your God. Love your neighbor as yourself. Everything else hangs on these two. Not 'try to like your neighbor' or 'be polite to your neighbor.' Love them. Who's your neighbor? Start with the person closest to you right now.",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Jesus distills countless laws into two core principles: love for God and love for neighbor. This pairing suggests that our spiritual devotion is intrinsically linked to our human connections and ethical actions.",
+          "text": "Jesus is asked which commandment is the greatest. The Pharisees had 613 to choose from. And Jesus picks two. Love God with everything you've got. And love your neighbor as yourself. That's the whole thing. All the Law and the Prophets hang on these two commands. If your theology doesn't lead you to love, you're reading the map wrong.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Love your neighbor as yourself. Jesus doesn't say love your neighbor instead of yourself. He assumes you already take pretty good care of yourself. You eat when you're hungry. You rest when you're tired. You forgive your own mistakes. Take that same energy and point it at the people around you. That's the assignment.",
           "attribution": null
         },
         {
           "afterPassageIndex": 1,
-          "text": "It's significant that Jesus draws the command to love neighbors from Leviticus, rooting this central teaching deeply within the Hebraic tradition. It's not a new idea, but one with enduring importance.",
+          "text": "Jesus didn't invent the love command. He pulled it straight from Leviticus. Love your neighbor as yourself. I am the Lord. It's always been there, woven into the fabric of the law. But people had narrowed down who counted as a neighbor. Jesus spends the rest of his ministry blowing those boundaries wide open.",
           "attribution": null
         }
       ]
@@ -54,11 +59,21 @@
           "displayText": "Luke 10:25-37"
         }
       ],
-      "reflectionPrompt": "What excuses do we make for not helping others? How can this parable challenge those excuses and call us to compassionate action?",
+      "reflectionPrompt": "The priest walked by. The Levite walked by. The Samaritan, the person everyone looked down on, was the one who stopped. When have you been the person who walked past someone in need? And what would it take to be the one who stops next time?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This parable radically redefines 'neighbor' from someone within our own group to anyone in need whom we encounter. It challenges social, religious, and ethnic boundaries, emphasizing action over affiliation.",
+          "text": "An expert in the law asks 'Who is my neighbor?' He's looking for a loophole. Who do I have to love and who can I ignore? Jesus answers with a story that flips the question. A man is beaten, robbed, and left for dead on the Jericho road. A priest sees him and passes by. A Levite does the same. The hero is a Samaritan, a hated outsider. He bandages his wounds, puts him on his own donkey, pays for his care.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "The Samaritan didn't just feel sorry. He acted. He poured oil and wine on the wounds. He bandaged them. He lifted the man onto his own animal. He took him to an inn and paid for his stay. Love isn't a feeling. It's a verb. It costs time, money, energy. It inconveniences you. If your love doesn't cost you anything, you might just be being polite.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Jesus asks: which of these three do you think was a neighbor to the man? The expert can't even say 'the Samaritan.' He says 'the one who had mercy on him.' Jesus says: go and do likewise. Stop asking who qualifies as your neighbor. Start being a neighbor to whoever is in front of you. The question isn't 'who deserves my love.' It's 'who needs it right now.'",
           "attribution": null
         }
       ]
@@ -84,18 +99,28 @@
           "displayText": "Romans 12:15"
         }
       ],
-      "reflectionPrompt": "Reflect on a time someone showed you empathy or helped bear your burden. How can you practice 'rejoicing with those who rejoice and mourning with those who mourn' this week?",
+      "reflectionPrompt": "Carry each other's burdens. Rejoice with those who rejoice, mourn with those who mourn. Who in your life is carrying something heavy right now? Have you actually asked them? And are you willing to help carry it?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Carry each other's burdens, and in this way you will fulfill the law of Christ. Paul doesn't say 'acknowledge each other's burdens' or 'pray about each other's burdens from a safe distance.' He says carry them. Get under the weight with someone. When you help carry someone else's load, you're doing exactly what Jesus did.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Bearing burdens and sharing in both joy and sorrow are practical expressions of love. They speak to the importance of presence, solidarity, and deep empathy in our relationships and communities.",
+          "text": "Rejoice with those who rejoice. Mourn with those who mourn. That's empathy in two commands. When someone has good news, show up. When someone's world falls apart, show up. You don't need to fix anything. You don't need the right words. Just be there. Your presence in someone's joy or pain is one of the most powerful gifts you can give.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Rejoicing with those who rejoice can actually be harder than mourning. When someone gets the promotion you wanted, when their kid succeeds and yours is struggling, when their life looks charmed and yours looks hard. That's when 'rejoice with those who rejoice' costs you something. But that's the love you've been shown. Generous love that doesn't keep score.",
           "attribution": null
         }
       ]
     },
     {
       "dayNumber": 4,
-      "title": "Love for the 'Other'",
+      "title": "Love for the Other",
       "passages": [
         {
           "bookAbbr": "MAT",
@@ -114,11 +139,21 @@
           "displayText": "Luke 6:27-36"
         }
       ],
-      "reflectionPrompt": "Who are the people or groups you find it hardest to love? What would it mean to extend God-like love—love that seeks the other's good—even there?",
+      "reflectionPrompt": "Love your enemies. Pray for those who persecute you. That's not just hard. It feels impossible. Who's on your enemy list right now? Not necessarily a political enemy. Just someone you'd rather not think about. Can you pray for them today?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The call to love even enemies and pray for persecutors is one of the most challenging and counter-cultural teachings. It pushes the boundaries of compassion far beyond our natural inclinations.",
+          "text": "You have heard that it was said, 'Love your neighbor and hate your enemy.' But I tell you, love your enemies and pray for those who persecute you. Jesus takes the command to love your neighbor and pushes it to the absolute limit. Your enemy is your neighbor. The person who hurt you, the person who votes against you, the person who would cross the street to avoid you. Love them. Pray for them.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "God causes the sun to rise on the evil and the good. He sends rain on the righteous and the unrighteous. If you only love those who love you back, what are you doing more than anyone else? Jesus says even tax collectors do that. Your love shouldn't be a transaction. It should be a reflection of the God who gives good things to people who don't deserve them. Including you.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Love your enemies, do good to them, and lend to them without expecting to get anything back. Then your reward will be great, and you will be children of the Most High, because he is kind to the ungrateful and wicked. Be merciful, just as your Father is merciful. Luke drives the point home. Enemy love isn't optional. It's family resemblance. You look like your Father when you're kind to people who don't deserve it.",
           "attribution": null
         }
       ]
@@ -144,11 +179,21 @@
           "displayText": "Micah 6:8"
         }
       ],
-      "reflectionPrompt": "How can loving your neighbor practically involve seeking justice, defending the oppressed, and working to correct systemic wrongs?",
+      "reflectionPrompt": "Learn to do right. Seek justice. Defend the oppressed. Act justly, love mercy, walk humbly with God. These aren't suggestions. They're the core of what God asks of you. What's one concrete way you can seek justice this week?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Learn to do right. Seek justice. Defend the oppressed. Take up the cause of the fatherless. Plead the case of the widow. Isaiah boils it down to active verbs. Learn. Seek. Defend. Take up. Plead. Justice isn't a concept to appreciate. It's work to do. And the focus is always on people who can't defend themselves. The orphan, the widow, the outsider.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "The prophetic tradition consistently links true spirituality with a commitment to justice. Micah's summary—acting justly, loving mercy, and walking humbly—provides a powerful three-fold guide for a life that honors God and cares for others.",
+          "text": "He has shown you, O mortal, what is good. And what does the Lord require of you? To act justly and to love mercy and to walk humbly with your God. Micah gives you three pillars. Justice: making things right. Mercy: showing compassion when you don't have to. Humility: remembering it's not about you. That's the whole assignment. Everything else is details.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Walk humbly with your God. Not march ahead of him with your agenda. Not lag behind making excuses. Walk with him. Same pace, same direction. And when you walk with God, you end up where he's going. And God is always moving toward the people everyone else is walking away from. The poor, the broken, the forgotten. If you want to walk with God, that's where you'll be headed too.",
           "attribution": null
         }
       ]
@@ -172,13 +217,31 @@
           "endChapter": 13,
           "endVerse": 2,
           "displayText": "Hebrews 13:2"
+        },
+        {
+          "bookAbbr": "1PE",
+          "startChapter": 4,
+          "startVerse": 9,
+          "endChapter": 4,
+          "endVerse": 9,
+          "displayText": "1 Peter 4:9"
         }
       ],
-      "reflectionPrompt": "In what practical ways can you show hospitality and create a welcoming space for others, including those who might be considered 'strangers' or are in need?",
+      "reflectionPrompt": "Share with the Lord's people in need. Practice hospitality. Offer hospitality without grumbling. Opening your home, your table, your time to someone else. Who could you invite in this week?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Share with the Lord's people who are in need. Practice hospitality. Paul puts hospitality right next to patience and prayer in his list of what love looks like. It's not a special gift for extroverts. It's a practice for everyone. You get better at it by doing it. Open your door. Share your table. Start simple.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Hospitality in the ancient world was a vital social and ethical practice. These reminders to welcome strangers and share generously extend that spirit, suggesting that our homes and resources can be places of blessing and connection.",
+          "text": "Do not forget to show hospitality to strangers, for by doing so some people have shown hospitality to angels without knowing it. The writer of Hebrews reminds you that you never know who you're welcoming. That stranger at your door could be carrying something sacred. You don't have to figure out who's worthy of your hospitality. Just offer it.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Offer hospitality to one another without grumbling. Peter adds a detail that hits close to home. It's easy to host people and complain about it the whole time. They better appreciate this. I hope they don't stay too long. That's not hospitality. That's performance. Real hospitality comes from a heart that's glad to share, not a heart that's keeping score.",
           "attribution": null
         }
       ]
@@ -204,11 +267,21 @@
           "displayText": "James 2:14-17"
         }
       ],
-      "reflectionPrompt": "Commit to one specific, tangible action this week to put your love for your neighbor into practice, moving beyond sentiment to service.",
+      "reflectionPrompt": "Let us not love with words or speech but with actions and in truth. What's one specific thing you're going to do this week to put your love into action? Not plan. Not think about. Actually do.",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "This is how we know what love is: Jesus Christ laid down his life for us. And we ought to lay down our lives for our brothers and sisters. John starts with the ultimate example. Love looks like sacrifice. Not just a feeling of goodwill. A willingness to give up your comfort, your resources, your plans for someone else's good.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "If anyone has material possessions and sees a brother or sister in need but has no pity on them, how can the love of God be in that person? Dear children, let us not love with words or speech but with actions and in truth. John connects theology to your wallet. If you've got stuff and you see someone who needs it, love requires sharing. Not 'I'll pray for you' while your garage is full. Real love opens its hands.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Both John and James emphasize that true love and faith are not merely matters of words or feelings, but are demonstrated through tangible actions that meet the needs of others. Our deeds are the evidence of our heart's orientation.",
+          "text": "What good is it if someone claims to have faith but has no deeds? If a brother or sister is without clothes and daily food and you say 'Go in peace, keep warm and well fed' but do nothing about their physical needs, what good is it? Faith by itself, if not accompanied by action, is dead. James and John are saying the same thing from different angles. Love has a body. It moves. It does things. Your words mean nothing if your hands aren't backing them up.",
           "attribution": null
         }
       ]

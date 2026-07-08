@@ -1,9 +1,7 @@
 // lib/daily_devotionals.dart
 
-import 'dart:math';
 import 'prefs_helper.dart';
-import 'package:intl/intl.dart'; // For date formatting
-import '../models/models.dart';
+import 'package:intl/intl.dart';
 
 class Devotional {
   final String title;

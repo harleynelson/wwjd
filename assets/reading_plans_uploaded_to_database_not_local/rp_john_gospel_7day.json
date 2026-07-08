@@ -15,37 +15,81 @@
           "startChapter": 1,
           "startVerse": 1,
           "endChapter": 1,
+          "endVerse": 5,
+          "displayText": "John 1:1-5"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 1,
+          "startVerse": 6,
+          "endChapter": 1,
+          "endVerse": 13,
+          "displayText": "John 1:6-13"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 1,
+          "startVerse": 14,
+          "endChapter": 1,
           "endVerse": 18,
-          "displayText": "John 1:1-18"
+          "displayText": "John 1:14-18"
         }
       ],
-      "reflectionPrompt": "What does it mean to you that the divine 'Word became flesh and dwelt among us'? How does this idea of God's closeness impact your perspective?",
+      "reflectionPrompt": "God didn't stay far away. He moved into the neighborhood. What does it do to your picture of God to know he chose to become one of us, with all the mess that comes with it?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "John begins his account with such profound and poetic language. He's not just telling a story; he's inviting us into a cosmic understanding of who Jesus is—the eternal Word, the source of life and light, now present with us in a tangible way.",
+          "text": "John doesn't start with a birth story. He starts before anything existed. 'In the beginning was the Word.' Jesus wasn't plan B. He was there at the start, speaking light into darkness. And here's the thing: that light is still shining. The darkness has never been able to put it out. Not then, not now, not ever. Whatever darkness you're sitting in today, it doesn't get the final word.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "John the Baptist shows up as a witness. Not the light himself, just a guy pointing at the light. That's actually a pretty good job description for anyone who follows Jesus. You don't have to be the light. You just have to point people toward it. And then John drops this heartbreaking line: 'He came to his own, and his own did not receive him.' Rejection was part of the story from day one. But so was adoption. To all who received him, he gave the right to become children of God.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The Word became flesh and made his dwelling among us. The God who spoke galaxies into existence took on skin and bone and moved into the neighborhood. He ate meals, felt tired, knew what it was like to lose someone he loved. That's not a distant deity. That's someone who gets it. And John says we have seen his glory, full of grace and truth. Not grace or truth. Grace AND truth. Holding both at the same time. That's who Jesus is.",
           "attribution": null
         }
       ]
     },
     {
       "dayNumber": 2,
-      "title": "The Wedding at Cana & Temple Cleansing",
+      "title": "The Wedding at Cana and Temple Cleansing",
       "passages": [
         {
           "bookAbbr": "JHN",
           "startChapter": 2,
           "startVerse": 1,
           "endChapter": 2,
+          "endVerse": 12,
+          "displayText": "John 2:1-12"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 2,
+          "startVerse": 13,
+          "endChapter": 2,
           "endVerse": 25,
-          "displayText": "John 2"
+          "displayText": "John 2:13-25"
         }
       ],
-      "reflectionPrompt": "How do these initial actions of Jesus—providing joy and challenging misuse of sacred space—reveal His authority and the nature of His mission?",
+      "reflectionPrompt": "Jesus showed up at a party and kept it going. Then he showed up at the temple and shut things down. What does it tell you that the same Jesus did both?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "These first 'signs' in John's Gospel are powerful. Turning water into wine speaks of abundance and transformation, while clearing the temple courts speaks to a passion for true worship and reverence. Both hint at a new way of experiencing the divine that Jesus is introducing.",
+          "text": "Jesus' first miracle wasn't healing someone or raising the dead. It was keeping a wedding party from turning into a disaster. The wine ran out, which in that culture was a massive embarrassment. And Jesus quietly, almost behind the scenes, turned water into the best wine anyone had ever tasted. He cares about your joy. Even the small, ordinary, 'this isn't life or death but it still matters' kind of joy.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Notice what Mary says to the servants: 'Do whatever he tells you.' That's it. No grand speech. Just simple obedience. And the servants who filled those jars with water were the only ones who knew what had happened. Sometimes the biggest miracles are witnessed by the people nobody notices.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Then Jesus walks into the temple and flips tables. Money changers, animals for sale, the whole religious economy built on people's desire to get right with God. He drove them out with a whip. This is the same guy who saved the wedding party. Gentle and fierce. Tender and truthful. Jesus won't fit in the box you've built for him, and that's actually really good news.",
           "attribution": null
         }
       ]
@@ -59,15 +103,33 @@
           "startChapter": 3,
           "startVerse": 1,
           "endChapter": 3,
+          "endVerse": 8,
+          "displayText": "John 3:1-8"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 3,
+          "startVerse": 9,
+          "endChapter": 3,
           "endVerse": 21,
-          "displayText": "John 3:1-21"
+          "displayText": "John 3:9-21"
         }
       ],
-      "reflectionPrompt": "Reflect on the meaning of being 'born again' or experiencing a spiritual awakening. What might this look like in a person's life today?",
+      "reflectionPrompt": "Nicodemus came to Jesus at night. Maybe he was afraid of what people would think. Have you ever held back from going all in with Jesus because of what someone might say? What would change if you stopped hiding?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This intimate conversation with Nicodemus touches on one of the most transformative ideas: spiritual rebirth. Jesus speaks of a profound inner change, a new beginning that allows us to truly see and enter a different kind of reality—the kingdom of God.",
+          "text": "Nicodemus was a religious leader. He knew the Scriptures inside and out. But he came to Jesus at night, probably because he didn't want anyone to see him. And Jesus didn't scold him for it. He just got straight to the point: you must be born again. Not 'try harder' or 'follow these rules.' A whole new start. Fresh lungs, fresh eyes, fresh heart. That's what Jesus offers, whether you come to him in broad daylight or under cover of darkness.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Nicodemus gets hung up on the logistics: 'How can someone be born when they're old?' He's thinking physical, Jesus is talking spiritual. The wind blows wherever it pleases. You can't see it, but you can see what it does. That's the Spirit. You might not be able to explain exactly what happened to you, but you know something did. And so does everyone around you.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "And then comes John 3:16, the verse everybody knows. But don't skip past it because it's familiar. God so loved the world. Not 'God was mildly disappointed in the world.' Not 'God tolerates the world.' Loved. Enough to give his only Son. And the goal wasn't condemnation. It was rescue. Jesus didn't come to point fingers. He came to open a door. The question is whether you'll walk through it.",
           "attribution": null
         }
       ]
@@ -81,15 +143,41 @@
           "startChapter": 4,
           "startVerse": 1,
           "endChapter": 4,
+          "endVerse": 15,
+          "displayText": "John 4:1-15"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 4,
+          "startVerse": 16,
+          "endChapter": 4,
+          "endVerse": 30,
+          "displayText": "John 4:16-30"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 4,
+          "startVerse": 31,
+          "endChapter": 4,
           "endVerse": 42,
-          "displayText": "John 4:1-42"
+          "displayText": "John 4:31-42"
         }
       ],
-      "reflectionPrompt": "Jesus offers 'living water' to someone who was an outsider by many standards. How does this story challenge our own barriers and invite us to share hope and acceptance with all?",
+      "reflectionPrompt": "Jesus crossed ethnic lines, gender barriers, and moral assumptions to talk to one woman. Who are the people you've been avoiding? What would it take to cross that line?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Notice how Jesus crosses several social and cultural boundaries to engage this Samaritan woman. Their conversation moves from physical thirst to a deep spiritual longing, revealing Jesus' offer of 'living water' that satisfies the soul.",
+          "text": "Jesus is tired. Like, genuinely wiped out from walking. So he sits down at a well in Samaria, a place most Jews would go out of their way to avoid. A Samaritan woman shows up at noon, the hottest part of the day, probably to avoid the other women who came in the morning. And Jesus asks her for a drink. That simple request crosses about four different social boundaries at once. He sees her when everyone else looks right through her.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus knows her story. Five husbands, and the man she's with now isn't her husband. But he doesn't lead with judgment. He leads with living water. He treats her like someone worth talking to, not a scandal to be managed. And when he names her situation, he does it with such gentleness that she doesn't run away. She runs toward town to tell everyone about him. The woman who came to the well alone leaves it as an evangelist.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The disciples come back with food and they're confused. They don't get why he's talking to her. Jesus tells them his food is to do the will of the one who sent him. And then the whole town shows up. Many Samaritans believed because of the woman's testimony, and then even more believed when they heard Jesus themselves. One conversation at a well rippled out to transform an entire community. You never know what God can do with a single moment of courage.",
           "attribution": null
         }
       ]
@@ -103,15 +191,33 @@
           "startChapter": 6,
           "startVerse": 25,
           "endChapter": 6,
+          "endVerse": 34,
+          "displayText": "John 6:25-34"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 6,
+          "startVerse": 35,
+          "endChapter": 6,
           "endVerse": 40,
-          "displayText": "John 6:25-40"
+          "displayText": "John 6:35-40"
         }
       ],
-      "reflectionPrompt": "In what ways do you seek spiritual nourishment in your life? How does the idea of Jesus as the 'Bread of Life' speak to your deepest needs?",
+      "reflectionPrompt": "What are you hungry for right now? Not physically. Deep down. Where have you been looking for satisfaction that keeps coming up empty?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "After feeding thousands, Jesus redirects the crowd's focus from physical bread to spiritual nourishment. His claim to be the 'Bread of Life' is an invitation to find ultimate sustenance and eternal life in relationship with him.",
+          "text": "The crowd tracked Jesus down after he fed the five thousand. They wanted more bread. And Jesus basically says, 'You're not hungry for me. You're hungry for lunch.' He tells them to work for food that endures to eternal life. It's easy to treat God like a vending machine. Put in your prayer, get out your blessing. Jesus invites you to something deeper: a relationship where he himself is what satisfies.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "The people ask, 'What must we do?' and Jesus says, 'Believe in the one he has sent.' That's it. Not a checklist. Not a self-improvement plan. Trust. But that's actually harder than a checklist, isn't it? Checklists give you control. Trust gives control to someone else. And that's the whole point.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Then Jesus makes the claim: 'I am the bread of life. Whoever comes to me will never go hungry, and whoever believes in me will never be thirsty.' Everything else you try to fill yourself with is going to leave you empty again by tomorrow. The promotion, the relationship, the next purchase. Jesus says he's the only thing that actually satisfies. Not just for a moment. For good.",
           "attribution": null
         }
       ]
@@ -125,15 +231,33 @@
           "startChapter": 10,
           "startVerse": 1,
           "endChapter": 10,
+          "endVerse": 10,
+          "displayText": "John 10:1-10"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 10,
+          "startVerse": 11,
+          "endChapter": 10,
           "endVerse": 18,
-          "displayText": "John 10:1-18"
+          "displayText": "John 10:11-18"
         }
       ],
-      "reflectionPrompt": "How do you experience guidance, care, or protection in your spiritual journey? What does it mean to 'know his voice'?",
+      "reflectionPrompt": "There are a lot of voices competing for your attention. How do you know which one is the shepherd's? When have you heard his voice before, and what did it sound like?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The imagery of a shepherd who knows, leads, and lays down his life for his sheep is rich with care and protection. Jesus uses this to describe his intimate relationship with those who follow him.",
+          "text": "Jesus talks about sheep and shepherds and gates because that's what his audience understood. The shepherd doesn't drive the sheep from behind. He walks ahead and calls them by name. And they follow because they know his voice. Not because they're forced. Because they trust him. That's the kind of relationship Jesus wants with you. Not fear-based obedience. Voice-recognition trust.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "The thief comes only to steal and kill and destroy. Jesus came that you may have life, and have it to the full. There's a contrast here. Some voices in your life are thieves. They'll take from you and leave you empty. Jesus is the opposite. He doesn't want to take anything from you. He wants to give you more life than you know what to do with.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "And then: 'I am the good shepherd. The good shepherd lays down his life for the sheep.' A hired hand runs when the wolf shows up because the sheep aren't his. But Jesus isn't a hired hand. He's the owner. He's not going anywhere. When trouble comes, he doesn't bolt. He steps in front of it. That's the kind of shepherd you have.",
           "attribution": null
         }
       ]
@@ -147,15 +271,41 @@
           "startChapter": 11,
           "startVerse": 1,
           "endChapter": 11,
+          "endVerse": 16,
+          "displayText": "John 11:1-16"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 11,
+          "startVerse": 17,
+          "endChapter": 11,
+          "endVerse": 37,
+          "displayText": "John 11:17-37"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 11,
+          "startVerse": 38,
+          "endChapter": 11,
           "endVerse": 44,
-          "displayText": "John 11:1-44"
+          "displayText": "John 11:38-44"
         }
       ],
-      "reflectionPrompt": "How does the story of Lazarus and Jesus's claim to be 'the resurrection and the life' impact your understanding of hope, loss, and eternal life?",
+      "reflectionPrompt": "Jesus wept at Lazarus' tomb even though he knew he was about to raise him. That means your tears aren't a lack of faith. They're just being human. What loss are you still carrying? Have you let Jesus into that grief?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The raising of Lazarus is a dramatic demonstration of Jesus's power over death and his profound compassion. His declaration, 'I am the resurrection and the life,' offers hope beyond our earthly existence.",
+          "text": "Lazarus is sick. His sisters send word to Jesus, the one person who could do something about it. And Jesus... waits. He stays where he is two more days. If you've ever felt like God was taking his time while your world was falling apart, you're in good company. Mary and Martha felt it too. But Jesus had something bigger in mind. The delay wasn't neglect. It was setup for something no one saw coming.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "By the time Jesus arrives, Lazarus has been dead four days. Martha meets him on the road: 'If you had been here, my brother would not have died.' That's not an accusation. That's heartbreak. And Jesus doesn't give her a theological lecture. He says, 'I am the resurrection and the life.' Not 'I will be.' I AM. Right now. Even at a funeral. Even when it's too late by every human measure.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Jesus goes to the tomb and he weeps. Two words. 'Jesus wept.' The shortest verse in the Bible, and one of the most powerful. He knew he was about to call Lazarus out of the grave. He still cried. That's how much your pain matters to him. Then he tells them to roll the stone away, prays, and shouts, 'Lazarus, come out!' And the dead man walks out, still wrapped in grave clothes. Jesus tells the people, 'Unbind him.' You were never meant to walk out of your tomb alone. You need people to help unwrap the grave clothes. That's what community is for.",
           "attribution": null
         }
       ]

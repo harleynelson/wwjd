@@ -1,7 +1,6 @@
 // lib/dialogs/flag_selection_dialog.dart
 import 'package:flutter/material.dart';
-import '../models/models.dart'; // Access to Flag class and prebuiltFlags list is needed if not passed in
-// Note: We avoid direct DB/Prefs helper imports here by using callbacks
+import '../models/models.dart';
 
 class FlagSelectionDialog extends StatefulWidget {
   final String verseRef; // e.g., "Genesis 1:1" (for display)

@@ -1,6 +1,4 @@
 // lib/helpers/prefs_helper.dart
-// Path: lib/helpers/prefs_helper.dart
-// Approximate line: 130 (new method: clearUserSpecificPreferences)
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/reader_settings_enums.dart'; //
 
@@ -189,11 +187,5 @@ static bool getDevPremiumEnabled() {
     await _prefs!.remove(_readerViewModeKey);
     await _prefs!.remove(_ttsSelectedVoiceNameKey);
     await _prefs!.remove(_ttsSelectedVoiceLangCodeKey);
-    // Note: We are NOT clearing _appThemeModeKey, _devPremiumEnabledKey,
-    // _hiddenFlagsKey, _lastDevotionalDateKey, _lastDevotionalIndexKey
-    // as they are considered more device/app level.
-    // Also, 'submitterAnonymousId' is typically managed by PrayerService/MyPrayerRequestsScreen,
-    // if it was stored in prefs, it should be cleared if truly user-specific and not for continuity.
-    // For now, focusing on reader and TTS voice prefs.
   }
 }

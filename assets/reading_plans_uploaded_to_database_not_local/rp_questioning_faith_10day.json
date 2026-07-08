@@ -15,8 +15,16 @@
           "startChapter": 3,
           "startVerse": 1,
           "endChapter": 3,
+          "endVerse": 5,
+          "displayText": "Job 3:1-5"
+        },
+        {
+          "bookAbbr": "JOB",
+          "startChapter": 3,
+          "startVerse": 6,
+          "endChapter": 3,
           "endVerse": 11,
-          "displayText": "Job 3:1-11"
+          "displayText": "Job 3:6-11"
         },
         {
           "bookAbbr": "JOB",
@@ -27,11 +35,21 @@
           "displayText": "Job 3:20-26"
         }
       ],
-      "reflectionPrompt": "Job questions his suffering. Is it okay to voice our deepest pains and questions to God? Why or why not?",
+      "reflectionPrompt": "Job lost everything and he didn't pretend to be fine about it. He cursed the day he was born. If you're being honest, what's the rawest thing you've wanted to say to God in your hardest moments?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Job opens his mouth and curses the day of his birth. Not God. The day he was born. He wishes it could be erased from the calendar. This is the same man the Bible calls blameless and upright. Faithfulness and raw anguish are not opposites. They can sit in the same room, in the same heart, at the same time. If you've ever felt like you're failing at faith because you're hurting, Job says otherwise.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Job doesn't hold back his anguish or his profound questions about life and suffering. His words are raw, almost uncomfortable. Yet, their inclusion in scripture offers a powerful validation: even our most painful cries and difficult questions have a place before God.",
+          "text": "Job asks the question that burns in so many grieving hearts: why didn't I die at birth? Why is light given to those in misery? He's not looking for a philosophical answer. He's bleeding. These are not polite Sunday school questions. They're the kind you ask at three in the morning when sleep won't come and the pain won't leave. And God let these words stay in the Bible. That alone tells you something.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Job describes his suffering in physical terms. Sighing instead of eating. Groaning pouring out like water. What he feared has come upon him. He has no peace, no quietness, no rest. Only turmoil. He's not sugarcoating anything. And here's the remarkable thing. God doesn't interrupt him. Doesn't correct him mid-sentence. Lets the whole lament play out. You don't have to clean up your prayers before you pray them. God can handle the mess.",
           "attribution": null
         }
       ]
@@ -45,15 +63,28 @@
           "startChapter": 23,
           "startVerse": 1,
           "endChapter": 23,
+          "endVerse": 5,
+          "displayText": "Job 23:1-5"
+        },
+        {
+          "bookAbbr": "JOB",
+          "startChapter": 23,
+          "startVerse": 6,
+          "endChapter": 23,
           "endVerse": 9,
-          "displayText": "Job 23:1-9"
+          "displayText": "Job 23:6-9"
         }
       ],
-      "reflectionPrompt": "Job wishes he could find God to plead his case. What does his raw honesty teach us about wrestling with faith?",
+      "reflectionPrompt": "Job wants to find God and lay out his case like a courtroom argument. He believes God would actually listen. Do you believe that? That God would sit still and hear you out, even the angry parts?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Job's longing to find God and 'lay his case before him' shows a faith that is active and engaged, not passive. He believes God *is* there, even when hidden, and wrestles for connection and clarity. It demonstrates that deep faith isn't afraid to engage directly, even demandingly.",
+          "text": "Job's complaint is still bitter, but notice what he's really saying. 'If only I knew where to find him. I would state my case before him and fill my mouth with arguments.' Job isn't walking away from God. He's walking toward him. He wants a hearing. He believes God is fair enough to listen. That's not the posture of a skeptic. That's the posture of someone who trusts the judge even while questioning the verdict.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Then Job describes the ache of God's absence. 'If I go to the east, he is not there. To the west, I do not see him. In the north and south, I cannot perceive him.' He's searching everywhere and coming up empty. Every parent who has prayed for a prodigal child, every person sitting by a hospital bed, knows this feeling. Where are you, God? Not finding him doesn't mean he's not there. It means you're still looking. And that's faith too.",
           "attribution": null
         }
       ]
@@ -67,15 +98,41 @@
           "startChapter": 20,
           "startVerse": 24,
           "endChapter": 20,
+          "endVerse": 25,
+          "displayText": "John 20:24-25"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 20,
+          "startVerse": 26,
+          "endChapter": 20,
+          "endVerse": 27,
+          "displayText": "John 20:26-27"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 20,
+          "startVerse": 28,
+          "endChapter": 20,
           "endVerse": 29,
-          "displayText": "John 20:24-29"
+          "displayText": "John 20:28-29"
         }
       ],
-      "reflectionPrompt": "Thomas needed to see to believe. How does Jesus respond to his doubt? Is there room for intellectual seeking in faith?",
+      "reflectionPrompt": "Thomas has been called 'doubting Thomas' for two thousand years, but Jesus never called him that. Jesus just gave him what he needed. What do you need from God right now that you've been afraid to ask for?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Jesus meets Thomas right in his place of doubt, offering the very evidence Thomas felt he needed. It's a grace-filled moment that affirms the value of honest seeking, while gently inviting towards a faith that can trust even beyond tangible proof.",
+          "text": "The other disciples saw the risen Jesus, but Thomas wasn't there. They tell him, 'We have seen the Lord!' And Thomas says the thing that got him a nickname for two millennia: 'Unless I see the nail marks and put my hand into his side, I will not believe.' Was he stubborn? Maybe. But he was also honest. He didn't pretend to believe something he didn't. And Jesus didn't strike him down for it.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "A week later, Jesus shows up again. This time Thomas is there. Jesus doesn't scold him. He doesn't lecture him about faith. He walks straight up to Thomas and says, 'Put your finger here. See my hands. Reach out your hand and put it into my side. Stop doubting and believe.' Jesus meets Thomas exactly where he is, with exactly what he needs. He takes the doubt seriously enough to answer it.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Thomas responds with the most direct confession of Jesus' divinity in the gospels: 'My Lord and my God!' No hedging, no maybe. Full conviction. And Jesus says, 'Because you have seen me, you have believed. Blessed are those who have not seen and yet have believed.' That's us. We haven't seen. But Jesus isn't condemning Thomas. He's inviting us. Doubt honestly expressed can be the front porch of a deeper faith. Thomas proves it.",
           "attribution": null
         }
       ]
@@ -89,15 +146,41 @@
           "startChapter": 77,
           "startVerse": 1,
           "endChapter": 77,
+          "endVerse": 4,
+          "displayText": "Psalm 77:1-4"
+        },
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 77,
+          "startVerse": 5,
+          "endChapter": 77,
+          "endVerse": 7,
+          "displayText": "Psalm 77:5-7"
+        },
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 77,
+          "startVerse": 8,
+          "endChapter": 77,
           "endVerse": 10,
-          "displayText": "Psalm 77:1-10"
+          "displayText": "Psalm 77:8-10"
         }
       ],
-      "reflectionPrompt": "The psalmist questions if God has forgotten or rejected him. How can remembering God's past actions help in times of present doubt?",
+      "reflectionPrompt": "The psalmist feels abandoned. Has God forgotten to be merciful? Have you ever felt like God changed, like the closeness you used to feel just disappeared?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The psalmist voices fears that echo through many hearts in difficult times: Has God forgotten? Is His love gone forever? Simply voicing these deep anxieties, bringing them out into the open before God, is often the necessary first step in navigating seasons of doubt.",
+          "text": "'I cried out to God for help. I cried out to God to hear me.' The psalmist is in distress and he's not being quiet about it. He stretches out untiring hands. His soul refuses to be comforted. He can't sleep. He's too troubled to speak. This is not a calm, composed prayer. This is someone falling apart at the foot of God's throne. And that counts as worship too.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The psalmist remembers better days. 'I thought about the former days, the years of long ago. I remembered my songs in the night.' He's doing what we all do. Comparing the present darkness with past light. And it makes the darkness feel darker. 'Will the Lord reject forever? Will he never show his favor again?' Memory can be a weapon against doubt, or it can deepen it. It all depends on what you do with the memory next.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then the rawest questions spill out: 'Has his unfailing love vanished forever? Has God forgotten to be merciful? Has he in anger withheld his compassion?' The psalmist knows the right answers. He knows God is loving and merciful. But right now, he can't feel any of it. And he says so. Then comes the turning point: 'I will remember the deeds of the Lord.' Not the feelings. The deeds. What God has done stands when what you feel has crumbled.",
           "attribution": null
         }
       ]
@@ -123,11 +206,16 @@
           "displayText": "Jeremiah 20:14-18"
         }
       ],
-      "reflectionPrompt": "Jeremiah feels deceived and overwhelmed by his calling. Can doubt and faithfulness coexist?",
+      "reflectionPrompt": "Jeremiah accuses God of deceiving him. Those are fighting words. But he also says God's word burns in his heart like a fire he can't hold in. Have you ever felt both things at once? Compelled and angry? Called and exhausted?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Jeremiah lets God have it. 'You deceived me, Lord, and I was deceived. You overpowered me and prevailed.' He feels tricked. His calling has brought him nothing but insult and reproach. Everyone mocks him. And yet he can't stop speaking God's word. 'If I say I will not mention him or speak any more in his name, his word is in my heart like a fire, a fire shut up in my bones.' He's caught between wanting out and burning up if he stays quiet.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Jeremiah's words swing dramatically between a burning commitment he feels compelled to follow and profound personal despair. His story powerfully illustrates that genuine faithfulness and deep internal struggle, even questioning one's calling, can often reside within the same heart.",
+          "text": "Jeremiah sinks even lower. He curses the day he was born, just like Job did. 'Why did I ever come out of the womb to see trouble and sorrow and to end my days in shame?' These are the words of a prophet. A real one. Not a polished, Instagram-ready spokesperson. A man who is broken and honest about it. The Bible doesn't clean up its heroes. It shows them covered in dust and tears. Your lowest moment isn't disqualifying. It might be the most prophetic thing about you.",
           "attribution": null
         }
       ]
@@ -141,15 +229,41 @@
           "startChapter": 73,
           "startVerse": 1,
           "endChapter": 73,
+          "endVerse": 5,
+          "displayText": "Psalm 73:1-5"
+        },
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 73,
+          "startVerse": 12,
+          "endChapter": 73,
+          "endVerse": 14,
+          "displayText": "Psalm 73:12-14"
+        },
+        {
+          "bookAbbr": "PSA",
+          "startChapter": 73,
+          "startVerse": 15,
+          "endChapter": 73,
           "endVerse": 17,
-          "displayText": "Psalm 73:1-17 (Focus on v. 1-3, 12-14, 16-17)"
+          "displayText": "Psalm 73:15-17"
         }
       ],
-      "reflectionPrompt": "The psalmist doubts God's justice when seeing the wicked prosper. What helps shift his perspective?",
+      "reflectionPrompt": "Asaph looked at the arrogant and the wealthy and almost lost his faith. They seemed to have it all while he was struggling. Then he went into God's sanctuary and everything shifted. Where do you go when you need a bigger perspective?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Asaph is brutally honest about his envy and how the apparent injustice he saw shook his faith ('I almost slipped'). His turning point wasn't an immediate answer, but a shift in perspective gained by entering 'the sanctuary of God.' It suggests that seeking a different, perhaps spiritual, viewpoint can reframe our understanding, even when difficult circumstances persist.",
+          "text": "Asaph starts with a truth he knows but is struggling to feel: 'Surely God is good to Israel, to those who are pure in heart.' He's stating the doctrine. But then he gets honest. 'As for me, my feet had almost slipped. I had nearly lost my foothold. For I envied the arrogant when I saw the prosperity of the wicked.' He's a worship leader confessing that he almost walked away from God because he was jealous of people who didn't believe.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Asaph describes the carefree life of the wicked. They seem to have no struggles. Their bodies are healthy and strong. They're free from common human burdens. Meanwhile, he says, 'Surely in vain I have kept my heart pure. I have washed my hands in innocence.' He's been trying to do the right thing and all he's gotten is trouble. Every person who has tried to live faithfully while watching others cut corners and prosper knows this bitterness.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then comes the hinge. 'When I tried to understand all this, it troubled me deeply until I entered the sanctuary of God. Then I understood their final destiny.' Something shifted in worship. He saw things from God's perspective instead of his own. The prosperity he envied was temporary. The struggle he was in had purpose. The sanctuary changed his sightline. Sometimes you can't think your way out of doubt. You have to worship your way into faith.",
           "attribution": null
         }
       ]
@@ -163,15 +277,41 @@
           "startChapter": 11,
           "startVerse": 2,
           "endChapter": 11,
+          "endVerse": 3,
+          "displayText": "Matthew 11:2-3"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 11,
+          "startVerse": 4,
+          "endChapter": 11,
+          "endVerse": 5,
+          "displayText": "Matthew 11:4-5"
+        },
+        {
+          "bookAbbr": "MAT",
+          "startChapter": 11,
+          "startVerse": 6,
+          "endChapter": 11,
           "endVerse": 6,
-          "displayText": "Matthew 11:2-6"
+          "displayText": "Matthew 11:6"
         }
       ],
-      "reflectionPrompt": "Even John the Baptist had moments of questioning. How does Jesus' answer affirm his ministry while addressing John's doubts?",
+      "reflectionPrompt": "John the Baptist, the man who baptized Jesus and saw the heavens open, is sitting in prison asking if he got it wrong. If John could doubt, so can you. What question have you been afraid to ask out loud?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "It's deeply humanizing that even John the Baptist, the powerful forerunner of Jesus, faced moments of uncertainty from his prison cell. Jesus responds not with rebuke, but by pointing to the evidence of His work ('the blind receive sight...'), gently encouraging John to hold onto the truth he proclaimed.",
+          "text": "John the Baptist is in prison. Herod has locked him up for speaking truth to power. And from that dark cell, John sends his disciples to Jesus with a heartbreaking question: 'Are you the one who is to come, or should we expect someone else?' This is the same John who saw the Spirit descend like a dove. Who declared Jesus the Lamb of God. And now he's not sure. Prison cells have a way of making you question everything.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus doesn't get defensive. He doesn't say, 'How dare John doubt me after everything he saw.' Instead he points to the evidence: 'The blind receive sight, the lame walk, those with leprosy are cleansed, the deaf hear, the dead are raised, and the good news is proclaimed to the poor.' He's quoting Isaiah, the same prophet John quoted. He's reminding John of the very promises that called him into ministry in the first place.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Then Jesus adds a gentle warning wrapped in a beatitude: 'Blessed is anyone who does not stumble on account of me.' He's not rebuking John. He's strengthening him. It's okay to ask. Bring your doubts to Jesus. Just don't trip over him on your way to the answer. The same Jesus who didn't match John's expectations is still the one healing the blind and raising the dead. Let the evidence speak louder than the prison walls.",
           "attribution": null
         }
       ]
@@ -185,15 +325,41 @@
           "startChapter": 9,
           "startVerse": 21,
           "endChapter": 9,
+          "endVerse": 22,
+          "displayText": "Mark 9:21-22"
+        },
+        {
+          "bookAbbr": "MRK",
+          "startChapter": 9,
+          "startVerse": 23,
+          "endChapter": 9,
+          "endVerse": 23,
+          "displayText": "Mark 9:23"
+        },
+        {
+          "bookAbbr": "MRK",
+          "startChapter": 9,
+          "startVerse": 24,
+          "endChapter": 9,
           "endVerse": 24,
-          "displayText": "Mark 9:21-24"
+          "displayText": "Mark 9:24"
         }
       ],
-      "reflectionPrompt": "'I believe; help my unbelief!' What does this honest prayer teach us about faith and doubt existing together?",
+      "reflectionPrompt": "'I believe. Help my unbelief.' That might be the most honest prayer in the whole Bible. What's one area of your life where you believe and doubt at the exact same time?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This father's desperate, honest cry, 'I believe; help my unbelief!' resonates with so many on the faith journey. It's a beautiful picture of faith not as absolute certainty, but as a dynamic process of trusting and reaching out, even amidst our acknowledged doubts and struggles.",
+          "text": "A desperate father brings his son to Jesus. The boy has been possessed by a spirit since childhood. It throws him into fire and water, trying to kill him. The father says to Jesus, 'If you can do anything, take pity on us and help us.' That 'if' gives him away. He's been disappointed before. The disciples couldn't help. Hope is a fragile thing when you've watched your child suffer for years.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Jesus picks up on that one word: 'If you can? Everything is possible for one who believes.' He's not scolding the man. He's redirecting him. Stop looking at the size of the problem. Start looking at the size of the one standing in front of you. The question isn't whether Jesus can. The question is whether you'll trust him enough to ask.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "The father's response is one of the rawest prayers ever recorded. 'I do believe. Help me overcome my unbelief.' He doesn't pretend to have perfect faith. He brings what he has and asks Jesus to fill in the gap. And Jesus does. He heals the boy. This prayer has comforted countless people because it gives you permission to show up with shaky hands and a divided heart. You don't need perfect faith. You just need to point your doubt in the right direction.",
           "attribution": null
         }
       ]
@@ -219,11 +385,16 @@
           "displayText": "Habakkuk 1:12-13"
         }
       ],
-      "reflectionPrompt": "Habakkuk questions God's methods. How can honest dialogue, even if challenging, strengthen our relationship with the Divine?",
+      "reflectionPrompt": "Habakkuk looks at the violence and injustice around him and demands to know why God isn't doing anything. Then God answers, and Habakkuk argues back. How honest are your prayers, really?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Habakkuk opens with raw frustration. 'How long, Lord, must I call for help, but you do not listen? Why do you make me look at injustice? Why do you tolerate wrongdoing?' He's not praying politely. He's confronting God about the state of the world. Destruction and violence are everywhere. The law is paralyzed. Justice never prevails. This could have been written yesterday. And God doesn't strike him down for it.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Habakkuk doesn't just lament; he directly confronts God with his confusion and challenges what seems unjust ('Why are you silent?'). The entire book unfolds as a genuine dialogue, demonstrating that wrestling with God and bringing our hardest questions honestly can be a vital pathway toward deeper trust, rather than a sign of faltering faith.",
+          "text": "God answers, but the answer makes things worse. God says he's raising up the Babylonians to bring judgment. Habakkuk fires back: 'Your eyes are too pure to look on evil. Why then do you tolerate the treacherous? Why are you silent while the wicked swallow up those more righteous than themselves?' He's arguing with God about God's own plan. And the whole book is included in scripture. The takeaway? You can push back. You can say, 'That doesn't make sense to me.' Faith that never asks hard questions isn't strong. It's shallow.",
           "attribution": null
         }
       ]
@@ -249,11 +420,16 @@
           "displayText": "1 Corinthians 13:12"
         }
       ],
-      "reflectionPrompt": "We may not have all the answers. How can embracing mystery and 'seeing in a mirror dimly' be a part of a mature faith?",
+      "reflectionPrompt": "We see through a dim mirror. We can't fathom what God has done from beginning to end. Does that limitation feel frustrating to you, or freeing? What would it look like to make peace with mystery?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "The Teacher of Ecclesiastes says that God has set eternity in the human heart, yet no one can fathom what God has done from beginning to end. There's a tension built right into us. We're wired for forever, but stuck in time. We hunger to understand the full picture, but we can only see the corner we're standing on. That's not a design flaw. That's the setup for trust. If you could figure everything out, you wouldn't need faith.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Throughout scripture, there's an acknowledgement that we won't always have all the answers. Phrases like 'cannot fathom' (Ecclesiastes) and seeing 'in a mirror dimly' (Paul) invite us into a faith that makes space for mystery. It suggests that maturity in faith involves humbly accepting the limits of our understanding, while continuing to trust the One who sees and knows fully.",
+          "text": "Paul writes, 'For now we see only a reflection as in a mirror. Then we shall see face to face. Now I know in part. Then I shall know fully, even as I am fully known.' The Christian life isn't about having all the answers. It's about being fully known by the one who does. Your questions don't threaten God. Your doubts don't scare him. Someday you'll see clearly. Until then, you're invited to trust the one who already sees you clearly.",
           "attribution": null
         }
       ]

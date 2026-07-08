@@ -1,7 +1,7 @@
 {
   "id": "rp_women_of_faith_7day",
   "title": "Women of Faith: Stories of Strength & Influence",
-  "description": "Rediscover the stories of pivotal women in scripture—leaders, prophets, disciples, and pioneers—whose faith and actions shaped biblical history and inspire us today. (7 days)",
+  "description": "Rediscover the stories of pivotal women in scripture. Leaders, prophets, disciples, and pioneers whose faith and actions shaped biblical history and inspire us today. (7 days)",
   "category": "Topical / Character Study",
   "headerImageAssetPath": "assets/images/reading_plan_headers/rp_women_of_faith_7day.png",
   "isPremium": true,
@@ -15,15 +15,41 @@
           "startChapter": 4,
           "startVerse": 4,
           "endChapter": 4,
+          "endVerse": 5,
+          "displayText": "Judges 4:4-5"
+        },
+        {
+          "bookAbbr": "JDG",
+          "startChapter": 4,
+          "startVerse": 6,
+          "endChapter": 4,
+          "endVerse": 7,
+          "displayText": "Judges 4:6-7"
+        },
+        {
+          "bookAbbr": "JDG",
+          "startChapter": 4,
+          "startVerse": 8,
+          "endChapter": 4,
           "endVerse": 10,
-          "displayText": "Judges 4:4-10"
+          "displayText": "Judges 4:8-10"
         }
       ],
-      "reflectionPrompt": "Deborah led Israel with wisdom and courage. What does her example teach us about recognizing and affirming leadership gifts in unexpected people or places today?",
+      "reflectionPrompt": "Deborah led with wisdom when hardly anyone gave women that chance. Where do you see leadership gifts in people others tend to overlook? And what gifts might you be sitting on that somebody needs you to use?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "In a predominantly patriarchal society, Deborah stands out as a recognized leader—a prophetess judging Israel. She confidently gives military command based on God's direction, demonstrating remarkable authority and faith. Her story challenges assumptions about gender roles and highlights God's use of diverse leaders.",
+          "text": "Picture this. Deborah is holding court under a palm tree, settling disputes, giving people guidance. In a culture where men ran the show, she's the one folks come to for wisdom. That says a whole lot about her character, doesn't it? God doesn't seem to care about the boxes we get so hung up on. Real gifting rises to the top no matter who it lands on.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Now Deborah sends for Barak and hands him a direct word from God. She's not just wise, she's bold. She tells a military commander what God wants him to do, straight up. And Barak trusts her. He knows her track record. Real authority doesn't have to shout. It just shows up, day after day, and people learn to trust it.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Barak says he'll go, but only if Deborah goes with him. Some might read that as weakness. I think it shows how much he valued having her there. Deborah doesn't hesitate for a second. She goes. Courage isn't about not being scared. A lot of the time it's about showing up scared and going anyway. And sometimes it means bringing along someone who makes you braver.",
           "attribution": null
         }
       ]
@@ -43,17 +69,35 @@
         {
           "bookAbbr": "RUT",
           "startChapter": 2,
+          "startVerse": 1,
+          "endChapter": 2,
+          "endVerse": 3,
+          "displayText": "Ruth 2:1-3"
+        },
+        {
+          "bookAbbr": "RUT",
+          "startChapter": 2,
           "startVerse": 10,
           "endChapter": 2,
           "endVerse": 12,
           "displayText": "Ruth 2:10-12"
         }
       ],
-      "reflectionPrompt": "Ruth showed profound loyalty and took risks for her relationship with Naomi. What does her story teach us about commitment, resilience, and the power of character in navigating challenging life transitions?",
+      "reflectionPrompt": "Ruth left everything familiar behind for a relationship. When has loyalty cost you something real? And when has someone else's loyalty been the thing that got you through?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Ruth's words to Naomi are some of the most beautiful in all of scripture. 'Where you go I will go, your people will be my people, your God my God.' She's a Moabite, an outsider, a widow with no safety net. But none of that stops her. Love and loyalty run deeper than bloodlines. Sometimes the people who show up for you aren't the ones you expected, and that's the whole point.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Ruth, a Moabite widow, demonstrates extraordinary loyalty and courage by choosing to stay with her mother-in-law, Naomi, and move to a foreign land. Her character—her kindness and hard work—shines through, earning her respect and provision. Her story is one of resilience, faithfulness in relationships, and finding hope in difficult circumstances.",
+          "text": "So Ruth and Naomi land in Bethlehem with nothing. No husband, no income, no plan. Ruth doesn't sit around waiting to be rescued. She heads out to glean in the fields, a practice God set up specifically to care for the poor and the foreigner. It's backbreaking work, picking up what the harvesters left behind. She's not too proud. She just does what needs to be done. That quiet, steady dignity says more about her than any big speech ever could.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "When Boaz notices Ruth and shows her kindness, her response gets me every time. She asks why he'd notice someone like her, a foreigner. Boaz tells her it's because of what everyone already knows about her, her character, her sacrifice, her loyalty. You don't have to be loud to be seen. You don't have to be important to be honored. Live well and people notice. It might take time, but they notice.",
           "attribution": null
         }
       ]
@@ -67,8 +111,16 @@
           "startChapter": 4,
           "startVerse": 13,
           "endChapter": 4,
+          "endVerse": 14,
+          "displayText": "Esther 4:13-14"
+        },
+        {
+          "bookAbbr": "EST",
+          "startChapter": 4,
+          "startVerse": 15,
+          "endChapter": 4,
           "endVerse": 16,
-          "displayText": "Esther 4:13-16"
+          "displayText": "Esther 4:15-16"
         },
         {
           "bookAbbr": "EST",
@@ -79,11 +131,21 @@
           "displayText": "Esther 5:1-3"
         }
       ],
-      "reflectionPrompt": "Esther used her position of influence courageously. What positions of influence (formal or informal) do you have? How might you be called to use your voice or resources 'for such a time as this' to advocate for others?",
+      "reflectionPrompt": "Esther had a position of influence she never asked for. What platform or influence do you have, big or small, that could make a difference for someone else? What would it cost you to use it?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Mordecai doesn't sugarcoat it. He tells Esther flat out: don't think you'll escape just because you're in the palace. Then come those famous words: 'Who knows but that you have come to your royal position for such a time as this?' That question still lands today. You're where you are for reasons you might not fully understand yet. Sometimes the very thing you thought was just coincidence turns out to be purpose.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Esther, facing a terrifying situation, chooses courage over safety. Encouraged by Mordecai's famous words, 'And who knows but that you have come to your royal position for such a time as this?', she risks her life to advocate for her people. Her story is a powerful example of using one's position and influence for justice, even at great personal cost.",
+          "text": "Esther doesn't rush in. She asks for prayer and fasting. That's worth sitting with for a second. Courage doesn't mean being impulsive. She prepares. She gathers her community around her spiritually. 'If I perish, I perish.' Those words are honest. She's not pretending the risk isn't real. She's just decided that doing nothing would be worse. Sometimes the bravest thing you can say is, 'I'm scared, and I'm going to do it anyway.'",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Esther walks into that throne room, and the king holds out his golden scepter. The tension breaks. She found favor where she could've found a death sentence. Notice she doesn't blurt out everything right away. She's strategic, patient, wise. Courage and wisdom go hand in hand. One without the other usually doesn't end well. Esther had both, and it saved a nation.",
           "attribution": null
         }
       ]
@@ -97,15 +159,41 @@
           "startChapter": 1,
           "startVerse": 26,
           "endChapter": 1,
+          "endVerse": 30,
+          "displayText": "Luke 1:26-30"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 1,
+          "startVerse": 31,
+          "endChapter": 1,
+          "endVerse": 33,
+          "displayText": "Luke 1:31-33"
+        },
+        {
+          "bookAbbr": "LUK",
+          "startChapter": 1,
+          "startVerse": 34,
+          "endChapter": 1,
           "endVerse": 38,
-          "displayText": "Luke 1:26-38 (The Annunciation)"
+          "displayText": "Luke 1:34-38"
         }
       ],
-      "reflectionPrompt": "Mary said 'yes' to a difficult and world-changing calling. What does her response teach you about faith, trust, and willingness to participate in something bigger than yourself, even when it involves uncertainty or sacrifice?",
+      "reflectionPrompt": "Mary was young, unknown, and had everything to lose. Yet she said yes. What is a step of trust you have been avoiding because the cost feels too high? What might be on the other side of that yes?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Mary's response to the angel's astonishing announcement is one of profound faith and surrender: 'I am the Lord’s servant... May your word to me be fulfilled.' Despite the personal risks and social stigma, she trusts God's plan. Her 'yes' demonstrates incredible courage and willingness to participate in God's work in the world.",
+          "text": "The angel shows up to a teenage girl in a nowhere town and calls her highly favored. Mary is troubled, confused. She does not jump up and down. She is trying to figure out what this even means. That is so real. When God shows up in your life it is not always fireworks and clarity. A lot of times it starts with confusion. That does not mean you are doing it wrong. It means you are paying attention.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "The angel lays out the promise. Her son will be great, the Son of the Most High, sitting on David's throne forever. This is massive. Cosmic. And it is landing on a girl who probably spent her days doing ordinary chores. God does not wait for you to feel ready or qualified. He sees what you can become, not just what you are right now. That is terrifying and thrilling in equal measure.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Mary asks one practical question: how will this be, since I am a virgin? That is not doubt. That is logistics. And then, having no idea how any of it would work out, she says yes. No conditions, no guarantees, no escape clause. Just a yes. The whole story hinges on a girl who trusted more than she understood. Your yes might matter more than you know.",
           "attribution": null
         }
       ]
@@ -127,15 +215,33 @@
           "startChapter": 20,
           "startVerse": 11,
           "endChapter": 20,
+          "endVerse": 15,
+          "displayText": "John 20:11-15"
+        },
+        {
+          "bookAbbr": "JHN",
+          "startChapter": 20,
+          "startVerse": 16,
+          "endChapter": 20,
           "endVerse": 18,
-          "displayText": "John 20:11-18"
+          "displayText": "John 20:16-18"
         }
       ],
-      "reflectionPrompt": "Jesus entrusted Mary Magdalene with the crucial news of his resurrection. What does it mean that the first witness and messenger of the central event of Christian faith was a woman? How does this affirm the value of women's voices and experiences?",
+      "reflectionPrompt": "Jesus chose a woman as the first witness to the resurrection, in a culture where women's testimony wasn't even accepted in court. What does that tell you about whose voices matter to God? Whose voices in your world need you to truly listen?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "It's still dark when Mary Magdalene gets to the tomb. The others are somewhere else. She's the one who shows up first. Grief didn't keep her in bed. Love pulled her out into the early morning. When she sees the stone moved, she runs to tell Peter and John. She doesn't understand what's happening yet. But she's paying attention, and she's not staying quiet about it.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Mary Magdalene's devotion is evident as she goes to the tomb early on Sunday morning. Significantly, the resurrected Jesus appears first to her and commissions her to be the first messenger—the 'apostle to the apostles'—to announce the resurrection. This highlights her importance and challenges cultural norms that often dismissed women's testimony.",
+          "text": "Now Mary's back at the tomb, weeping. She sees two angels but she's too broken up to even react to them. Then she turns and sees Jesus and doesn't recognize him. Grief can do that to you. It can blur everything. You can be looking right at hope and not see it because the tears are in the way. Jesus doesn't scold her for that. He meets her in it. He says her name.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "One word changes everything. 'Mary.' And she knows. Then Jesus gives her a job: go tell the others. The first person to announce the resurrection, the hinge point of all history, is a woman. Not a priest. Not a ruler. A woman whose testimony wouldn't hold up in a courtroom. God keeps choosing the ones the world dismisses. If that doesn't tell you something about whose voice matters, read it again.",
           "attribution": null
         }
       ]
@@ -149,8 +255,16 @@
           "startChapter": 16,
           "startVerse": 13,
           "endChapter": 16,
+          "endVerse": 14,
+          "displayText": "Acts 16:13-14"
+        },
+        {
+          "bookAbbr": "ACT",
+          "startChapter": 16,
+          "startVerse": 15,
+          "endChapter": 16,
           "endVerse": 15,
-          "displayText": "Acts 16:13-15"
+          "displayText": "Acts 16:15"
         },
         {
           "bookAbbr": "ACT",
@@ -161,11 +275,21 @@
           "displayText": "Acts 16:40"
         }
       ],
-      "reflectionPrompt": "Lydia used her resources (her home, her business background) to support the fledgling church community. How can we use our unique skills, resources, and spheres of influence to foster community and support spiritual growth?",
+      "reflectionPrompt": "Lydia had resources, a business, and a home, and she used all of it to build community. What do you have in your hands right now that could open doors for others? Your home, your skills, your network?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Paul and his companions find a group of women gathered by the river for prayer. Among them is Lydia, a businesswoman who deals in expensive purple cloth. She's already a worshiper of God, searching, open. Notice the setting. It's not a synagogue or a temple. It's outside, by the water, women gathered without any formal structure. God shows up wherever hearts are genuinely seeking. The location doesn't matter nearly as much as the openness.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Lydia is described as a successful businesswoman ('dealer in purple cloth') and a worshiper of God. After hearing Paul's message, she and her household respond, and she immediately offers hospitality, opening her home to become a center for the new church in Philippi. Her story showcases female entrepreneurship, spiritual openness, and practical leadership in the early church.",
+          "text": "The Lord opens Lydia's heart to receive what Paul is saying, and she responds immediately. She and her whole household are baptized. Then, right away, she insists that Paul and his team stay at her house. She doesn't just believe privately. She opens her home, her resources, her whole life. Faith for Lydia wasn't a Sunday morning thing. It rearranged her living room. Literally.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Later, after Paul and Silas are released from prison, where do they go? Straight back to Lydia's house. Her home had become the hub, the gathering place for the new church in Philippi. A woman's home became the birthplace of a movement that would spread across Europe. Never underestimate what can happen when someone simply opens their door and says, 'Come in.'",
           "attribution": null
         }
       ]
@@ -187,15 +311,33 @@
           "startChapter": 18,
           "startVerse": 24,
           "endChapter": 18,
+          "endVerse": 25,
+          "displayText": "Acts 18:24-25"
+        },
+        {
+          "bookAbbr": "ACT",
+          "startChapter": 18,
+          "startVerse": 26,
+          "endChapter": 18,
           "endVerse": 26,
-          "displayText": "Acts 18:24-26"
+          "displayText": "Acts 18:26"
         }
       ],
-      "reflectionPrompt": "Priscilla worked alongside her husband and others in ministry and teaching. What does her example show us about partnership, collaboration, and the importance of women's contributions in teaching and theological understanding?",
+      "reflectionPrompt": "Priscilla taught alongside her husband, and her name is often listed first. Who has invested in your growth the way Priscilla invested in Apollos? And who around you might be waiting for someone to take them aside and help them grow?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Paul shows up in Corinth and meets Aquila and Priscilla, a married couple who are tentmakers just like him. So he stays with them and works alongside them. Side by side, day after day, making tents and talking faith. There's something deeply beautiful about that. Ministry wasn't a stage and a microphone. It was a workshop, calloused hands, and conversation while the work got done.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 1,
-          "text": "Priscilla is consistently mentioned alongside her husband, Aquila, suggesting a true partnership in life and ministry. Together, they work with Paul and notably take Apollos aside to explain 'the way of God more adequately.' This highlights Priscilla's theological understanding and her active role in teaching and mentoring within the early church community.",
+          "text": "Enter Apollos. He's passionate, articulate, knows the scriptures well, and he's out there teaching about Jesus with great enthusiasm. But he only knows part of the story. He's got the prequel but not the full picture. And here's what I love: nobody publicly embarrasses him. Nobody makes a scene about what he doesn't know. They handle it with grace.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Priscilla and Aquila take Apollos aside privately and explain 'the way of God more adequately.' Notice Priscilla's name is listed first in that sentence. That's intentional. She wasn't just tagging along with her husband. She had real theological depth and she used it. A woman, teaching, mentoring, shaping one of the most influential voices in the early church. The kingdom has always advanced through people who had the humility to learn and the courage to teach.",
           "attribution": null
         }
       ]

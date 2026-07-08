@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "rp_ecclesiastes_meaning_5day",
   "title": "Ecclesiastes: Finding Meaning Under the Sun",
   "description": "Wrestle alongside the ancient Teacher with life's big questions about meaning, work, wisdom, and mortality, discovering invitations to find joy in the present moment. (5 days)",
@@ -19,11 +19,21 @@
           "displayText": "Ecclesiastes 1:2-11"
         }
       ],
-      "reflectionPrompt": "The Teacher observes the endless cycles of nature and human striving, calling much of it 'meaningless.' What activities or pursuits in your own life sometimes feel repetitive or ultimately unsatisfying? Is it freeing or unsettling to acknowledge this?",
+      "reflectionPrompt": "Meaningless, meaningless, everything is meaningless. That's a rough way to start a book. But maybe it's also freeing. If chasing the wind doesn't work, what would you stop chasing? What would you actually start paying attention to?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The Teacher starts with a stark, almost jarring observation: 'Meaningless! Meaningless! Utterly meaningless! Everything is meaningless.' This isn't necessarily despair, but a radically honest assessment of life's cycles and the limits of human effort when viewed 'under the sun.' Acknowledging this apparent futility can be a surprising first step toward finding deeper meaning.",
+          "text": "The Teacher doesn't start with comfort. He starts with honesty. Generations come and go. The sun rises and sets. Rivers run to the sea and the sea never fills. It all keeps going and going. And from under the sun, without any bigger perspective, it can feel like a treadmill. If you've ever felt like life is just repeating itself, you're not alone. The Bible has a whole book that starts right there.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "There's nothing new under the sun. People have been saying that for three thousand years. But the Teacher isn't trying to depress you. He's trying to wake you up. You can spend your whole life chasing the next thing and never catch it. Or you can admit that the chase itself might be the problem. That's not giving up. That's getting honest.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "What is crooked cannot be straightened. What is lacking cannot be counted. Some things in life won't be fixed by your effort. Some gaps won't be filled by your striving. That's not a reason to despair. It's a reason to stop carrying burdens you were never meant to carry. The Teacher is clearing the ground so something real can grow.",
           "attribution": null
         }
       ]
@@ -41,11 +51,21 @@
           "displayText": "Ecclesiastes 2:1-11"
         }
       ],
-      "reflectionPrompt": "The Teacher pursued pleasure, wealth, and accomplishment but found them ultimately empty. What does our culture tell us will bring happiness? How does the Teacher's experience challenge those assumptions?",
+      "reflectionPrompt": "The Teacher tried everything. Laughter, wine, building projects, wealth, entertainment. He denied himself nothing. And he called it all meaningless. What are you chasing right now that, deep down, you suspect won't actually satisfy?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "Here, the Teacher explores seeking meaning through pleasure, possessions, and great achievements. While these things offer temporary enjoyment, he concludes they too are 'meaningless, a chasing after the wind.' It's a caution against believing that external success or constant entertainment can provide lasting satisfaction.",
+          "text": "The Teacher does something most people never do: he actually tests whether pleasure and success deliver on their promises. He builds houses, plants vineyards, gathers silver and gold. He has everything money can buy and power can acquire. And when he surveys it all, his verdict is devastating. Meaningless. A chasing after the wind. Nothing was gained under the sun.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "I denied myself nothing my eyes desired. I refused my heart no pleasure. The Teacher had unlimited resources and zero restraint. If happiness could be bought, he'd have bought it. And yet. He found that the thrill wears off. The projects get completed and you're still the same person on the other side. Success is a treadmill, not a destination.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "Yet when I surveyed all that my hands had done, everything was meaningless. This isn't some bitter old man who never got his shot. This is someone who got everything he reached for and found his hands still empty. The problem isn't that you haven't achieved enough. The problem is that achievement itself can't fill the hole it promises to fill. That's a gift of a realization, if you let it be.",
           "attribution": null
         }
       ]
@@ -59,15 +79,33 @@
           "startChapter": 3,
           "startVerse": 1,
           "endChapter": 3,
+          "endVerse": 8,
+          "displayText": "Ecclesiastes 3:1-8"
+        },
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 3,
+          "startVerse": 9,
+          "endChapter": 3,
           "endVerse": 15,
-          "displayText": "Ecclesiastes 3:1-15"
+          "displayText": "Ecclesiastes 3:9-15"
         }
       ],
-      "reflectionPrompt": "Ecclesiastes 3 lists contrasting seasons of life ('a time to weep and a time to laugh...'). Which 'season' are you currently in? How can accepting the rhythm of life, with its ups and downs, help you find meaning in the present moment?",
+      "reflectionPrompt": "A time to weep, a time to laugh. A time to mourn, a time to dance. Which season are you in right now? Can you accept it without rushing to the next one?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "This famous passage reflects on the rhythms and seasons of life—times for joy and sorrow, work and rest, birth and death. There's an invitation here to accept life's complexities and uncertainties, recognizing God has 'made everything beautiful in its time' even if we can't fully grasp the big picture. Finding meaning involves embracing the present season.",
+          "text": "There is a time for everything under heaven. You've probably heard these words at funerals and weddings. But read them slowly and they hit different. A time to be born and a time to die. A time to kill and a time to heal. A time to tear down and a time to build. The Teacher isn't giving advice. He's describing reality. Life has seasons you can't skip and rhythms you can't outrun. That's not cruel. That's how it works.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 0,
+          "text": "A time to weep and a time to laugh. A time to mourn and a time to dance. You're not supposed to be happy all the time. You're not supposed to be productive all the time. You're not supposed to have it all together all the time. There's a season for breaking down and a season for building back up. Stop apologizing for the season you're in.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "God has made everything beautiful in its time. He has also set eternity in the human heart, yet no one can fathom what God has done from beginning to end. We carry a longing for something bigger than any single season. But you can't see the whole picture from where you're standing. And that's okay. You don't need to understand everything. You just need to trust the one who does.",
           "attribution": null
         }
       ]
@@ -81,22 +119,48 @@
           "startChapter": 4,
           "startVerse": 1,
           "endChapter": 4,
+          "endVerse": 3,
+          "displayText": "Ecclesiastes 4:1-3"
+        },
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 4,
+          "startVerse": 4,
+          "endChapter": 4,
+          "endVerse": 8,
+          "displayText": "Ecclesiastes 4:4-8"
+        },
+        {
+          "bookAbbr": "ECC",
+          "startChapter": 4,
+          "startVerse": 9,
+          "endChapter": 4,
           "endVerse": 12,
-          "displayText": "Ecclesiastes 4:1-12"
+          "displayText": "Ecclesiastes 4:9-12"
         }
       ],
-      "reflectionPrompt": "The Teacher contrasts the pain of isolation and oppression with the strength found in companionship ('A cord of three strands is not quickly broken'). Where do you see the value of community and mutual support in your life or in society?",
+      "reflectionPrompt": "Two are better than one. A cord of three strands is not quickly broken. Who are the people in your life who pick you up when you fall? And are you being that person for anyone else?",
       "interspersedInsights": [
         {
           "afterPassageIndex": 0,
-          "text": "The Teacher observes the pain of oppression and the emptiness of competitive, isolated toil. In contrast, he highlights the profound value of companionship: 'Two are better than one... If either of them falls down, one can help the other up.' Meaning is often found not in solitary striving, but in mutual support and relationship.",
+          "text": "The Teacher looks at oppression and calls the dead happier than the living, and happier still the one who has never been born. That is dark. But it's also honest about what it feels like to watch the powerful crush the powerless and feel like nothing changes. The Bible doesn't sugarcoat the pain of living in a broken world. Sometimes the first step toward hope is admitting how bad it actually is.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "All toil and all achievement spring from one person's envy of another. That's a gut punch. How much of what you do is driven by wanting what someone else has? The Teacher watches a person working alone, never satisfied, never asking 'who am I doing all this for?' That's a lonely picture. Work without relationship is just noise.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 2,
+          "text": "Two are better than one. If one falls, the other can help them up. If two lie down together, they keep warm. A cord of three strands is not quickly broken. The antidote to meaninglessness isn't more achievement. It's other people. Real friends, real community, real love. You were never meant to do this alone. The Teacher, for all his cynicism, lands on something beautiful: we need each other.",
           "attribution": null
         }
       ]
     },
     {
       "dayNumber": 5,
-      "title": "Enjoy Life's Gifts & Remember Your Creator",
+      "title": "Enjoy Life's Gifts and Remember Your Creator",
       "passages": [
         {
           "bookAbbr": "ECC",
@@ -111,8 +175,8 @@
           "startChapter": 12,
           "startVerse": 1,
           "endChapter": 12,
-          "endVerse": 1,
-          "displayText": "Ecclesiastes 12:1"
+          "endVerse": 7,
+          "displayText": "Ecclesiastes 12:1-7"
         },
         {
           "bookAbbr": "ECC",
@@ -123,11 +187,21 @@
           "displayText": "Ecclesiastes 12:13-14"
         }
       ],
-      "reflectionPrompt": "The Teacher advises enjoying simple daily pleasures (food, work, relationships) while also remembering our Creator and ultimate responsibility. How can you cultivate both simple joys and a sense of deeper purpose in your life this week?",
+      "reflectionPrompt": "After all the wrestling and questioning, the Teacher lands in a simple place: fear God, keep his commands, enjoy your life. What would change if you stopped waiting for meaning to arrive and started noticing it in the ordinary moments you already have?",
       "interspersedInsights": [
         {
+          "afterPassageIndex": 0,
+          "text": "Go, eat your food with gladness, and drink your wine with a joyful heart. Enjoy life with your wife, whom you love, all the days of this meaningless life. The Teacher doesn't resolve the meaninglessness. He doesn't pretend it isn't there. He says: yeah, life is hard and short and confusing. So enjoy the good parts while you can. That's not cynical. That's deeply practical.",
+          "attribution": null
+        },
+        {
+          "afterPassageIndex": 1,
+          "text": "Remember your Creator in the days of your youth, before the days of trouble come. The Teacher paints a poetic picture of aging. The grinders cease, the windows grow dim, the sound of grinding fades. Your body slows down. Your world gets smaller. But you don't have to wait until everything falls apart to remember who made you. Do it now, while you still have strength and wonder.",
+          "attribution": null
+        },
+        {
           "afterPassageIndex": 2,
-          "text": "After wrestling with life's big questions, the Teacher arrives at some core conclusions: Find joy in the simple, everyday gifts of life—food, drink, work, relationships—as gifts from God. And ultimately, orient your life towards reverence for God and responsible living ('Fear God and keep his commandments'). Meaning is found in both present enjoyment and ultimate accountability.",
+          "text": "Now all has been heard. Here is the conclusion of the matter: Fear God and keep his commandments, for this is the duty of all mankind. The Teacher spent twelve chapters deconstructing everything. And where does he land? Not on a complicated system. Not on a secret formula. On reverence and obedience. Live in awe of God. Do what he says. That's it. Everything else is commentary.",
           "attribution": null
         }
       ]

@@ -9,7 +9,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import '../models/models.dart'; //
-// import 'reading_plans_data.dart'; // No longer used
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -350,9 +349,7 @@ class DatabaseHelper {
     final db = await database;
     try {
       await db.transaction((txn) async {
-        // Order matters if there are foreign key constraints,
-        // but for simple deletion of all data, it's less critical.
-        // However, deleting from junction tables first is good practice.
+        // deleting from junction tables first is good practice.
         await txn.delete(favFlagsTableName);
         await txn.delete(flagsTableName);
         await txn.delete(favTableName);
